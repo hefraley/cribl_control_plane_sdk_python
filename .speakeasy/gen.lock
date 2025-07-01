@@ -1,0 +1,140 @@
+lockVersion: 2.0.0
+id: cfa345be-20bc-4980-a260-c3fa74040ac2
+management:
+  docChecksum: a553a9a8d1809f95d5324f3fc5fb5705
+  docVersion: 4.12.2-4b17c8d4
+  speakeasyVersion: 1.573.0
+  generationVersion: 2.644.1
+  releaseVersion: 0.0.1
+  configChecksum: 184b9222d45a9b44ff3b3a8de2011cea
+features:
+  python:
+    additionalDependencies: 1.0.0
+    core: 5.19.3
+    defaultEnabledRetries: 0.2.0
+    devContainers: 3.0.0
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.3.2
+    globalSecurity: 3.0.3
+    globalSecurityCallbacks: 1.0.0
+    globalSecurityFlattening: 1.0.0
+    globalServerURLs: 3.1.1
+    methodArguments: 1.0.2
+    mockServer: 0.1.1
+    responseFormat: 1.0.1
+    retries: 3.0.2
+    sdkHooks: 1.1.0
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .gitattributes
+  - .python-version
+  - .vscode/settings.json
+  - USAGE.md
+  - docs/errors/healthstatuserror.md
+  - docs/models/healthstatus.md
+  - docs/models/role.md
+  - docs/models/security.md
+  - docs/models/status.md
+  - docs/models/utils/retryconfig.md
+  - docs/sdks/criblcontrolplane/README.md
+  - docs/sdks/diag/README.md
+  - docs/sdks/health/README.md
+  - poetry.toml
+  - py.typed
+  - pylintrc
+  - pyproject.toml
+  - scripts/publish.sh
+  - src/cribl_control_plane/__init__.py
+  - src/cribl_control_plane/_hooks/__init__.py
+  - src/cribl_control_plane/_hooks/sdkhooks.py
+  - src/cribl_control_plane/_hooks/types.py
+  - src/cribl_control_plane/_version.py
+  - src/cribl_control_plane/basesdk.py
+  - src/cribl_control_plane/diag.py
+  - src/cribl_control_plane/errors/__init__.py
+  - src/cribl_control_plane/errors/apierror.py
+  - src/cribl_control_plane/errors/healthstatus_error.py
+  - src/cribl_control_plane/health.py
+  - src/cribl_control_plane/httpclient.py
+  - src/cribl_control_plane/models/__init__.py
+  - src/cribl_control_plane/models/healthstatus.py
+  - src/cribl_control_plane/models/security.py
+  - src/cribl_control_plane/py.typed
+  - src/cribl_control_plane/sdk.py
+  - src/cribl_control_plane/sdkconfiguration.py
+  - src/cribl_control_plane/types/__init__.py
+  - src/cribl_control_plane/types/basemodel.py
+  - src/cribl_control_plane/utils/__init__.py
+  - src/cribl_control_plane/utils/annotations.py
+  - src/cribl_control_plane/utils/datetimes.py
+  - src/cribl_control_plane/utils/enums.py
+  - src/cribl_control_plane/utils/eventstreaming.py
+  - src/cribl_control_plane/utils/forms.py
+  - src/cribl_control_plane/utils/headers.py
+  - src/cribl_control_plane/utils/logger.py
+  - src/cribl_control_plane/utils/metadata.py
+  - src/cribl_control_plane/utils/queryparams.py
+  - src/cribl_control_plane/utils/requestbodies.py
+  - src/cribl_control_plane/utils/retries.py
+  - src/cribl_control_plane/utils/security.py
+  - src/cribl_control_plane/utils/serializers.py
+  - src/cribl_control_plane/utils/url.py
+  - src/cribl_control_plane/utils/values.py
+  - tests/mockserver/.gitignore
+  - tests/mockserver/Dockerfile
+  - tests/mockserver/Makefile
+  - tests/mockserver/README.md
+  - tests/mockserver/go.mod
+  - tests/mockserver/go.sum
+  - tests/mockserver/internal/handler/assert/contenttype.go
+  - tests/mockserver/internal/handler/assert/header.go
+  - tests/mockserver/internal/handler/assert/parameter.go
+  - tests/mockserver/internal/handler/assert/pointer.go
+  - tests/mockserver/internal/handler/assert/security.go
+  - tests/mockserver/internal/handler/doc.go
+  - tests/mockserver/internal/handler/generated_handler.go
+  - tests/mockserver/internal/handler/generated_handlers.go
+  - tests/mockserver/internal/handler/values/files.go
+  - tests/mockserver/internal/logging/doc.go
+  - tests/mockserver/internal/logging/formats.go
+  - tests/mockserver/internal/logging/http_file.go
+  - tests/mockserver/internal/logging/http_logger.go
+  - tests/mockserver/internal/logging/levels.go
+  - tests/mockserver/internal/logging/logger.go
+  - tests/mockserver/internal/logging/oas_operation.go
+  - tests/mockserver/internal/logging/oas_operation_call.go
+  - tests/mockserver/internal/sdk/models/components/healthstatus.go
+  - tests/mockserver/internal/sdk/models/components/httpmetadata.go
+  - tests/mockserver/internal/sdk/models/components/security.go
+  - tests/mockserver/internal/sdk/models/operations/gethealthinfo.go
+  - tests/mockserver/internal/sdk/models/sdkerrors/healthstatuserror.go
+  - tests/mockserver/internal/sdk/types/bigint.go
+  - tests/mockserver/internal/sdk/types/date.go
+  - tests/mockserver/internal/sdk/types/datetime.go
+  - tests/mockserver/internal/sdk/types/decimal.go
+  - tests/mockserver/internal/sdk/types/jsonl/jsonl.go
+  - tests/mockserver/internal/sdk/types/pointers.go
+  - tests/mockserver/internal/sdk/utils/json.go
+  - tests/mockserver/internal/sdk/utils/reflect.go
+  - tests/mockserver/internal/sdk/utils/sort.go
+  - tests/mockserver/internal/server/doc.go
+  - tests/mockserver/internal/server/generated_handlers.go
+  - tests/mockserver/internal/server/internal_handlers.go
+  - tests/mockserver/internal/server/server.go
+  - tests/mockserver/internal/server/server_option.go
+  - tests/mockserver/internal/server/templates/log/index.html.tmpl
+  - tests/mockserver/internal/server/templates/log/operation.html.tmpl
+  - tests/mockserver/internal/server/templates/log/style.css.tmpl
+  - tests/mockserver/internal/tracking/requesttracker.go
+  - tests/mockserver/main.go
+examples:
+  getHealthInfo:
+    speakeasy-default-get-health-info:
+      responses:
+        "200":
+          application/json: {"status": "standby", "startTime": 8399.98}
+        "420":
+          application/json: {"status": "healthy", "startTime": 893.91}
+examplesVersion: 1.0.2

@@ -1,0 +1,19 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Cribl API Reference:
+        inputs:
+            - location: ./openapi.yml
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/cribl/cribl/cribl-api-reference
+targets:
+    cribl-control-plane:
+        target: python
+        source: Cribl API Reference
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/cribl/cribl/cribl-api-reference-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
