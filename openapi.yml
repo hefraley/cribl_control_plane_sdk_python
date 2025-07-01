@@ -1,0 +1,65 @@
+openapi: 3.0.2
+servers:
+  - url: /
+info:
+  title: Cribl API Reference
+  description: This API Reference lists available REST endpoints, along with their supported operations for accessing, creating, updating, or deleting resources. See our complementary product documentation at [docs.cribl.io](http://docs.cribl.io).
+  version: 4.12.2-4b17c8d4
+  contact:
+    name: Support
+    email: support@cribl.io
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - startTime
+      properties:
+        role:
+          type: string
+          enum:
+            - primary
+            - standby
+        status:
+          type: string
+          enum:
+            - healthy
+            - shutting down
+            - standby
+        startTime:
+          type: number
+security:
+  - bearerAuth: []
+tags:
+  - name: diag
+    description: Actions related to diagnostics
+  - name: health
+    description: Actions related to REST server health
+paths:
+  /health:
+    get:
+      operationId: getHealthInfo
+      summary: Provides health info for REST server
+      security: []
+      tags:
+        - diag
+        - health
+      responses:
+        "200":
+          description: Healthy status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "420":
+          description: Shutting Down or Standby status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
