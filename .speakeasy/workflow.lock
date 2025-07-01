@@ -1,0 +1,37 @@
+speakeasyVersion: 1.573.0
+sources:
+    Cribl API Reference:
+        sourceNamespace: cribl-api-reference
+        sourceRevisionDigest: sha256:34ad2b0f16bb51f00d133e497dd699aead05bcd4ce248faa9e149a995c950294
+        sourceBlobDigest: sha256:8aba1cece107defabe75ae491b8d5df28b7b794b15c65142107285bdc24a878d
+        tags:
+            - latest
+            - 4.12.2-4b17c8d4
+targets:
+    cribl-control-plane:
+        source: Cribl API Reference
+        sourceNamespace: cribl-api-reference
+        sourceRevisionDigest: sha256:34ad2b0f16bb51f00d133e497dd699aead05bcd4ce248faa9e149a995c950294
+        sourceBlobDigest: sha256:8aba1cece107defabe75ae491b8d5df28b7b794b15c65142107285bdc24a878d
+        codeSamplesNamespace: cribl-api-reference-python-code-samples
+        codeSamplesRevisionDigest: sha256:a072682476d901b82066a8c8f67bc92934cd9fc92f41289c5a4982f38964be03
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Cribl API Reference:
+            inputs:
+                - location: ./openapi.yml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/cribl/cribl/cribl-api-reference
+    targets:
+        cribl-control-plane:
+            target: python
+            source: Cribl API Reference
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/cribl/cribl/cribl-api-reference-python-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false
