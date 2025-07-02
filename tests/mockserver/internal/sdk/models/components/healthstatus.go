@@ -39,6 +39,7 @@ const (
 	StatusHealthy      Status = "healthy"
 	StatusShuttingDown Status = "shutting down"
 	StatusStandby      Status = "standby"
+	StatusFakeStatus   Status = "fake_status"
 )
 
 func (e Status) ToPointer() *Status {
@@ -55,6 +56,8 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 	case "shutting down":
 		fallthrough
 	case "standby":
+		fallthrough
+	case "fake_status":
 		*e = Status(v)
 		return nil
 	default:
