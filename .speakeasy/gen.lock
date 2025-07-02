@@ -3,8 +3,8 @@ id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
   docChecksum: a553a9a8d1809f95d5324f3fc5fb5705
   docVersion: 4.12.2-4b17c8d4
-  speakeasyVersion: 1.573.0
-  generationVersion: 2.644.1
+  speakeasyVersion: 1.574.1
+  generationVersion: 2.647.2
   releaseVersion: 0.0.1
   configChecksum: 184b9222d45a9b44ff3b3a8de2011cea
 features:
@@ -55,7 +55,10 @@ generatedFiles:
   - src/cribl_control_plane/diag.py
   - src/cribl_control_plane/errors/__init__.py
   - src/cribl_control_plane/errors/apierror.py
+  - src/cribl_control_plane/errors/criblcontrolplaneerror.py
   - src/cribl_control_plane/errors/healthstatus_error.py
+  - src/cribl_control_plane/errors/no_response_error.py
+  - src/cribl_control_plane/errors/responsevalidationerror.py
   - src/cribl_control_plane/health.py
   - src/cribl_control_plane/httpclient.py
   - src/cribl_control_plane/models/__init__.py
