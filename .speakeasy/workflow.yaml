@@ -11,6 +11,9 @@ targets:
     cribl-control-plane:
         target: python
         source: Cribl API Reference
+        publish:
+            pypi:
+                token: $pypi_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/cribl/cribl/cribl-api-reference-python-code-samples
