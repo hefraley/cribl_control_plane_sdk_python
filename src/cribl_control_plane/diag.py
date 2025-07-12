@@ -4,6 +4,7 @@ from .basesdk import BaseSDK
 from cribl_control_plane import errors, models, utils
 from cribl_control_plane._hooks import HookContext
 from cribl_control_plane.types import OptionalNullable, UNSET
+from cribl_control_plane.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, Mapping, Optional
 
 
@@ -72,9 +73,9 @@ class Diag(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json_response(models.HealthStatus, http_res)
+            return unmarshal_json_response(models.HealthStatus, http_res)
         if utils.match_response(http_res, "420", "application/json"):
-            response_data = utils.unmarshal_json_response(
+            response_data = unmarshal_json_response(
                 errors.HealthStatusErrorData, http_res
             )
             raise errors.HealthStatusError(response_data, http_res)
@@ -149,9 +150,9 @@ class Diag(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json_response(models.HealthStatus, http_res)
+            return unmarshal_json_response(models.HealthStatus, http_res)
         if utils.match_response(http_res, "420", "application/json"):
-            response_data = utils.unmarshal_json_response(
+            response_data = unmarshal_json_response(
                 errors.HealthStatusErrorData, http_res
             )
             raise errors.HealthStatusError(response_data, http_res)
