@@ -1,16 +1,17 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 0fd7d8823fd8669fce22a5d79c82c094
+  docChecksum: a553a9a8d1809f95d5324f3fc5fb5705
   docVersion: 4.12.2-4b17c8d4
-  speakeasyVersion: 1.575.0
-  generationVersion: 2.647.2
+  speakeasyVersion: 1.581.0
+  generationVersion: 2.656.5
   releaseVersion: 0.0.1
   configChecksum: cce66012377e263f459422c3b8b98d9d
+  published: true
 features:
   python:
     additionalDependencies: 1.0.0
-    core: 5.19.3
+    core: 5.19.4
     defaultEnabledRetries: 0.2.0
     devContainers: 3.0.0
     enumUnions: 0.1.0
@@ -24,13 +25,12 @@ features:
     responseFormat: 1.0.1
     retries: 3.0.2
     sdkHooks: 1.1.0
-    tests: 1.19.0
+    tests: 1.19.1
 generatedFiles:
   - .devcontainer/README.md
   - .devcontainer/devcontainer.json
   - .devcontainer/setup.sh
   - .gitattributes
-  - .python-version
   - .vscode/settings.json
   - USAGE.md
   - docs/errors/healthstatuserror.md
@@ -84,6 +84,7 @@ generatedFiles:
   - src/cribl_control_plane/utils/retries.py
   - src/cribl_control_plane/utils/security.py
   - src/cribl_control_plane/utils/serializers.py
+  - src/cribl_control_plane/utils/unmarshal_json_response.py
   - src/cribl_control_plane/utils/url.py
   - src/cribl_control_plane/utils/values.py
   - tests/__init__.py
