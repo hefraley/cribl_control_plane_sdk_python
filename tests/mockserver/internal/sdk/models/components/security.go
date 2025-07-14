@@ -3,7 +3,8 @@
 package components
 
 type Security struct {
-	BearerAuth *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
+	BearerAuth  *string            `security:"scheme,type=http,subtype=bearer,name=Authorization"`
+	ClientOauth *SchemeClientOauth `security:"scheme,type=oauth2,subtype=client_credentials"`
 }
 
 func (o *Security) GetBearerAuth() *string {
@@ -11,4 +12,11 @@ func (o *Security) GetBearerAuth() *string {
 		return nil
 	}
 	return o.BearerAuth
+}
+
+func (o *Security) GetClientOauth() *SchemeClientOauth {
+	if o == nil {
+		return nil
+	}
+	return o.ClientOauth
 }

@@ -14,6 +14,12 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    clientOauth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.cribl.cloud/oauth/token
+          scopes: {}
   schemas:
     HealthStatus:
       type: object
@@ -36,6 +42,7 @@ components:
           type: number
 security:
   - bearerAuth: []
+  - clientOauth: []
 tags:
   - name: diag
     description: Actions related to diagnostics
