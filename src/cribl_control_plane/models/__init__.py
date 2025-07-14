@@ -5,12 +5,15 @@ from importlib import import_module
 
 if TYPE_CHECKING:
     from .healthstatus import HealthStatus, HealthStatusTypedDict, Role, Status
+    from .schemeclientoauth import SchemeClientOauth, SchemeClientOauthTypedDict
     from .security import Security, SecurityTypedDict
 
 __all__ = [
     "HealthStatus",
     "HealthStatusTypedDict",
     "Role",
+    "SchemeClientOauth",
+    "SchemeClientOauthTypedDict",
     "Security",
     "SecurityTypedDict",
     "Status",
@@ -21,6 +24,8 @@ _dynamic_imports: dict[str, str] = {
     "HealthStatusTypedDict": ".healthstatus",
     "Role": ".healthstatus",
     "Status": ".healthstatus",
+    "SchemeClientOauth": ".schemeclientoauth",
+    "SchemeClientOauthTypedDict": ".schemeclientoauth",
     "Security": ".security",
     "SecurityTypedDict": ".security",
 }

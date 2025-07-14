@@ -10,7 +10,7 @@ from cribl_control_plane._hooks import SDKHooks
 from cribl_control_plane.types import OptionalNullable, UNSET
 import httpx
 import importlib
-from typing import Any, Callable, Optional, TYPE_CHECKING, Union, cast
+from typing import Callable, Optional, TYPE_CHECKING, Union, cast
 import weakref
 
 if TYPE_CHECKING:
@@ -33,7 +33,9 @@ class CriblControlPlane(BaseSDK):
     def __init__(
         self,
         server_url: str,
-        bearer_auth: Optional[Union[Optional[str], Callable[[], Optional[str]]]] = None,
+        security: Optional[
+            Union[models.Security, Callable[[], models.Security]]
+        ] = None,
         client: Optional[HttpClient] = None,
         async_client: Optional[AsyncHttpClient] = None,
         retry_config: OptionalNullable[RetryConfig] = UNSET,
@@ -42,7 +44,7 @@ class CriblControlPlane(BaseSDK):
     ) -> None:
         r"""Instantiates the SDK configuring it with the provided parameters.
 
-        :param bearer_auth: The bearer_auth required for authentication
+        :param security: The security details required for authentication
         :param server_idx: The index of the server to use for all methods
         :param server_url: The server URL to use for all methods
         :param url_params: Parameters to optionally template the server URL with
@@ -71,13 +73,6 @@ class CriblControlPlane(BaseSDK):
         assert issubclass(
             type(async_client), AsyncHttpClient
         ), "The provided async_client must implement the AsyncHttpClient protocol."
-
-        security: Any = None
-        if callable(bearer_auth):
-            # pylint: disable=unnecessary-lambda-assignment
-            security = lambda: models.Security(bearer_auth=bearer_auth())
-        else:
-            security = models.Security(bearer_auth=bearer_auth)
 
         BaseSDK.__init__(
             self,

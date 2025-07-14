@@ -1,12 +1,14 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: a553a9a8d1809f95d5324f3fc5fb5705
+  docChecksum: ddaac6d4a48c1e0c6072e59714db9098
   docVersion: 4.12.2-4b17c8d4
   speakeasyVersion: 1.581.0
   generationVersion: 2.656.5
-  releaseVersion: 0.0.1
-  configChecksum: cce66012377e263f459422c3b8b98d9d
+  releaseVersion: 0.0.2
+  configChecksum: c09f4cd106300e3f2a98869c04f028e3
+  repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
+  installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
 features:
   python:
@@ -18,10 +20,10 @@ features:
     envVarSecurityUsage: 0.3.2
     globalSecurity: 3.0.3
     globalSecurityCallbacks: 1.0.0
-    globalSecurityFlattening: 1.0.0
     globalServerURLs: 3.1.1
     methodArguments: 1.0.2
     mockServer: 0.1.1
+    oauth2ClientCredentials: 1.2.1
     responseFormat: 1.0.1
     retries: 3.0.2
     sdkHooks: 1.1.0
@@ -36,6 +38,7 @@ generatedFiles:
   - docs/errors/healthstatuserror.md
   - docs/models/healthstatus.md
   - docs/models/role.md
+  - docs/models/schemeclientoauth.md
   - docs/models/security.md
   - docs/models/status.md
   - docs/models/utils/retryconfig.md
@@ -46,9 +49,11 @@ generatedFiles:
   - py.typed
   - pylintrc
   - pyproject.toml
+  - scripts/prepare_readme.py
   - scripts/publish.sh
   - src/cribl_control_plane/__init__.py
   - src/cribl_control_plane/_hooks/__init__.py
+  - src/cribl_control_plane/_hooks/clientcredentials.py
   - src/cribl_control_plane/_hooks/sdkhooks.py
   - src/cribl_control_plane/_hooks/types.py
   - src/cribl_control_plane/_version.py
@@ -64,6 +69,7 @@ generatedFiles:
   - src/cribl_control_plane/httpclient.py
   - src/cribl_control_plane/models/__init__.py
   - src/cribl_control_plane/models/healthstatus.py
+  - src/cribl_control_plane/models/schemeclientoauth.py
   - src/cribl_control_plane/models/security.py
   - src/cribl_control_plane/py.typed
   - src/cribl_control_plane/sdk.py
@@ -114,6 +120,7 @@ generatedFiles:
   - tests/mockserver/internal/logging/oas_operation_call.go
   - tests/mockserver/internal/sdk/models/components/healthstatus.go
   - tests/mockserver/internal/sdk/models/components/httpmetadata.go
+  - tests/mockserver/internal/sdk/models/components/schemeclientoauth.go
   - tests/mockserver/internal/sdk/models/components/security.go
   - tests/mockserver/internal/sdk/models/operations/gethealthinfo.go
   - tests/mockserver/internal/sdk/models/sdkerrors/healthstatuserror.go
