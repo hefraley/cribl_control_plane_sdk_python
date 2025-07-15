@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 71444ed2f6fde336b5d6bf302ba8c06a
-  docVersion: 4.12.2-4b17c8d4
+  docChecksum: f5639556bbb478114b7e90796904fe73
+  docVersion: 4.14.0-alpha.1752602215751-e622ff04
   speakeasyVersion: 1.581.0
   generationVersion: 2.656.5
-  releaseVersion: 0.0.3
-  configChecksum: 1efdf0d82a9066d610cc036b6e162fc0
+  releaseVersion: 0.0.4
+  configChecksum: db1bc25c48d3e42f74dafdddbe01a496
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -18,6 +18,7 @@ features:
     devContainers: 3.0.0
     enumUnions: 0.1.0
     envVarSecurityUsage: 0.3.2
+    flatRequests: 1.0.1
     globalSecurity: 3.0.3
     globalSecurityCallbacks: 1.0.0
     globalServerURLs: 3.1.1
@@ -37,12 +38,15 @@ generatedFiles:
   - .vscode/settings.json
   - USAGE.md
   - docs/errors/healthstatuserror.md
+  - docs/models/authtoken.md
   - docs/models/healthstatus.md
+  - docs/models/logininfo.md
   - docs/models/role.md
   - docs/models/schemeclientoauth.md
   - docs/models/security.md
   - docs/models/status.md
   - docs/models/utils/retryconfig.md
+  - docs/sdks/auth/README.md
   - docs/sdks/criblcontrolplane/README.md
   - docs/sdks/diag/README.md
   - docs/sdks/health/README.md
@@ -58,6 +62,7 @@ generatedFiles:
   - src/cribl_control_plane/_hooks/sdkhooks.py
   - src/cribl_control_plane/_hooks/types.py
   - src/cribl_control_plane/_version.py
+  - src/cribl_control_plane/auth.py
   - src/cribl_control_plane/basesdk.py
   - src/cribl_control_plane/diag.py
   - src/cribl_control_plane/errors/__init__.py
@@ -69,7 +74,9 @@ generatedFiles:
   - src/cribl_control_plane/health.py
   - src/cribl_control_plane/httpclient.py
   - src/cribl_control_plane/models/__init__.py
+  - src/cribl_control_plane/models/authtoken.py
   - src/cribl_control_plane/models/healthstatus.py
+  - src/cribl_control_plane/models/logininfo.py
   - src/cribl_control_plane/models/schemeclientoauth.py
   - src/cribl_control_plane/models/security.py
   - src/cribl_control_plane/py.typed
@@ -110,6 +117,7 @@ generatedFiles:
   - tests/mockserver/internal/handler/generated_handler.go
   - tests/mockserver/internal/handler/generated_handlers.go
   - tests/mockserver/internal/handler/pathgethealth.go
+  - tests/mockserver/internal/handler/pathpostauthlogin.go
   - tests/mockserver/internal/handler/values/files.go
   - tests/mockserver/internal/logging/doc.go
   - tests/mockserver/internal/logging/formats.go
@@ -119,11 +127,14 @@ generatedFiles:
   - tests/mockserver/internal/logging/logger.go
   - tests/mockserver/internal/logging/oas_operation.go
   - tests/mockserver/internal/logging/oas_operation_call.go
+  - tests/mockserver/internal/sdk/models/components/authtoken.go
   - tests/mockserver/internal/sdk/models/components/healthstatus.go
   - tests/mockserver/internal/sdk/models/components/httpmetadata.go
+  - tests/mockserver/internal/sdk/models/components/logininfo.go
   - tests/mockserver/internal/sdk/models/components/schemeclientoauth.go
   - tests/mockserver/internal/sdk/models/components/security.go
   - tests/mockserver/internal/sdk/models/operations/gethealthinfo.go
+  - tests/mockserver/internal/sdk/models/operations/login.go
   - tests/mockserver/internal/sdk/models/sdkerrors/healthstatuserror.go
   - tests/mockserver/internal/sdk/types/bigint.go
   - tests/mockserver/internal/sdk/types/date.go
@@ -144,6 +155,7 @@ generatedFiles:
   - tests/mockserver/internal/server/templates/log/style.css.tmpl
   - tests/mockserver/internal/tracking/requesttracker.go
   - tests/mockserver/main.go
+  - tests/test_auth.py
   - tests/test_client.py
   - tests/test_diag.py
 examples:
@@ -154,6 +166,14 @@ examples:
           application/json: {"status": "standby", "startTime": 8399.98}
         "420":
           application/json: {"status": "healthy", "startTime": 893.91}
+  login:
+    speakeasy-default-login:
+      requestBody:
+        application/json: {"username": "Nikko.Connelly", "password": "Ljp4BunfMR9hNyM"}
+      responses:
+        "200":
+          application/json: {"token": "<value>"}
 examplesVersion: 1.0.2
 generatedTests:
   getHealthInfo: "2025-07-02T19:12:56+02:00"
+  login: "2025-07-15T21:19:46+02:00"

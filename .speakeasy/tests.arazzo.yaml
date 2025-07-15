@@ -24,3 +24,23 @@ workflows:
             type: simple
     x-speakeasy-test-group: diag
     x-speakeasy-test-rebuild: true
+  - workflowId: login
+    steps:
+      - stepId: test
+        operationId: login
+        requestBody:
+          contentType: application/json
+          payload:
+            password: Ljp4BunfMR9hNyM
+            username: Nikko.Connelly
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {
+                "token": "\u003cvalue\u003e"
+              }
+            type: simple
+    x-speakeasy-test-group: auth
+    x-speakeasy-test-rebuild: true

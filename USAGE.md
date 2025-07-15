@@ -8,7 +8,7 @@ with CriblControlPlane(
     server_url="https://api.example.com",
 ) as ccp_client:
 
-    res = ccp_client.diag.get_health_info()
+    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
     # Handle response
     print(res)
@@ -28,7 +28,7 @@ async def main():
         server_url="https://api.example.com",
     ) as ccp_client:
 
-        res = await ccp_client.diag.get_health_info_async()
+        res = await ccp_client.auth.login_async(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
         # Handle response
         print(res)
