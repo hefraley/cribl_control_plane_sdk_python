@@ -13,5 +13,6 @@ import (
 func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *tracking.RequestTracker) []*GeneratedHandler {
 	return []*GeneratedHandler{
 		NewGeneratedHandler(ctx, http.MethodGet, "/health", pathGetHealth(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/auth/login", pathPostAuthLogin(dir, rt)),
 	}
 }

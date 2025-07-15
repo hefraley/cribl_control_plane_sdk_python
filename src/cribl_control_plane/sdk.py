@@ -14,6 +14,7 @@ from typing import Callable, Optional, TYPE_CHECKING, Union, cast
 import weakref
 
 if TYPE_CHECKING:
+    from cribl_control_plane.auth import Auth
     from cribl_control_plane.diag import Diag
     from cribl_control_plane.health import Health
 
@@ -21,11 +22,14 @@ if TYPE_CHECKING:
 class CriblControlPlane(BaseSDK):
     r"""Cribl API Reference: This API Reference lists available REST endpoints, along with their supported operations for accessing, creating, updating, or deleting resources. See our complementary product documentation at [docs.cribl.io](http://docs.cribl.io)."""
 
+    auth: "Auth"
+    r"""Actions related to authentication. Do not use the /auth endpoints in Cribl.Cloud deployments. Instead, follow the instructions at https://docs.cribl.io/stream/api-tutorials/#criblcloud to authenticate for Cribl.Cloud."""
     diag: "Diag"
     r"""Actions related to diagnostics"""
     health: "Health"
     r"""Actions related to REST server health"""
     _sub_sdk_map = {
+        "auth": ("cribl_control_plane.auth", "Auth"),
         "diag": ("cribl_control_plane.diag", "Diag"),
         "health": ("cribl_control_plane.health", "Health"),
     }

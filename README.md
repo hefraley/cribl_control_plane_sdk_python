@@ -104,7 +104,7 @@ with CriblControlPlane(
     server_url="https://api.example.com",
 ) as ccp_client:
 
-    res = ccp_client.diag.get_health_info()
+    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
     # Handle response
     print(res)
@@ -124,7 +124,7 @@ async def main():
         server_url="https://api.example.com",
     ) as ccp_client:
 
-        res = await ccp_client.diag.get_health_info_async()
+        res = await ccp_client.auth.login_async(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
         # Handle response
         print(res)
@@ -158,7 +158,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.diag.get_health_info()
+    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
     # Handle response
     print(res)
@@ -171,6 +171,10 @@ with CriblControlPlane(
 
 <details open>
 <summary>Available methods</summary>
+
+### [auth](docs/sdks/auth/README.md)
+
+* [login](docs/sdks/auth/README.md#login) - Log in and obtain Auth token
 
 
 ### [diag](docs/sdks/diag/README.md)
@@ -199,7 +203,7 @@ with CriblControlPlane(
     server_url="https://api.example.com",
 ) as ccp_client:
 
-    res = ccp_client.diag.get_health_info(,
+    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -218,7 +222,7 @@ with CriblControlPlane(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as ccp_client:
 
-    res = ccp_client.diag.get_health_info()
+    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
 
     # Handle response
     print(res)
@@ -287,7 +291,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 2 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 3 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

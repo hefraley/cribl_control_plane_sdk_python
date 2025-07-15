@@ -4,13 +4,19 @@ from typing import TYPE_CHECKING
 from importlib import import_module
 
 if TYPE_CHECKING:
+    from .authtoken import AuthToken, AuthTokenTypedDict
     from .healthstatus import HealthStatus, HealthStatusTypedDict, Role, Status
+    from .logininfo import LoginInfo, LoginInfoTypedDict
     from .schemeclientoauth import SchemeClientOauth, SchemeClientOauthTypedDict
     from .security import Security, SecurityTypedDict
 
 __all__ = [
+    "AuthToken",
+    "AuthTokenTypedDict",
     "HealthStatus",
     "HealthStatusTypedDict",
+    "LoginInfo",
+    "LoginInfoTypedDict",
     "Role",
     "SchemeClientOauth",
     "SchemeClientOauthTypedDict",
@@ -20,10 +26,14 @@ __all__ = [
 ]
 
 _dynamic_imports: dict[str, str] = {
+    "AuthToken": ".authtoken",
+    "AuthTokenTypedDict": ".authtoken",
     "HealthStatus": ".healthstatus",
     "HealthStatusTypedDict": ".healthstatus",
     "Role": ".healthstatus",
     "Status": ".healthstatus",
+    "LoginInfo": ".logininfo",
+    "LoginInfoTypedDict": ".logininfo",
     "SchemeClientOauth": ".schemeclientoauth",
     "SchemeClientOauthTypedDict": ".schemeclientoauth",
     "Security": ".security",
