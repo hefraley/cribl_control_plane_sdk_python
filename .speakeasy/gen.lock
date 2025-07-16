@@ -5,8 +5,8 @@ management:
   docVersion: 4.14.0-alpha.1752602215751-e622ff04
   speakeasyVersion: 1.581.0
   generationVersion: 2.656.5
-  releaseVersion: 0.0.4
-  configChecksum: db1bc25c48d3e42f74dafdddbe01a496
+  releaseVersion: 0.0.5
+  configChecksum: e87da0400dbd4d6a37ad25137a328210
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
