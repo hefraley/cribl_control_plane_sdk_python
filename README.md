@@ -97,14 +97,18 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
+import os
 
 
 with CriblControlPlane(
     server_url="https://api.example.com",
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
 ) as ccp_client:
 
-    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+    res = ccp_client.inputs.list_input()
 
     # Handle response
     print(res)
@@ -116,15 +120,19 @@ The same SDK client can also be used to make asychronous requests by importing a
 ```python
 # Asynchronous Example
 import asyncio
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
+import os
 
 async def main():
 
     async with CriblControlPlane(
         server_url="https://api.example.com",
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+        ),
     ) as ccp_client:
 
-        res = await ccp_client.auth.login_async(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+        res = await ccp_client.inputs.list_input_async()
 
         # Handle response
         print(res)
@@ -158,7 +166,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+    res = ccp_client.inputs.list_input()
 
     # Handle response
     print(res)
@@ -172,14 +180,24 @@ with CriblControlPlane(
 <details open>
 <summary>Available methods</summary>
 
-### [auth](docs/sdks/auth/README.md)
+### [auth](docs/sdks/authsdk/README.md)
 
-* [login](docs/sdks/auth/README.md#login) - Log in and obtain Auth token
+* [login](docs/sdks/authsdk/README.md#login) - Log in and obtain Auth token
 
 
 ### [health](docs/sdks/health/README.md)
 
 * [get_health_info](docs/sdks/health/README.md#get_health_info) - Provides health info for REST server
+
+### [inputs](docs/sdks/inputs/README.md)
+
+* [list_input](docs/sdks/inputs/README.md#list_input) - Get a list of Input objects
+* [create_input](docs/sdks/inputs/README.md#create_input) - Create Input
+* [get_input_by_id](docs/sdks/inputs/README.md#get_input_by_id) - Get Input by ID
+* [update_input_by_id](docs/sdks/inputs/README.md#update_input_by_id) - Update Input
+* [delete_input_by_id](docs/sdks/inputs/README.md#delete_input_by_id) - Delete Input
+* [create_input_hec_token_by_id](docs/sdks/inputs/README.md#create_input_hec_token_by_id) - Add token and optional metadata to an existing hec input
+* [update_input_hec_token_by_id_and_token](docs/sdks/inputs/README.md#update_input_hec_token_by_id_and_token) - Update token metadata on existing hec input
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -191,15 +209,19 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
 from cribl_control_plane.utils import BackoffStrategy, RetryConfig
+import os
 
 
 with CriblControlPlane(
     server_url="https://api.example.com",
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
 ) as ccp_client:
 
-    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM",
+    res = ccp_client.inputs.list_input(,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -209,16 +231,20 @@ with CriblControlPlane(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
 from cribl_control_plane.utils import BackoffStrategy, RetryConfig
+import os
 
 
 with CriblControlPlane(
     server_url="https://api.example.com",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
 ) as ccp_client:
 
-    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+    res = ccp_client.inputs.list_input()
 
     # Handle response
     print(res)
@@ -242,16 +268,20 @@ with CriblControlPlane(
 
 ### Example
 ```python
-from cribl_control_plane import CriblControlPlane, errors
+from cribl_control_plane import CriblControlPlane, errors, models
+import os
 
 
 with CriblControlPlane(
     server_url="https://api.example.com",
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
 ) as ccp_client:
     res = None
     try:
 
-        res = ccp_client.health.get_health_info()
+        res = ccp_client.inputs.list_input()
 
         # Handle response
         print(res)
@@ -266,17 +296,15 @@ with CriblControlPlane(
         print(e.raw_response)
 
         # Depending on the method different errors may be thrown
-        if isinstance(e, errors.HealthStatusError):
-            print(e.data.role)  # Optional[models.Role]
-            print(e.data.status)  # models.Status
-            print(e.data.start_time)  # float
+        if isinstance(e, errors.Error):
+            print(e.data.message)  # Optional[str]
 ```
 
 ### Error Classes
 **Primary error:**
 * [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py): The base class for HTTP error responses.
 
-<details><summary>Less common errors (6)</summary>
+<details><summary>Less common errors (7)</summary>
 
 <br />
 
@@ -287,7 +315,8 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 2 methods.*
+* [`Error`](./src/cribl_control_plane/errors/error.py): Unexpected error. Status code `500`. Applicable to 7 of 9 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 9 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -384,11 +413,15 @@ The `CriblControlPlane` class implements the context manager protocol and regist
 [context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
 
 ```python
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
+import os
 def main():
 
     with CriblControlPlane(
         server_url="https://api.example.com",
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+        ),
     ) as ccp_client:
         # Rest of application here...
 
@@ -398,6 +431,9 @@ async def amain():
 
     async with CriblControlPlane(
         server_url="https://api.example.com",
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+        ),
     ) as ccp_client:
         # Rest of application here...
 ```
