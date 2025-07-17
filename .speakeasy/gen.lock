@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: f5639556bbb478114b7e90796904fe73
-  docVersion: 4.14.0-alpha.1752602215751-e622ff04
+  docChecksum: 96740b769869904db982a1d613d925d4
+  docVersion: 4.14.0-alpha.1752697438479-c2e9a1bc
   speakeasyVersion: 1.581.0
   generationVersion: 2.656.5
-  releaseVersion: 0.0.5
-  configChecksum: e87da0400dbd4d6a37ad25137a328210
+  releaseVersion: 0.0.6
+  configChecksum: f467c007ad8ceab08c9c68dfee882179
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -48,7 +48,6 @@ generatedFiles:
   - docs/models/utils/retryconfig.md
   - docs/sdks/auth/README.md
   - docs/sdks/criblcontrolplane/README.md
-  - docs/sdks/diag/README.md
   - docs/sdks/health/README.md
   - poetry.toml
   - py.typed
@@ -64,7 +63,6 @@ generatedFiles:
   - src/cribl_control_plane/_version.py
   - src/cribl_control_plane/auth.py
   - src/cribl_control_plane/basesdk.py
-  - src/cribl_control_plane/diag.py
   - src/cribl_control_plane/errors/__init__.py
   - src/cribl_control_plane/errors/apierror.py
   - src/cribl_control_plane/errors/criblcontrolplaneerror.py
@@ -157,7 +155,7 @@ generatedFiles:
   - tests/mockserver/main.go
   - tests/test_auth.py
   - tests/test_client.py
-  - tests/test_diag.py
+  - tests/test_health.py
 examples:
   getHealthInfo:
     speakeasy-default-get-health-info:

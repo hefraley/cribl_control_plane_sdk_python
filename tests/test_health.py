@@ -5,7 +5,7 @@ import os
 from tests.test_client import create_test_http_client
 
 
-def test_diag_get_health_info():
+def test_health_get_health_info():
     test_http_client = create_test_http_client("getHealthInfo")
 
     with CriblControlPlane(
@@ -14,7 +14,7 @@ def test_diag_get_health_info():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.diag.get_health_info()
+        res = ccp_client.health.get_health_info()
         assert res is not None
         assert res == models.HealthStatus(
             status=models.Status.STANDBY,
