@@ -12,7 +12,14 @@ import (
 // GeneratedHandlers returns all generated handlers.
 func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *tracking.RequestTracker) []*GeneratedHandler {
 	return []*GeneratedHandler{
+		NewGeneratedHandler(ctx, http.MethodDelete, "/system/inputs/{id}", pathDeleteSystemInputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/health", pathGetHealth(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/inputs", pathGetSystemInputs(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/inputs/{id}", pathGetSystemInputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}", pathPatchSystemInputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}/hectoken/{token}", pathPatchSystemInputsIDHectokenToken(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/auth/login", pathPostAuthLogin(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/system/inputs", pathPostSystemInputs(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/system/inputs/{id}/hectoken", pathPostSystemInputsIDHectoken(dir, rt)),
 	}
 }

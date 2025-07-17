@@ -42,5 +42,151 @@ workflows:
                 "token": "\u003cvalue\u003e"
               }
             type: simple
-    x-speakeasy-test-group: auth
+    x-speakeasy-test-group: auth_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: listInput
+    steps:
+      - stepId: test
+        operationId: listInput
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: createInput
+    steps:
+      - stepId: test
+        operationId: createInput
+        requestBody:
+          contentType: application/json
+          payload:
+            authType: manual
+            disabled: false
+            enableHeader: false
+            enableProxyHeader: false
+            host: 0.0.0.0
+            ipWhitelistRegex: /.*/
+            maxActiveCxn: 1000
+            port: 301.76
+            pqEnabled: false
+            sendToRoutes: true
+            socketEndingMaxWait: 30
+            socketIdleTimeout: 0
+            socketMaxLifespan: 0
+            staleChannelFlushMs: 10000
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getInputById
+    steps:
+      - stepId: test
+        operationId: getInputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateInputById
+    steps:
+      - stepId: test
+        operationId: updateInputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            disabled: false
+            id: <id>
+            pqEnabled: false
+            sendToRoutes: true
+            type: kube_events
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: deleteInputById
+    steps:
+      - stepId: test
+        operationId: deleteInputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: createInputHecTokenById
+    steps:
+      - stepId: test
+        operationId: createInputHecTokenById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            token: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateInputHecTokenByIdAndToken
+    steps:
+      - stepId: test
+        operationId: updateInputHecTokenByIdAndToken
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+          - name: token
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload: {}
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: inputs
     x-speakeasy-test-rebuild: true

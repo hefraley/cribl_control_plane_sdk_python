@@ -6,6 +6,7 @@ from importlib import import_module
 if TYPE_CHECKING:
     from .apierror import APIError
     from .criblcontrolplaneerror import CriblControlPlaneError
+    from .error import Error, ErrorData
     from .healthstatus_error import HealthStatusError, HealthStatusErrorData
     from .no_response_error import NoResponseError
     from .responsevalidationerror import ResponseValidationError
@@ -13,6 +14,8 @@ if TYPE_CHECKING:
 __all__ = [
     "APIError",
     "CriblControlPlaneError",
+    "Error",
+    "ErrorData",
     "HealthStatusError",
     "HealthStatusErrorData",
     "NoResponseError",
@@ -22,6 +25,8 @@ __all__ = [
 _dynamic_imports: dict[str, str] = {
     "APIError": ".apierror",
     "CriblControlPlaneError": ".criblcontrolplaneerror",
+    "Error": ".error",
+    "ErrorData": ".error",
     "HealthStatusError": ".healthstatus_error",
     "HealthStatusErrorData": ".healthstatus_error",
     "NoResponseError": ".no_response_error",

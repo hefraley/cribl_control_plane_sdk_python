@@ -1,14 +1,18 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
 # Synchronous Example
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
+import os
 
 
 with CriblControlPlane(
     server_url="https://api.example.com",
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
 ) as ccp_client:
 
-    res = ccp_client.auth.login(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+    res = ccp_client.inputs.list_input()
 
     # Handle response
     print(res)
@@ -20,15 +24,19 @@ The same SDK client can also be used to make asychronous requests by importing a
 ```python
 # Asynchronous Example
 import asyncio
-from cribl_control_plane import CriblControlPlane
+from cribl_control_plane import CriblControlPlane, models
+import os
 
 async def main():
 
     async with CriblControlPlane(
         server_url="https://api.example.com",
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+        ),
     ) as ccp_client:
 
-        res = await ccp_client.auth.login_async(username="Nikko.Connelly", password="Ljp4BunfMR9hNyM")
+        res = await ccp_client.inputs.list_input_async()
 
         # Handle response
         print(res)
