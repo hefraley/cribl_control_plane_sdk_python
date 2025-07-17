@@ -22,7 +22,7 @@ workflows:
                 "startTime": 8399.98
               }
             type: simple
-    x-speakeasy-test-group: diag
+    x-speakeasy-test-group: health
     x-speakeasy-test-rebuild: true
   - workflowId: login
     steps:

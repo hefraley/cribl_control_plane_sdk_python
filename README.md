@@ -177,10 +177,6 @@ with CriblControlPlane(
 * [login](docs/sdks/auth/README.md#login) - Log in and obtain Auth token
 
 
-### [diag](docs/sdks/diag/README.md)
-
-* [get_health_info](docs/sdks/diag/README.md#get_health_info) - Provides health info for REST server
-
 ### [health](docs/sdks/health/README.md)
 
 * [get_health_info](docs/sdks/health/README.md#get_health_info) - Provides health info for REST server
@@ -255,7 +251,7 @@ with CriblControlPlane(
     res = None
     try:
 
-        res = ccp_client.diag.get_health_info()
+        res = ccp_client.health.get_health_info()
 
         # Handle response
         print(res)
@@ -291,7 +287,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 3 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 2 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
