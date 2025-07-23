@@ -310,15 +310,15 @@ func (o *InputSplunkAuthToken) GetDescription() *string {
 	return o.Description
 }
 
-// MaxS2SVersion - The highest S2S protocol version to advertise during handshake
-type MaxS2SVersion string
+// InputSplunkMaxS2SVersion - The highest S2S protocol version to advertise during handshake
+type InputSplunkMaxS2SVersion string
 
 const (
-	MaxS2SVersionV3 MaxS2SVersion = "v3"
-	MaxS2SVersionV4 MaxS2SVersion = "v4"
+	InputSplunkMaxS2SVersionV3 InputSplunkMaxS2SVersion = "v3"
+	InputSplunkMaxS2SVersionV4 InputSplunkMaxS2SVersion = "v4"
 )
 
-func (e MaxS2SVersion) ToPointer() *MaxS2SVersion {
+func (e InputSplunkMaxS2SVersion) ToPointer() *InputSplunkMaxS2SVersion {
 	return &e
 }
 
@@ -379,8 +379,8 @@ type InputSplunk struct {
 	// Shared secrets to be provided by any Splunk forwarder. If empty, unauthorized access is permitted.
 	AuthTokens []InputSplunkAuthToken `json:"authTokens,omitempty"`
 	// The highest S2S protocol version to advertise during handshake
-	MaxS2Sversion *MaxS2SVersion `default:"v3" json:"maxS2Sversion"`
-	Description   *string        `json:"description,omitempty"`
+	MaxS2Sversion *InputSplunkMaxS2SVersion `default:"v3" json:"maxS2Sversion"`
+	Description   *string                   `json:"description,omitempty"`
 	// Event Breakers will determine events' time zone from UF-provided metadata, when TZ can't be inferred from the raw event
 	UseFwdTimezone *bool `default:"true" json:"useFwdTimezone"`
 	// Drop Splunk control fields such as `crcSalt` and `_savedPort`. If disabled, control fields are stored in the internal field `__ctrlFields`.
@@ -563,7 +563,7 @@ func (o *InputSplunk) GetAuthTokens() []InputSplunkAuthToken {
 	return o.AuthTokens
 }
 
-func (o *InputSplunk) GetMaxS2Sversion() *MaxS2SVersion {
+func (o *InputSplunk) GetMaxS2Sversion() *InputSplunkMaxS2SVersion {
 	if o == nil {
 		return nil
 	}

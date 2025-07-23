@@ -110,12 +110,12 @@ class InputAzureBlobAuthenticationMethod(str, Enum, metaclass=utils.OpenEnumMeta
     CLIENT_CERT = "clientCert"
 
 
-class CertificateTypedDict(TypedDict):
+class InputAzureBlobCertificateTypedDict(TypedDict):
     certificate_name: str
     r"""The certificate you registered as credentials for your app in the Azure portal"""
 
 
-class Certificate(BaseModel):
+class InputAzureBlobCertificate(BaseModel):
     certificate_name: Annotated[str, pydantic.Field(alias="certificateName")]
     r"""The certificate you registered as credentials for your app in the Azure portal"""
 
@@ -180,7 +180,7 @@ class InputAzureBlobTypedDict(TypedDict):
     r"""Endpoint suffix for the service URL. Takes precedence over the Azure Cloud setting. Defaults to core.windows.net."""
     client_text_secret: NotRequired[str]
     r"""Select or create a stored text secret"""
-    certificate: NotRequired[CertificateTypedDict]
+    certificate: NotRequired[InputAzureBlobCertificateTypedDict]
 
 
 class InputAzureBlob(BaseModel):
@@ -305,4 +305,4 @@ class InputAzureBlob(BaseModel):
     ] = None
     r"""Select or create a stored text secret"""
 
-    certificate: Optional[Certificate] = None
+    certificate: Optional[InputAzureBlobCertificate] = None

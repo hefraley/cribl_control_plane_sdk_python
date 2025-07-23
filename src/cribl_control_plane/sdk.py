@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from cribl_control_plane.auth_sdk import AuthSDK
     from cribl_control_plane.health import Health
     from cribl_control_plane.inputs import Inputs
+    from cribl_control_plane.outputs import Outputs
 
 
 class CriblControlPlane(BaseSDK):
@@ -24,12 +25,15 @@ class CriblControlPlane(BaseSDK):
 
     inputs: "Inputs"
     r"""Actions related to inputs"""
+    outputs: "Outputs"
+    r"""Actions related to outputs"""
     auth: "AuthSDK"
     r"""Actions related to authentication. Do not use the /auth endpoints in Cribl.Cloud deployments. Instead, follow the instructions at https://docs.cribl.io/stream/api-tutorials/#criblcloud to authenticate for Cribl.Cloud."""
     health: "Health"
     r"""Actions related to REST server health"""
     _sub_sdk_map = {
         "inputs": ("cribl_control_plane.inputs", "Inputs"),
+        "outputs": ("cribl_control_plane.outputs", "Outputs"),
         "auth": ("cribl_control_plane.auth_sdk", "AuthSDK"),
         "health": ("cribl_control_plane.health", "Health"),
     }

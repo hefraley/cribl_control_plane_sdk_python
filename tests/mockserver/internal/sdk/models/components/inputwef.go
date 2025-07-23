@@ -319,15 +319,15 @@ func (o *MTLSSettings) GetOcspCheckFailClose() *bool {
 	return o.OcspCheckFailClose
 }
 
-// Format - Content format in which the endpoint should deliver events
-type Format string
+// InputWefFormat - Content format in which the endpoint should deliver events
+type InputWefFormat string
 
 const (
-	FormatRaw          Format = "Raw"
-	FormatRenderedText Format = "RenderedText"
+	InputWefFormatRaw          InputWefFormat = "Raw"
+	InputWefFormatRenderedText InputWefFormat = "RenderedText"
 )
 
-func (e Format) ToPointer() *Format {
+func (e InputWefFormat) ToPointer() *InputWefFormat {
 	return &e
 }
 
@@ -367,7 +367,7 @@ type Subscription struct {
 	// Version UUID for this subscription. If any subscription parameters are modified, this value will change.
 	Version *string `json:"version,omitempty"`
 	// Content format in which the endpoint should deliver events
-	ContentFormat *Format `default:"Raw" json:"contentFormat"`
+	ContentFormat *InputWefFormat `default:"Raw" json:"contentFormat"`
 	// Maximum time (in seconds) between endpoint checkins before considering it unavailable
 	HeartbeatInterval *float64 `default:"60" json:"heartbeatInterval"`
 	// Interval (in seconds) over which the endpoint should collect events before sending them to Stream
@@ -412,7 +412,7 @@ func (o *Subscription) GetVersion() *string {
 	return o.Version
 }
 
-func (o *Subscription) GetContentFormat() *Format {
+func (o *Subscription) GetContentFormat() *InputWefFormat {
 	if o == nil {
 		return nil
 	}

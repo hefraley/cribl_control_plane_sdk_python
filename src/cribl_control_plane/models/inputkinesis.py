@@ -97,7 +97,7 @@ class ShardIteratorStart(str, Enum, metaclass=utils.OpenEnumMeta):
     LATEST = "LATEST"
 
 
-class RecordDataFormat(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputKinesisRecordDataFormat(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""Format of data inside the Kinesis Stream records. Gzip compression is automatically detected."""
 
     CRIBL = "cribl"
@@ -169,7 +169,7 @@ class InputKinesisTypedDict(TypedDict):
     r"""A JavaScript expression to be called with each shardId for the stream. If the expression evaluates to a truthy value, the shard will be processed."""
     shard_iterator_type: NotRequired[ShardIteratorStart]
     r"""Location at which to start reading a shard for the first time"""
-    payload_format: NotRequired[RecordDataFormat]
+    payload_format: NotRequired[InputKinesisRecordDataFormat]
     r"""Format of data inside the Kinesis Stream records. Gzip compression is automatically detected."""
     get_records_limit: NotRequired[float]
     r"""Maximum number of records per getRecords call"""
@@ -264,10 +264,11 @@ class InputKinesis(BaseModel):
 
     payload_format: Annotated[
         Annotated[
-            Optional[RecordDataFormat], PlainValidator(validate_open_enum(False))
+            Optional[InputKinesisRecordDataFormat],
+            PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="payloadFormat"),
-    ] = RecordDataFormat.CRIBL
+    ] = InputKinesisRecordDataFormat.CRIBL
     r"""Format of data inside the Kinesis Stream records. Gzip compression is automatically detected."""
 
     get_records_limit: Annotated[

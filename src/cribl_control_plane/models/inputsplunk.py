@@ -198,7 +198,7 @@ class InputSplunkAuthToken(BaseModel):
     description: Optional[str] = None
 
 
-class MaxS2SVersion(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputSplunkMaxS2SVersion(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The highest S2S protocol version to advertise during handshake"""
 
     V3 = "v3"
@@ -256,7 +256,7 @@ class InputSplunkTypedDict(TypedDict):
     r"""How long (in milliseconds) the Event Breaker will wait for new data to be sent to a specific channel before flushing the data stream out, as is, to the Pipelines"""
     auth_tokens: NotRequired[List[InputSplunkAuthTokenTypedDict]]
     r"""Shared secrets to be provided by any Splunk forwarder. If empty, unauthorized access is permitted."""
-    max_s2_sversion: NotRequired[MaxS2SVersion]
+    max_s2_sversion: NotRequired[InputSplunkMaxS2SVersion]
     r"""The highest S2S protocol version to advertise during handshake"""
     description: NotRequired[str]
     use_fwd_timezone: NotRequired[bool]
@@ -358,9 +358,12 @@ class InputSplunk(BaseModel):
     r"""Shared secrets to be provided by any Splunk forwarder. If empty, unauthorized access is permitted."""
 
     max_s2_sversion: Annotated[
-        Annotated[Optional[MaxS2SVersion], PlainValidator(validate_open_enum(False))],
+        Annotated[
+            Optional[InputSplunkMaxS2SVersion],
+            PlainValidator(validate_open_enum(False)),
+        ],
         pydantic.Field(alias="maxS2Sversion"),
-    ] = MaxS2SVersion.V3
+    ] = InputSplunkMaxS2SVersion.V3
     r"""The highest S2S protocol version to advertise during handshake"""
 
     description: Optional[str] = None

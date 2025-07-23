@@ -90,7 +90,7 @@ class InputSqsPq(BaseModel):
     r"""Codec to use to compress the persisted data"""
 
 
-class QueueType(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputSqsQueueType(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The queue type used (or created)"""
 
     STANDARD = "standard"
@@ -145,7 +145,7 @@ class InputSqsTypedDict(TypedDict):
     connections: NotRequired[List[InputSqsConnectionTypedDict]]
     r"""Direct connections to Destinations, and optionally via a Pipeline or a Pack"""
     pq: NotRequired[InputSqsPqTypedDict]
-    queue_type: NotRequired[QueueType]
+    queue_type: NotRequired[InputSqsQueueType]
     r"""The queue type used (or created)"""
     aws_account_id: NotRequired[str]
     r"""SQS queue owner's AWS account ID. Leave empty if SQS queue is in same AWS account."""
@@ -224,9 +224,11 @@ class InputSqs(BaseModel):
     pq: Optional[InputSqsPq] = None
 
     queue_type: Annotated[
-        Annotated[Optional[QueueType], PlainValidator(validate_open_enum(False))],
+        Annotated[
+            Optional[InputSqsQueueType], PlainValidator(validate_open_enum(False))
+        ],
         pydantic.Field(alias="queueType"),
-    ] = QueueType.STANDARD
+    ] = InputSqsQueueType.STANDARD
     r"""The queue type used (or created)"""
 
     aws_account_id: Annotated[Optional[str], pydantic.Field(alias="awsAccountId")] = (

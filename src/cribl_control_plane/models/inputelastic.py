@@ -179,7 +179,7 @@ class InputElasticAuthenticationType(str, Enum, metaclass=utils.OpenEnumMeta):
     AUTH_TOKENS = "authTokens"
 
 
-class APIVersion(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputElasticAPIVersion(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The API version to use for communicating with the server"""
 
     SIX_DOT_8_DOT_4 = "6.8.4"
@@ -187,12 +187,12 @@ class APIVersion(str, Enum, metaclass=utils.OpenEnumMeta):
     CUSTOM = "custom"
 
 
-class ExtraHTTPHeaderTypedDict(TypedDict):
+class InputElasticExtraHTTPHeaderTypedDict(TypedDict):
     value: str
     name: NotRequired[str]
 
 
-class ExtraHTTPHeader(BaseModel):
+class InputElasticExtraHTTPHeader(BaseModel):
     value: str
 
     name: Optional[str] = None
@@ -312,9 +312,9 @@ class InputElasticTypedDict(TypedDict):
     elastic_api: NotRequired[str]
     r"""Absolute path on which to listen for Elasticsearch API requests. Defaults to /. _bulk will be appended automatically. For example, /myPath becomes /myPath/_bulk. Requests can then be made to either /myPath/_bulk or /myPath/<myIndexName>/_bulk. Other entries are faked as success."""
     auth_type: NotRequired[InputElasticAuthenticationType]
-    api_version: NotRequired[APIVersion]
+    api_version: NotRequired[InputElasticAPIVersion]
     r"""The API version to use for communicating with the server"""
-    extra_http_headers: NotRequired[List[ExtraHTTPHeaderTypedDict]]
+    extra_http_headers: NotRequired[List[InputElasticExtraHTTPHeaderTypedDict]]
     r"""Headers to add to all events"""
     metadata: NotRequired[List[InputElasticMetadatumTypedDict]]
     r"""Fields to add to events from this input"""
@@ -437,13 +437,16 @@ class InputElastic(BaseModel):
     ] = InputElasticAuthenticationType.NONE
 
     api_version: Annotated[
-        Annotated[Optional[APIVersion], PlainValidator(validate_open_enum(False))],
+        Annotated[
+            Optional[InputElasticAPIVersion], PlainValidator(validate_open_enum(False))
+        ],
         pydantic.Field(alias="apiVersion"),
-    ] = APIVersion.EIGHT_DOT_3_DOT_2
+    ] = InputElasticAPIVersion.EIGHT_DOT_3_DOT_2
     r"""The API version to use for communicating with the server"""
 
     extra_http_headers: Annotated[
-        Optional[List[ExtraHTTPHeader]], pydantic.Field(alias="extraHttpHeaders")
+        Optional[List[InputElasticExtraHTTPHeader]],
+        pydantic.Field(alias="extraHttpHeaders"),
     ] = None
     r"""Headers to add to all events"""
 

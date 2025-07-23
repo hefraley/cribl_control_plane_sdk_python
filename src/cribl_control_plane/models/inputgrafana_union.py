@@ -172,7 +172,9 @@ class InputGrafanaTLSSettingsServerSide2(BaseModel):
     ] = None
 
 
-class PrometheusAuthAuthenticationType2(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputGrafanaPrometheusAuthAuthenticationType2(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
     r"""Remote Write authentication type"""
 
     NONE = "none"
@@ -213,8 +215,8 @@ class PrometheusAuthOauthHeader2(BaseModel):
     r"""OAuth header value"""
 
 
-class PrometheusAuth2TypedDict(TypedDict):
-    auth_type: NotRequired[PrometheusAuthAuthenticationType2]
+class InputGrafanaPrometheusAuth2TypedDict(TypedDict):
+    auth_type: NotRequired[InputGrafanaPrometheusAuthAuthenticationType2]
     r"""Remote Write authentication type"""
     username: NotRequired[str]
     password: NotRequired[str]
@@ -242,14 +244,14 @@ class PrometheusAuth2TypedDict(TypedDict):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class PrometheusAuth2(BaseModel):
+class InputGrafanaPrometheusAuth2(BaseModel):
     auth_type: Annotated[
         Annotated[
-            Optional[PrometheusAuthAuthenticationType2],
+            Optional[InputGrafanaPrometheusAuthAuthenticationType2],
             PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="authType"),
-    ] = PrometheusAuthAuthenticationType2.NONE
+    ] = InputGrafanaPrometheusAuthAuthenticationType2.NONE
     r"""Remote Write authentication type"""
 
     username: Optional[str] = None
@@ -304,7 +306,7 @@ class PrometheusAuth2(BaseModel):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class LokiAuthAuthenticationType2(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputGrafanaLokiAuthAuthenticationType2(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""Loki logs authentication type"""
 
     NONE = "none"
@@ -345,8 +347,8 @@ class LokiAuthOauthHeader2(BaseModel):
     r"""OAuth header value"""
 
 
-class LokiAuth2TypedDict(TypedDict):
-    auth_type: NotRequired[LokiAuthAuthenticationType2]
+class InputGrafanaLokiAuth2TypedDict(TypedDict):
+    auth_type: NotRequired[InputGrafanaLokiAuthAuthenticationType2]
     r"""Loki logs authentication type"""
     username: NotRequired[str]
     password: NotRequired[str]
@@ -374,14 +376,14 @@ class LokiAuth2TypedDict(TypedDict):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class LokiAuth2(BaseModel):
+class InputGrafanaLokiAuth2(BaseModel):
     auth_type: Annotated[
         Annotated[
-            Optional[LokiAuthAuthenticationType2],
+            Optional[InputGrafanaLokiAuthAuthenticationType2],
             PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="authType"),
-    ] = LokiAuthAuthenticationType2.NONE
+    ] = InputGrafanaLokiAuthAuthenticationType2.NONE
     r"""Loki logs authentication type"""
 
     username: Optional[str] = None
@@ -498,8 +500,8 @@ class InputGrafana2TypedDict(TypedDict):
     r"""Absolute path on which to listen for Grafana Agent's Remote Write requests. Defaults to /api/prom/push, which will expand as: 'http://<your‑upstream‑URL>:<your‑port>/api/prom/push'. Either this field or 'Logs API endpoint' must be configured."""
     loki_api: NotRequired[str]
     r"""Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured."""
-    prometheus_auth: NotRequired[PrometheusAuth2TypedDict]
-    loki_auth: NotRequired[LokiAuth2TypedDict]
+    prometheus_auth: NotRequired[InputGrafanaPrometheusAuth2TypedDict]
+    loki_auth: NotRequired[InputGrafanaLokiAuth2TypedDict]
     metadata: NotRequired[List[InputGrafanaMetadatum2TypedDict]]
     r"""Fields to add to events from this input"""
     description: NotRequired[str]
@@ -611,10 +613,12 @@ class InputGrafana2(BaseModel):
     r"""Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured."""
 
     prometheus_auth: Annotated[
-        Optional[PrometheusAuth2], pydantic.Field(alias="prometheusAuth")
+        Optional[InputGrafanaPrometheusAuth2], pydantic.Field(alias="prometheusAuth")
     ] = None
 
-    loki_auth: Annotated[Optional[LokiAuth2], pydantic.Field(alias="lokiAuth")] = None
+    loki_auth: Annotated[
+        Optional[InputGrafanaLokiAuth2], pydantic.Field(alias="lokiAuth")
+    ] = None
 
     metadata: Optional[List[InputGrafanaMetadatum2]] = None
     r"""Fields to add to events from this input"""
@@ -783,7 +787,9 @@ class InputGrafanaTLSSettingsServerSide1(BaseModel):
     ] = None
 
 
-class PrometheusAuthAuthenticationType1(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputGrafanaPrometheusAuthAuthenticationType1(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
     r"""Remote Write authentication type"""
 
     NONE = "none"
@@ -824,8 +830,8 @@ class PrometheusAuthOauthHeader1(BaseModel):
     r"""OAuth header value"""
 
 
-class PrometheusAuth1TypedDict(TypedDict):
-    auth_type: NotRequired[PrometheusAuthAuthenticationType1]
+class InputGrafanaPrometheusAuth1TypedDict(TypedDict):
+    auth_type: NotRequired[InputGrafanaPrometheusAuthAuthenticationType1]
     r"""Remote Write authentication type"""
     username: NotRequired[str]
     password: NotRequired[str]
@@ -853,14 +859,14 @@ class PrometheusAuth1TypedDict(TypedDict):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class PrometheusAuth1(BaseModel):
+class InputGrafanaPrometheusAuth1(BaseModel):
     auth_type: Annotated[
         Annotated[
-            Optional[PrometheusAuthAuthenticationType1],
+            Optional[InputGrafanaPrometheusAuthAuthenticationType1],
             PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="authType"),
-    ] = PrometheusAuthAuthenticationType1.NONE
+    ] = InputGrafanaPrometheusAuthAuthenticationType1.NONE
     r"""Remote Write authentication type"""
 
     username: Optional[str] = None
@@ -915,7 +921,7 @@ class PrometheusAuth1(BaseModel):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class LokiAuthAuthenticationType1(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputGrafanaLokiAuthAuthenticationType1(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""Loki logs authentication type"""
 
     NONE = "none"
@@ -956,8 +962,8 @@ class LokiAuthOauthHeader1(BaseModel):
     r"""OAuth header value"""
 
 
-class LokiAuth1TypedDict(TypedDict):
-    auth_type: NotRequired[LokiAuthAuthenticationType1]
+class InputGrafanaLokiAuth1TypedDict(TypedDict):
+    auth_type: NotRequired[InputGrafanaLokiAuthAuthenticationType1]
     r"""Loki logs authentication type"""
     username: NotRequired[str]
     password: NotRequired[str]
@@ -985,14 +991,14 @@ class LokiAuth1TypedDict(TypedDict):
     r"""Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request."""
 
 
-class LokiAuth1(BaseModel):
+class InputGrafanaLokiAuth1(BaseModel):
     auth_type: Annotated[
         Annotated[
-            Optional[LokiAuthAuthenticationType1],
+            Optional[InputGrafanaLokiAuthAuthenticationType1],
             PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="authType"),
-    ] = LokiAuthAuthenticationType1.NONE
+    ] = InputGrafanaLokiAuthAuthenticationType1.NONE
     r"""Loki logs authentication type"""
 
     username: Optional[str] = None
@@ -1109,8 +1115,8 @@ class InputGrafana1TypedDict(TypedDict):
     r"""Absolute path on which to listen for Grafana Agent's Remote Write requests. Defaults to /api/prom/push, which will expand as: 'http://<your‑upstream‑URL>:<your‑port>/api/prom/push'. Either this field or 'Logs API endpoint' must be configured."""
     loki_api: NotRequired[str]
     r"""Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured."""
-    prometheus_auth: NotRequired[PrometheusAuth1TypedDict]
-    loki_auth: NotRequired[LokiAuth1TypedDict]
+    prometheus_auth: NotRequired[InputGrafanaPrometheusAuth1TypedDict]
+    loki_auth: NotRequired[InputGrafanaLokiAuth1TypedDict]
     metadata: NotRequired[List[InputGrafanaMetadatum1TypedDict]]
     r"""Fields to add to events from this input"""
     description: NotRequired[str]
@@ -1222,10 +1228,12 @@ class InputGrafana1(BaseModel):
     r"""Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured."""
 
     prometheus_auth: Annotated[
-        Optional[PrometheusAuth1], pydantic.Field(alias="prometheusAuth")
+        Optional[InputGrafanaPrometheusAuth1], pydantic.Field(alias="prometheusAuth")
     ] = None
 
-    loki_auth: Annotated[Optional[LokiAuth1], pydantic.Field(alias="lokiAuth")] = None
+    loki_auth: Annotated[
+        Optional[InputGrafanaLokiAuth1], pydantic.Field(alias="lokiAuth")
+    ] = None
 
     metadata: Optional[List[InputGrafanaMetadatum1]] = None
     r"""Fields to add to events from this input"""

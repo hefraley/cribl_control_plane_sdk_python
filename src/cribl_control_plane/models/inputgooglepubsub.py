@@ -91,7 +91,9 @@ class InputGooglePubsubPq(BaseModel):
     r"""Codec to use to compress the persisted data"""
 
 
-class GoogleAuthenticationMethod(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputGooglePubsubGoogleAuthenticationMethod(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
     r"""Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials."""
 
     AUTO = "auto"
@@ -140,7 +142,7 @@ class InputGooglePubsubTypedDict(TypedDict):
     r"""Create subscription if it does not exist"""
     region: NotRequired[str]
     r"""Region to retrieve messages from. Select 'default' to allow Google to auto-select the nearest region. When using ordered delivery, the selected region must be allowed by message storage policy."""
-    google_auth_method: NotRequired[GoogleAuthenticationMethod]
+    google_auth_method: NotRequired[InputGooglePubsubGoogleAuthenticationMethod]
     r"""Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials."""
     service_account_credentials: NotRequired[str]
     r"""Contents of service account credentials (JSON keys) file downloaded from Google Cloud. To upload a file, click the upload button at this field's upper right."""
@@ -210,11 +212,11 @@ class InputGooglePubsub(BaseModel):
 
     google_auth_method: Annotated[
         Annotated[
-            Optional[GoogleAuthenticationMethod],
+            Optional[InputGooglePubsubGoogleAuthenticationMethod],
             PlainValidator(validate_open_enum(False)),
         ],
         pydantic.Field(alias="googleAuthMethod"),
-    ] = GoogleAuthenticationMethod.MANUAL
+    ] = InputGooglePubsubGoogleAuthenticationMethod.MANUAL
     r"""Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials."""
 
     service_account_credentials: Annotated[

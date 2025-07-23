@@ -283,32 +283,32 @@ func (e InputElasticAuthenticationType) ToPointer() *InputElasticAuthenticationT
 	return &e
 }
 
-// APIVersion - The API version to use for communicating with the server
-type APIVersion string
+// InputElasticAPIVersion - The API version to use for communicating with the server
+type InputElasticAPIVersion string
 
 const (
-	APIVersionSixDot8Dot4   APIVersion = "6.8.4"
-	APIVersionEightDot3Dot2 APIVersion = "8.3.2"
-	APIVersionCustom        APIVersion = "custom"
+	InputElasticAPIVersionSixDot8Dot4   InputElasticAPIVersion = "6.8.4"
+	InputElasticAPIVersionEightDot3Dot2 InputElasticAPIVersion = "8.3.2"
+	InputElasticAPIVersionCustom        InputElasticAPIVersion = "custom"
 )
 
-func (e APIVersion) ToPointer() *APIVersion {
+func (e InputElasticAPIVersion) ToPointer() *InputElasticAPIVersion {
 	return &e
 }
 
-type ExtraHTTPHeader struct {
+type InputElasticExtraHTTPHeader struct {
 	Name  *string `json:"name,omitempty"`
 	Value string  `json:"value"`
 }
 
-func (o *ExtraHTTPHeader) GetName() *string {
+func (o *InputElasticExtraHTTPHeader) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *ExtraHTTPHeader) GetValue() string {
+func (o *InputElasticExtraHTTPHeader) GetValue() string {
 	if o == nil {
 		return ""
 	}
@@ -465,9 +465,9 @@ type InputElastic struct {
 	ElasticAPI *string                         `default:"/" json:"elasticAPI"`
 	AuthType   *InputElasticAuthenticationType `default:"none" json:"authType"`
 	// The API version to use for communicating with the server
-	APIVersion *APIVersion `default:"8.3.2" json:"apiVersion"`
+	APIVersion *InputElasticAPIVersion `default:"8.3.2" json:"apiVersion"`
 	// Headers to add to all events
-	ExtraHTTPHeaders []ExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	ExtraHTTPHeaders []InputElasticExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
 	// Fields to add to events from this input
 	Metadata    []InputElasticMetadatum `json:"metadata,omitempty"`
 	ProxyMode   *InputElasticProxyMode  `json:"proxyMode,omitempty"`
@@ -675,14 +675,14 @@ func (o *InputElastic) GetAuthType() *InputElasticAuthenticationType {
 	return o.AuthType
 }
 
-func (o *InputElastic) GetAPIVersion() *APIVersion {
+func (o *InputElastic) GetAPIVersion() *InputElasticAPIVersion {
 	if o == nil {
 		return nil
 	}
 	return o.APIVersion
 }
 
-func (o *InputElastic) GetExtraHTTPHeaders() []ExtraHTTPHeader {
+func (o *InputElastic) GetExtraHTTPHeaders() []InputElasticExtraHTTPHeader {
 	if o == nil {
 		return nil
 	}
