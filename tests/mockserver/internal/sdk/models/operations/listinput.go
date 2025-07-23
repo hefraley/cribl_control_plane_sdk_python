@@ -6,7 +6,7 @@ import (
 	"mockserver/internal/sdk/models/components"
 )
 
-// ListInputResponseBody - a list of Input objects
+// ListInputResponseBody - a list of Source objects
 type ListInputResponseBody struct {
 	// number of items present in the items array
 	Count *int64             `json:"count,omitempty"`
@@ -29,7 +29,7 @@ func (o *ListInputResponseBody) GetItems() []components.Input {
 
 type ListInputResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
-	// a list of Input objects
+	// a list of Source objects
 	Object *ListInputResponseBody
 }
 

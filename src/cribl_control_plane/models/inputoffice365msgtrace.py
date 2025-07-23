@@ -225,9 +225,9 @@ class CertOptions(BaseModel):
 
 
 class InputOffice365MsgTraceTypedDict(TypedDict):
+    type: InputOffice365MsgTraceType
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputOffice365MsgTraceType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -298,12 +298,12 @@ class InputOffice365MsgTraceTypedDict(TypedDict):
 
 
 class InputOffice365MsgTrace(BaseModel):
+    type: Annotated[
+        InputOffice365MsgTraceType, PlainValidator(validate_open_enum(False))
+    ]
+
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputOffice365MsgTraceType], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 

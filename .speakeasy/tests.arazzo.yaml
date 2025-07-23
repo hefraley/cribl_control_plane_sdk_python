@@ -55,7 +55,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: createInput
     steps:
@@ -78,6 +78,7 @@ workflows:
             socketIdleTimeout: 0
             socketMaxLifespan: 0
             staleChannelFlushMs: 10000
+            type: tcp
         successCriteria:
           - condition: $statusCode == 200
           - condition: $response.header.Content-Type == application/json
@@ -85,7 +86,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: getInputById
     steps:
@@ -102,7 +103,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: updateInputById
     steps:
@@ -127,7 +128,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: deleteInputById
     steps:
@@ -144,7 +145,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: createInputHecTokenById
     steps:
@@ -165,7 +166,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: updateInputHecTokenByIdAndToken
     steps:
@@ -188,7 +189,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: inputs
+    x-speakeasy-test-group: Sources
     x-speakeasy-test-rebuild: true
   - workflowId: listOutput
     steps:

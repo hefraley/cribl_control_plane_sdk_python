@@ -7,7 +7,7 @@ import (
 )
 
 type CreateInputHecTokenByIDRequest struct {
-	// hec input id
+	// HEC Source id
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 	// AddHecTokenRequest object
 	AddHecTokenRequest components.AddHecTokenRequest `request:"mediaType=application/json"`

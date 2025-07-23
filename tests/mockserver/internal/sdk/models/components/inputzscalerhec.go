@@ -397,9 +397,9 @@ func (o *InputZscalerHecMetadatum) GetValue() string {
 
 type InputZscalerHec struct {
 	// Unique ID for this input
-	ID       *string              `json:"id,omitempty"`
-	Type     *InputZscalerHecType `json:"type,omitempty"`
-	Disabled *bool                `default:"false" json:"disabled"`
+	ID       *string             `json:"id,omitempty"`
+	Type     InputZscalerHecType `json:"type"`
+	Disabled *bool               `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -476,9 +476,9 @@ func (o *InputZscalerHec) GetID() *string {
 	return o.ID
 }
 
-func (o *InputZscalerHec) GetType() *InputZscalerHecType {
+func (o *InputZscalerHec) GetType() InputZscalerHecType {
 	if o == nil {
-		return nil
+		return InputZscalerHecType("")
 	}
 	return o.Type
 }

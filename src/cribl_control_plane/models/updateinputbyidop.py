@@ -12,7 +12,7 @@ class UpdateInputByIDRequestTypedDict(TypedDict):
     id: str
     r"""Unique ID to PATCH"""
     input: InputTypedDict
-    r"""Input object to be updated"""
+    r"""Source object to be updated"""
 
 
 class UpdateInputByIDRequest(BaseModel):
@@ -24,11 +24,11 @@ class UpdateInputByIDRequest(BaseModel):
     input: Annotated[
         Input, FieldMetadata(request=RequestMetadata(media_type="application/json"))
     ]
-    r"""Input object to be updated"""
+    r"""Source object to be updated"""
 
 
 class UpdateInputByIDResponseTypedDict(TypedDict):
-    r"""a list of Input objects"""
+    r"""a list of Source objects"""
 
     count: NotRequired[int]
     r"""number of items present in the items array"""
@@ -36,7 +36,7 @@ class UpdateInputByIDResponseTypedDict(TypedDict):
 
 
 class UpdateInputByIDResponse(BaseModel):
-    r"""a list of Input objects"""
+    r"""a list of Source objects"""
 
     count: Optional[int] = None
     r"""number of items present in the items array"""

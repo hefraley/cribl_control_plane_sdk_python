@@ -292,9 +292,9 @@ func (o *InputFirehoseMetadatum) GetValue() string {
 
 type InputFirehose struct {
 	// Unique ID for this input
-	ID       *string            `json:"id,omitempty"`
-	Type     *InputFirehoseType `json:"type,omitempty"`
-	Disabled *bool              `default:"false" json:"disabled"`
+	ID       *string           `json:"id,omitempty"`
+	Type     InputFirehoseType `json:"type"`
+	Disabled *bool             `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -360,9 +360,9 @@ func (o *InputFirehose) GetID() *string {
 	return o.ID
 }
 
-func (o *InputFirehose) GetType() *InputFirehoseType {
+func (o *InputFirehose) GetType() InputFirehoseType {
 	if o == nil {
-		return nil
+		return InputFirehoseType("")
 	}
 	return o.Type
 }

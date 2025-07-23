@@ -187,9 +187,9 @@ class InputModelDrivenTelemetryMetadatum(BaseModel):
 
 
 class InputModelDrivenTelemetryTypedDict(TypedDict):
+    type: InputModelDrivenTelemetryType
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputModelDrivenTelemetryType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -219,13 +219,12 @@ class InputModelDrivenTelemetryTypedDict(TypedDict):
 
 
 class InputModelDrivenTelemetry(BaseModel):
+    type: Annotated[
+        InputModelDrivenTelemetryType, PlainValidator(validate_open_enum(False))
+    ]
+
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputModelDrivenTelemetryType],
-        PlainValidator(validate_open_enum(False)),
-    ] = None
 
     disabled: Optional[bool] = False
 

@@ -18,7 +18,7 @@ func (o *GetInputByIDRequest) GetID() string {
 	return o.ID
 }
 
-// GetInputByIDResponseBody - a list of Input objects
+// GetInputByIDResponseBody - a list of Source objects
 type GetInputByIDResponseBody struct {
 	// number of items present in the items array
 	Count *int64             `json:"count,omitempty"`
@@ -41,7 +41,7 @@ func (o *GetInputByIDResponseBody) GetItems() []components.Input {
 
 type GetInputByIDResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
-	// a list of Input objects
+	// a list of Source objects
 	Object *GetInputByIDResponseBody
 }
 

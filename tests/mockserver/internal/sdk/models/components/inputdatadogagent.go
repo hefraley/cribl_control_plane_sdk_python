@@ -324,9 +324,9 @@ func (o *InputDatadogAgentProxyMode) GetRejectUnauthorized() *bool {
 
 type InputDatadogAgent struct {
 	// Unique ID for this input
-	ID       *string                `json:"id,omitempty"`
-	Type     *InputDatadogAgentType `json:"type,omitempty"`
-	Disabled *bool                  `default:"false" json:"disabled"`
+	ID       *string               `json:"id,omitempty"`
+	Type     InputDatadogAgentType `json:"type"`
+	Disabled *bool                 `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -393,9 +393,9 @@ func (o *InputDatadogAgent) GetID() *string {
 	return o.ID
 }
 
-func (o *InputDatadogAgent) GetType() *InputDatadogAgentType {
+func (o *InputDatadogAgent) GetType() InputDatadogAgentType {
 	if o == nil {
-		return nil
+		return InputDatadogAgentType("")
 	}
 	return o.Type
 }

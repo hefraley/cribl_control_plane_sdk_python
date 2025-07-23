@@ -16,15 +16,15 @@ import weakref
 if TYPE_CHECKING:
     from cribl_control_plane.auth_sdk import AuthSDK
     from cribl_control_plane.health import Health
-    from cribl_control_plane.inputs import Inputs
     from cribl_control_plane.outputs import Outputs
+    from cribl_control_plane.sources import Sources
 
 
 class CriblControlPlane(BaseSDK):
     r"""Cribl API Reference: This API Reference lists available REST endpoints, along with their supported operations for accessing, creating, updating, or deleting resources. See our complementary product documentation at [docs.cribl.io](http://docs.cribl.io)."""
 
-    inputs: "Inputs"
-    r"""Actions related to inputs"""
+    sources: "Sources"
+    r"""Actions related to Sources"""
     outputs: "Outputs"
     r"""Actions related to outputs"""
     auth: "AuthSDK"
@@ -32,7 +32,7 @@ class CriblControlPlane(BaseSDK):
     health: "Health"
     r"""Actions related to REST server health"""
     _sub_sdk_map = {
-        "inputs": ("cribl_control_plane.inputs", "Inputs"),
+        "sources": ("cribl_control_plane.sources", "Sources"),
         "outputs": ("cribl_control_plane.outputs", "Outputs"),
         "auth": ("cribl_control_plane.auth_sdk", "AuthSDK"),
         "health": ("cribl_control_plane.health", "Health"),

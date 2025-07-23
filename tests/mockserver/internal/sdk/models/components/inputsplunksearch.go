@@ -381,9 +381,9 @@ func (o *InputSplunkSearchOauthHeader) GetValue() string {
 
 type InputSplunkSearch struct {
 	// Unique ID for this input
-	ID       *string                `json:"id,omitempty"`
-	Type     *InputSplunkSearchType `json:"type,omitempty"`
-	Disabled *bool                  `default:"false" json:"disabled"`
+	ID       *string               `json:"id,omitempty"`
+	Type     InputSplunkSearchType `json:"type"`
+	Disabled *bool                 `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -489,9 +489,9 @@ func (o *InputSplunkSearch) GetID() *string {
 	return o.ID
 }
 
-func (o *InputSplunkSearch) GetType() *InputSplunkSearchType {
+func (o *InputSplunkSearch) GetType() InputSplunkSearchType {
 	if o == nil {
-		return nil
+		return InputSplunkSearchType("")
 	}
 	return o.Type
 }

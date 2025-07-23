@@ -1,23 +1,23 @@
-# Inputs
-(*inputs*)
+# Sources
+(*sources*)
 
 ## Overview
 
-Actions related to inputs
+Actions related to Sources
 
 ### Available Operations
 
-* [list_input](#list_input) - Get a list of Input objects
-* [create_input](#create_input) - Create Input
-* [get_input_by_id](#get_input_by_id) - Get Input by ID
-* [update_input_by_id](#update_input_by_id) - Update Input
-* [delete_input_by_id](#delete_input_by_id) - Delete Input
-* [create_input_hec_token_by_id](#create_input_hec_token_by_id) - Add token and optional metadata to an existing hec input
-* [update_input_hec_token_by_id_and_token](#update_input_hec_token_by_id_and_token) - Update token metadata on existing hec input
+* [list_source](#list_source) - Get a list of Source objects
+* [create_source](#create_source) - Create Source
+* [get_source_by_id](#get_source_by_id) - Get Source by ID
+* [update_source_by_id](#update_source_by_id) - Update Source
+* [delete_source_by_id](#delete_source_by_id) - Delete Source
+* [create_source_hec_token_by_id](#create_source_hec_token_by_id) - Add token and optional metadata to an existing HEC Source
+* [update_source_hec_token_by_id_and_token](#update_source_hec_token_by_id_and_token) - Update token metadata on existing HEC Source
 
-## list_input
+## list_source
 
-Get a list of Input objects
+Get a list of Source objects
 
 ### Example Usage
 
@@ -33,7 +33,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input()
+    res = ccp_client.sources.list_source()
 
     # Handle response
     print(res)
@@ -57,9 +57,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## create_input
+## create_source
 
-Create Input
+Create Source
 
 ### Example Usage
 
@@ -75,7 +75,8 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.create_input(request={
+    res = ccp_client.sources.create_source(request={
+        "type": models.InputTCPType.TCP,
         "disabled": False,
         "send_to_routes": True,
         "pq_enabled": False,
@@ -115,9 +116,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## get_input_by_id
+## get_source_by_id
 
-Get Input by ID
+Get Source by ID
 
 ### Example Usage
 
@@ -133,7 +134,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.get_input_by_id(id="<id>")
+    res = ccp_client.sources.get_source_by_id(id="<id>")
 
     # Handle response
     print(res)
@@ -158,9 +159,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## update_input_by_id
+## update_source_by_id
 
-Update Input
+Update Source
 
 ### Example Usage
 
@@ -176,7 +177,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.update_input_by_id(id="<id>", input_={
+    res = ccp_client.sources.update_source_by_id(id="<id>", input_={
         "id": "<id>",
         "type": models.InputKubeEventsType.KUBE_EVENTS,
         "disabled": False,
@@ -194,7 +195,7 @@ with CriblControlPlane(
 | Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | `id`                                                                | *str*                                                               | :heavy_check_mark:                                                  | Unique ID to PATCH                                                  |
-| `input`                                                             | [models.Input](../../models/input.md)                               | :heavy_check_mark:                                                  | Input object to be updated                                          |
+| `input`                                                             | [models.Input](../../models/input.md)                               | :heavy_check_mark:                                                  | Source object to be updated                                         |
 | `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
 
 ### Response
@@ -208,9 +209,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## delete_input_by_id
+## delete_source_by_id
 
-Delete Input
+Delete Source
 
 ### Example Usage
 
@@ -226,7 +227,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.delete_input_by_id(id="<id>")
+    res = ccp_client.sources.delete_source_by_id(id="<id>")
 
     # Handle response
     print(res)
@@ -251,9 +252,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## create_input_hec_token_by_id
+## create_source_hec_token_by_id
 
-Add token and optional metadata to an existing hec input
+Add token and optional metadata to an existing HEC Source
 
 ### Example Usage
 
@@ -269,7 +270,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.create_input_hec_token_by_id(id="<id>", token="<value>")
+    res = ccp_client.sources.create_source_hec_token_by_id(id="<id>", token="<value>")
 
     # Handle response
     print(res)
@@ -280,7 +281,7 @@ with CriblControlPlane(
 
 | Parameter                                                                               | Type                                                                                    | Required                                                                                | Description                                                                             |
 | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `id`                                                                                    | *str*                                                                                   | :heavy_check_mark:                                                                      | hec input id                                                                            |
+| `id`                                                                                    | *str*                                                                                   | :heavy_check_mark:                                                                      | HEC Source id                                                                           |
 | `token`                                                                                 | *str*                                                                                   | :heavy_check_mark:                                                                      | N/A                                                                                     |
 | `description`                                                                           | *Optional[str]*                                                                         | :heavy_minus_sign:                                                                      | N/A                                                                                     |
 | `enabled`                                                                               | *Optional[bool]*                                                                        | :heavy_minus_sign:                                                                      | N/A                                                                                     |
@@ -298,9 +299,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## update_input_hec_token_by_id_and_token
+## update_source_hec_token_by_id_and_token
 
-Update token metadata on existing hec input
+Update token metadata on existing HEC Source
 
 ### Example Usage
 
@@ -316,7 +317,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.update_input_hec_token_by_id_and_token(id="<id>", token="<value>")
+    res = ccp_client.sources.update_source_hec_token_by_id_and_token(id="<id>", token="<value>")
 
     # Handle response
     print(res)
@@ -327,7 +328,7 @@ with CriblControlPlane(
 
 | Parameter                                                                                     | Type                                                                                          | Required                                                                                      | Description                                                                                   |
 | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `id`                                                                                          | *str*                                                                                         | :heavy_check_mark:                                                                            | hec input id                                                                                  |
+| `id`                                                                                          | *str*                                                                                         | :heavy_check_mark:                                                                            | HEC Source id                                                                                 |
 | `token`                                                                                       | *str*                                                                                         | :heavy_check_mark:                                                                            | token to update                                                                               |
 | `description`                                                                                 | *Optional[str]*                                                                               | :heavy_minus_sign:                                                                            | N/A                                                                                           |
 | `enabled`                                                                                     | *Optional[bool]*                                                                              | :heavy_minus_sign:                                                                            | N/A                                                                                           |

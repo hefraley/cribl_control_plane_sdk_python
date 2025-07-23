@@ -340,9 +340,9 @@ func (o *CertOptions) GetCertPath() string {
 
 type InputOffice365MsgTrace struct {
 	// Unique ID for this input
-	ID       *string                     `json:"id,omitempty"`
-	Type     *InputOffice365MsgTraceType `json:"type,omitempty"`
-	Disabled *bool                       `default:"false" json:"disabled"`
+	ID       *string                    `json:"id,omitempty"`
+	Type     InputOffice365MsgTraceType `json:"type"`
+	Disabled *bool                      `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -429,9 +429,9 @@ func (o *InputOffice365MsgTrace) GetID() *string {
 	return o.ID
 }
 
-func (o *InputOffice365MsgTrace) GetType() *InputOffice365MsgTraceType {
+func (o *InputOffice365MsgTrace) GetType() InputOffice365MsgTraceType {
 	if o == nil {
-		return nil
+		return InputOffice365MsgTraceType("")
 	}
 	return o.Type
 }

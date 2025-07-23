@@ -292,9 +292,9 @@ func (o *InputCriblLakeHTTPMetadatum) GetValue() string {
 
 type InputCriblLakeHTTP struct {
 	// Unique ID for this input
-	ID       *string                 `json:"id,omitempty"`
-	Type     *InputCriblLakeHTTPType `json:"type,omitempty"`
-	Disabled *bool                   `default:"false" json:"disabled"`
+	ID       *string                `json:"id,omitempty"`
+	Type     InputCriblLakeHTTPType `json:"type"`
+	Disabled *bool                  `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -360,9 +360,9 @@ func (o *InputCriblLakeHTTP) GetID() *string {
 	return o.ID
 }
 
-func (o *InputCriblLakeHTTP) GetType() *InputCriblLakeHTTPType {
+func (o *InputCriblLakeHTTP) GetType() InputCriblLakeHTTPType {
 	if o == nil {
-		return nil
+		return InputCriblLakeHTTPType("")
 	}
 	return o.Type
 }

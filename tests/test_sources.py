@@ -5,7 +5,7 @@ import os
 from tests.test_client import create_test_http_client
 
 
-def test_inputs_list_input():
+def test_sources_list_input():
     test_http_client = create_test_http_client("listInput")
 
     with CriblControlPlane(
@@ -17,12 +17,12 @@ def test_inputs_list_input():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.list_input()
+        res = ccp_client.sources.list_source()
         assert res is not None
         assert res == models.ListInputResponse()
 
 
-def test_inputs_create_input():
+def test_sources_create_input():
     test_http_client = create_test_http_client("createInput")
 
     with CriblControlPlane(
@@ -34,8 +34,9 @@ def test_inputs_create_input():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.create_input(
+        res = ccp_client.sources.create_source(
             request={
+                "type": models.InputTCPType.TCP,
                 "disabled": False,
                 "send_to_routes": True,
                 "pq_enabled": False,
@@ -56,7 +57,7 @@ def test_inputs_create_input():
         assert res == models.CreateInputResponse()
 
 
-def test_inputs_get_input_by_id():
+def test_sources_get_input_by_id():
     test_http_client = create_test_http_client("getInputById")
 
     with CriblControlPlane(
@@ -68,12 +69,12 @@ def test_inputs_get_input_by_id():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.get_input_by_id(id="<id>")
+        res = ccp_client.sources.get_source_by_id(id="<id>")
         assert res is not None
         assert res == models.GetInputByIDResponse()
 
 
-def test_inputs_update_input_by_id():
+def test_sources_update_input_by_id():
     test_http_client = create_test_http_client("updateInputById")
 
     with CriblControlPlane(
@@ -85,7 +86,7 @@ def test_inputs_update_input_by_id():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.update_input_by_id(
+        res = ccp_client.sources.update_source_by_id(
             id="<id>",
             input_={
                 "id": "<id>",
@@ -99,7 +100,7 @@ def test_inputs_update_input_by_id():
         assert res == models.UpdateInputByIDResponse()
 
 
-def test_inputs_delete_input_by_id():
+def test_sources_delete_input_by_id():
     test_http_client = create_test_http_client("deleteInputById")
 
     with CriblControlPlane(
@@ -111,12 +112,12 @@ def test_inputs_delete_input_by_id():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.delete_input_by_id(id="<id>")
+        res = ccp_client.sources.delete_source_by_id(id="<id>")
         assert res is not None
         assert res == models.DeleteInputByIDResponse()
 
 
-def test_inputs_create_input_hec_token_by_id():
+def test_sources_create_input_hec_token_by_id():
     test_http_client = create_test_http_client("createInputHecTokenById")
 
     with CriblControlPlane(
@@ -128,12 +129,14 @@ def test_inputs_create_input_hec_token_by_id():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.create_input_hec_token_by_id(id="<id>", token="<value>")
+        res = ccp_client.sources.create_source_hec_token_by_id(
+            id="<id>", token="<value>"
+        )
         assert res is not None
         assert res == models.CreateInputHecTokenByIDResponse()
 
 
-def test_inputs_update_input_hec_token_by_id_and_token():
+def test_sources_update_input_hec_token_by_id_and_token():
     test_http_client = create_test_http_client("updateInputHecTokenByIdAndToken")
 
     with CriblControlPlane(
@@ -145,7 +148,7 @@ def test_inputs_update_input_hec_token_by_id_and_token():
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.inputs.update_input_hec_token_by_id_and_token(
+        res = ccp_client.sources.update_source_hec_token_by_id_and_token(
             id="<id>", token="<value>"
         )
         assert res is not None

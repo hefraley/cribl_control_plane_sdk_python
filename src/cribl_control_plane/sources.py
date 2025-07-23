@@ -9,10 +9,10 @@ from cribl_control_plane.utils.unmarshal_json_response import unmarshal_json_res
 from typing import Any, List, Mapping, Optional, Union, cast
 
 
-class Inputs(BaseSDK):
-    r"""Actions related to inputs"""
+class Sources(BaseSDK):
+    r"""Actions related to Sources"""
 
-    def list_input(
+    def list_source(
         self,
         *,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -20,9 +20,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.ListInputResponse:
-        r"""Get a list of Input objects
+        r"""Get a list of Source objects
 
-        Get a list of Input objects
+        Get a list of Source objects
 
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -92,7 +92,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def list_input_async(
+    async def list_source_async(
         self,
         *,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -100,9 +100,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.ListInputResponse:
-        r"""Get a list of Input objects
+        r"""Get a list of Source objects
 
-        Get a list of Input objects
+        Get a list of Source objects
 
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -172,7 +172,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def create_input(
+    def create_source(
         self,
         *,
         request: Union[models.Input, models.InputTypedDict],
@@ -181,9 +181,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.CreateInputResponse:
-        r"""Create Input
+        r"""Create Source
 
-        Create Input
+        Create Source
 
         :param request: The request object to send.
         :param retries: Override the default retry configuration for this method
@@ -262,7 +262,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def create_input_async(
+    async def create_source_async(
         self,
         *,
         request: Union[models.Input, models.InputTypedDict],
@@ -271,9 +271,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.CreateInputResponse:
-        r"""Create Input
+        r"""Create Source
 
-        Create Input
+        Create Source
 
         :param request: The request object to send.
         :param retries: Override the default retry configuration for this method
@@ -352,7 +352,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def get_input_by_id(
+    def get_source_by_id(
         self,
         *,
         id: str,
@@ -361,9 +361,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.GetInputByIDResponse:
-        r"""Get Input by ID
+        r"""Get Source by ID
 
-        Get Input by ID
+        Get Source by ID
 
         :param id: Unique ID to GET
         :param retries: Override the default retry configuration for this method
@@ -439,7 +439,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def get_input_by_id_async(
+    async def get_source_by_id_async(
         self,
         *,
         id: str,
@@ -448,9 +448,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.GetInputByIDResponse:
-        r"""Get Input by ID
+        r"""Get Source by ID
 
-        Get Input by ID
+        Get Source by ID
 
         :param id: Unique ID to GET
         :param retries: Override the default retry configuration for this method
@@ -526,7 +526,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def update_input_by_id(
+    def update_source_by_id(
         self,
         *,
         id: str,
@@ -536,12 +536,12 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.UpdateInputByIDResponse:
-        r"""Update Input
+        r"""Update Source
 
-        Update Input
+        Update Source
 
         :param id: Unique ID to PATCH
-        :param input: Input object to be updated
+        :param input: Source object to be updated
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -619,7 +619,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def update_input_by_id_async(
+    async def update_source_by_id_async(
         self,
         *,
         id: str,
@@ -629,12 +629,12 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.UpdateInputByIDResponse:
-        r"""Update Input
+        r"""Update Source
 
-        Update Input
+        Update Source
 
         :param id: Unique ID to PATCH
-        :param input: Input object to be updated
+        :param input: Source object to be updated
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -712,7 +712,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def delete_input_by_id(
+    def delete_source_by_id(
         self,
         *,
         id: str,
@@ -721,9 +721,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.DeleteInputByIDResponse:
-        r"""Delete Input
+        r"""Delete Source
 
-        Delete Input
+        Delete Source
 
         :param id: Unique ID to DELETE
         :param retries: Override the default retry configuration for this method
@@ -799,7 +799,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def delete_input_by_id_async(
+    async def delete_source_by_id_async(
         self,
         *,
         id: str,
@@ -808,9 +808,9 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.DeleteInputByIDResponse:
-        r"""Delete Input
+        r"""Delete Source
 
-        Delete Input
+        Delete Source
 
         :param id: Unique ID to DELETE
         :param retries: Override the default retry configuration for this method
@@ -886,7 +886,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def create_input_hec_token_by_id(
+    def create_source_hec_token_by_id(
         self,
         *,
         id: str,
@@ -904,11 +904,11 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.CreateInputHecTokenByIDResponse:
-        r"""Add token and optional metadata to an existing hec input
+        r"""Add token and optional metadata to an existing HEC Source
 
-        Add token and optional metadata to an existing hec input
+        Add token and optional metadata to an existing HEC Source
 
-        :param id: hec input id
+        :param id: HEC Source id
         :param token:
         :param description:
         :param enabled:
@@ -1003,7 +1003,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def create_input_hec_token_by_id_async(
+    async def create_source_hec_token_by_id_async(
         self,
         *,
         id: str,
@@ -1021,11 +1021,11 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.CreateInputHecTokenByIDResponse:
-        r"""Add token and optional metadata to an existing hec input
+        r"""Add token and optional metadata to an existing HEC Source
 
-        Add token and optional metadata to an existing hec input
+        Add token and optional metadata to an existing HEC Source
 
-        :param id: hec input id
+        :param id: HEC Source id
         :param token:
         :param description:
         :param enabled:
@@ -1120,7 +1120,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def update_input_hec_token_by_id_and_token(
+    def update_source_hec_token_by_id_and_token(
         self,
         *,
         id: str,
@@ -1138,11 +1138,11 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.UpdateInputHecTokenByIDAndTokenResponse:
-        r"""Update token metadata on existing hec input
+        r"""Update token metadata on existing HEC Source
 
-        Update token metadata on existing hec input
+        Update token metadata on existing HEC Source
 
-        :param id: hec input id
+        :param id: HEC Source id
         :param token: token to update
         :param description:
         :param enabled:
@@ -1237,7 +1237,7 @@ class Inputs(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def update_input_hec_token_by_id_and_token_async(
+    async def update_source_hec_token_by_id_and_token_async(
         self,
         *,
         id: str,
@@ -1255,11 +1255,11 @@ class Inputs(BaseSDK):
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.UpdateInputHecTokenByIDAndTokenResponse:
-        r"""Update token metadata on existing hec input
+        r"""Update token metadata on existing HEC Source
 
-        Update token metadata on existing hec input
+        Update token metadata on existing HEC Source
 
-        :param id: hec input id
+        :param id: HEC Source id
         :param token: token to update
         :param description:
         :param enabled:
