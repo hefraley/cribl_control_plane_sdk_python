@@ -263,9 +263,9 @@ class PodFilter(BaseModel):
 
 
 class InputEdgePrometheusTypedDict(TypedDict):
+    type: InputEdgePrometheusType
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputEdgePrometheusType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -353,12 +353,10 @@ class InputEdgePrometheusTypedDict(TypedDict):
 
 
 class InputEdgePrometheus(BaseModel):
+    type: Annotated[InputEdgePrometheusType, PlainValidator(validate_open_enum(False))]
+
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputEdgePrometheusType], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 

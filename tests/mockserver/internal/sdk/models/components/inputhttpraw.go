@@ -341,9 +341,9 @@ func (o *InputHTTPRawAuthTokensExt) GetMetadata() []InputHTTPRawAuthTokensExtMet
 
 type InputHTTPRaw struct {
 	// Unique ID for this input
-	ID       *string           `json:"id,omitempty"`
-	Type     *InputHTTPRawType `json:"type,omitempty"`
-	Disabled *bool             `default:"false" json:"disabled"`
+	ID       *string          `json:"id,omitempty"`
+	Type     InputHTTPRawType `json:"type"`
+	Disabled *bool            `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -419,9 +419,9 @@ func (o *InputHTTPRaw) GetID() *string {
 	return o.ID
 }
 
-func (o *InputHTTPRaw) GetType() *InputHTTPRawType {
+func (o *InputHTTPRaw) GetType() InputHTTPRawType {
 	if o == nil {
-		return nil
+		return InputHTTPRawType("")
 	}
 	return o.Type
 }

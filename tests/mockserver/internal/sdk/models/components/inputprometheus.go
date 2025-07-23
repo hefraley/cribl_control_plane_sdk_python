@@ -268,9 +268,9 @@ func (e InputPrometheusSignatureVersion) ToPointer() *InputPrometheusSignatureVe
 
 type InputPrometheus struct {
 	// Unique ID for this input
-	ID       *string              `json:"id,omitempty"`
-	Type     *InputPrometheusType `json:"type,omitempty"`
-	Disabled *bool                `default:"false" json:"disabled"`
+	ID       *string             `json:"id,omitempty"`
+	Type     InputPrometheusType `json:"type"`
+	Disabled *bool               `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -370,9 +370,9 @@ func (o *InputPrometheus) GetID() *string {
 	return o.ID
 }
 
-func (o *InputPrometheus) GetType() *InputPrometheusType {
+func (o *InputPrometheus) GetType() InputPrometheusType {
 	if o == nil {
-		return nil
+		return InputPrometheusType("")
 	}
 	return o.Type
 }

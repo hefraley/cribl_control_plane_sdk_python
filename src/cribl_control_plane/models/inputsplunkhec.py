@@ -248,11 +248,11 @@ class InputSplunkHecMetadatum(BaseModel):
 
 
 class InputSplunkHecTypedDict(TypedDict):
+    type: InputSplunkHecType
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputSplunkHecType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -321,15 +321,13 @@ class InputSplunkHecTypedDict(TypedDict):
 
 
 class InputSplunkHec(BaseModel):
+    type: Annotated[InputSplunkHecType, PlainValidator(validate_open_enum(False))]
+
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputSplunkHecType], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 

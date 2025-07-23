@@ -9,7 +9,7 @@ import (
 type UpdateInputByIDRequest struct {
 	// Unique ID to PATCH
 	ID string `pathParam:"style=simple,explode=false,name=id"`
-	// Input object to be updated
+	// Source object to be updated
 	Input components.Input `request:"mediaType=application/json"`
 }
 
@@ -27,7 +27,7 @@ func (o *UpdateInputByIDRequest) GetInput() components.Input {
 	return o.Input
 }
 
-// UpdateInputByIDResponseBody - a list of Input objects
+// UpdateInputByIDResponseBody - a list of Source objects
 type UpdateInputByIDResponseBody struct {
 	// number of items present in the items array
 	Count *int64             `json:"count,omitempty"`
@@ -50,7 +50,7 @@ func (o *UpdateInputByIDResponseBody) GetItems() []components.Input {
 
 type UpdateInputByIDResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
-	// a list of Input objects
+	// a list of Source objects
 	Object *UpdateInputByIDResponseBody
 }
 

@@ -10,7 +10,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 class CreateInputHecTokenByIDRequestTypedDict(TypedDict):
     id: str
-    r"""hec input id"""
+    r"""HEC Source id"""
     add_hec_token_request: AddHecTokenRequestTypedDict
     r"""AddHecTokenRequest object"""
 
@@ -19,7 +19,7 @@ class CreateInputHecTokenByIDRequest(BaseModel):
     id: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""hec input id"""
+    r"""HEC Source id"""
 
     add_hec_token_request: Annotated[
         AddHecTokenRequest,

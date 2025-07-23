@@ -283,9 +283,9 @@ func (o *InputModelDrivenTelemetryMetadatum) GetValue() string {
 
 type InputModelDrivenTelemetry struct {
 	// Unique ID for this input
-	ID       *string                        `json:"id,omitempty"`
-	Type     *InputModelDrivenTelemetryType `json:"type,omitempty"`
-	Disabled *bool                          `default:"false" json:"disabled"`
+	ID       *string                       `json:"id,omitempty"`
+	Type     InputModelDrivenTelemetryType `json:"type"`
+	Disabled *bool                         `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -331,9 +331,9 @@ func (o *InputModelDrivenTelemetry) GetID() *string {
 	return o.ID
 }
 
-func (o *InputModelDrivenTelemetry) GetType() *InputModelDrivenTelemetryType {
+func (o *InputModelDrivenTelemetry) GetType() InputModelDrivenTelemetryType {
 	if o == nil {
-		return nil
+		return InputModelDrivenTelemetryType("")
 	}
 	return o.Type
 }

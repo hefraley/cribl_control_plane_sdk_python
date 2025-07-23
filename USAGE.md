@@ -12,7 +12,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input()
+    res = ccp_client.sources.list_source()
 
     # Handle response
     print(res)
@@ -36,7 +36,7 @@ async def main():
         ),
     ) as ccp_client:
 
-        res = await ccp_client.inputs.list_input_async()
+        res = await ccp_client.sources.list_source_async()
 
         # Handle response
         print(res)

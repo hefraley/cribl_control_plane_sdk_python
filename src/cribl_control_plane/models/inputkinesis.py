@@ -142,13 +142,13 @@ class InputKinesisMetadatum(BaseModel):
 
 
 class InputKinesisTypedDict(TypedDict):
+    type: InputKinesisType
     stream_name: str
     r"""Kinesis Data Stream to read data from"""
     region: str
     r"""Region where the Kinesis stream is located"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputKinesisType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -209,6 +209,8 @@ class InputKinesisTypedDict(TypedDict):
 
 
 class InputKinesis(BaseModel):
+    type: Annotated[InputKinesisType, PlainValidator(validate_open_enum(False))]
+
     stream_name: Annotated[str, pydantic.Field(alias="streamName")]
     r"""Kinesis Data Stream to read data from"""
 
@@ -217,10 +219,6 @@ class InputKinesis(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputKinesisType], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 

@@ -21,7 +21,7 @@ class DeleteInputByIDRequest(BaseModel):
 
 
 class DeleteInputByIDResponseTypedDict(TypedDict):
-    r"""a list of Input objects"""
+    r"""a list of Source objects"""
 
     count: NotRequired[int]
     r"""number of items present in the items array"""
@@ -29,7 +29,7 @@ class DeleteInputByIDResponseTypedDict(TypedDict):
 
 
 class DeleteInputByIDResponse(BaseModel):
-    r"""a list of Input objects"""
+    r"""a list of Source objects"""
 
     count: Optional[int] = None
     r"""number of items present in the items array"""

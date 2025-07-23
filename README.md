@@ -108,7 +108,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input()
+    res = ccp_client.sources.list_source()
 
     # Handle response
     print(res)
@@ -132,7 +132,7 @@ async def main():
         ),
     ) as ccp_client:
 
-        res = await ccp_client.inputs.list_input_async()
+        res = await ccp_client.sources.list_source_async()
 
         # Handle response
         print(res)
@@ -166,7 +166,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input()
+    res = ccp_client.sources.list_source()
 
     # Handle response
     print(res)
@@ -189,16 +189,6 @@ with CriblControlPlane(
 
 * [get_health_info](docs/sdks/health/README.md#get_health_info) - Provides health info for REST server
 
-### [inputs](docs/sdks/inputs/README.md)
-
-* [list_input](docs/sdks/inputs/README.md#list_input) - Get a list of Input objects
-* [create_input](docs/sdks/inputs/README.md#create_input) - Create Input
-* [get_input_by_id](docs/sdks/inputs/README.md#get_input_by_id) - Get Input by ID
-* [update_input_by_id](docs/sdks/inputs/README.md#update_input_by_id) - Update Input
-* [delete_input_by_id](docs/sdks/inputs/README.md#delete_input_by_id) - Delete Input
-* [create_input_hec_token_by_id](docs/sdks/inputs/README.md#create_input_hec_token_by_id) - Add token and optional metadata to an existing hec input
-* [update_input_hec_token_by_id_and_token](docs/sdks/inputs/README.md#update_input_hec_token_by_id_and_token) - Update token metadata on existing hec input
-
 ### [outputs](docs/sdks/outputs/README.md)
 
 * [list_output](docs/sdks/outputs/README.md#list_output) - Get a list of Output objects
@@ -210,6 +200,16 @@ with CriblControlPlane(
 * [get_output_pq_by_id](docs/sdks/outputs/README.md#get_output_pq_by_id) - Retrieves status of latest clear PQ job for an output
 * [get_output_samples_by_id](docs/sdks/outputs/README.md#get_output_samples_by_id) - Retrieve samples data for the specified output. Used to get sample data for the test action.
 * [create_output_test_by_id](docs/sdks/outputs/README.md#create_output_test_by_id) - Send sample data to an output to validate configuration or test connectivity
+
+### [sources](docs/sdks/sources/README.md)
+
+* [list_source](docs/sdks/sources/README.md#list_source) - Get a list of Source objects
+* [create_source](docs/sdks/sources/README.md#create_source) - Create Source
+* [get_source_by_id](docs/sdks/sources/README.md#get_source_by_id) - Get Source by ID
+* [update_source_by_id](docs/sdks/sources/README.md#update_source_by_id) - Update Source
+* [delete_source_by_id](docs/sdks/sources/README.md#delete_source_by_id) - Delete Source
+* [create_source_hec_token_by_id](docs/sdks/sources/README.md#create_source_hec_token_by_id) - Add token and optional metadata to an existing HEC Source
+* [update_source_hec_token_by_id_and_token](docs/sdks/sources/README.md#update_source_hec_token_by_id_and_token) - Update token metadata on existing HEC Source
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -233,7 +233,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input(,
+    res = ccp_client.sources.list_source(,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -256,7 +256,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.inputs.list_input()
+    res = ccp_client.sources.list_source()
 
     # Handle response
     print(res)
@@ -293,7 +293,7 @@ with CriblControlPlane(
     res = None
     try:
 
-        res = ccp_client.inputs.list_input()
+        res = ccp_client.sources.list_source()
 
         # Handle response
         print(res)

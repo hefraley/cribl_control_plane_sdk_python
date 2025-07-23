@@ -18,7 +18,7 @@ func (o *DeleteInputByIDRequest) GetID() string {
 	return o.ID
 }
 
-// DeleteInputByIDResponseBody - a list of Input objects
+// DeleteInputByIDResponseBody - a list of Source objects
 type DeleteInputByIDResponseBody struct {
 	// number of items present in the items array
 	Count *int64             `json:"count,omitempty"`
@@ -41,7 +41,7 @@ func (o *DeleteInputByIDResponseBody) GetItems() []components.Input {
 
 type DeleteInputByIDResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
-	// a list of Input objects
+	// a list of Source objects
 	Object *DeleteInputByIDResponseBody
 }
 

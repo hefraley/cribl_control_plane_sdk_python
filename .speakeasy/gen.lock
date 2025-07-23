@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 53da85af9d541ea346e039f9ba1b510f
-  docVersion: 4.14.0-alpha.1753212696681-3b9b0ede
+  docChecksum: fc240462f4ebcf2f1ee8afe0889e2cb0
+  docVersion: 4.14.0-alpha.1753295778758-ebd92ad1
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.11
-  configChecksum: d7486e1f5d5e9ece63901e6fedfbe3f8
+  releaseVersion: 0.0.12
+  configChecksum: c2881cb56860a6efb694d3402e5ed829
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -24,8 +24,10 @@ features:
     globalSecurity: 3.0.3
     globalSecurityCallbacks: 1.0.0
     globalServerURLs: 3.1.1
+    groups: 3.0.0
     methodArguments: 1.0.2
     mockServer: 0.1.1
+    nameOverrides: 3.0.1
     oauth2ClientCredentials: 1.2.1
     openEnums: 1.0.1
     responseFormat: 1.0.1
@@ -1663,8 +1665,8 @@ generatedFiles:
   - docs/sdks/authsdk/README.md
   - docs/sdks/criblcontrolplane/README.md
   - docs/sdks/health/README.md
-  - docs/sdks/inputs/README.md
   - docs/sdks/outputs/README.md
+  - docs/sdks/sources/README.md
   - poetry.toml
   - py.typed
   - pylintrc
@@ -1687,7 +1689,6 @@ generatedFiles:
   - src/cribl_control_plane/errors/responsevalidationerror.py
   - src/cribl_control_plane/health.py
   - src/cribl_control_plane/httpclient.py
-  - src/cribl_control_plane/inputs.py
   - src/cribl_control_plane/models/__init__.py
   - src/cribl_control_plane/models/addhectokenrequest.py
   - src/cribl_control_plane/models/authtoken.py
@@ -1844,6 +1845,7 @@ generatedFiles:
   - src/cribl_control_plane/py.typed
   - src/cribl_control_plane/sdk.py
   - src/cribl_control_plane/sdkconfiguration.py
+  - src/cribl_control_plane/sources.py
   - src/cribl_control_plane/types/__init__.py
   - src/cribl_control_plane/types/basemodel.py
   - src/cribl_control_plane/utils/__init__.py
@@ -2083,8 +2085,8 @@ generatedFiles:
   - tests/test_auth_sdk.py
   - tests/test_client.py
   - tests/test_health.py
-  - tests/test_inputs.py
   - tests/test_outputs.py
+  - tests/test_sources.py
 examples:
   getHealthInfo:
     speakeasy-default-get-health-info:
@@ -2110,7 +2112,7 @@ examples:
   createInput:
     speakeasy-default-create-input:
       requestBody:
-        application/json: {"disabled": false, "sendToRoutes": true, "pqEnabled": false, "host": "0.0.0.0", "port": 301.76, "ipWhitelistRegex": "/.*/", "maxActiveCxn": 1000, "socketIdleTimeout": 0, "socketEndingMaxWait": 30, "socketMaxLifespan": 0, "enableProxyHeader": false, "staleChannelFlushMs": 10000, "enableHeader": false, "authType": "manual"}
+        application/json: {"type": "tcp", "disabled": false, "sendToRoutes": true, "pqEnabled": false, "host": "0.0.0.0", "port": 301.76, "ipWhitelistRegex": "/.*/", "maxActiveCxn": 1000, "socketIdleTimeout": 0, "socketEndingMaxWait": 30, "socketMaxLifespan": 0, "enableProxyHeader": false, "staleChannelFlushMs": 10000, "enableHeader": false, "authType": "manual"}
       responses:
         "200":
           application/json: {}

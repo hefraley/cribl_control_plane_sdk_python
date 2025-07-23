@@ -7,7 +7,7 @@ import (
 )
 
 type UpdateInputHecTokenByIDAndTokenRequest struct {
-	// hec input id
+	// HEC Source id
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 	// token to update
 	Token string `pathParam:"style=simple,explode=false,name=token"`

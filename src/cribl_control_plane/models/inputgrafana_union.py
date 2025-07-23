@@ -452,11 +452,11 @@ class InputGrafanaMetadatum2(BaseModel):
 
 
 class InputGrafana2TypedDict(TypedDict):
+    type: InputGrafanaType2
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputGrafanaType2]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -508,15 +508,13 @@ class InputGrafana2TypedDict(TypedDict):
 
 
 class InputGrafana2(BaseModel):
+    type: Annotated[InputGrafanaType2, PlainValidator(validate_open_enum(False))]
+
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputGrafanaType2], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 
@@ -1067,11 +1065,11 @@ class InputGrafanaMetadatum1(BaseModel):
 
 
 class InputGrafana1TypedDict(TypedDict):
+    type: InputGrafanaType1
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
-    type: NotRequired[InputGrafanaType1]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -1123,15 +1121,13 @@ class InputGrafana1TypedDict(TypedDict):
 
 
 class InputGrafana1(BaseModel):
+    type: Annotated[InputGrafanaType1, PlainValidator(validate_open_enum(False))]
+
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
-
-    type: Annotated[
-        Optional[InputGrafanaType1], PlainValidator(validate_open_enum(False))
-    ] = None
 
     disabled: Optional[bool] = False
 
