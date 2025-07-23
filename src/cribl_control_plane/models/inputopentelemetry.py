@@ -180,7 +180,7 @@ class InputOpenTelemetryProtocol(str, Enum, metaclass=utils.OpenEnumMeta):
     HTTP = "http"
 
 
-class OTLPVersion(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputOpenTelemetryOTLPVersion(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The version of OTLP Protobuf definitions to use when interpreting received data"""
 
     ZERO_DOT_10_DOT_0 = "0.10.0"
@@ -289,7 +289,7 @@ class InputOpenTelemetryTypedDict(TypedDict):
     r"""Enable to extract each incoming span to a separate event"""
     extract_metrics: NotRequired[bool]
     r"""Enable to extract each incoming Gauge or IntGauge metric to multiple events, one per data point"""
-    otlp_version: NotRequired[OTLPVersion]
+    otlp_version: NotRequired[InputOpenTelemetryOTLPVersion]
     r"""The version of OTLP Protobuf definitions to use when interpreting received data"""
     auth_type: NotRequired[InputOpenTelemetryAuthenticationType]
     r"""OpenTelemetry authentication type"""
@@ -434,9 +434,12 @@ class InputOpenTelemetry(BaseModel):
     r"""Enable to extract each incoming Gauge or IntGauge metric to multiple events, one per data point"""
 
     otlp_version: Annotated[
-        Annotated[Optional[OTLPVersion], PlainValidator(validate_open_enum(False))],
+        Annotated[
+            Optional[InputOpenTelemetryOTLPVersion],
+            PlainValidator(validate_open_enum(False)),
+        ],
         pydantic.Field(alias="otlpVersion"),
-    ] = OTLPVersion.ZERO_DOT_10_DOT_0
+    ] = InputOpenTelemetryOTLPVersion.ZERO_DOT_10_DOT_0
     r"""The version of OTLP Protobuf definitions to use when interpreting received data"""
 
     auth_type: Annotated[

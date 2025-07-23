@@ -136,15 +136,15 @@ func (o *InputSqsPq) GetCompress() *InputSqsCompression {
 	return o.Compress
 }
 
-// QueueType - The queue type used (or created)
-type QueueType string
+// InputSqsQueueType - The queue type used (or created)
+type InputSqsQueueType string
 
 const (
-	QueueTypeStandard QueueType = "standard"
-	QueueTypeFifo     QueueType = "fifo"
+	InputSqsQueueTypeStandard InputSqsQueueType = "standard"
+	InputSqsQueueTypeFifo     InputSqsQueueType = "fifo"
 )
 
-func (e QueueType) ToPointer() *QueueType {
+func (e InputSqsQueueType) ToPointer() *InputSqsQueueType {
 	return &e
 }
 
@@ -214,7 +214,7 @@ type InputSqs struct {
 	// The name, URL, or ARN of the SQS queue to read events from. When a non-AWS URL is specified, format must be: '{url}/myQueueName'. Example: 'https://host:port/myQueueName'. Value must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can only be evaluated at init time. Example referencing a Global Variable: `https://host:port/myQueue-${C.vars.myVar}`.
 	QueueName string `json:"queueName"`
 	// The queue type used (or created)
-	QueueType *QueueType `default:"standard" json:"queueType"`
+	QueueType *InputSqsQueueType `default:"standard" json:"queueType"`
 	// SQS queue owner's AWS account ID. Leave empty if SQS queue is in same AWS account.
 	AwsAccountID *string `json:"awsAccountId,omitempty"`
 	// Create queue if it does not exist
@@ -344,7 +344,7 @@ func (o *InputSqs) GetQueueName() string {
 	return o.QueueName
 }
 
-func (o *InputSqs) GetQueueType() *QueueType {
+func (o *InputSqs) GetQueueType() *InputSqsQueueType {
 	if o == nil {
 		return nil
 	}

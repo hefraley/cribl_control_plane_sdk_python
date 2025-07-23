@@ -272,19 +272,19 @@ func (o *InputGrafanaTLSSettingsServerSide2) GetMaxVersion() *InputGrafanaMaximu
 	return o.MaxVersion
 }
 
-// PrometheusAuthAuthenticationType2 - Remote Write authentication type
-type PrometheusAuthAuthenticationType2 string
+// InputGrafanaPrometheusAuthAuthenticationType2 - Remote Write authentication type
+type InputGrafanaPrometheusAuthAuthenticationType2 string
 
 const (
-	PrometheusAuthAuthenticationType2None              PrometheusAuthAuthenticationType2 = "none"
-	PrometheusAuthAuthenticationType2Basic             PrometheusAuthAuthenticationType2 = "basic"
-	PrometheusAuthAuthenticationType2CredentialsSecret PrometheusAuthAuthenticationType2 = "credentialsSecret"
-	PrometheusAuthAuthenticationType2Token             PrometheusAuthAuthenticationType2 = "token"
-	PrometheusAuthAuthenticationType2TextSecret        PrometheusAuthAuthenticationType2 = "textSecret"
-	PrometheusAuthAuthenticationType2Oauth             PrometheusAuthAuthenticationType2 = "oauth"
+	InputGrafanaPrometheusAuthAuthenticationType2None              InputGrafanaPrometheusAuthAuthenticationType2 = "none"
+	InputGrafanaPrometheusAuthAuthenticationType2Basic             InputGrafanaPrometheusAuthAuthenticationType2 = "basic"
+	InputGrafanaPrometheusAuthAuthenticationType2CredentialsSecret InputGrafanaPrometheusAuthAuthenticationType2 = "credentialsSecret"
+	InputGrafanaPrometheusAuthAuthenticationType2Token             InputGrafanaPrometheusAuthAuthenticationType2 = "token"
+	InputGrafanaPrometheusAuthAuthenticationType2TextSecret        InputGrafanaPrometheusAuthAuthenticationType2 = "textSecret"
+	InputGrafanaPrometheusAuthAuthenticationType2Oauth             InputGrafanaPrometheusAuthAuthenticationType2 = "oauth"
 )
 
-func (e PrometheusAuthAuthenticationType2) ToPointer() *PrometheusAuthAuthenticationType2 {
+func (e InputGrafanaPrometheusAuthAuthenticationType2) ToPointer() *InputGrafanaPrometheusAuthAuthenticationType2 {
 	return &e
 }
 
@@ -330,11 +330,11 @@ func (o *PrometheusAuthOauthHeader2) GetValue() string {
 	return o.Value
 }
 
-type PrometheusAuth2 struct {
+type InputGrafanaPrometheusAuth2 struct {
 	// Remote Write authentication type
-	AuthType *PrometheusAuthAuthenticationType2 `default:"none" json:"authType"`
-	Username *string                            `json:"username,omitempty"`
-	Password *string                            `json:"password,omitempty"`
+	AuthType *InputGrafanaPrometheusAuthAuthenticationType2 `default:"none" json:"authType"`
+	Username *string                                        `json:"username,omitempty"`
+	Password *string                                        `json:"password,omitempty"`
 	// Bearer token to include in the authorization header
 	Token *string `json:"token,omitempty"`
 	// Select or create a secret that references your credentials
@@ -359,128 +359,128 @@ type PrometheusAuth2 struct {
 	OauthHeaders []PrometheusAuthOauthHeader2 `json:"oauthHeaders,omitempty"`
 }
 
-func (p PrometheusAuth2) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (i InputGrafanaPrometheusAuth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (p *PrometheusAuth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+func (i *InputGrafanaPrometheusAuth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PrometheusAuth2) GetAuthType() *PrometheusAuthAuthenticationType2 {
+func (o *InputGrafanaPrometheusAuth2) GetAuthType() *InputGrafanaPrometheusAuthAuthenticationType2 {
 	if o == nil {
 		return nil
 	}
 	return o.AuthType
 }
 
-func (o *PrometheusAuth2) GetUsername() *string {
+func (o *InputGrafanaPrometheusAuth2) GetUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Username
 }
 
-func (o *PrometheusAuth2) GetPassword() *string {
+func (o *InputGrafanaPrometheusAuth2) GetPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Password
 }
 
-func (o *PrometheusAuth2) GetToken() *string {
+func (o *InputGrafanaPrometheusAuth2) GetToken() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Token
 }
 
-func (o *PrometheusAuth2) GetCredentialsSecret() *string {
+func (o *InputGrafanaPrometheusAuth2) GetCredentialsSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CredentialsSecret
 }
 
-func (o *PrometheusAuth2) GetTextSecret() *string {
+func (o *InputGrafanaPrometheusAuth2) GetTextSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TextSecret
 }
 
-func (o *PrometheusAuth2) GetLoginURL() *string {
+func (o *InputGrafanaPrometheusAuth2) GetLoginURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.LoginURL
 }
 
-func (o *PrometheusAuth2) GetSecretParamName() *string {
+func (o *InputGrafanaPrometheusAuth2) GetSecretParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SecretParamName
 }
 
-func (o *PrometheusAuth2) GetSecret() *string {
+func (o *InputGrafanaPrometheusAuth2) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Secret
 }
 
-func (o *PrometheusAuth2) GetTokenAttributeName() *string {
+func (o *InputGrafanaPrometheusAuth2) GetTokenAttributeName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TokenAttributeName
 }
 
-func (o *PrometheusAuth2) GetAuthHeaderExpr() *string {
+func (o *InputGrafanaPrometheusAuth2) GetAuthHeaderExpr() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AuthHeaderExpr
 }
 
-func (o *PrometheusAuth2) GetTokenTimeoutSecs() *float64 {
+func (o *InputGrafanaPrometheusAuth2) GetTokenTimeoutSecs() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TokenTimeoutSecs
 }
 
-func (o *PrometheusAuth2) GetOauthParams() []PrometheusAuthOauthParam2 {
+func (o *InputGrafanaPrometheusAuth2) GetOauthParams() []PrometheusAuthOauthParam2 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthParams
 }
 
-func (o *PrometheusAuth2) GetOauthHeaders() []PrometheusAuthOauthHeader2 {
+func (o *InputGrafanaPrometheusAuth2) GetOauthHeaders() []PrometheusAuthOauthHeader2 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthHeaders
 }
 
-// LokiAuthAuthenticationType2 - Loki logs authentication type
-type LokiAuthAuthenticationType2 string
+// InputGrafanaLokiAuthAuthenticationType2 - Loki logs authentication type
+type InputGrafanaLokiAuthAuthenticationType2 string
 
 const (
-	LokiAuthAuthenticationType2None              LokiAuthAuthenticationType2 = "none"
-	LokiAuthAuthenticationType2Basic             LokiAuthAuthenticationType2 = "basic"
-	LokiAuthAuthenticationType2CredentialsSecret LokiAuthAuthenticationType2 = "credentialsSecret"
-	LokiAuthAuthenticationType2Token             LokiAuthAuthenticationType2 = "token"
-	LokiAuthAuthenticationType2TextSecret        LokiAuthAuthenticationType2 = "textSecret"
-	LokiAuthAuthenticationType2Oauth             LokiAuthAuthenticationType2 = "oauth"
+	InputGrafanaLokiAuthAuthenticationType2None              InputGrafanaLokiAuthAuthenticationType2 = "none"
+	InputGrafanaLokiAuthAuthenticationType2Basic             InputGrafanaLokiAuthAuthenticationType2 = "basic"
+	InputGrafanaLokiAuthAuthenticationType2CredentialsSecret InputGrafanaLokiAuthAuthenticationType2 = "credentialsSecret"
+	InputGrafanaLokiAuthAuthenticationType2Token             InputGrafanaLokiAuthAuthenticationType2 = "token"
+	InputGrafanaLokiAuthAuthenticationType2TextSecret        InputGrafanaLokiAuthAuthenticationType2 = "textSecret"
+	InputGrafanaLokiAuthAuthenticationType2Oauth             InputGrafanaLokiAuthAuthenticationType2 = "oauth"
 )
 
-func (e LokiAuthAuthenticationType2) ToPointer() *LokiAuthAuthenticationType2 {
+func (e InputGrafanaLokiAuthAuthenticationType2) ToPointer() *InputGrafanaLokiAuthAuthenticationType2 {
 	return &e
 }
 
@@ -526,11 +526,11 @@ func (o *LokiAuthOauthHeader2) GetValue() string {
 	return o.Value
 }
 
-type LokiAuth2 struct {
+type InputGrafanaLokiAuth2 struct {
 	// Loki logs authentication type
-	AuthType *LokiAuthAuthenticationType2 `default:"none" json:"authType"`
-	Username *string                      `json:"username,omitempty"`
-	Password *string                      `json:"password,omitempty"`
+	AuthType *InputGrafanaLokiAuthAuthenticationType2 `default:"none" json:"authType"`
+	Username *string                                  `json:"username,omitempty"`
+	Password *string                                  `json:"password,omitempty"`
 	// Bearer token to include in the authorization header
 	Token *string `json:"token,omitempty"`
 	// Select or create a secret that references your credentials
@@ -555,109 +555,109 @@ type LokiAuth2 struct {
 	OauthHeaders []LokiAuthOauthHeader2 `json:"oauthHeaders,omitempty"`
 }
 
-func (l LokiAuth2) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
+func (i InputGrafanaLokiAuth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (l *LokiAuth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+func (i *InputGrafanaLokiAuth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LokiAuth2) GetAuthType() *LokiAuthAuthenticationType2 {
+func (o *InputGrafanaLokiAuth2) GetAuthType() *InputGrafanaLokiAuthAuthenticationType2 {
 	if o == nil {
 		return nil
 	}
 	return o.AuthType
 }
 
-func (o *LokiAuth2) GetUsername() *string {
+func (o *InputGrafanaLokiAuth2) GetUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Username
 }
 
-func (o *LokiAuth2) GetPassword() *string {
+func (o *InputGrafanaLokiAuth2) GetPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Password
 }
 
-func (o *LokiAuth2) GetToken() *string {
+func (o *InputGrafanaLokiAuth2) GetToken() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Token
 }
 
-func (o *LokiAuth2) GetCredentialsSecret() *string {
+func (o *InputGrafanaLokiAuth2) GetCredentialsSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CredentialsSecret
 }
 
-func (o *LokiAuth2) GetTextSecret() *string {
+func (o *InputGrafanaLokiAuth2) GetTextSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TextSecret
 }
 
-func (o *LokiAuth2) GetLoginURL() *string {
+func (o *InputGrafanaLokiAuth2) GetLoginURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.LoginURL
 }
 
-func (o *LokiAuth2) GetSecretParamName() *string {
+func (o *InputGrafanaLokiAuth2) GetSecretParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SecretParamName
 }
 
-func (o *LokiAuth2) GetSecret() *string {
+func (o *InputGrafanaLokiAuth2) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Secret
 }
 
-func (o *LokiAuth2) GetTokenAttributeName() *string {
+func (o *InputGrafanaLokiAuth2) GetTokenAttributeName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TokenAttributeName
 }
 
-func (o *LokiAuth2) GetAuthHeaderExpr() *string {
+func (o *InputGrafanaLokiAuth2) GetAuthHeaderExpr() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AuthHeaderExpr
 }
 
-func (o *LokiAuth2) GetTokenTimeoutSecs() *float64 {
+func (o *InputGrafanaLokiAuth2) GetTokenTimeoutSecs() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TokenTimeoutSecs
 }
 
-func (o *LokiAuth2) GetOauthParams() []LokiAuthOauthParam2 {
+func (o *InputGrafanaLokiAuth2) GetOauthParams() []LokiAuthOauthParam2 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthParams
 }
 
-func (o *LokiAuth2) GetOauthHeaders() []LokiAuthOauthHeader2 {
+func (o *InputGrafanaLokiAuth2) GetOauthHeaders() []LokiAuthOauthHeader2 {
 	if o == nil {
 		return nil
 	}
@@ -732,9 +732,9 @@ type InputGrafana2 struct {
 	// Absolute path on which to listen for Grafana Agent's Remote Write requests. Defaults to /api/prom/push, which will expand as: 'http://<your‑upstream‑URL>:<your‑port>/api/prom/push'. Either this field or 'Logs API endpoint' must be configured.
 	PrometheusAPI *string `default:"/api/prom/push" json:"prometheusAPI"`
 	// Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured.
-	LokiAPI        *string          `default:"/loki/api/v1/push" json:"lokiAPI"`
-	PrometheusAuth *PrometheusAuth2 `json:"prometheusAuth,omitempty"`
-	LokiAuth       *LokiAuth2       `json:"lokiAuth,omitempty"`
+	LokiAPI        *string                      `default:"/loki/api/v1/push" json:"lokiAPI"`
+	PrometheusAuth *InputGrafanaPrometheusAuth2 `json:"prometheusAuth,omitempty"`
+	LokiAuth       *InputGrafanaLokiAuth2       `json:"lokiAuth,omitempty"`
 	// Fields to add to events from this input
 	Metadata    []InputGrafanaMetadatum2 `json:"metadata,omitempty"`
 	Description *string                  `json:"description,omitempty"`
@@ -933,14 +933,14 @@ func (o *InputGrafana2) GetLokiAPI() *string {
 	return o.LokiAPI
 }
 
-func (o *InputGrafana2) GetPrometheusAuth() *PrometheusAuth2 {
+func (o *InputGrafana2) GetPrometheusAuth() *InputGrafanaPrometheusAuth2 {
 	if o == nil {
 		return nil
 	}
 	return o.PrometheusAuth
 }
 
-func (o *InputGrafana2) GetLokiAuth() *LokiAuth2 {
+func (o *InputGrafana2) GetLokiAuth() *InputGrafanaLokiAuth2 {
 	if o == nil {
 		return nil
 	}
@@ -1225,19 +1225,19 @@ func (o *InputGrafanaTLSSettingsServerSide1) GetMaxVersion() *InputGrafanaMaximu
 	return o.MaxVersion
 }
 
-// PrometheusAuthAuthenticationType1 - Remote Write authentication type
-type PrometheusAuthAuthenticationType1 string
+// InputGrafanaPrometheusAuthAuthenticationType1 - Remote Write authentication type
+type InputGrafanaPrometheusAuthAuthenticationType1 string
 
 const (
-	PrometheusAuthAuthenticationType1None              PrometheusAuthAuthenticationType1 = "none"
-	PrometheusAuthAuthenticationType1Basic             PrometheusAuthAuthenticationType1 = "basic"
-	PrometheusAuthAuthenticationType1CredentialsSecret PrometheusAuthAuthenticationType1 = "credentialsSecret"
-	PrometheusAuthAuthenticationType1Token             PrometheusAuthAuthenticationType1 = "token"
-	PrometheusAuthAuthenticationType1TextSecret        PrometheusAuthAuthenticationType1 = "textSecret"
-	PrometheusAuthAuthenticationType1Oauth             PrometheusAuthAuthenticationType1 = "oauth"
+	InputGrafanaPrometheusAuthAuthenticationType1None              InputGrafanaPrometheusAuthAuthenticationType1 = "none"
+	InputGrafanaPrometheusAuthAuthenticationType1Basic             InputGrafanaPrometheusAuthAuthenticationType1 = "basic"
+	InputGrafanaPrometheusAuthAuthenticationType1CredentialsSecret InputGrafanaPrometheusAuthAuthenticationType1 = "credentialsSecret"
+	InputGrafanaPrometheusAuthAuthenticationType1Token             InputGrafanaPrometheusAuthAuthenticationType1 = "token"
+	InputGrafanaPrometheusAuthAuthenticationType1TextSecret        InputGrafanaPrometheusAuthAuthenticationType1 = "textSecret"
+	InputGrafanaPrometheusAuthAuthenticationType1Oauth             InputGrafanaPrometheusAuthAuthenticationType1 = "oauth"
 )
 
-func (e PrometheusAuthAuthenticationType1) ToPointer() *PrometheusAuthAuthenticationType1 {
+func (e InputGrafanaPrometheusAuthAuthenticationType1) ToPointer() *InputGrafanaPrometheusAuthAuthenticationType1 {
 	return &e
 }
 
@@ -1283,11 +1283,11 @@ func (o *PrometheusAuthOauthHeader1) GetValue() string {
 	return o.Value
 }
 
-type PrometheusAuth1 struct {
+type InputGrafanaPrometheusAuth1 struct {
 	// Remote Write authentication type
-	AuthType *PrometheusAuthAuthenticationType1 `default:"none" json:"authType"`
-	Username *string                            `json:"username,omitempty"`
-	Password *string                            `json:"password,omitempty"`
+	AuthType *InputGrafanaPrometheusAuthAuthenticationType1 `default:"none" json:"authType"`
+	Username *string                                        `json:"username,omitempty"`
+	Password *string                                        `json:"password,omitempty"`
 	// Bearer token to include in the authorization header
 	Token *string `json:"token,omitempty"`
 	// Select or create a secret that references your credentials
@@ -1312,128 +1312,128 @@ type PrometheusAuth1 struct {
 	OauthHeaders []PrometheusAuthOauthHeader1 `json:"oauthHeaders,omitempty"`
 }
 
-func (p PrometheusAuth1) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (i InputGrafanaPrometheusAuth1) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (p *PrometheusAuth1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+func (i *InputGrafanaPrometheusAuth1) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PrometheusAuth1) GetAuthType() *PrometheusAuthAuthenticationType1 {
+func (o *InputGrafanaPrometheusAuth1) GetAuthType() *InputGrafanaPrometheusAuthAuthenticationType1 {
 	if o == nil {
 		return nil
 	}
 	return o.AuthType
 }
 
-func (o *PrometheusAuth1) GetUsername() *string {
+func (o *InputGrafanaPrometheusAuth1) GetUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Username
 }
 
-func (o *PrometheusAuth1) GetPassword() *string {
+func (o *InputGrafanaPrometheusAuth1) GetPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Password
 }
 
-func (o *PrometheusAuth1) GetToken() *string {
+func (o *InputGrafanaPrometheusAuth1) GetToken() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Token
 }
 
-func (o *PrometheusAuth1) GetCredentialsSecret() *string {
+func (o *InputGrafanaPrometheusAuth1) GetCredentialsSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CredentialsSecret
 }
 
-func (o *PrometheusAuth1) GetTextSecret() *string {
+func (o *InputGrafanaPrometheusAuth1) GetTextSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TextSecret
 }
 
-func (o *PrometheusAuth1) GetLoginURL() *string {
+func (o *InputGrafanaPrometheusAuth1) GetLoginURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.LoginURL
 }
 
-func (o *PrometheusAuth1) GetSecretParamName() *string {
+func (o *InputGrafanaPrometheusAuth1) GetSecretParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SecretParamName
 }
 
-func (o *PrometheusAuth1) GetSecret() *string {
+func (o *InputGrafanaPrometheusAuth1) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Secret
 }
 
-func (o *PrometheusAuth1) GetTokenAttributeName() *string {
+func (o *InputGrafanaPrometheusAuth1) GetTokenAttributeName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TokenAttributeName
 }
 
-func (o *PrometheusAuth1) GetAuthHeaderExpr() *string {
+func (o *InputGrafanaPrometheusAuth1) GetAuthHeaderExpr() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AuthHeaderExpr
 }
 
-func (o *PrometheusAuth1) GetTokenTimeoutSecs() *float64 {
+func (o *InputGrafanaPrometheusAuth1) GetTokenTimeoutSecs() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TokenTimeoutSecs
 }
 
-func (o *PrometheusAuth1) GetOauthParams() []PrometheusAuthOauthParam1 {
+func (o *InputGrafanaPrometheusAuth1) GetOauthParams() []PrometheusAuthOauthParam1 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthParams
 }
 
-func (o *PrometheusAuth1) GetOauthHeaders() []PrometheusAuthOauthHeader1 {
+func (o *InputGrafanaPrometheusAuth1) GetOauthHeaders() []PrometheusAuthOauthHeader1 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthHeaders
 }
 
-// LokiAuthAuthenticationType1 - Loki logs authentication type
-type LokiAuthAuthenticationType1 string
+// InputGrafanaLokiAuthAuthenticationType1 - Loki logs authentication type
+type InputGrafanaLokiAuthAuthenticationType1 string
 
 const (
-	LokiAuthAuthenticationType1None              LokiAuthAuthenticationType1 = "none"
-	LokiAuthAuthenticationType1Basic             LokiAuthAuthenticationType1 = "basic"
-	LokiAuthAuthenticationType1CredentialsSecret LokiAuthAuthenticationType1 = "credentialsSecret"
-	LokiAuthAuthenticationType1Token             LokiAuthAuthenticationType1 = "token"
-	LokiAuthAuthenticationType1TextSecret        LokiAuthAuthenticationType1 = "textSecret"
-	LokiAuthAuthenticationType1Oauth             LokiAuthAuthenticationType1 = "oauth"
+	InputGrafanaLokiAuthAuthenticationType1None              InputGrafanaLokiAuthAuthenticationType1 = "none"
+	InputGrafanaLokiAuthAuthenticationType1Basic             InputGrafanaLokiAuthAuthenticationType1 = "basic"
+	InputGrafanaLokiAuthAuthenticationType1CredentialsSecret InputGrafanaLokiAuthAuthenticationType1 = "credentialsSecret"
+	InputGrafanaLokiAuthAuthenticationType1Token             InputGrafanaLokiAuthAuthenticationType1 = "token"
+	InputGrafanaLokiAuthAuthenticationType1TextSecret        InputGrafanaLokiAuthAuthenticationType1 = "textSecret"
+	InputGrafanaLokiAuthAuthenticationType1Oauth             InputGrafanaLokiAuthAuthenticationType1 = "oauth"
 )
 
-func (e LokiAuthAuthenticationType1) ToPointer() *LokiAuthAuthenticationType1 {
+func (e InputGrafanaLokiAuthAuthenticationType1) ToPointer() *InputGrafanaLokiAuthAuthenticationType1 {
 	return &e
 }
 
@@ -1479,11 +1479,11 @@ func (o *LokiAuthOauthHeader1) GetValue() string {
 	return o.Value
 }
 
-type LokiAuth1 struct {
+type InputGrafanaLokiAuth1 struct {
 	// Loki logs authentication type
-	AuthType *LokiAuthAuthenticationType1 `default:"none" json:"authType"`
-	Username *string                      `json:"username,omitempty"`
-	Password *string                      `json:"password,omitempty"`
+	AuthType *InputGrafanaLokiAuthAuthenticationType1 `default:"none" json:"authType"`
+	Username *string                                  `json:"username,omitempty"`
+	Password *string                                  `json:"password,omitempty"`
 	// Bearer token to include in the authorization header
 	Token *string `json:"token,omitempty"`
 	// Select or create a secret that references your credentials
@@ -1508,109 +1508,109 @@ type LokiAuth1 struct {
 	OauthHeaders []LokiAuthOauthHeader1 `json:"oauthHeaders,omitempty"`
 }
 
-func (l LokiAuth1) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
+func (i InputGrafanaLokiAuth1) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (l *LokiAuth1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+func (i *InputGrafanaLokiAuth1) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LokiAuth1) GetAuthType() *LokiAuthAuthenticationType1 {
+func (o *InputGrafanaLokiAuth1) GetAuthType() *InputGrafanaLokiAuthAuthenticationType1 {
 	if o == nil {
 		return nil
 	}
 	return o.AuthType
 }
 
-func (o *LokiAuth1) GetUsername() *string {
+func (o *InputGrafanaLokiAuth1) GetUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Username
 }
 
-func (o *LokiAuth1) GetPassword() *string {
+func (o *InputGrafanaLokiAuth1) GetPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Password
 }
 
-func (o *LokiAuth1) GetToken() *string {
+func (o *InputGrafanaLokiAuth1) GetToken() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Token
 }
 
-func (o *LokiAuth1) GetCredentialsSecret() *string {
+func (o *InputGrafanaLokiAuth1) GetCredentialsSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CredentialsSecret
 }
 
-func (o *LokiAuth1) GetTextSecret() *string {
+func (o *InputGrafanaLokiAuth1) GetTextSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TextSecret
 }
 
-func (o *LokiAuth1) GetLoginURL() *string {
+func (o *InputGrafanaLokiAuth1) GetLoginURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.LoginURL
 }
 
-func (o *LokiAuth1) GetSecretParamName() *string {
+func (o *InputGrafanaLokiAuth1) GetSecretParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SecretParamName
 }
 
-func (o *LokiAuth1) GetSecret() *string {
+func (o *InputGrafanaLokiAuth1) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Secret
 }
 
-func (o *LokiAuth1) GetTokenAttributeName() *string {
+func (o *InputGrafanaLokiAuth1) GetTokenAttributeName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.TokenAttributeName
 }
 
-func (o *LokiAuth1) GetAuthHeaderExpr() *string {
+func (o *InputGrafanaLokiAuth1) GetAuthHeaderExpr() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AuthHeaderExpr
 }
 
-func (o *LokiAuth1) GetTokenTimeoutSecs() *float64 {
+func (o *InputGrafanaLokiAuth1) GetTokenTimeoutSecs() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TokenTimeoutSecs
 }
 
-func (o *LokiAuth1) GetOauthParams() []LokiAuthOauthParam1 {
+func (o *InputGrafanaLokiAuth1) GetOauthParams() []LokiAuthOauthParam1 {
 	if o == nil {
 		return nil
 	}
 	return o.OauthParams
 }
 
-func (o *LokiAuth1) GetOauthHeaders() []LokiAuthOauthHeader1 {
+func (o *InputGrafanaLokiAuth1) GetOauthHeaders() []LokiAuthOauthHeader1 {
 	if o == nil {
 		return nil
 	}
@@ -1685,9 +1685,9 @@ type InputGrafana1 struct {
 	// Absolute path on which to listen for Grafana Agent's Remote Write requests. Defaults to /api/prom/push, which will expand as: 'http://<your‑upstream‑URL>:<your‑port>/api/prom/push'. Either this field or 'Logs API endpoint' must be configured.
 	PrometheusAPI *string `default:"/api/prom/push" json:"prometheusAPI"`
 	// Absolute path on which to listen for Loki logs requests. Defaults to /loki/api/v1/push, which will (in this example) expand as: 'http://<your‑upstream‑URL>:<your‑port>/loki/api/v1/push'. Either this field or 'Remote Write API endpoint' must be configured.
-	LokiAPI        *string          `default:"/loki/api/v1/push" json:"lokiAPI"`
-	PrometheusAuth *PrometheusAuth1 `json:"prometheusAuth,omitempty"`
-	LokiAuth       *LokiAuth1       `json:"lokiAuth,omitempty"`
+	LokiAPI        *string                      `default:"/loki/api/v1/push" json:"lokiAPI"`
+	PrometheusAuth *InputGrafanaPrometheusAuth1 `json:"prometheusAuth,omitempty"`
+	LokiAuth       *InputGrafanaLokiAuth1       `json:"lokiAuth,omitempty"`
 	// Fields to add to events from this input
 	Metadata    []InputGrafanaMetadatum1 `json:"metadata,omitempty"`
 	Description *string                  `json:"description,omitempty"`
@@ -1886,14 +1886,14 @@ func (o *InputGrafana1) GetLokiAPI() *string {
 	return o.LokiAPI
 }
 
-func (o *InputGrafana1) GetPrometheusAuth() *PrometheusAuth1 {
+func (o *InputGrafana1) GetPrometheusAuth() *InputGrafanaPrometheusAuth1 {
 	if o == nil {
 		return nil
 	}
 	return o.PrometheusAuth
 }
 
-func (o *InputGrafana1) GetLokiAuth() *LokiAuth1 {
+func (o *InputGrafana1) GetLokiAuth() *InputGrafanaLokiAuth1 {
 	if o == nil {
 		return nil
 	}

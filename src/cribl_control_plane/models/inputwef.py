@@ -203,7 +203,7 @@ class MTLSSettings(BaseModel):
     r"""If enabled, checks will fail on any OCSP error. Otherwise, checks will fail only when a certificate is revoked, ignoring other errors."""
 
 
-class Format(str, Enum, metaclass=utils.OpenEnumMeta):
+class InputWefFormat(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""Content format in which the endpoint should deliver events"""
 
     RAW = "Raw"
@@ -234,7 +234,7 @@ class SubscriptionTypedDict(TypedDict):
     r"""The DNS names of the endpoints that should forward these events. You may use wildcards, such as *.mydomain.com"""
     version: NotRequired[str]
     r"""Version UUID for this subscription. If any subscription parameters are modified, this value will change."""
-    content_format: NotRequired[Format]
+    content_format: NotRequired[InputWefFormat]
     r"""Content format in which the endpoint should deliver events"""
     heartbeat_interval: NotRequired[float]
     r"""Maximum time (in seconds) between endpoint checkins before considering it unavailable"""
@@ -263,9 +263,9 @@ class Subscription(BaseModel):
     r"""Version UUID for this subscription. If any subscription parameters are modified, this value will change."""
 
     content_format: Annotated[
-        Annotated[Optional[Format], PlainValidator(validate_open_enum(False))],
+        Annotated[Optional[InputWefFormat], PlainValidator(validate_open_enum(False))],
         pydantic.Field(alias="contentFormat"),
-    ] = Format.RAW
+    ] = InputWefFormat.RAW
     r"""Content format in which the endpoint should deliver events"""
 
     heartbeat_interval: Annotated[

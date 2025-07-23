@@ -190,3 +190,198 @@ workflows:
             type: simple
     x-speakeasy-test-group: inputs
     x-speakeasy-test-rebuild: true
+  - workflowId: listOutput
+    steps:
+      - stepId: test
+        operationId: listOutput
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: createOutput
+    steps:
+      - stepId: test
+        operationId: createOutput
+        requestBody:
+          contentType: application/json
+          payload:
+            compress: true
+            concurrency: 5
+            failedRequestLoggingMode: none
+            flushPeriodSec: 1
+            includeDocId: true
+            index: <value>
+            maxPayloadEvents: 0
+            maxPayloadSizeKB: 4096
+            onBackpressure: block
+            pqCompress: none
+            pqMaxFileSize: 1 MB
+            pqMaxSize: 5GB
+            pqMode: error
+            pqOnBackpressure: block
+            pqPath: $CRIBL_HOME/state/queues
+            rejectUnauthorized: true
+            responseHonorRetryAfterHeader: false
+            timeoutSec: 30
+            url: https://probable-rationale.com/
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getOutputById
+    steps:
+      - stepId: test
+        operationId: getOutputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateOutputById
+    steps:
+      - stepId: test
+        operationId: updateOutputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            authType: manual
+            compress: true
+            concurrency: 5
+            failedRequestLoggingMode: none
+            flushPeriodSec: 1
+            maxPayloadEvents: 0
+            maxPayloadSizeKB: 4096
+            onBackpressure: block
+            pqCompress: none
+            pqMaxFileSize: 1 MB
+            pqMaxSize: 5GB
+            pqMode: error
+            pqOnBackpressure: block
+            pqPath: $CRIBL_HOME/state/queues
+            realm: us0
+            rejectUnauthorized: true
+            responseHonorRetryAfterHeader: false
+            timeoutSec: 30
+            type: signalfx
+            useRoundRobinDns: false
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: deleteOutputById
+    steps:
+      - stepId: test
+        operationId: deleteOutputById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: deleteOutputPqById
+    steps:
+      - stepId: test
+        operationId: deleteOutputPqById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getOutputPqById
+    steps:
+      - stepId: test
+        operationId: getOutputPqById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getOutputSamplesById
+    steps:
+      - stepId: test
+        operationId: getOutputSamplesById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true
+  - workflowId: createOutputTestById
+    steps:
+      - stepId: test
+        operationId: createOutputTestById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            events:
+              - _raw: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: outputs
+    x-speakeasy-test-rebuild: true

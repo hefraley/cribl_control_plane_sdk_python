@@ -148,17 +148,17 @@ func (e ShardIteratorStart) ToPointer() *ShardIteratorStart {
 	return &e
 }
 
-// RecordDataFormat - Format of data inside the Kinesis Stream records. Gzip compression is automatically detected.
-type RecordDataFormat string
+// InputKinesisRecordDataFormat - Format of data inside the Kinesis Stream records. Gzip compression is automatically detected.
+type InputKinesisRecordDataFormat string
 
 const (
-	RecordDataFormatCribl      RecordDataFormat = "cribl"
-	RecordDataFormatNdjson     RecordDataFormat = "ndjson"
-	RecordDataFormatCloudwatch RecordDataFormat = "cloudwatch"
-	RecordDataFormatLine       RecordDataFormat = "line"
+	InputKinesisRecordDataFormatCribl      InputKinesisRecordDataFormat = "cribl"
+	InputKinesisRecordDataFormatNdjson     InputKinesisRecordDataFormat = "ndjson"
+	InputKinesisRecordDataFormatCloudwatch InputKinesisRecordDataFormat = "cloudwatch"
+	InputKinesisRecordDataFormatLine       InputKinesisRecordDataFormat = "line"
 )
 
-func (e RecordDataFormat) ToPointer() *RecordDataFormat {
+func (e InputKinesisRecordDataFormat) ToPointer() *InputKinesisRecordDataFormat {
 	return &e
 }
 
@@ -246,7 +246,7 @@ type InputKinesis struct {
 	// Location at which to start reading a shard for the first time
 	ShardIteratorType *ShardIteratorStart `default:"TRIM_HORIZON" json:"shardIteratorType"`
 	// Format of data inside the Kinesis Stream records. Gzip compression is automatically detected.
-	PayloadFormat *RecordDataFormat `default:"cribl" json:"payloadFormat"`
+	PayloadFormat *InputKinesisRecordDataFormat `default:"cribl" json:"payloadFormat"`
 	// Maximum number of records per getRecords call
 	GetRecordsLimit *float64 `default:"5000" json:"getRecordsLimit"`
 	// Maximum number of records, across all shards, to pull down at once per Worker Process
@@ -395,7 +395,7 @@ func (o *InputKinesis) GetShardIteratorType() *ShardIteratorStart {
 	return o.ShardIteratorType
 }
 
-func (o *InputKinesis) GetPayloadFormat() *RecordDataFormat {
+func (o *InputKinesis) GetPayloadFormat() *InputKinesisRecordDataFormat {
 	if o == nil {
 		return nil
 	}

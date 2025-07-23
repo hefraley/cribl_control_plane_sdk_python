@@ -169,12 +169,12 @@ func (e InputAzureBlobAuthenticationMethod) ToPointer() *InputAzureBlobAuthentic
 	return &e
 }
 
-type Certificate struct {
+type InputAzureBlobCertificate struct {
 	// The certificate you registered as credentials for your app in the Azure portal
 	CertificateName string `json:"certificateName"`
 }
 
-func (o *Certificate) GetCertificateName() string {
+func (o *InputAzureBlobCertificate) GetCertificateName() string {
 	if o == nil {
 		return ""
 	}
@@ -240,8 +240,8 @@ type InputAzureBlob struct {
 	// Endpoint suffix for the service URL. Takes precedence over the Azure Cloud setting. Defaults to core.windows.net.
 	EndpointSuffix *string `json:"endpointSuffix,omitempty"`
 	// Select or create a stored text secret
-	ClientTextSecret *string      `json:"clientTextSecret,omitempty"`
-	Certificate      *Certificate `json:"certificate,omitempty"`
+	ClientTextSecret *string                    `json:"clientTextSecret,omitempty"`
+	Certificate      *InputAzureBlobCertificate `json:"certificate,omitempty"`
 }
 
 func (i InputAzureBlob) MarshalJSON() ([]byte, error) {
@@ -479,7 +479,7 @@ func (o *InputAzureBlob) GetClientTextSecret() *string {
 	return o.ClientTextSecret
 }
 
-func (o *InputAzureBlob) GetCertificate() *Certificate {
+func (o *InputAzureBlob) GetCertificate() *InputAzureBlobCertificate {
 	if o == nil {
 		return nil
 	}

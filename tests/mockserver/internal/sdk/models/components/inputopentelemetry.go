@@ -282,15 +282,15 @@ func (e InputOpenTelemetryProtocol) ToPointer() *InputOpenTelemetryProtocol {
 	return &e
 }
 
-// OTLPVersion - The version of OTLP Protobuf definitions to use when interpreting received data
-type OTLPVersion string
+// InputOpenTelemetryOTLPVersion - The version of OTLP Protobuf definitions to use when interpreting received data
+type InputOpenTelemetryOTLPVersion string
 
 const (
-	OTLPVersionZeroDot10Dot0 OTLPVersion = "0.10.0"
-	OTLPVersionOneDot3Dot1   OTLPVersion = "1.3.1"
+	InputOpenTelemetryOTLPVersionZeroDot10Dot0 InputOpenTelemetryOTLPVersion = "0.10.0"
+	InputOpenTelemetryOTLPVersionOneDot3Dot1   InputOpenTelemetryOTLPVersion = "1.3.1"
 )
 
-func (e OTLPVersion) ToPointer() *OTLPVersion {
+func (e InputOpenTelemetryOTLPVersion) ToPointer() *InputOpenTelemetryOTLPVersion {
 	return &e
 }
 
@@ -421,7 +421,7 @@ type InputOpenTelemetry struct {
 	// Enable to extract each incoming Gauge or IntGauge metric to multiple events, one per data point
 	ExtractMetrics *bool `default:"false" json:"extractMetrics"`
 	// The version of OTLP Protobuf definitions to use when interpreting received data
-	OtlpVersion *OTLPVersion `default:"0.10.0" json:"otlpVersion"`
+	OtlpVersion *InputOpenTelemetryOTLPVersion `default:"0.10.0" json:"otlpVersion"`
 	// OpenTelemetry authentication type
 	AuthType *InputOpenTelemetryAuthenticationType `default:"none" json:"authType"`
 	// Fields to add to events from this input
@@ -657,7 +657,7 @@ func (o *InputOpenTelemetry) GetExtractMetrics() *bool {
 	return o.ExtractMetrics
 }
 
-func (o *InputOpenTelemetry) GetOtlpVersion() *OTLPVersion {
+func (o *InputOpenTelemetry) GetOtlpVersion() *InputOpenTelemetryOTLPVersion {
 	if o == nil {
 		return nil
 	}

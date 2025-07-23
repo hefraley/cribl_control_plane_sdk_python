@@ -13,13 +13,22 @@ import (
 func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *tracking.RequestTracker) []*GeneratedHandler {
 	return []*GeneratedHandler{
 		NewGeneratedHandler(ctx, http.MethodDelete, "/system/inputs/{id}", pathDeleteSystemInputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodDelete, "/system/outputs/{id}", pathDeleteSystemOutputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodDelete, "/system/outputs/{id}/pq", pathDeleteSystemOutputsIDPq(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/health", pathGetHealth(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/system/inputs", pathGetSystemInputs(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/system/inputs/{id}", pathGetSystemInputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/outputs", pathGetSystemOutputs(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/outputs/{id}", pathGetSystemOutputsID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/outputs/{id}/pq", pathGetSystemOutputsIDPq(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/system/outputs/{id}/samples", pathGetSystemOutputsIDSamples(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}", pathPatchSystemInputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}/hectoken/{token}", pathPatchSystemInputsIDHectokenToken(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPatch, "/system/outputs/{id}", pathPatchSystemOutputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/auth/login", pathPostAuthLogin(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/system/inputs", pathPostSystemInputs(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/system/inputs/{id}/hectoken", pathPostSystemInputsIDHectoken(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/system/outputs", pathPostSystemOutputs(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/system/outputs/{id}/test", pathPostSystemOutputsIDTest(dir, rt)),
 	}
 }

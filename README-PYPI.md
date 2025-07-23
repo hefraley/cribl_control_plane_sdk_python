@@ -199,6 +199,18 @@ with CriblControlPlane(
 * [create_input_hec_token_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/inputs/README.md#create_input_hec_token_by_id) - Add token and optional metadata to an existing hec input
 * [update_input_hec_token_by_id_and_token](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/inputs/README.md#update_input_hec_token_by_id_and_token) - Update token metadata on existing hec input
 
+### [outputs](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md)
+
+* [list_output](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#list_output) - Get a list of Output objects
+* [create_output](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#create_output) - Create Output
+* [get_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_by_id) - Get Output by ID
+* [update_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#update_output_by_id) - Update Output
+* [delete_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#delete_output_by_id) - Delete Output
+* [delete_output_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#delete_output_pq_by_id) - Clears destination persistent queue
+* [get_output_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_pq_by_id) - Retrieves status of latest clear PQ job for an output
+* [get_output_samples_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_samples_by_id) - Retrieve samples data for the specified output. Used to get sample data for the test action.
+* [create_output_test_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#create_output_test_by_id) - Send sample data to an output to validate configuration or test connectivity
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -301,10 +313,11 @@ with CriblControlPlane(
 ```
 
 ### Error Classes
-**Primary error:**
+**Primary errors:**
 * [`CriblControlPlaneError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/criblcontrolplaneerror.py): The base class for HTTP error responses.
+  * [`Error`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/error.py): Unexpected error. Status code `500`. *
 
-<details><summary>Less common errors (7)</summary>
+<details><summary>Less common errors (6)</summary>
 
 <br />
 
@@ -315,8 +328,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`Error`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/error.py): Unexpected error. Status code `500`. Applicable to 7 of 9 methods.*
-* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 9 methods.*
+* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 18 methods.*
 * [`ResponseValidationError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

@@ -136,16 +136,16 @@ func (o *InputGooglePubsubPq) GetCompress() *InputGooglePubsubCompression {
 	return o.Compress
 }
 
-// GoogleAuthenticationMethod - Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
-type GoogleAuthenticationMethod string
+// InputGooglePubsubGoogleAuthenticationMethod - Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
+type InputGooglePubsubGoogleAuthenticationMethod string
 
 const (
-	GoogleAuthenticationMethodAuto   GoogleAuthenticationMethod = "auto"
-	GoogleAuthenticationMethodManual GoogleAuthenticationMethod = "manual"
-	GoogleAuthenticationMethodSecret GoogleAuthenticationMethod = "secret"
+	InputGooglePubsubGoogleAuthenticationMethodAuto   InputGooglePubsubGoogleAuthenticationMethod = "auto"
+	InputGooglePubsubGoogleAuthenticationMethodManual InputGooglePubsubGoogleAuthenticationMethod = "manual"
+	InputGooglePubsubGoogleAuthenticationMethodSecret InputGooglePubsubGoogleAuthenticationMethod = "secret"
 )
 
-func (e GoogleAuthenticationMethod) ToPointer() *GoogleAuthenticationMethod {
+func (e InputGooglePubsubGoogleAuthenticationMethod) ToPointer() *InputGooglePubsubGoogleAuthenticationMethod {
 	return &e
 }
 
@@ -198,7 +198,7 @@ type InputGooglePubsub struct {
 	// Region to retrieve messages from. Select 'default' to allow Google to auto-select the nearest region. When using ordered delivery, the selected region must be allowed by message storage policy.
 	Region *string `json:"region,omitempty"`
 	// Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
-	GoogleAuthMethod *GoogleAuthenticationMethod `default:"manual" json:"googleAuthMethod"`
+	GoogleAuthMethod *InputGooglePubsubGoogleAuthenticationMethod `default:"manual" json:"googleAuthMethod"`
 	// Contents of service account credentials (JSON keys) file downloaded from Google Cloud. To upload a file, click the upload button at this field's upper right.
 	ServiceAccountCredentials *string `json:"serviceAccountCredentials,omitempty"`
 	// Select or create a stored text secret
@@ -332,7 +332,7 @@ func (o *InputGooglePubsub) GetRegion() *string {
 	return o.Region
 }
 
-func (o *InputGooglePubsub) GetGoogleAuthMethod() *GoogleAuthenticationMethod {
+func (o *InputGooglePubsub) GetGoogleAuthMethod() *InputGooglePubsubGoogleAuthenticationMethod {
 	if o == nil {
 		return nil
 	}
