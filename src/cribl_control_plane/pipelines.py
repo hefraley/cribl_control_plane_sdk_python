@@ -6,23 +6,23 @@ from cribl_control_plane._hooks import HookContext
 from cribl_control_plane.types import OptionalNullable, UNSET
 from cribl_control_plane.utils import get_security_from_env
 from cribl_control_plane.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, Dict, List, Mapping, Optional, Union
+from typing import Any, Mapping, Optional, Union
 
 
-class RoutesSDK(BaseSDK):
-    r"""Actions related to Routes"""
+class Pipelines(BaseSDK):
+    r"""Actions related to Pipelines"""
 
-    def list_routes(
+    def list_pipeline(
         self,
         *,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ListRoutesResponse:
-        r"""Get a list of Routes objects
+    ) -> models.ListPipelineResponse:
+        r"""Get a list of Pipeline objects
 
-        Get a list of Routes objects
+        Get a list of Pipeline objects
 
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -40,7 +40,7 @@ class RoutesSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
         req = self._build_request(
             method="GET",
-            path="/routes",
+            path="/pipelines",
             base_url=base_url,
             url_variables=url_variables,
             request=None,
@@ -66,7 +66,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="listRoutes",
+                operation_id="listPipeline",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -79,7 +79,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ListRoutesResponse, http_res)
+            return unmarshal_json_response(models.ListPipelineResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -92,17 +92,17 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def list_routes_async(
+    async def list_pipeline_async(
         self,
         *,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ListRoutesResponse:
-        r"""Get a list of Routes objects
+    ) -> models.ListPipelineResponse:
+        r"""Get a list of Pipeline objects
 
-        Get a list of Routes objects
+        Get a list of Pipeline objects
 
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -120,7 +120,7 @@ class RoutesSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
         req = self._build_request_async(
             method="GET",
-            path="/routes",
+            path="/pipelines",
             base_url=base_url,
             url_variables=url_variables,
             request=None,
@@ -146,7 +146,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="listRoutes",
+                operation_id="listPipeline",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -159,7 +159,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ListRoutesResponse, http_res)
+            return unmarshal_json_response(models.ListPipelineResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -172,7 +172,193 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def get_routes_by_id(
+    def create_pipeline(
+        self,
+        *,
+        id: str,
+        conf: Union[models.Conf, models.ConfTypedDict],
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreatePipelineResponse:
+        r"""Create Pipeline
+
+        Create Pipeline
+
+        :param id:
+        :param conf:
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.Pipeline(
+            id=id,
+            conf=utils.get_pydantic_model(conf, models.Conf),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/pipelines",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request, False, False, "json", models.Pipeline
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="createPipeline",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["401", "4XX", "500", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.CreatePipelineResponse, http_res)
+        if utils.match_response(http_res, "500", "application/json"):
+            response_data = unmarshal_json_response(errors.ErrorData, http_res)
+            raise errors.Error(response_data, http_res)
+        if utils.match_response(http_res, ["401", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise errors.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise errors.APIError("API error occurred", http_res, http_res_text)
+
+        raise errors.APIError("Unexpected response received", http_res)
+
+    async def create_pipeline_async(
+        self,
+        *,
+        id: str,
+        conf: Union[models.Conf, models.ConfTypedDict],
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreatePipelineResponse:
+        r"""Create Pipeline
+
+        Create Pipeline
+
+        :param id:
+        :param conf:
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.Pipeline(
+            id=id,
+            conf=utils.get_pydantic_model(conf, models.Conf),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/pipelines",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request, False, False, "json", models.Pipeline
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="createPipeline",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["401", "4XX", "500", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.CreatePipelineResponse, http_res)
+        if utils.match_response(http_res, "500", "application/json"):
+            response_data = unmarshal_json_response(errors.ErrorData, http_res)
+            raise errors.Error(response_data, http_res)
+        if utils.match_response(http_res, ["401", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise errors.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise errors.APIError("API error occurred", http_res, http_res_text)
+
+        raise errors.APIError("Unexpected response received", http_res)
+
+    def get_pipeline_by_id(
         self,
         *,
         id: str,
@@ -180,10 +366,10 @@ class RoutesSDK(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetRoutesByIDResponse:
-        r"""Get Routes by ID
+    ) -> models.GetPipelineByIDResponse:
+        r"""Get Pipeline by ID
 
-        Get Routes by ID
+        Get Pipeline by ID
 
         :param id: Unique ID to GET
         :param retries: Override the default retry configuration for this method
@@ -201,13 +387,13 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetRoutesByIDRequest(
+        request = models.GetPipelineByIDRequest(
             id=id,
         )
 
         req = self._build_request(
             method="GET",
-            path="/routes/{id}",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -233,7 +419,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="getRoutesById",
+                operation_id="getPipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -246,7 +432,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.GetRoutesByIDResponse, http_res)
+            return unmarshal_json_response(models.GetPipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -259,7 +445,7 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def get_routes_by_id_async(
+    async def get_pipeline_by_id_async(
         self,
         *,
         id: str,
@@ -267,10 +453,10 @@ class RoutesSDK(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetRoutesByIDResponse:
-        r"""Get Routes by ID
+    ) -> models.GetPipelineByIDResponse:
+        r"""Get Pipeline by ID
 
-        Get Routes by ID
+        Get Pipeline by ID
 
         :param id: Unique ID to GET
         :param retries: Override the default retry configuration for this method
@@ -288,13 +474,13 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetRoutesByIDRequest(
+        request = models.GetPipelineByIDRequest(
             id=id,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/routes/{id}",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -320,7 +506,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="getRoutesById",
+                operation_id="getPipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -333,7 +519,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.GetRoutesByIDResponse, http_res)
+            return unmarshal_json_response(models.GetPipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -346,36 +532,24 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def update_routes_by_id(
+    def update_pipeline_by_id(
         self,
         *,
         id_param: str,
-        routes: Union[
-            List[models.RoutesRouteInput], List[models.RoutesRouteInputTypedDict]
-        ],
-        id: Optional[str] = None,
-        groups: Optional[
-            Union[
-                Dict[str, models.RoutesGroups], Dict[str, models.RoutesGroupsTypedDict]
-            ]
-        ] = None,
-        comments: Optional[
-            Union[List[models.Comment], List[models.CommentTypedDict]]
-        ] = None,
+        id: str,
+        conf: Union[models.Conf, models.ConfTypedDict],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.UpdateRoutesByIDResponse:
-        r"""Update Routes
+    ) -> models.UpdatePipelineByIDResponse:
+        r"""Update Pipeline
 
-        Update Routes
+        Update Pipeline
 
         :param id_param: Unique ID to PATCH
-        :param routes: Pipeline routing rules
-        :param id: Routes ID
-        :param groups:
-        :param comments: Comments
+        :param id:
+        :param conf:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -391,23 +565,17 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.UpdateRoutesByIDRequest(
+        request = models.UpdatePipelineByIDRequest(
             id_param=id_param,
-            routes=models.RoutesInput(
+            pipeline=models.Pipeline(
                 id=id,
-                routes=utils.get_pydantic_model(routes, List[models.RoutesRouteInput]),
-                groups=utils.get_pydantic_model(
-                    groups, Optional[Dict[str, models.RoutesGroups]]
-                ),
-                comments=utils.get_pydantic_model(
-                    comments, Optional[List[models.Comment]]
-                ),
+                conf=utils.get_pydantic_model(conf, models.Conf),
             ),
         )
 
         req = self._build_request(
             method="PATCH",
-            path="/routes/{id}",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -419,7 +587,7 @@ class RoutesSDK(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.routes, False, False, "json", models.RoutesInput
+                request.pipeline, False, False, "json", models.Pipeline
             ),
             timeout_ms=timeout_ms,
         )
@@ -436,7 +604,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="updateRoutesById",
+                operation_id="updatePipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -449,7 +617,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.UpdateRoutesByIDResponse, http_res)
+            return unmarshal_json_response(models.UpdatePipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -462,36 +630,24 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def update_routes_by_id_async(
+    async def update_pipeline_by_id_async(
         self,
         *,
         id_param: str,
-        routes: Union[
-            List[models.RoutesRouteInput], List[models.RoutesRouteInputTypedDict]
-        ],
-        id: Optional[str] = None,
-        groups: Optional[
-            Union[
-                Dict[str, models.RoutesGroups], Dict[str, models.RoutesGroupsTypedDict]
-            ]
-        ] = None,
-        comments: Optional[
-            Union[List[models.Comment], List[models.CommentTypedDict]]
-        ] = None,
+        id: str,
+        conf: Union[models.Conf, models.ConfTypedDict],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.UpdateRoutesByIDResponse:
-        r"""Update Routes
+    ) -> models.UpdatePipelineByIDResponse:
+        r"""Update Pipeline
 
-        Update Routes
+        Update Pipeline
 
         :param id_param: Unique ID to PATCH
-        :param routes: Pipeline routing rules
-        :param id: Routes ID
-        :param groups:
-        :param comments: Comments
+        :param id:
+        :param conf:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -507,23 +663,17 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.UpdateRoutesByIDRequest(
+        request = models.UpdatePipelineByIDRequest(
             id_param=id_param,
-            routes=models.RoutesInput(
+            pipeline=models.Pipeline(
                 id=id,
-                routes=utils.get_pydantic_model(routes, List[models.RoutesRouteInput]),
-                groups=utils.get_pydantic_model(
-                    groups, Optional[Dict[str, models.RoutesGroups]]
-                ),
-                comments=utils.get_pydantic_model(
-                    comments, Optional[List[models.Comment]]
-                ),
+                conf=utils.get_pydantic_model(conf, models.Conf),
             ),
         )
 
         req = self._build_request_async(
             method="PATCH",
-            path="/routes/{id}",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -535,7 +685,7 @@ class RoutesSDK(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.routes, False, False, "json", models.RoutesInput
+                request.pipeline, False, False, "json", models.Pipeline
             ),
             timeout_ms=timeout_ms,
         )
@@ -552,7 +702,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="updateRoutesById",
+                operation_id="updatePipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -565,7 +715,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.UpdateRoutesByIDResponse, http_res)
+            return unmarshal_json_response(models.UpdatePipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -578,22 +728,20 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    def create_routes_append_by_id(
+    def delete_pipeline_by_id(
         self,
         *,
         id: str,
-        request_body: Union[List[models.RouteConf], List[models.RouteConfTypedDict]],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CreateRoutesAppendByIDResponse:
-        r"""Appends routes to the end of the routing table
+    ) -> models.DeletePipelineByIDResponse:
+        r"""Delete Pipeline
 
-        Appends routes to the end of the routing table
+        Delete Pipeline
 
-        :param id: the route table to be appended to - currently default is the only supported value
-        :param request_body: RouteDefinitions object
+        :param id: Unique ID to DELETE
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -609,27 +757,23 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.CreateRoutesAppendByIDRequest(
+        request = models.DeletePipelineByIDRequest(
             id=id,
-            request_body=utils.get_pydantic_model(request_body, List[models.RouteConf]),
         )
 
         req = self._build_request(
-            method="POST",
-            path="/routes/{id}/append",
+            method="DELETE",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body, False, False, "json", List[models.RouteConf]
-            ),
             timeout_ms=timeout_ms,
         )
 
@@ -645,7 +789,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="createRoutesAppendById",
+                operation_id="deletePipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -658,9 +802,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(
-                models.CreateRoutesAppendByIDResponse, http_res
-            )
+            return unmarshal_json_response(models.DeletePipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)
@@ -673,22 +815,20 @@ class RoutesSDK(BaseSDK):
 
         raise errors.APIError("Unexpected response received", http_res)
 
-    async def create_routes_append_by_id_async(
+    async def delete_pipeline_by_id_async(
         self,
         *,
         id: str,
-        request_body: Union[List[models.RouteConf], List[models.RouteConfTypedDict]],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CreateRoutesAppendByIDResponse:
-        r"""Appends routes to the end of the routing table
+    ) -> models.DeletePipelineByIDResponse:
+        r"""Delete Pipeline
 
-        Appends routes to the end of the routing table
+        Delete Pipeline
 
-        :param id: the route table to be appended to - currently default is the only supported value
-        :param request_body: RouteDefinitions object
+        :param id: Unique ID to DELETE
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -704,27 +844,23 @@ class RoutesSDK(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.CreateRoutesAppendByIDRequest(
+        request = models.DeletePipelineByIDRequest(
             id=id,
-            request_body=utils.get_pydantic_model(request_body, List[models.RouteConf]),
         )
 
         req = self._build_request_async(
-            method="POST",
-            path="/routes/{id}/append",
+            method="DELETE",
+            path="/pipelines/{id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body, False, False, "json", List[models.RouteConf]
-            ),
             timeout_ms=timeout_ms,
         )
 
@@ -740,7 +876,7 @@ class RoutesSDK(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="createRoutesAppendById",
+                operation_id="deletePipelineById",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -753,9 +889,7 @@ class RoutesSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(
-                models.CreateRoutesAppendByIDResponse, http_res
-            )
+            return unmarshal_json_response(models.DeletePipelineByIDResponse, http_res)
         if utils.match_response(http_res, "500", "application/json"):
             response_data = unmarshal_json_response(errors.ErrorData, http_res)
             raise errors.Error(response_data, http_res)

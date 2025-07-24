@@ -1,20 +1,21 @@
-# RoutesSDK
-(*routes*)
+# Pipelines
+(*pipelines*)
 
 ## Overview
 
-Actions related to Routes
+Actions related to Pipelines
 
 ### Available Operations
 
-* [list_routes](#list_routes) - Get a list of Routes objects
-* [get_routes_by_id](#get_routes_by_id) - Get Routes by ID
-* [update_routes_by_id](#update_routes_by_id) - Update Routes
-* [create_routes_append_by_id](#create_routes_append_by_id) - Appends routes to the end of the routing table
+* [list_pipeline](#list_pipeline) - Get a list of Pipeline objects
+* [create_pipeline](#create_pipeline) - Create Pipeline
+* [get_pipeline_by_id](#get_pipeline_by_id) - Get Pipeline by ID
+* [update_pipeline_by_id](#update_pipeline_by_id) - Update Pipeline
+* [delete_pipeline_by_id](#delete_pipeline_by_id) - Delete Pipeline
 
-## list_routes
+## list_pipeline
 
-Get a list of Routes objects
+Get a list of Pipeline objects
 
 ### Example Usage
 
@@ -30,7 +31,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.routes.list_routes()
+    res = ccp_client.pipelines.list_pipeline()
 
     # Handle response
     print(res)
@@ -45,7 +46,7 @@ with CriblControlPlane(
 
 ### Response
 
-**[models.ListRoutesResponse](../../models/listroutesresponse.md)**
+**[models.ListPipelineResponse](../../models/listpipelineresponse.md)**
 
 ### Errors
 
@@ -54,9 +55,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## get_routes_by_id
+## create_pipeline
 
-Get Routes by ID
+Create Pipeline
 
 ### Example Usage
 
@@ -72,7 +73,51 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.routes.get_routes_by_id(id="<id>")
+    res = ccp_client.pipelines.create_pipeline(id="<id>", conf={})
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `id`                                                                | *str*                                                               | :heavy_check_mark:                                                  | N/A                                                                 |
+| `conf`                                                              | [models.Conf](../../models/conf.md)                                 | :heavy_check_mark:                                                  | N/A                                                                 |
+| `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
+
+### Response
+
+**[models.CreatePipelineResponse](../../models/createpipelineresponse.md)**
+
+### Errors
+
+| Error Type       | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| errors.Error     | 500              | application/json |
+| errors.APIError  | 4XX, 5XX         | \*/\*            |
+
+## get_pipeline_by_id
+
+Get Pipeline by ID
+
+### Example Usage
+
+```python
+from cribl_control_plane import CriblControlPlane, models
+import os
+
+
+with CriblControlPlane(
+    server_url="https://api.example.com",
+    security=models.Security(
+        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
+    ),
+) as ccp_client:
+
+    res = ccp_client.pipelines.get_pipeline_by_id(id="<id>")
 
     # Handle response
     print(res)
@@ -88,7 +133,7 @@ with CriblControlPlane(
 
 ### Response
 
-**[models.GetRoutesByIDResponse](../../models/getroutesbyidresponse.md)**
+**[models.GetPipelineByIDResponse](../../models/getpipelinebyidresponse.md)**
 
 ### Errors
 
@@ -97,9 +142,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## update_routes_by_id
+## update_pipeline_by_id
 
-Update Routes
+Update Pipeline
 
 ### Example Usage
 
@@ -115,7 +160,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.routes.update_routes_by_id(id_param="<value>", routes=[])
+    res = ccp_client.pipelines.update_pipeline_by_id(id_param="<value>", id="<id>", conf={})
 
     # Handle response
     print(res)
@@ -127,15 +172,13 @@ with CriblControlPlane(
 | Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | `id_param`                                                          | *str*                                                               | :heavy_check_mark:                                                  | Unique ID to PATCH                                                  |
-| `routes`                                                            | List[[models.RoutesRouteInput](../../models/routesrouteinput.md)]   | :heavy_check_mark:                                                  | Pipeline routing rules                                              |
-| `id`                                                                | *Optional[str]*                                                     | :heavy_minus_sign:                                                  | Routes ID                                                           |
-| `groups`                                                            | Dict[str, [models.RoutesGroups](../../models/routesgroups.md)]      | :heavy_minus_sign:                                                  | N/A                                                                 |
-| `comments`                                                          | List[[models.Comment](../../models/comment.md)]                     | :heavy_minus_sign:                                                  | Comments                                                            |
+| `id`                                                                | *str*                                                               | :heavy_check_mark:                                                  | N/A                                                                 |
+| `conf`                                                              | [models.Conf](../../models/conf.md)                                 | :heavy_check_mark:                                                  | N/A                                                                 |
 | `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
-**[models.UpdateRoutesByIDResponse](../../models/updateroutesbyidresponse.md)**
+**[models.UpdatePipelineByIDResponse](../../models/updatepipelinebyidresponse.md)**
 
 ### Errors
 
@@ -144,9 +187,9 @@ with CriblControlPlane(
 | errors.Error     | 500              | application/json |
 | errors.APIError  | 4XX, 5XX         | \*/\*            |
 
-## create_routes_append_by_id
+## delete_pipeline_by_id
 
-Appends routes to the end of the routing table
+Delete Pipeline
 
 ### Example Usage
 
@@ -162,7 +205,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.routes.create_routes_append_by_id(id="<id>", request_body=[])
+    res = ccp_client.pipelines.delete_pipeline_by_id(id="<id>")
 
     # Handle response
     print(res)
@@ -171,15 +214,14 @@ with CriblControlPlane(
 
 ### Parameters
 
-| Parameter                                                                         | Type                                                                              | Required                                                                          | Description                                                                       |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `id`                                                                              | *str*                                                                             | :heavy_check_mark:                                                                | the route table to be appended to - currently default is the only supported value |
-| `request_body`                                                                    | List[[models.RouteConf](../../models/routeconf.md)]                               | :heavy_check_mark:                                                                | RouteDefinitions object                                                           |
-| `retries`                                                                         | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                  | :heavy_minus_sign:                                                                | Configuration to override the default retry behavior of the client.               |
+| Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `id`                                                                | *str*                                                               | :heavy_check_mark:                                                  | Unique ID to DELETE                                                 |
+| `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
-**[models.CreateRoutesAppendByIDResponse](../../models/createroutesappendbyidresponse.md)**
+**[models.DeletePipelineByIDResponse](../../models/deletepipelinebyidresponse.md)**
 
 ### Errors
 
