@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class GroupsTypedDict(TypedDict):
+class RoutesGroupsTypedDict(TypedDict):
     name: str
     description: NotRequired[str]
     r"""Short description of this group"""
@@ -18,7 +18,7 @@ class GroupsTypedDict(TypedDict):
     r"""Whether this group is disabled"""
 
 
-class Groups(BaseModel):
+class RoutesGroups(BaseModel):
     name: str
 
     description: Optional[str] = None
@@ -56,7 +56,7 @@ class RoutesTypedDict(TypedDict):
     r"""Pipeline routing rules"""
     id: NotRequired[str]
     r"""Routes ID"""
-    groups: NotRequired[Dict[str, GroupsTypedDict]]
+    groups: NotRequired[Dict[str, RoutesGroupsTypedDict]]
     comments: NotRequired[List[CommentTypedDict]]
     r"""Comments"""
 
@@ -68,7 +68,7 @@ class Routes(BaseModel):
     id: Optional[str] = None
     r"""Routes ID"""
 
-    groups: Optional[Dict[str, Groups]] = None
+    groups: Optional[Dict[str, RoutesGroups]] = None
 
     comments: Optional[List[Comment]] = None
     r"""Comments"""
@@ -79,7 +79,7 @@ class RoutesInputTypedDict(TypedDict):
     r"""Pipeline routing rules"""
     id: NotRequired[str]
     r"""Routes ID"""
-    groups: NotRequired[Dict[str, GroupsTypedDict]]
+    groups: NotRequired[Dict[str, RoutesGroupsTypedDict]]
     comments: NotRequired[List[CommentTypedDict]]
     r"""Comments"""
 
@@ -91,7 +91,7 @@ class RoutesInput(BaseModel):
     id: Optional[str] = None
     r"""Routes ID"""
 
-    groups: Optional[Dict[str, Groups]] = None
+    groups: Optional[Dict[str, RoutesGroups]] = None
 
     comments: Optional[List[Comment]] = None
     r"""Comments"""

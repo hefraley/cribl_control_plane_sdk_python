@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from cribl_control_plane.auth_sdk import AuthSDK
     from cribl_control_plane.health import Health
     from cribl_control_plane.outputs import Outputs
+    from cribl_control_plane.pipelines import Pipelines
     from cribl_control_plane.routes_sdk import RoutesSDK
     from cribl_control_plane.sources import Sources
 
@@ -28,6 +29,8 @@ class CriblControlPlane(BaseSDK):
     r"""Actions related to Sources"""
     outputs: "Outputs"
     r"""Actions related to outputs"""
+    pipelines: "Pipelines"
+    r"""Actions related to Pipelines"""
     routes: "RoutesSDK"
     r"""Actions related to Routes"""
     auth: "AuthSDK"
@@ -37,6 +40,7 @@ class CriblControlPlane(BaseSDK):
     _sub_sdk_map = {
         "sources": ("cribl_control_plane.sources", "Sources"),
         "outputs": ("cribl_control_plane.outputs", "Outputs"),
+        "pipelines": ("cribl_control_plane.pipelines", "Pipelines"),
         "routes": ("cribl_control_plane.routes_sdk", "RoutesSDK"),
         "auth": ("cribl_control_plane.auth_sdk", "AuthSDK"),
         "health": ("cribl_control_plane.health", "Health"),

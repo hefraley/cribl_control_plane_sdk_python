@@ -6,7 +6,7 @@ import (
 	"mockserver/internal/sdk/utils"
 )
 
-type Groups struct {
+type RoutesGroups struct {
 	Name string `json:"name"`
 	// Short description of this group
 	Description *string `json:"description,omitempty"`
@@ -14,21 +14,21 @@ type Groups struct {
 	Disabled *bool `json:"disabled,omitempty"`
 }
 
-func (o *Groups) GetName() string {
+func (o *RoutesGroups) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *Groups) GetDescription() *string {
+func (o *RoutesGroups) GetDescription() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Description
 }
 
-func (o *Groups) GetDisabled() *bool {
+func (o *RoutesGroups) GetDisabled() *bool {
 	if o == nil {
 		return nil
 	}
@@ -70,8 +70,8 @@ type Routes struct {
 	// Routes ID
 	ID *string `json:"id,omitempty"`
 	// Pipeline routing rules
-	Routes []RoutesRoute     `json:"routes"`
-	Groups map[string]Groups `json:"groups,omitempty"`
+	Routes []RoutesRoute           `json:"routes"`
+	Groups map[string]RoutesGroups `json:"groups,omitempty"`
 	// Comments
 	Comments []Comment `json:"comments,omitempty"`
 }
@@ -90,7 +90,7 @@ func (o *Routes) GetRoutes() []RoutesRoute {
 	return o.Routes
 }
 
-func (o *Routes) GetGroups() map[string]Groups {
+func (o *Routes) GetGroups() map[string]RoutesGroups {
 	if o == nil {
 		return nil
 	}
@@ -108,8 +108,8 @@ type RoutesInput struct {
 	// Routes ID
 	ID *string `json:"id,omitempty"`
 	// Pipeline routing rules
-	Routes []RoutesRouteInput `json:"routes"`
-	Groups map[string]Groups  `json:"groups,omitempty"`
+	Routes []RoutesRouteInput      `json:"routes"`
+	Groups map[string]RoutesGroups `json:"groups,omitempty"`
 	// Comments
 	Comments []Comment `json:"comments,omitempty"`
 }
@@ -128,7 +128,7 @@ func (o *RoutesInput) GetRoutes() []RoutesRouteInput {
 	return o.Routes
 }
 
-func (o *RoutesInput) GetGroups() map[string]Groups {
+func (o *RoutesInput) GetGroups() map[string]RoutesGroups {
 	if o == nil {
 		return nil
 	}
