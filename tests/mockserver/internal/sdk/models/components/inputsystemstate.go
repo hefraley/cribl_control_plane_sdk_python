@@ -248,23 +248,23 @@ func (o *HostInfo) GetEnable() *bool {
 	return o.Enable
 }
 
-// Routes - Creates events based on entries collected from the host’s network routes
-type Routes struct {
+// InputSystemStateRoutes - Creates events based on entries collected from the host’s network routes
+type InputSystemStateRoutes struct {
 	Enable *bool `default:"true" json:"enable"`
 }
 
-func (r Routes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+func (i InputSystemStateRoutes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (r *Routes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+func (i *InputSystemStateRoutes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Routes) GetEnable() *bool {
+func (o *InputSystemStateRoutes) GetEnable() *bool {
 	if o == nil {
 		return nil
 	}
@@ -419,7 +419,7 @@ type Collectors struct {
 	// Creates events based on the host system’s current state
 	Metadata *HostInfo `json:"metadata,omitempty"`
 	// Creates events based on entries collected from the host’s network routes
-	Routes *Routes `json:"routes,omitempty"`
+	Routes *InputSystemStateRoutes `json:"routes,omitempty"`
 	// Creates events for DNS resolvers and search entries
 	DNS *DNS `json:"dns,omitempty"`
 	// Creates events for local users and groups
@@ -462,7 +462,7 @@ func (o *Collectors) GetMetadata() *HostInfo {
 	return o.Metadata
 }
 
-func (o *Collectors) GetRoutes() *Routes {
+func (o *Collectors) GetRoutes() *InputSystemStateRoutes {
 	if o == nil {
 		return nil
 	}

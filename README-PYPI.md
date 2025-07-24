@@ -201,6 +201,13 @@ with CriblControlPlane(
 * [get_output_samples_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_samples_by_id) - Retrieve samples data for the specified output. Used to get sample data for the test action.
 * [create_output_test_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#create_output_test_by_id) - Send sample data to an output to validate configuration or test connectivity
 
+### [routes](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/routessdk/README.md)
+
+* [list_routes](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/routessdk/README.md#list_routes) - Get a list of Routes objects
+* [get_routes_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/routessdk/README.md#get_routes_by_id) - Get Routes by ID
+* [update_routes_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/routessdk/README.md#update_routes_by_id) - Update Routes
+* [create_routes_append_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/routessdk/README.md#create_routes_append_by_id) - Appends routes to the end of the routing table
+
 ### [sources](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/sources/README.md)
 
 * [list_source](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/sources/README.md#list_source) - Get a list of Source objects
@@ -328,7 +335,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 18 methods.*
+* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 22 methods.*
 * [`ResponseValidationError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

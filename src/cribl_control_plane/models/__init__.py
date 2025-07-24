@@ -25,6 +25,12 @@ if TYPE_CHECKING:
         CreateOutputTestByIDResponse,
         CreateOutputTestByIDResponseTypedDict,
     )
+    from .createroutesappendbyidop import (
+        CreateRoutesAppendByIDRequest,
+        CreateRoutesAppendByIDRequestTypedDict,
+        CreateRoutesAppendByIDResponse,
+        CreateRoutesAppendByIDResponseTypedDict,
+    )
     from .criblevent import CriblEvent, CriblEventTypedDict
     from .deleteinputbyidop import (
         DeleteInputByIDRequest,
@@ -67,6 +73,12 @@ if TYPE_CHECKING:
         GetOutputSamplesByIDRequestTypedDict,
         GetOutputSamplesByIDResponse,
         GetOutputSamplesByIDResponseTypedDict,
+    )
+    from .getroutesbyidop import (
+        GetRoutesByIDRequest,
+        GetRoutesByIDRequestTypedDict,
+        GetRoutesByIDResponse,
+        GetRoutesByIDResponseTypedDict,
     )
     from .healthstatus import HealthStatus, HealthStatusTypedDict, Role, Status
     from .input import Input, InputTypedDict
@@ -1138,6 +1150,8 @@ if TYPE_CHECKING:
         InputSystemStatePersistenceTypedDict,
         InputSystemStatePq,
         InputSystemStatePqTypedDict,
+        InputSystemStateRoutes,
+        InputSystemStateRoutesTypedDict,
         InputSystemStateType,
         InputSystemStateTypedDict,
         Interfaces,
@@ -1146,8 +1160,6 @@ if TYPE_CHECKING:
         ListeningPortsTypedDict,
         LoggedInUsers,
         LoggedInUsersTypedDict,
-        Routes,
-        RoutesTypedDict,
         Services,
         ServicesTypedDict,
         UsersAndGroups,
@@ -1313,6 +1325,7 @@ if TYPE_CHECKING:
     )
     from .listinputop import ListInputResponse, ListInputResponseTypedDict
     from .listoutputop import ListOutputResponse, ListOutputResponseTypedDict
+    from .listroutesop import ListRoutesResponse, ListRoutesResponseTypedDict
     from .logininfo import LoginInfo, LoginInfoTypedDict
     from .output import Output, OutputTypedDict
     from .outputazureblob import (
@@ -2567,6 +2580,20 @@ if TYPE_CHECKING:
         OutputXsiamURL,
         OutputXsiamURLTypedDict,
     )
+    from .routecloneconf import RouteCloneConf, RouteCloneConfTypedDict
+    from .routeconf import RouteConf, RouteConfTypedDict
+    from .routes import (
+        Comment,
+        CommentTypedDict,
+        Groups,
+        GroupsTypedDict,
+        Routes,
+        RoutesInput,
+        RoutesInputTypedDict,
+        RoutesTypedDict,
+    )
+    from .routesroute import RoutesRoute, RoutesRouteTypedDict
+    from .routesroute_input import RoutesRouteInput, RoutesRouteInputTypedDict
     from .schemeclientoauth import SchemeClientOauth, SchemeClientOauthTypedDict
     from .security import Security, SecurityTypedDict
     from .updatehectokenrequest import (
@@ -2593,6 +2620,12 @@ if TYPE_CHECKING:
         UpdateOutputByIDResponse,
         UpdateOutputByIDResponseTypedDict,
     )
+    from .updateroutesbyidop import (
+        UpdateRoutesByIDRequest,
+        UpdateRoutesByIDRequestTypedDict,
+        UpdateRoutesByIDResponse,
+        UpdateRoutesByIDResponseTypedDict,
+    )
 
 __all__ = [
     "AISIEMEndpointPath",
@@ -2616,6 +2649,8 @@ __all__ = [
     "CollectorsTypedDict",
     "ColumnMapping",
     "ColumnMappingTypedDict",
+    "Comment",
+    "CommentTypedDict",
     "Container",
     "ContainerMode",
     "ContainerTypedDict",
@@ -2631,6 +2666,10 @@ __all__ = [
     "CreateOutputTestByIDRequestTypedDict",
     "CreateOutputTestByIDResponse",
     "CreateOutputTestByIDResponseTypedDict",
+    "CreateRoutesAppendByIDRequest",
+    "CreateRoutesAppendByIDRequestTypedDict",
+    "CreateRoutesAppendByIDResponse",
+    "CreateRoutesAppendByIDResponseTypedDict",
     "CriblEvent",
     "CriblEventTypedDict",
     "CustomLabel",
@@ -2689,6 +2728,12 @@ __all__ = [
     "GetOutputSamplesByIDRequestTypedDict",
     "GetOutputSamplesByIDResponse",
     "GetOutputSamplesByIDResponseTypedDict",
+    "GetRoutesByIDRequest",
+    "GetRoutesByIDRequestTypedDict",
+    "GetRoutesByIDResponse",
+    "GetRoutesByIDResponseTypedDict",
+    "Groups",
+    "GroupsTypedDict",
     "HealthStatus",
     "HealthStatusTypedDict",
     "HostInfo",
@@ -3613,6 +3658,8 @@ __all__ = [
     "InputSystemStatePersistenceTypedDict",
     "InputSystemStatePq",
     "InputSystemStatePqTypedDict",
+    "InputSystemStateRoutes",
+    "InputSystemStateRoutesTypedDict",
     "InputSystemStateType",
     "InputSystemStateTypedDict",
     "InputTCP",
@@ -3757,6 +3804,8 @@ __all__ = [
     "ListInputResponseTypedDict",
     "ListOutputResponse",
     "ListOutputResponseTypedDict",
+    "ListRoutesResponse",
+    "ListRoutesResponseTypedDict",
     "ListeningPorts",
     "ListeningPortsTypedDict",
     "LogLabel",
@@ -4883,7 +4932,17 @@ __all__ = [
     "ResourceTypeLabel",
     "ResourceTypeLabelTypedDict",
     "Role",
+    "RouteCloneConf",
+    "RouteCloneConfTypedDict",
+    "RouteConf",
+    "RouteConfTypedDict",
     "Routes",
+    "RoutesInput",
+    "RoutesInputTypedDict",
+    "RoutesRoute",
+    "RoutesRouteInput",
+    "RoutesRouteInputTypedDict",
+    "RoutesRouteTypedDict",
     "RoutesTypedDict",
     "SNMPv3Authentication",
     "SNMPv3AuthenticationTypedDict",
@@ -4929,6 +4988,10 @@ __all__ = [
     "UpdateOutputByIDRequestTypedDict",
     "UpdateOutputByIDResponse",
     "UpdateOutputByIDResponseTypedDict",
+    "UpdateRoutesByIDRequest",
+    "UpdateRoutesByIDRequestTypedDict",
+    "UpdateRoutesByIDResponse",
+    "UpdateRoutesByIDResponseTypedDict",
     "UsersAndGroups",
     "UsersAndGroupsTypedDict",
     "V3User",
@@ -4955,6 +5018,10 @@ _dynamic_imports: dict[str, str] = {
     "CreateOutputTestByIDRequestTypedDict": ".createoutputtestbyidop",
     "CreateOutputTestByIDResponse": ".createoutputtestbyidop",
     "CreateOutputTestByIDResponseTypedDict": ".createoutputtestbyidop",
+    "CreateRoutesAppendByIDRequest": ".createroutesappendbyidop",
+    "CreateRoutesAppendByIDRequestTypedDict": ".createroutesappendbyidop",
+    "CreateRoutesAppendByIDResponse": ".createroutesappendbyidop",
+    "CreateRoutesAppendByIDResponseTypedDict": ".createroutesappendbyidop",
     "CriblEvent": ".criblevent",
     "CriblEventTypedDict": ".criblevent",
     "DeleteInputByIDRequest": ".deleteinputbyidop",
@@ -4985,6 +5052,10 @@ _dynamic_imports: dict[str, str] = {
     "GetOutputSamplesByIDRequestTypedDict": ".getoutputsamplesbyidop",
     "GetOutputSamplesByIDResponse": ".getoutputsamplesbyidop",
     "GetOutputSamplesByIDResponseTypedDict": ".getoutputsamplesbyidop",
+    "GetRoutesByIDRequest": ".getroutesbyidop",
+    "GetRoutesByIDRequestTypedDict": ".getroutesbyidop",
+    "GetRoutesByIDResponse": ".getroutesbyidop",
+    "GetRoutesByIDResponseTypedDict": ".getroutesbyidop",
     "HealthStatus": ".healthstatus",
     "HealthStatusTypedDict": ".healthstatus",
     "Role": ".healthstatus",
@@ -5958,6 +6029,8 @@ _dynamic_imports: dict[str, str] = {
     "InputSystemStatePersistenceTypedDict": ".inputsystemstate",
     "InputSystemStatePq": ".inputsystemstate",
     "InputSystemStatePqTypedDict": ".inputsystemstate",
+    "InputSystemStateRoutes": ".inputsystemstate",
+    "InputSystemStateRoutesTypedDict": ".inputsystemstate",
     "InputSystemStateType": ".inputsystemstate",
     "InputSystemStateTypedDict": ".inputsystemstate",
     "Interfaces": ".inputsystemstate",
@@ -5966,8 +6039,6 @@ _dynamic_imports: dict[str, str] = {
     "ListeningPortsTypedDict": ".inputsystemstate",
     "LoggedInUsers": ".inputsystemstate",
     "LoggedInUsersTypedDict": ".inputsystemstate",
-    "Routes": ".inputsystemstate",
-    "RoutesTypedDict": ".inputsystemstate",
     "Services": ".inputsystemstate",
     "ServicesTypedDict": ".inputsystemstate",
     "UsersAndGroups": ".inputsystemstate",
@@ -6120,6 +6191,8 @@ _dynamic_imports: dict[str, str] = {
     "ListInputResponseTypedDict": ".listinputop",
     "ListOutputResponse": ".listoutputop",
     "ListOutputResponseTypedDict": ".listoutputop",
+    "ListRoutesResponse": ".listroutesop",
+    "ListRoutesResponseTypedDict": ".listroutesop",
     "LoginInfo": ".logininfo",
     "LoginInfoTypedDict": ".logininfo",
     "Output": ".output",
@@ -7256,6 +7329,22 @@ _dynamic_imports: dict[str, str] = {
     "OutputXsiamTypedDict": ".outputxsiam",
     "OutputXsiamURL": ".outputxsiam",
     "OutputXsiamURLTypedDict": ".outputxsiam",
+    "RouteCloneConf": ".routecloneconf",
+    "RouteCloneConfTypedDict": ".routecloneconf",
+    "RouteConf": ".routeconf",
+    "RouteConfTypedDict": ".routeconf",
+    "Comment": ".routes",
+    "CommentTypedDict": ".routes",
+    "Groups": ".routes",
+    "GroupsTypedDict": ".routes",
+    "Routes": ".routes",
+    "RoutesInput": ".routes",
+    "RoutesInputTypedDict": ".routes",
+    "RoutesTypedDict": ".routes",
+    "RoutesRoute": ".routesroute",
+    "RoutesRouteTypedDict": ".routesroute",
+    "RoutesRouteInput": ".routesroute_input",
+    "RoutesRouteInputTypedDict": ".routesroute_input",
     "SchemeClientOauth": ".schemeclientoauth",
     "SchemeClientOauthTypedDict": ".schemeclientoauth",
     "Security": ".security",
@@ -7276,6 +7365,10 @@ _dynamic_imports: dict[str, str] = {
     "UpdateOutputByIDRequestTypedDict": ".updateoutputbyidop",
     "UpdateOutputByIDResponse": ".updateoutputbyidop",
     "UpdateOutputByIDResponseTypedDict": ".updateoutputbyidop",
+    "UpdateRoutesByIDRequest": ".updateroutesbyidop",
+    "UpdateRoutesByIDRequestTypedDict": ".updateroutesbyidop",
+    "UpdateRoutesByIDResponse": ".updateroutesbyidop",
+    "UpdateRoutesByIDResponseTypedDict": ".updateroutesbyidop",
 }
 
 

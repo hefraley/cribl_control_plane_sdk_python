@@ -355,3 +355,74 @@ workflows:
             type: simple
     x-speakeasy-test-group: outputs
     x-speakeasy-test-rebuild: true
+  - workflowId: listRoutes
+    steps:
+      - stepId: test
+        operationId: listRoutes
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: routes_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getRoutesById
+    steps:
+      - stepId: test
+        operationId: getRoutesById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: routes_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateRoutesById
+    steps:
+      - stepId: test
+        operationId: updateRoutesById
+        parameters:
+          - name: id
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            routes: []
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: routes_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: createRoutesAppendById
+    steps:
+      - stepId: test
+        operationId: createRoutesAppendById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload: []
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: routes_SDK
+    x-speakeasy-test-rebuild: true
