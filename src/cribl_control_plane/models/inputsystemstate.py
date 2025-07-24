@@ -151,13 +151,13 @@ class HostInfo(BaseModel):
     enable: Optional[bool] = True
 
 
-class RoutesTypedDict(TypedDict):
+class InputSystemStateRoutesTypedDict(TypedDict):
     r"""Creates events based on entries collected from the host’s network routes"""
 
     enable: NotRequired[bool]
 
 
-class Routes(BaseModel):
+class InputSystemStateRoutes(BaseModel):
     r"""Creates events based on entries collected from the host’s network routes"""
 
     enable: Optional[bool] = True
@@ -244,7 +244,7 @@ class CollectorsTypedDict(TypedDict):
     r"""Creates events for physical disks, partitions, and file systems"""
     metadata: NotRequired[HostInfoTypedDict]
     r"""Creates events based on the host system’s current state"""
-    routes: NotRequired[RoutesTypedDict]
+    routes: NotRequired[InputSystemStateRoutesTypedDict]
     r"""Creates events based on entries collected from the host’s network routes"""
     dns: NotRequired[DNSTypedDict]
     r"""Creates events for DNS resolvers and search entries"""
@@ -273,7 +273,7 @@ class Collectors(BaseModel):
     metadata: Optional[HostInfo] = None
     r"""Creates events based on the host system’s current state"""
 
-    routes: Optional[Routes] = None
+    routes: Optional[InputSystemStateRoutes] = None
     r"""Creates events based on entries collected from the host’s network routes"""
 
     dns: Optional[DNS] = None
