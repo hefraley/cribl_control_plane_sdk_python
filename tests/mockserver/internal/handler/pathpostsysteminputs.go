@@ -8,6 +8,7 @@ import (
 	"mockserver/internal/handler/assert"
 	"mockserver/internal/logging"
 	"mockserver/internal/sdk/models/operations"
+	"mockserver/internal/sdk/types"
 	"mockserver/internal/sdk/utils"
 	"mockserver/internal/tracking"
 	"net/http"
@@ -21,15 +22,15 @@ func pathPostSystemInputs(dir *logging.HTTPFileDirectory, rt *tracking.RequestTr
 		count := rt.GetRequestCount(test, instanceID)
 
 		switch fmt.Sprintf("%s[%d]", test, count) {
-		case "createInput[0]":
-			dir.HandlerFunc("createInput", testCreateInputCreateInput0)(w, req)
+		case "testInputs[1]":
+			dir.HandlerFunc("createInput", testCreateInputTestInputs1)(w, req)
 		default:
 			http.Error(w, fmt.Sprintf("Unknown test: %s[%d]", test, count), http.StatusBadRequest)
 		}
 	}
 }
 
-func testCreateInputCreateInput0(w http.ResponseWriter, req *http.Request) {
+func testCreateInputTestInputs1(w http.ResponseWriter, req *http.Request) {
 	if err := assert.SecurityAuthorizationHeader(req, true, "Bearer"); err != nil {
 		log.Printf("assertion error: %s\n", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
@@ -50,7 +51,9 @@ func testCreateInputCreateInput0(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var respBody *operations.CreateInputResponseBody = &operations.CreateInputResponseBody{}
+	var respBody *operations.CreateInputResponseBody = &operations.CreateInputResponseBody{
+		Count: types.Int64(1),
+	}
 	respBodyBytes, err := utils.MarshalJSON(respBody, "", true)
 
 	if err != nil {

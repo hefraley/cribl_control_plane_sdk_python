@@ -21,15 +21,15 @@ func pathGetSystemInputs(dir *logging.HTTPFileDirectory, rt *tracking.RequestTra
 		count := rt.GetRequestCount(test, instanceID)
 
 		switch fmt.Sprintf("%s[%d]", test, count) {
-		case "listInput[0]":
-			dir.HandlerFunc("listInput", testListInputListInput0)(w, req)
+		case "testInputs[0]":
+			dir.HandlerFunc("listInput", testListInputTestInputs0)(w, req)
 		default:
 			http.Error(w, fmt.Sprintf("Unknown test: %s[%d]", test, count), http.StatusBadRequest)
 		}
 	}
 }
 
-func testListInputListInput0(w http.ResponseWriter, req *http.Request) {
+func testListInputTestInputs0(w http.ResponseWriter, req *http.Request) {
 	if err := assert.SecurityAuthorizationHeader(req, true, "Bearer"); err != nil {
 		log.Printf("assertion error: %s\n", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)

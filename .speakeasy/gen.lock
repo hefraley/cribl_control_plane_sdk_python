@@ -5,8 +5,8 @@ management:
   docVersion: 4.14.0-alpha.1753295778758-ebd92ad1
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.12
-  configChecksum: c2881cb56860a6efb694d3402e5ed829
+  releaseVersion: 0.0.13
+  configChecksum: a44158829f59961f04bf0cb26db43818
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -2082,9 +2082,9 @@ generatedFiles:
   - tests/mockserver/internal/server/templates/log/style.css.tmpl
   - tests/mockserver/internal/tracking/requesttracker.go
   - tests/mockserver/main.go
-  - tests/test_auth_sdk.py
   - tests/test_client.py
   - tests/test_health.py
+  - tests/test_login.py
   - tests/test_outputs.py
   - tests/test_sources.py
 examples:

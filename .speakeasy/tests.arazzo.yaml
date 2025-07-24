@@ -15,79 +15,48 @@ workflows:
         successCriteria:
           - condition: $statusCode == 200
           - condition: $response.header.Content-Type == application/json
-          - context: $response.body
-            condition: |
-              {
-                "status": "standby",
-                "startTime": 8399.98
-              }
-            type: simple
+          - condition: $response.body#/status == 'healthy'
     x-speakeasy-test-group: health
-    x-speakeasy-test-rebuild: true
+    x-speakeasy-test-rebuild: false
   - workflowId: login
     steps:
-      - stepId: test
+      - stepId: authenticate
         operationId: login
         requestBody:
           contentType: application/json
           payload:
-            password: Ljp4BunfMR9hNyM
-            username: Nikko.Connelly
+            password: admin
+            username: admin
         successCriteria:
           - condition: $statusCode == 200
           - condition: $response.header.Content-Type == application/json
-          - context: $response.body
-            condition: |
-              {
-                "token": "\u003cvalue\u003e"
-              }
-            type: simple
-    x-speakeasy-test-group: auth_SDK
-    x-speakeasy-test-rebuild: true
-  - workflowId: listInput
+    x-speakeasy-test-group: login
+    x-speakeasy-test-rebuild: false
+  - workflowId: testInputs
+    x-speakeasy-test-security:
+      value:
+        bearerAuth: "x-env: TEST_BEARER_TOKEN"
     steps:
-      - stepId: test
+      - stepId: list
         operationId: listInput
         successCriteria:
           - condition: $statusCode == 200
           - condition: $response.header.Content-Type == application/json
-          - context: $response.body
-            condition: |
-              {}
-            type: simple
-    x-speakeasy-test-group: Sources
-    x-speakeasy-test-rebuild: true
-  - workflowId: createInput
-    steps:
-      - stepId: test
+      - stepId: create
         operationId: createInput
         requestBody:
           contentType: application/json
           payload:
-            authType: manual
-            disabled: false
-            enableHeader: false
-            enableProxyHeader: false
-            host: 0.0.0.0
-            ipWhitelistRegex: /.*/
-            maxActiveCxn: 1000
-            port: 301.76
-            pqEnabled: false
-            sendToRoutes: true
-            socketEndingMaxWait: 30
-            socketIdleTimeout: 0
-            socketMaxLifespan: 0
-            staleChannelFlushMs: 10000
-            type: tcp
+            id: 'inputOne'
+            type: "exec"
+            command: "echo hello"
         successCriteria:
           - condition: $statusCode == 200
           - condition: $response.header.Content-Type == application/json
-          - context: $response.body
-            condition: |
-              {}
-            type: simple
+          - condition: $response.body#/count == 1
     x-speakeasy-test-group: Sources
-    x-speakeasy-test-rebuild: true
+    x-speakeasy-test-rebuild: false
+  # Tests below don't work with Cribl yet
   - workflowId: getInputById
     steps:
       - stepId: test

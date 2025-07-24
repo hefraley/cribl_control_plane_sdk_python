@@ -5,56 +5,33 @@ import os
 from tests.test_client import create_test_http_client
 
 
-def test_sources_list_input():
-    test_http_client = create_test_http_client("listInput")
+def test_sources_test_inputs():
+    test_http_client = create_test_http_client("testInputs")
 
     with CriblControlPlane(
         server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
-        client=test_http_client,
         security=models.Security(
-            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
+            bearer_auth=os.getenv("TEST_BEARER_TOKEN", "value"),
         ),
+        client=test_http_client,
     ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.sources.list_source()
-        assert res is not None
-        assert res == models.ListInputResponse()
+        list_res = ccp_client.sources.list_source()
+        assert list_res is not None
 
-
-def test_sources_create_input():
-    test_http_client = create_test_http_client("createInput")
-
-    with CriblControlPlane(
-        server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
-        client=test_http_client,
-        security=models.Security(
-            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
-        ),
-    ) as ccp_client:
         assert ccp_client is not None
 
-        res = ccp_client.sources.create_source(
+        create_res = ccp_client.sources.create_source(
             request={
-                "type": models.InputTCPType.TCP,
-                "disabled": False,
-                "send_to_routes": True,
-                "pq_enabled": False,
-                "host": "0.0.0.0",
-                "port": 301.76,
-                "ip_whitelist_regex": "/.*/",
-                "max_active_cxn": 1000,
-                "socket_idle_timeout": 0,
-                "socket_ending_max_wait": 30,
-                "socket_max_lifespan": 0,
-                "enable_proxy_header": False,
-                "stale_channel_flush_ms": 10000,
-                "enable_header": False,
-                "auth_type": models.InputTCPAuthenticationMethod.MANUAL,
+                "id": "inputOne",
+                "type": models.InputExecType.EXEC,
+                "command": "echo hello",
             }
         )
-        assert res is not None
-        assert res == models.CreateInputResponse()
+        assert create_res is not None
+        assert create_res.count is not None
+        assert create_res.count == 1
 
 
 def test_sources_get_input_by_id():
