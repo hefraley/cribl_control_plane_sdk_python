@@ -1,6 +1,6 @@
 # ListOutputResponse
 
-a list of Output objects
+a list of Destination objects
 
 
 ## Fields

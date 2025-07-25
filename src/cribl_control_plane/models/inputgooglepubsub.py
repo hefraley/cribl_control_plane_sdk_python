@@ -115,13 +115,13 @@ class InputGooglePubsubMetadatum(BaseModel):
 
 
 class InputGooglePubsubTypedDict(TypedDict):
-    type: InputGooglePubsubType
     topic_name: str
     r"""ID of the topic to receive events from"""
     subscription_name: str
     r"""ID of the subscription to use when receiving events"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputGooglePubsubType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -162,8 +162,6 @@ class InputGooglePubsubTypedDict(TypedDict):
 
 
 class InputGooglePubsub(BaseModel):
-    type: Annotated[InputGooglePubsubType, PlainValidator(validate_open_enum(False))]
-
     topic_name: Annotated[str, pydantic.Field(alias="topicName")]
     r"""ID of the topic to receive events from"""
 
@@ -172,6 +170,10 @@ class InputGooglePubsub(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputGooglePubsubType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

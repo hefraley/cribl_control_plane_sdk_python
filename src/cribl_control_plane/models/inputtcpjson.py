@@ -193,11 +193,11 @@ class InputTcpjsonAuthenticationMethod(str, Enum, metaclass=utils.OpenEnumMeta):
 
 
 class InputTcpjsonTypedDict(TypedDict):
-    type: InputTcpjsonType
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputTcpjsonType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -241,13 +241,15 @@ class InputTcpjsonTypedDict(TypedDict):
 
 
 class InputTcpjson(BaseModel):
-    type: Annotated[InputTcpjsonType, PlainValidator(validate_open_enum(False))]
-
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputTcpjsonType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

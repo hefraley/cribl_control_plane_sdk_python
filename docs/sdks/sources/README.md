@@ -3,8 +3,6 @@
 
 ## Overview
 
-Actions related to Sources
-
 ### Available Operations
 
 * [list_source](#list_source) - Get a list of Source objects
@@ -76,7 +74,7 @@ with CriblControlPlane(
 ) as ccp_client:
 
     res = ccp_client.sources.create_source(request={
-        "type": models.InputTCPType.TCP,
+        "id": "<id>",
         "disabled": False,
         "send_to_routes": True,
         "pq_enabled": False,
@@ -90,7 +88,7 @@ with CriblControlPlane(
         "enable_proxy_header": False,
         "stale_channel_flush_ms": 10000,
         "enable_header": False,
-        "auth_type": models.InputTCPAuthenticationMethod.MANUAL,
+        "auth_type": models.CreateInputInputTCPAuthenticationMethod.MANUAL,
     })
 
     # Handle response
@@ -102,7 +100,7 @@ with CriblControlPlane(
 
 | Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `request`                                                           | [models.Input](../../models/input.md)                               | :heavy_check_mark:                                                  | The request object to use for the request.                          |
+| `request`                                                           | [models.CreateInputRequest](../../models/createinputrequest.md)     | :heavy_check_mark:                                                  | The request object to use for the request.                          |
 | `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
 
 ### Response

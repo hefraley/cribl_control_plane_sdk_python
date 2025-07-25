@@ -317,11 +317,11 @@ class InputWefMetadatum(BaseModel):
 
 
 class InputWefTypedDict(TypedDict):
-    type: InputWefType
     subscriptions: List[SubscriptionTypedDict]
     r"""Subscriptions to events on forwarding endpoints"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputWefType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -377,13 +377,15 @@ class InputWefTypedDict(TypedDict):
 
 
 class InputWef(BaseModel):
-    type: Annotated[InputWefType, PlainValidator(validate_open_enum(False))]
-
     subscriptions: List[Subscription]
     r"""Subscriptions to events on forwarding endpoints"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputWefType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

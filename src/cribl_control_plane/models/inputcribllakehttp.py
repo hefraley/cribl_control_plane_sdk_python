@@ -187,11 +187,11 @@ class InputCriblLakeHTTPMetadatum(BaseModel):
 
 
 class InputCriblLakeHTTPTypedDict(TypedDict):
-    type: InputCriblLakeHTTPType
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputCriblLakeHTTPType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -239,13 +239,15 @@ class InputCriblLakeHTTPTypedDict(TypedDict):
 
 
 class InputCriblLakeHTTP(BaseModel):
-    type: Annotated[InputCriblLakeHTTPType, PlainValidator(validate_open_enum(False))]
-
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputCriblLakeHTTPType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

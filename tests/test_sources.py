@@ -25,7 +25,7 @@ def test_sources_test_inputs():
         create_res = ccp_client.sources.create_source(
             request={
                 "id": "inputOne",
-                "type": models.InputExecType.EXEC,
+                "type": models.CreateInputInputExecType.EXEC,
                 "command": "echo hello",
             }
         )

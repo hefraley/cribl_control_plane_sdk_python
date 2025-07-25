@@ -343,9 +343,9 @@ func (e InputOffice365ServiceAuthenticationMethod) ToPointer() *InputOffice365Se
 
 type InputOffice365Service struct {
 	// Unique ID for this input
-	ID       *string                   `json:"id,omitempty"`
-	Type     InputOffice365ServiceType `json:"type"`
-	Disabled *bool                     `default:"false" json:"disabled"`
+	ID       *string                    `json:"id,omitempty"`
+	Type     *InputOffice365ServiceType `json:"type,omitempty"`
+	Disabled *bool                      `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -409,9 +409,9 @@ func (o *InputOffice365Service) GetID() *string {
 	return o.ID
 }
 
-func (o *InputOffice365Service) GetType() InputOffice365ServiceType {
+func (o *InputOffice365Service) GetType() *InputOffice365ServiceType {
 	if o == nil {
-		return InputOffice365ServiceType("")
+		return nil
 	}
 	return o.Type
 }

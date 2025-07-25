@@ -350,9 +350,9 @@ func (o *InputPrometheusRwOauthHeader) GetValue() string {
 
 type InputPrometheusRw struct {
 	// Unique ID for this input
-	ID       *string               `json:"id,omitempty"`
-	Type     InputPrometheusRwType `json:"type"`
-	Disabled *bool                 `default:"false" json:"disabled"`
+	ID       *string                `json:"id,omitempty"`
+	Type     *InputPrometheusRwType `json:"type,omitempty"`
+	Disabled *bool                  `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -444,9 +444,9 @@ func (o *InputPrometheusRw) GetID() *string {
 	return o.ID
 }
 
-func (o *InputPrometheusRw) GetType() InputPrometheusRwType {
+func (o *InputPrometheusRw) GetType() *InputPrometheusRwType {
 	if o == nil {
-		return InputPrometheusRwType("")
+		return nil
 	}
 	return o.Type
 }

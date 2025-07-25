@@ -4,7 +4,7 @@ servers:
 info:
   title: Cribl API Reference
   description: This API Reference lists available REST endpoints, along with their supported operations for accessing, creating, updating, or deleting resources. See our complementary product documentation at [docs.cribl.io](http://docs.cribl.io).
-  version: 4.14.0-alpha.1753373454403-2652afc6
+  version: 4.14.0-alpha.1753455755620-93e72132
   contact:
     name: Support
     email: support@cribl.io
@@ -200,7 +200,6 @@ components:
       required:
         - brokers
         - topics
-        - type
       properties:
         id:
           type: string
@@ -664,7 +663,6 @@ components:
         - topics
         - region
         - awsAuthenticationMethod
-        - type
       properties:
         id:
           type: string
@@ -1174,7 +1172,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -1489,7 +1486,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -1781,7 +1777,6 @@ components:
         - cronSchedule
         - endpoint
         - outputMode
-        - type
       properties:
         id:
           type: string
@@ -2215,7 +2210,6 @@ components:
       required:
         - host
         - port
-        - type
         - splunkHecAPI
       properties:
         id:
@@ -2831,7 +2825,6 @@ components:
       required:
         - host
         - port
-        - type
         - elasticAPI
       properties:
         id:
@@ -3210,7 +3203,6 @@ components:
       required:
         - brokers
         - topics
-        - type
       properties:
         id:
           type: string
@@ -3672,7 +3664,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -4141,7 +4132,6 @@ components:
       required:
         - host
         - port
-        - type
         - lokiAPI
       properties:
         id:
@@ -4498,7 +4488,6 @@ components:
       required:
         - host
         - port
-        - type
         - prometheusAPI
       properties:
         id:
@@ -4855,7 +4844,6 @@ components:
       required:
         - interval
         - logLevel
-        - type
       properties:
         id:
           type: string
@@ -5211,7 +5199,6 @@ components:
       required:
         - interval
         - discoveryType
-        - type
       properties:
         id:
           type: string
@@ -5637,7 +5624,6 @@ components:
         - tenantId
         - appId
         - planType
-        - type
       properties:
         id:
           type: string
@@ -5971,7 +5957,6 @@ components:
       required:
         - tenantId
         - appId
-        - type
       properties:
         id:
           type: string
@@ -6279,7 +6264,6 @@ components:
       required:
         - url
         - interval
-        - type
       properties:
         id:
           type: string
@@ -6633,7 +6617,6 @@ components:
       required:
         - brokers
         - topics
-        - type
       properties:
         id:
           type: string
@@ -7118,7 +7101,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -7378,7 +7360,6 @@ components:
       required:
         - topicName
         - subscriptionName
-        - type
       properties:
         id:
           type: string
@@ -7701,7 +7682,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -7927,7 +7907,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -8187,7 +8166,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -8447,7 +8425,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -10600,7 +10577,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -11021,7 +10997,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -11345,7 +11320,6 @@ components:
       required:
         - streamName
         - region
-        - type
       properties:
         id:
           type: string
@@ -12649,7 +12623,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -12863,7 +12836,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -13240,7 +13212,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -13441,7 +13412,6 @@ components:
       required:
         - queueName
         - queueType
-        - type
       properties:
         id:
           type: string
@@ -14201,7 +14171,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -14811,7 +14780,6 @@ components:
         - host
         - port
         - subscriptions
-        - type
       properties:
         id:
           type: string
@@ -15387,7 +15355,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -15553,7 +15520,6 @@ components:
       required:
         - path
         - journals
-        - type
       properties:
         id:
           type: string
@@ -15730,7 +15696,6 @@ components:
         - authUrl
         - clientId
         - contentConfig
-        - type
       properties:
         id:
           type: string
@@ -16449,7 +16414,6 @@ components:
       required:
         - host
         - port
-        - type
       properties:
         id:
           type: string
@@ -16967,7 +16931,6 @@ components:
       required:
         - host
         - port
-        - type
         - hecAPI
       properties:
         id:
@@ -36509,6 +36472,8 @@ tags:
     description: Actions related to Database Connections
   - name: datasets
     description: Actions related to Datasets
+  - name: destinations
+    description: Actions related to Destinations
   - name: diag
     description: Actions related to diagnostics
   - name: distributed
@@ -36581,8 +36546,6 @@ tags:
     description: Actions related to Notifications
   - name: onlyOnPrem
     description: Actions only available for onprem deployments and do not apply to Cribl.Cloud deployments
-  - name: outputs
-    description: Actions related to outputs
   - name: packs
     description: Actions related to Packs
   - name: parquetschemas
@@ -36719,7 +36682,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Input"
+              allOf:
+                - $ref: "#/components/schemas/Input"
+                - type: object
+                  required:
+                    - id
   "/system/inputs/{id}":
     get:
       tags:
@@ -36847,7 +36814,9 @@ paths:
       operationId: createInputHecTokenById
       tags:
         - sources
+      x-speakeasy-group: Sources
       summary: Add token and optional metadata to an existing HEC Source
+      x-speakeasy-name-override: createSourceHecTokenById
       description: Add token and optional metadata to an existing HEC Source
       responses:
         "200":
@@ -36887,13 +36856,14 @@ paths:
           schema:
             type: string
           description: HEC Source id
-      x-speakeasy-name-override: createSourceHecTokenById
   "/system/inputs/{id}/hectoken/{token}":
     patch:
       operationId: updateInputHecTokenByIdAndToken
       tags:
         - sources
+      x-speakeasy-group: Sources
       summary: Update token metadata on existing HEC Source
+      x-speakeasy-name-override: updateSourceHecTokenByIdAndToken
       description: Update token metadata on existing HEC Source
       responses:
         "200":
@@ -36939,17 +36909,18 @@ paths:
           schema:
             type: string
           description: token to update
-      x-speakeasy-name-override: updateSourceHecTokenByIdAndToken
   /system/outputs:
     get:
       operationId: listOutput
+      x-speakeasy-group: Destinations
+      x-speakeasy-name-override: listDestination
       tags:
-        - outputs
-      summary: Get a list of Output objects
-      description: Get a list of Output objects
+        - destinations
+      summary: Get a list of Destination objects
+      description: Get a list of Destination objects
       responses:
         "200":
-          description: a list of Output objects
+          description: a list of Destination objects
           content:
             application/json:
               schema:
@@ -36972,10 +36943,10 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       tags:
-        - outputs
+        - destinations
       responses:
         "200":
-          description: a list of Output objects
+          description: a list of Destination objects
           content:
             application/json:
               schema:
@@ -36997,22 +36968,28 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       operationId: createOutput
-      summary: Create Output
-      description: Create Output
+      x-speakeasy-group: Destinations
+      x-speakeasy-name-override: createDestination
+      summary: Create Destination
+      description: Create Destination
       requestBody:
-        description: New Output object
+        description: New Destination object
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Output"
+              allOf:
+                - $ref: "#/components/schemas/Output"
+                - type: object
+                  required:
+                    - id
   "/system/outputs/{id}":
     get:
       tags:
-        - outputs
+        - destinations
       responses:
         "200":
-          description: a list of Output objects
+          description: a list of Destination objects
           content:
             application/json:
               schema:
@@ -37034,8 +37011,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       operationId: getOutputById
-      summary: Get Output by ID
-      description: Get Output by ID
+      x-speakeasy-group: Destinations
+      x-speakeasy-name-override: getDestinationById
+      summary: Get Destination by ID
+      description: Get Destination by ID
       parameters:
         - name: id
           in: path
@@ -37045,10 +37024,10 @@ paths:
           description: Unique ID to GET
     patch:
       tags:
-        - outputs
+        - destinations
       responses:
         "200":
-          description: a list of Output objects
+          description: a list of Destination objects
           content:
             application/json:
               schema:
@@ -37070,8 +37049,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       operationId: updateOutputById
-      summary: Update Output
-      description: Update Output
+      x-speakeasy-group: Destinations
+      x-speakeasy-name-override: updateDestinationById
+      summary: Update Destination
+      description: Update Destination
       parameters:
         - schema:
             type: string
@@ -37080,7 +37061,7 @@ paths:
           required: true
           description: Unique ID to PATCH
       requestBody:
-        description: Output object to be updated
+        description: Destination object to be updated
         required: true
         content:
           application/json:
@@ -37088,10 +37069,10 @@ paths:
               $ref: "#/components/schemas/Output"
     delete:
       tags:
-        - outputs
+        - destinations
       responses:
         "200":
-          description: a list of Output objects
+          description: a list of Destination objects
           content:
             application/json:
               schema:
@@ -37113,8 +37094,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       operationId: deleteOutputById
-      summary: Delete Output
-      description: Delete Output
+      x-speakeasy-group: Destinations
+      x-speakeasy-name-override: deleteDestinationById
+      summary: Delete Destination
+      description: Delete Destination
       parameters:
         - schema:
             type: string
@@ -37126,8 +37109,10 @@ paths:
     delete:
       operationId: deleteOutputPqById
       tags:
-        - outputs
+        - destinations
+      x-speakeasy-group: Destinations
       summary: Clears destination persistent queue
+      x-speakeasy-name-override: deleteDestinationPqById
       description: Clears destination persistent queue
       responses:
         "200":
@@ -37159,13 +37144,15 @@ paths:
           required: true
           schema:
             type: string
-          description: Output Id
+          description: Destination Id
     get:
       operationId: getOutputPqById
       tags:
-        - outputs
-      summary: Retrieves status of latest clear PQ job for an output
-      description: Retrieves status of latest clear PQ job for an output
+        - destinations
+      x-speakeasy-group: Destinations
+      summary: Retrieves status of latest clear PQ job for a destination
+      x-speakeasy-name-override: getDestinationPqById
+      description: Retrieves status of latest clear PQ job for a destination
       responses:
         "200":
           description: a list of any objects
@@ -37196,14 +37183,16 @@ paths:
           required: true
           schema:
             type: string
-          description: Output Id
+          description: Destination Id
   "/system/outputs/{id}/samples":
     get:
       operationId: getOutputSamplesById
       tags:
-        - outputs
-      summary: Retrieve samples data for the specified output. Used to get sample data for the test action.
-      description: Retrieve samples data for the specified output. Used to get sample data for the test action.
+        - destinations
+      x-speakeasy-group: Destinations
+      summary: Retrieve samples data for the specified destination. Used to get sample data for the test action.
+      x-speakeasy-name-override: getDestinationSamplesById
+      description: Retrieve samples data for the specified destination. Used to get sample data for the test action.
       responses:
         "200":
           description: a list of OutputSamplesResponse objects
@@ -37233,14 +37222,16 @@ paths:
           required: true
           schema:
             type: string
-          description: Output Id
+          description: Destination Id
   "/system/outputs/{id}/test":
     post:
       operationId: createOutputTestById
       tags:
-        - outputs
-      summary: Send sample data to an output to validate configuration or test connectivity
-      description: Send sample data to an output to validate configuration or test connectivity
+        - destinations
+      x-speakeasy-group: Destinations
+      summary: Send sample data to a destination to validate configuration or test connectivity
+      x-speakeasy-name-override: createDestinationTestById
+      description: Send sample data to a destination to validate configuration or test connectivity
       responses:
         "200":
           description: a list of OutputTestResponse objects
@@ -37277,7 +37268,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Output Id
+          description: Destination Id
   /pipelines:
     get:
       operationId: listPipeline

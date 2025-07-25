@@ -308,9 +308,9 @@ func (e InputWizAuthenticationMethod) ToPointer() *InputWizAuthenticationMethod 
 
 type InputWiz struct {
 	// Unique ID for this input
-	ID       *string      `json:"id,omitempty"`
-	Type     InputWizType `json:"type"`
-	Disabled *bool        `default:"false" json:"disabled"`
+	ID       *string       `json:"id,omitempty"`
+	Type     *InputWizType `json:"type,omitempty"`
+	Disabled *bool         `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -373,9 +373,9 @@ func (o *InputWiz) GetID() *string {
 	return o.ID
 }
 
-func (o *InputWiz) GetType() InputWizType {
+func (o *InputWiz) GetType() *InputWizType {
 	if o == nil {
-		return InputWizType("")
+		return nil
 	}
 	return o.Type
 }

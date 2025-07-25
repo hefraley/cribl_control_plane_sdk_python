@@ -359,13 +359,13 @@ class InputKafkaMetadatum(BaseModel):
 
 
 class InputKafkaTypedDict(TypedDict):
-    type: InputKafkaType
     brokers: List[str]
     r"""Enter each Kafka bootstrap server you want to use. Specify the hostname and port (such as mykafkabroker:9092) or just the hostname (in which case @{product} will assign port 9092)."""
     topics: List[str]
     r"""Topic to subscribe to. Warning: To optimize performance, Cribl suggests subscribing each Kafka Source to a single topic only."""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputKafkaType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -439,8 +439,6 @@ class InputKafkaTypedDict(TypedDict):
 
 
 class InputKafka(BaseModel):
-    type: Annotated[InputKafkaType, PlainValidator(validate_open_enum(False))]
-
     brokers: List[str]
     r"""Enter each Kafka bootstrap server you want to use. Specify the hostname and port (such as mykafkabroker:9092) or just the hostname (in which case @{product} will assign port 9092)."""
 
@@ -449,6 +447,10 @@ class InputKafka(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputKafkaType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

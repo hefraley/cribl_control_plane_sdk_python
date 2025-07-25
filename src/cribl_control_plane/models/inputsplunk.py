@@ -214,11 +214,11 @@ class InputSplunkCompression(str, Enum, metaclass=utils.OpenEnumMeta):
 
 
 class InputSplunkTypedDict(TypedDict):
-    type: InputSplunkType
     port: float
     r"""Port to listen on"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputSplunkType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -270,13 +270,15 @@ class InputSplunkTypedDict(TypedDict):
 
 
 class InputSplunk(BaseModel):
-    type: Annotated[InputSplunkType, PlainValidator(validate_open_enum(False))]
-
     port: float
     r"""Port to listen on"""
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputSplunkType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

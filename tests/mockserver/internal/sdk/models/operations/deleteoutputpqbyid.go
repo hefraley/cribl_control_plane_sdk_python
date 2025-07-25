@@ -7,7 +7,7 @@ import (
 )
 
 type DeleteOutputPqByIDRequest struct {
-	// Output Id
+	// Destination Id
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
