@@ -363,13 +363,13 @@ class InputConfluentCloudMetadatum(BaseModel):
 
 
 class InputConfluentCloudTypedDict(TypedDict):
-    type: InputConfluentCloudType
     brokers: List[str]
     r"""List of Confluent Cloud bootstrap servers to use, such as yourAccount.confluent.cloud:9092"""
     topics: List[str]
     r"""Topic to subscribe to. Warning: To optimize performance, Cribl suggests subscribing each Kafka Source to a single topic only."""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputConfluentCloudType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -443,8 +443,6 @@ class InputConfluentCloudTypedDict(TypedDict):
 
 
 class InputConfluentCloud(BaseModel):
-    type: Annotated[InputConfluentCloudType, PlainValidator(validate_open_enum(False))]
-
     brokers: List[str]
     r"""List of Confluent Cloud bootstrap servers to use, such as yourAccount.confluent.cloud:9092"""
 
@@ -453,6 +451,10 @@ class InputConfluentCloud(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputConfluentCloudType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

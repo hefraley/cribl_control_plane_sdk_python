@@ -12,7 +12,7 @@ class UpdateOutputByIDRequestTypedDict(TypedDict):
     id: str
     r"""Unique ID to PATCH"""
     output: OutputTypedDict
-    r"""Output object to be updated"""
+    r"""Destination object to be updated"""
 
 
 class UpdateOutputByIDRequest(BaseModel):
@@ -24,11 +24,11 @@ class UpdateOutputByIDRequest(BaseModel):
     output: Annotated[
         Output, FieldMetadata(request=RequestMetadata(media_type="application/json"))
     ]
-    r"""Output object to be updated"""
+    r"""Destination object to be updated"""
 
 
 class UpdateOutputByIDResponseTypedDict(TypedDict):
-    r"""a list of Output objects"""
+    r"""a list of Destination objects"""
 
     count: NotRequired[int]
     r"""number of items present in the items array"""
@@ -36,7 +36,7 @@ class UpdateOutputByIDResponseTypedDict(TypedDict):
 
 
 class UpdateOutputByIDResponse(BaseModel):
-    r"""a list of Output objects"""
+    r"""a list of Destination objects"""
 
     count: Optional[int] = None
     r"""number of items present in the items array"""

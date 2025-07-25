@@ -171,7 +171,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: createOutput
     steps:
@@ -184,6 +184,7 @@ workflows:
             concurrency: 5
             failedRequestLoggingMode: none
             flushPeriodSec: 1
+            id: <id>
             includeDocId: true
             index: <value>
             maxPayloadEvents: 0
@@ -206,7 +207,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: getOutputById
     steps:
@@ -223,7 +224,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: updateOutputById
     steps:
@@ -263,7 +264,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: deleteOutputById
     steps:
@@ -280,7 +281,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: deleteOutputPqById
     steps:
@@ -297,7 +298,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: getOutputPqById
     steps:
@@ -314,7 +315,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: getOutputSamplesById
     steps:
@@ -331,7 +332,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: createOutputTestById
     steps:
@@ -353,7 +354,7 @@ workflows:
             condition: |
               {}
             type: simple
-    x-speakeasy-test-group: outputs
+    x-speakeasy-test-group: Destinations
     x-speakeasy-test-rebuild: true
   - workflowId: listRoutes
     steps:

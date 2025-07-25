@@ -7,7 +7,7 @@ import (
 )
 
 type CreateOutputTestByIDRequest struct {
-	// Output Id
+	// Destination Id
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 	// OutputTestRequest object
 	OutputTestRequest components.OutputTestRequest `request:"mediaType=application/json"`

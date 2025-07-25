@@ -3,10 +3,29501 @@
 package operations
 
 import (
+	"errors"
+	"fmt"
 	"mockserver/internal/sdk/models/components"
+	"mockserver/internal/sdk/utils"
 )
 
-// CreateOutputResponseBody - a list of Output objects
+type OutputSentinelOneAiSiemType string
+
+const (
+	OutputSentinelOneAiSiemTypeSentinelOneAiSiem OutputSentinelOneAiSiemType = "sentinel_one_ai_siem"
+)
+
+func (e OutputSentinelOneAiSiemType) ToPointer() *OutputSentinelOneAiSiemType {
+	return &e
+}
+
+// OutputSentinelOneAiSiemRegion - The SentinelOne region to send events to. In most cases you can find the region by either looking at your SentinelOne URL or knowing what geographic region your SentinelOne instance is contained in.
+type OutputSentinelOneAiSiemRegion string
+
+const (
+	OutputSentinelOneAiSiemRegionUs     OutputSentinelOneAiSiemRegion = "US"
+	OutputSentinelOneAiSiemRegionCa     OutputSentinelOneAiSiemRegion = "CA"
+	OutputSentinelOneAiSiemRegionEmea   OutputSentinelOneAiSiemRegion = "EMEA"
+	OutputSentinelOneAiSiemRegionAp     OutputSentinelOneAiSiemRegion = "AP"
+	OutputSentinelOneAiSiemRegionAps    OutputSentinelOneAiSiemRegion = "APS"
+	OutputSentinelOneAiSiemRegionAu     OutputSentinelOneAiSiemRegion = "AU"
+	OutputSentinelOneAiSiemRegionCustom OutputSentinelOneAiSiemRegion = "Custom"
+)
+
+func (e OutputSentinelOneAiSiemRegion) ToPointer() *OutputSentinelOneAiSiemRegion {
+	return &e
+}
+
+// AISIEMEndpointPath - Regional endpoint used to send events to, such as /services/collector/event or /services/collector/raw
+type AISIEMEndpointPath string
+
+const (
+	AISIEMEndpointPathRootServicesCollectorEvent AISIEMEndpointPath = "/services/collector/event"
+	AISIEMEndpointPathRootServicesCollectorRaw   AISIEMEndpointPath = "/services/collector/raw"
+)
+
+func (e AISIEMEndpointPath) ToPointer() *AISIEMEndpointPath {
+	return &e
+}
+
+type OutputSentinelOneAiSiemExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputSentinelOneAiSiemExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputSentinelOneAiSiemExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputSentinelOneAiSiemFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputSentinelOneAiSiemFailedRequestLoggingMode string
+
+const (
+	OutputSentinelOneAiSiemFailedRequestLoggingModePayload           OutputSentinelOneAiSiemFailedRequestLoggingMode = "payload"
+	OutputSentinelOneAiSiemFailedRequestLoggingModePayloadAndHeaders OutputSentinelOneAiSiemFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputSentinelOneAiSiemFailedRequestLoggingModeNone              OutputSentinelOneAiSiemFailedRequestLoggingMode = "none"
+)
+
+func (e OutputSentinelOneAiSiemFailedRequestLoggingMode) ToPointer() *OutputSentinelOneAiSiemFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputSentinelOneAiSiemAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputSentinelOneAiSiemAuthenticationMethod string
+
+const (
+	OutputSentinelOneAiSiemAuthenticationMethodManual OutputSentinelOneAiSiemAuthenticationMethod = "manual"
+	OutputSentinelOneAiSiemAuthenticationMethodSecret OutputSentinelOneAiSiemAuthenticationMethod = "secret"
+)
+
+func (e OutputSentinelOneAiSiemAuthenticationMethod) ToPointer() *OutputSentinelOneAiSiemAuthenticationMethod {
+	return &e
+}
+
+type OutputSentinelOneAiSiemResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSentinelOneAiSiemResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinelOneAiSiemResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinelOneAiSiemResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputSentinelOneAiSiemResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSentinelOneAiSiemResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSentinelOneAiSiemResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputSentinelOneAiSiemTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSentinelOneAiSiemTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinelOneAiSiemTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinelOneAiSiemTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputSentinelOneAiSiemTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSentinelOneAiSiemTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSentinelOneAiSiemTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputSentinelOneAiSiemBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSentinelOneAiSiemBackpressureBehavior string
+
+const (
+	OutputSentinelOneAiSiemBackpressureBehaviorBlock OutputSentinelOneAiSiemBackpressureBehavior = "block"
+	OutputSentinelOneAiSiemBackpressureBehaviorDrop  OutputSentinelOneAiSiemBackpressureBehavior = "drop"
+	OutputSentinelOneAiSiemBackpressureBehaviorQueue OutputSentinelOneAiSiemBackpressureBehavior = "queue"
+)
+
+func (e OutputSentinelOneAiSiemBackpressureBehavior) ToPointer() *OutputSentinelOneAiSiemBackpressureBehavior {
+	return &e
+}
+
+// OutputSentinelOneAiSiemCompression - Codec to use to compress the persisted data
+type OutputSentinelOneAiSiemCompression string
+
+const (
+	OutputSentinelOneAiSiemCompressionNone OutputSentinelOneAiSiemCompression = "none"
+	OutputSentinelOneAiSiemCompressionGzip OutputSentinelOneAiSiemCompression = "gzip"
+)
+
+func (e OutputSentinelOneAiSiemCompression) ToPointer() *OutputSentinelOneAiSiemCompression {
+	return &e
+}
+
+// OutputSentinelOneAiSiemQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSentinelOneAiSiemQueueFullBehavior string
+
+const (
+	OutputSentinelOneAiSiemQueueFullBehaviorBlock OutputSentinelOneAiSiemQueueFullBehavior = "block"
+	OutputSentinelOneAiSiemQueueFullBehaviorDrop  OutputSentinelOneAiSiemQueueFullBehavior = "drop"
+)
+
+func (e OutputSentinelOneAiSiemQueueFullBehavior) ToPointer() *OutputSentinelOneAiSiemQueueFullBehavior {
+	return &e
+}
+
+// OutputSentinelOneAiSiemMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSentinelOneAiSiemMode string
+
+const (
+	OutputSentinelOneAiSiemModeError        OutputSentinelOneAiSiemMode = "error"
+	OutputSentinelOneAiSiemModeBackpressure OutputSentinelOneAiSiemMode = "backpressure"
+	OutputSentinelOneAiSiemModeAlways       OutputSentinelOneAiSiemMode = "always"
+)
+
+func (e OutputSentinelOneAiSiemMode) ToPointer() *OutputSentinelOneAiSiemMode {
+	return &e
+}
+
+type OutputSentinelOneAiSiemPqControls struct {
+}
+
+type OutputSentinelOneAiSiem struct {
+	// Unique ID for this output
+	ID   string                       `json:"id"`
+	Type *OutputSentinelOneAiSiemType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The SentinelOne region to send events to. In most cases you can find the region by either looking at your SentinelOne URL or knowing what geographic region your SentinelOne instance is contained in.
+	Region *OutputSentinelOneAiSiemRegion `default:"US" json:"region"`
+	// Regional endpoint used to send events to, such as /services/collector/event or /services/collector/raw
+	Endpoint *AISIEMEndpointPath `default:"/services/collector/event" json:"endpoint"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"5120" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"5" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputSentinelOneAiSiemExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputSentinelOneAiSiemFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *OutputSentinelOneAiSiemAuthenticationMethod `default:"manual" json:"authType"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputSentinelOneAiSiemResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputSentinelOneAiSiemTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSentinelOneAiSiemBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                      `json:"description,omitempty"`
+	// In the SentinelOne Console select Policy & Settings then select the Singularity AI SIEM section, API Keys will be at the bottom. Under Log Access Keys select a Write token and copy it here
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// Base URL of the endpoint used to send events to, such as https://<Your-S1-Tenant>.sentinelone.net. Must begin with http:// or https://, can include a port number, and no trailing slashes. Matches pattern: ^https?://[a-zA-Z0-9.-]+(:[0-9]+)?$.
+	BaseURL *string `default:"https://<Your-S1-Tenant>.sentinelone.net" json:"baseUrl"`
+	// Define serverHost for events using a JavaScript expression. You must enclose text constants in quotes (such as, 'myServer').
+	HostExpression *string `default:"__e.host || C.os.hostname()" json:"hostExpression"`
+	// Define logFile for events using a JavaScript expression. You must enclose text constants in quotes (such as, 'myLogFile.txt').
+	SourceExpression *string `default:"__e.source || (__e.__criblMetrics ? 'metrics' : 'cribl')" json:"sourceExpression"`
+	// Define the parser for events using a JavaScript expression. This value helps parse data into AI SIEM. You must enclose text constants in quotes (such as, 'dottedJson'). For custom parsers, substitute 'dottedJson' with your parser's name.
+	SourceTypeExpression *string `default:"__e.sourcetype || 'dottedJson'" json:"sourceTypeExpression"`
+	// Define the dataSource.category for events using a JavaScript expression. This value helps categorize data and helps enable extra features in SentinelOne AI SIEM. You must enclose text constants in quotes. The default value is 'security'.
+	DataSourceCategoryExpression *string `default:"'security'" json:"dataSourceCategoryExpression"`
+	// Define the dataSource.name for events using a JavaScript expression. This value should reflect the type of data being inserted into AI SIEM. You must enclose text constants in quotes (such as, 'networkActivity' or 'authLogs').
+	DataSourceNameExpression *string `default:"__e.__dataSourceName || 'cribl'" json:"dataSourceNameExpression"`
+	// Define the dataSource.vendor for events using a JavaScript expression. This value should reflect the vendor of the data being inserted into AI SIEM. You must enclose text constants in quotes (such as, 'Cisco' or 'Microsoft').
+	DataSourceVendorExpression *string `default:"__e.__dataSourceVendor || 'cribl'" json:"dataSourceVendorExpression"`
+	// Optionally, define the event.type for events using a JavaScript expression. This value acts as a label, grouping events into meaningful categories. You must enclose text constants in quotes (such as, 'Process Creation' or 'Network Connection').
+	EventTypeExpression *string `default:"" json:"eventTypeExpression"`
+	// Define the serverHost for events using a JavaScript expression. This value will be passed to AI SIEM. You must enclose text constants in quotes (such as, 'myServerName').
+	Host *string `default:"C.os.hostname()" json:"host"`
+	// Specify the logFile value to pass as a parameter to SentinelOne AI SIEM. Don't quote this value. The default is cribl.
+	Source *string `default:"cribl" json:"source"`
+	// Specify the sourcetype parameter for SentinelOne AI SIEM, which determines the parser. Don't quote this value. For custom parsers, substitute hecRawParser with your parser's name. The default is hecRawParser.
+	SourceType *string `default:"hecRawParser" json:"sourceType"`
+	// Specify the dataSource.category value to pass as a parameter to SentinelOne AI SIEM. This value helps categorize data and enables additional features. Don't quote this value. The default is security.
+	DataSourceCategory *string `default:"security" json:"dataSourceCategory"`
+	// Specify the dataSource.name value to pass as a parameter to AI SIEM. This value should reflect the type of data being inserted. Don't quote this value. The default is cribl.
+	DataSourceName *string `default:"cribl" json:"dataSourceName"`
+	// Specify the dataSource.vendorvalue to pass as a parameter to AI SIEM. This value should reflect the vendor of the data being inserted. Don't quote this value. The default is cribl.
+	DataSourceVendor *string `default:"cribl" json:"dataSourceVendor"`
+	// Specify the event.type value to pass as an optional parameter to AI SIEM. This value acts as a label, grouping events into meaningful categories like Process Creation, File Modification, or Network Connection. Don't quote this value. By default, this field is empty.
+	EventType *string `default:"" json:"eventType"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSentinelOneAiSiemCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSentinelOneAiSiemQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSentinelOneAiSiemMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSentinelOneAiSiemPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputSentinelOneAiSiem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinelOneAiSiem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinelOneAiSiem) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSentinelOneAiSiem) GetType() *OutputSentinelOneAiSiemType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSentinelOneAiSiem) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSentinelOneAiSiem) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSentinelOneAiSiem) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSentinelOneAiSiem) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSentinelOneAiSiem) GetRegion() *OutputSentinelOneAiSiemRegion {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputSentinelOneAiSiem) GetEndpoint() *AISIEMEndpointPath {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputSentinelOneAiSiem) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputSentinelOneAiSiem) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputSentinelOneAiSiem) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputSentinelOneAiSiem) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSentinelOneAiSiem) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSentinelOneAiSiem) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputSentinelOneAiSiem) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputSentinelOneAiSiem) GetExtraHTTPHeaders() []OutputSentinelOneAiSiemExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputSentinelOneAiSiem) GetFailedRequestLoggingMode() *OutputSentinelOneAiSiemFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputSentinelOneAiSiem) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputSentinelOneAiSiem) GetAuthType() *OutputSentinelOneAiSiemAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputSentinelOneAiSiem) GetResponseRetrySettings() []OutputSentinelOneAiSiemResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputSentinelOneAiSiem) GetTimeoutRetrySettings() *OutputSentinelOneAiSiemTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputSentinelOneAiSiem) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputSentinelOneAiSiem) GetOnBackpressure() *OutputSentinelOneAiSiemBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSentinelOneAiSiem) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSentinelOneAiSiem) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputSentinelOneAiSiem) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputSentinelOneAiSiem) GetBaseURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseURL
+}
+
+func (o *OutputSentinelOneAiSiem) GetHostExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HostExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetSourceExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SourceExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetSourceTypeExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SourceTypeExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceCategoryExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceCategoryExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceNameExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceNameExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceVendorExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceVendorExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetEventTypeExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EventTypeExpression
+}
+
+func (o *OutputSentinelOneAiSiem) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *OutputSentinelOneAiSiem) GetSource() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Source
+}
+
+func (o *OutputSentinelOneAiSiem) GetSourceType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SourceType
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceCategory() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceCategory
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceName
+}
+
+func (o *OutputSentinelOneAiSiem) GetDataSourceVendor() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DataSourceVendor
+}
+
+func (o *OutputSentinelOneAiSiem) GetEventType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EventType
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqCompress() *OutputSentinelOneAiSiemCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqOnBackpressure() *OutputSentinelOneAiSiemQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqMode() *OutputSentinelOneAiSiemMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSentinelOneAiSiem) GetPqControls() *OutputSentinelOneAiSiemPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputDynatraceOtlpType string
+
+const (
+	OutputDynatraceOtlpTypeDynatraceOtlp OutputDynatraceOtlpType = "dynatrace_otlp"
+)
+
+func (e OutputDynatraceOtlpType) ToPointer() *OutputDynatraceOtlpType {
+	return &e
+}
+
+// OutputDynatraceOtlpProtocol - Select a transport option for Dynatrace
+type OutputDynatraceOtlpProtocol string
+
+const (
+	OutputDynatraceOtlpProtocolHTTP OutputDynatraceOtlpProtocol = "http"
+)
+
+func (e OutputDynatraceOtlpProtocol) ToPointer() *OutputDynatraceOtlpProtocol {
+	return &e
+}
+
+// OutputDynatraceOTLPOTLPVersion - The version of OTLP Protobuf definitions to use when structuring data to send
+type OutputDynatraceOTLPOTLPVersion string
+
+const (
+	OutputDynatraceOTLPOTLPVersionOneDot3Dot1 OutputDynatraceOTLPOTLPVersion = "1.3.1"
+)
+
+func (e OutputDynatraceOTLPOTLPVersion) ToPointer() *OutputDynatraceOTLPOTLPVersion {
+	return &e
+}
+
+// OutputDynatraceOtlpCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputDynatraceOtlpCompressCompression string
+
+const (
+	OutputDynatraceOtlpCompressCompressionNone    OutputDynatraceOtlpCompressCompression = "none"
+	OutputDynatraceOtlpCompressCompressionDeflate OutputDynatraceOtlpCompressCompression = "deflate"
+	OutputDynatraceOtlpCompressCompressionGzip    OutputDynatraceOtlpCompressCompression = "gzip"
+)
+
+func (e OutputDynatraceOtlpCompressCompression) ToPointer() *OutputDynatraceOtlpCompressCompression {
+	return &e
+}
+
+// OutputDynatraceOtlpHTTPCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputDynatraceOtlpHTTPCompressCompression string
+
+const (
+	OutputDynatraceOtlpHTTPCompressCompressionNone OutputDynatraceOtlpHTTPCompressCompression = "none"
+	OutputDynatraceOtlpHTTPCompressCompressionGzip OutputDynatraceOtlpHTTPCompressCompression = "gzip"
+)
+
+func (e OutputDynatraceOtlpHTTPCompressCompression) ToPointer() *OutputDynatraceOtlpHTTPCompressCompression {
+	return &e
+}
+
+type OutputDynatraceOtlpMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputDynatraceOtlpMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceOtlpMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceOtlpMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputDynatraceOtlpMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputDynatraceOtlpFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputDynatraceOtlpFailedRequestLoggingMode string
+
+const (
+	OutputDynatraceOtlpFailedRequestLoggingModePayload           OutputDynatraceOtlpFailedRequestLoggingMode = "payload"
+	OutputDynatraceOtlpFailedRequestLoggingModePayloadAndHeaders OutputDynatraceOtlpFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputDynatraceOtlpFailedRequestLoggingModeNone              OutputDynatraceOtlpFailedRequestLoggingMode = "none"
+)
+
+func (e OutputDynatraceOtlpFailedRequestLoggingMode) ToPointer() *OutputDynatraceOtlpFailedRequestLoggingMode {
+	return &e
+}
+
+// EndpointType - Select the type of Dynatrace endpoint configured
+type EndpointType string
+
+const (
+	EndpointTypeSaas EndpointType = "saas"
+	EndpointTypeAg   EndpointType = "ag"
+)
+
+func (e EndpointType) ToPointer() *EndpointType {
+	return &e
+}
+
+// OutputDynatraceOtlpBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputDynatraceOtlpBackpressureBehavior string
+
+const (
+	OutputDynatraceOtlpBackpressureBehaviorBlock OutputDynatraceOtlpBackpressureBehavior = "block"
+	OutputDynatraceOtlpBackpressureBehaviorDrop  OutputDynatraceOtlpBackpressureBehavior = "drop"
+	OutputDynatraceOtlpBackpressureBehaviorQueue OutputDynatraceOtlpBackpressureBehavior = "queue"
+)
+
+func (e OutputDynatraceOtlpBackpressureBehavior) ToPointer() *OutputDynatraceOtlpBackpressureBehavior {
+	return &e
+}
+
+type OutputDynatraceOtlpExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputDynatraceOtlpExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputDynatraceOtlpExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputDynatraceOtlpResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputDynatraceOtlpResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceOtlpResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceOtlpResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputDynatraceOtlpResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputDynatraceOtlpResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputDynatraceOtlpResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputDynatraceOtlpTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputDynatraceOtlpTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceOtlpTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceOtlpTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputDynatraceOtlpTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputDynatraceOtlpTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputDynatraceOtlpTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputDynatraceOtlpPqCompressCompression - Codec to use to compress the persisted data
+type OutputDynatraceOtlpPqCompressCompression string
+
+const (
+	OutputDynatraceOtlpPqCompressCompressionNone OutputDynatraceOtlpPqCompressCompression = "none"
+	OutputDynatraceOtlpPqCompressCompressionGzip OutputDynatraceOtlpPqCompressCompression = "gzip"
+)
+
+func (e OutputDynatraceOtlpPqCompressCompression) ToPointer() *OutputDynatraceOtlpPqCompressCompression {
+	return &e
+}
+
+// OutputDynatraceOtlpQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputDynatraceOtlpQueueFullBehavior string
+
+const (
+	OutputDynatraceOtlpQueueFullBehaviorBlock OutputDynatraceOtlpQueueFullBehavior = "block"
+	OutputDynatraceOtlpQueueFullBehaviorDrop  OutputDynatraceOtlpQueueFullBehavior = "drop"
+)
+
+func (e OutputDynatraceOtlpQueueFullBehavior) ToPointer() *OutputDynatraceOtlpQueueFullBehavior {
+	return &e
+}
+
+// OutputDynatraceOtlpMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputDynatraceOtlpMode string
+
+const (
+	OutputDynatraceOtlpModeError        OutputDynatraceOtlpMode = "error"
+	OutputDynatraceOtlpModeBackpressure OutputDynatraceOtlpMode = "backpressure"
+	OutputDynatraceOtlpModeAlways       OutputDynatraceOtlpMode = "always"
+)
+
+func (e OutputDynatraceOtlpMode) ToPointer() *OutputDynatraceOtlpMode {
+	return &e
+}
+
+type OutputDynatraceOtlpPqControls struct {
+}
+
+type OutputDynatraceOtlp struct {
+	// Unique ID for this output
+	ID   string                   `json:"id"`
+	Type *OutputDynatraceOtlpType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Select a transport option for Dynatrace
+	Protocol *OutputDynatraceOtlpProtocol `default:"http" json:"protocol"`
+	// The endpoint where Dynatrace events will be sent. Enter any valid URL or an IP address (IPv4 or IPv6; enclose IPv6 addresses in square brackets)
+	Endpoint *string `default:"https://{your-environment-id}.live.dynatrace.com/api/v2/otlp" json:"endpoint"`
+	// The version of OTLP Protobuf definitions to use when structuring data to send
+	OtlpVersion *OutputDynatraceOTLPOTLPVersion `default:"1.3.1" json:"otlpVersion"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	Compress *OutputDynatraceOtlpCompressCompression `default:"gzip" json:"compress"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	HTTPCompress *OutputDynatraceOtlpHTTPCompressCompression `default:"gzip" json:"httpCompress"`
+	// If you want to send traces to the default `{endpoint}/v1/traces` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPTracesEndpointOverride *string `json:"httpTracesEndpointOverride,omitempty"`
+	// If you want to send metrics to the default `{endpoint}/v1/metrics` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPMetricsEndpointOverride *string `json:"httpMetricsEndpointOverride,omitempty"`
+	// If you want to send logs to the default `{endpoint}/v1/logs` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPLogsEndpointOverride *string `json:"httpLogsEndpointOverride,omitempty"`
+	// List of key-value pairs to send with each gRPC request. Value supports JavaScript expressions that are evaluated just once, when the destination gets started. To pass credentials as metadata, use 'C.Secret'.
+	Metadata []OutputDynatraceOtlpMetadatum `json:"metadata,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size (in KB) of the request body. The maximum payload size is 4 MB. If this limit is exceeded, the entire OTLP message is dropped
+	MaxPayloadSizeKB *float64 `default:"2048" json:"maxPayloadSizeKB"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputDynatraceOtlpFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// How often the sender should ping the peer to keep the connection open
+	KeepAliveTime *float64 `default:"30" json:"keepAliveTime"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// Select the type of Dynatrace endpoint configured
+	EndpointType *EndpointType `default:"saas" json:"endpointType"`
+	// Select or create a stored text secret
+	TokenSecret   string  `json:"tokenSecret"`
+	AuthTokenName *string `default:"Authorization" json:"authTokenName"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputDynatraceOtlpBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                  `json:"description,omitempty"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputDynatraceOtlpExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputDynatraceOtlpResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputDynatraceOtlpTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputDynatraceOtlpPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputDynatraceOtlpQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputDynatraceOtlpMode       `default:"error" json:"pqMode"`
+	PqControls *OutputDynatraceOtlpPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputDynatraceOtlp) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceOtlp) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceOtlp) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputDynatraceOtlp) GetType() *OutputDynatraceOtlpType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputDynatraceOtlp) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputDynatraceOtlp) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputDynatraceOtlp) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputDynatraceOtlp) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputDynatraceOtlp) GetProtocol() *OutputDynatraceOtlpProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputDynatraceOtlp) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputDynatraceOtlp) GetOtlpVersion() *OutputDynatraceOTLPOTLPVersion {
+	if o == nil {
+		return nil
+	}
+	return o.OtlpVersion
+}
+
+func (o *OutputDynatraceOtlp) GetCompress() *OutputDynatraceOtlpCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputDynatraceOtlp) GetHTTPCompress() *OutputDynatraceOtlpHTTPCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPCompress
+}
+
+func (o *OutputDynatraceOtlp) GetHTTPTracesEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPTracesEndpointOverride
+}
+
+func (o *OutputDynatraceOtlp) GetHTTPMetricsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPMetricsEndpointOverride
+}
+
+func (o *OutputDynatraceOtlp) GetHTTPLogsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPLogsEndpointOverride
+}
+
+func (o *OutputDynatraceOtlp) GetMetadata() []OutputDynatraceOtlpMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.Metadata
+}
+
+func (o *OutputDynatraceOtlp) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputDynatraceOtlp) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputDynatraceOtlp) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputDynatraceOtlp) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputDynatraceOtlp) GetFailedRequestLoggingMode() *OutputDynatraceOtlpFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputDynatraceOtlp) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputDynatraceOtlp) GetKeepAliveTime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAliveTime
+}
+
+func (o *OutputDynatraceOtlp) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputDynatraceOtlp) GetEndpointType() *EndpointType {
+	if o == nil {
+		return nil
+	}
+	return o.EndpointType
+}
+
+func (o *OutputDynatraceOtlp) GetTokenSecret() string {
+	if o == nil {
+		return ""
+	}
+	return o.TokenSecret
+}
+
+func (o *OutputDynatraceOtlp) GetAuthTokenName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthTokenName
+}
+
+func (o *OutputDynatraceOtlp) GetOnBackpressure() *OutputDynatraceOtlpBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputDynatraceOtlp) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputDynatraceOtlp) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputDynatraceOtlp) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputDynatraceOtlp) GetExtraHTTPHeaders() []OutputDynatraceOtlpExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputDynatraceOtlp) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputDynatraceOtlp) GetResponseRetrySettings() []OutputDynatraceOtlpResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputDynatraceOtlp) GetTimeoutRetrySettings() *OutputDynatraceOtlpTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputDynatraceOtlp) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputDynatraceOtlp) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputDynatraceOtlp) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputDynatraceOtlp) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputDynatraceOtlp) GetPqCompress() *OutputDynatraceOtlpPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputDynatraceOtlp) GetPqOnBackpressure() *OutputDynatraceOtlpQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputDynatraceOtlp) GetPqMode() *OutputDynatraceOtlpMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputDynatraceOtlp) GetPqControls() *OutputDynatraceOtlpPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputDynatraceHTTPType string
+
+const (
+	OutputDynatraceHTTPTypeDynatraceHTTP OutputDynatraceHTTPType = "dynatrace_http"
+)
+
+func (e OutputDynatraceHTTPType) ToPointer() *OutputDynatraceHTTPType {
+	return &e
+}
+
+// Method - The method to use when sending events
+type Method string
+
+const (
+	MethodPost  Method = "POST"
+	MethodPut   Method = "PUT"
+	MethodPatch Method = "PATCH"
+)
+
+func (e Method) ToPointer() *Method {
+	return &e
+}
+
+type OutputDynatraceHTTPExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputDynatraceHTTPExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputDynatraceHTTPExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputDynatraceHTTPFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputDynatraceHTTPFailedRequestLoggingMode string
+
+const (
+	OutputDynatraceHTTPFailedRequestLoggingModePayload           OutputDynatraceHTTPFailedRequestLoggingMode = "payload"
+	OutputDynatraceHTTPFailedRequestLoggingModePayloadAndHeaders OutputDynatraceHTTPFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputDynatraceHTTPFailedRequestLoggingModeNone              OutputDynatraceHTTPFailedRequestLoggingMode = "none"
+)
+
+func (e OutputDynatraceHTTPFailedRequestLoggingMode) ToPointer() *OutputDynatraceHTTPFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputDynatraceHTTPResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputDynatraceHTTPResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceHTTPResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceHTTPResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputDynatraceHTTPResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputDynatraceHTTPResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputDynatraceHTTPResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputDynatraceHTTPTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputDynatraceHTTPTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceHTTPTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceHTTPTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputDynatraceHTTPTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputDynatraceHTTPTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputDynatraceHTTPTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputDynatraceHTTPBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputDynatraceHTTPBackpressureBehavior string
+
+const (
+	OutputDynatraceHTTPBackpressureBehaviorBlock OutputDynatraceHTTPBackpressureBehavior = "block"
+	OutputDynatraceHTTPBackpressureBehaviorDrop  OutputDynatraceHTTPBackpressureBehavior = "drop"
+	OutputDynatraceHTTPBackpressureBehaviorQueue OutputDynatraceHTTPBackpressureBehavior = "queue"
+)
+
+func (e OutputDynatraceHTTPBackpressureBehavior) ToPointer() *OutputDynatraceHTTPBackpressureBehavior {
+	return &e
+}
+
+type OutputDynatraceHTTPAuthenticationType string
+
+const (
+	OutputDynatraceHTTPAuthenticationTypeToken      OutputDynatraceHTTPAuthenticationType = "token"
+	OutputDynatraceHTTPAuthenticationTypeTextSecret OutputDynatraceHTTPAuthenticationType = "textSecret"
+)
+
+func (e OutputDynatraceHTTPAuthenticationType) ToPointer() *OutputDynatraceHTTPAuthenticationType {
+	return &e
+}
+
+// OutputDynatraceHTTPFormat - How to format events before sending. Defaults to JSON. Plaintext is not currently supported.
+type OutputDynatraceHTTPFormat string
+
+const (
+	OutputDynatraceHTTPFormatJSONArray OutputDynatraceHTTPFormat = "json_array"
+	OutputDynatraceHTTPFormatPlaintext OutputDynatraceHTTPFormat = "plaintext"
+)
+
+func (e OutputDynatraceHTTPFormat) ToPointer() *OutputDynatraceHTTPFormat {
+	return &e
+}
+
+type Endpoint string
+
+const (
+	EndpointCloud      Endpoint = "cloud"
+	EndpointActiveGate Endpoint = "activeGate"
+	EndpointManual     Endpoint = "manual"
+)
+
+func (e Endpoint) ToPointer() *Endpoint {
+	return &e
+}
+
+type TelemetryType string
+
+const (
+	TelemetryTypeLogs    TelemetryType = "logs"
+	TelemetryTypeMetrics TelemetryType = "metrics"
+)
+
+func (e TelemetryType) ToPointer() *TelemetryType {
+	return &e
+}
+
+// OutputDynatraceHTTPCompression - Codec to use to compress the persisted data
+type OutputDynatraceHTTPCompression string
+
+const (
+	OutputDynatraceHTTPCompressionNone OutputDynatraceHTTPCompression = "none"
+	OutputDynatraceHTTPCompressionGzip OutputDynatraceHTTPCompression = "gzip"
+)
+
+func (e OutputDynatraceHTTPCompression) ToPointer() *OutputDynatraceHTTPCompression {
+	return &e
+}
+
+// OutputDynatraceHTTPQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputDynatraceHTTPQueueFullBehavior string
+
+const (
+	OutputDynatraceHTTPQueueFullBehaviorBlock OutputDynatraceHTTPQueueFullBehavior = "block"
+	OutputDynatraceHTTPQueueFullBehaviorDrop  OutputDynatraceHTTPQueueFullBehavior = "drop"
+)
+
+func (e OutputDynatraceHTTPQueueFullBehavior) ToPointer() *OutputDynatraceHTTPQueueFullBehavior {
+	return &e
+}
+
+// OutputDynatraceHTTPMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputDynatraceHTTPMode string
+
+const (
+	OutputDynatraceHTTPModeError        OutputDynatraceHTTPMode = "error"
+	OutputDynatraceHTTPModeBackpressure OutputDynatraceHTTPMode = "backpressure"
+	OutputDynatraceHTTPModeAlways       OutputDynatraceHTTPMode = "always"
+)
+
+func (e OutputDynatraceHTTPMode) ToPointer() *OutputDynatraceHTTPMode {
+	return &e
+}
+
+type OutputDynatraceHTTPPqControls struct {
+}
+
+type OutputDynatraceHTTP struct {
+	// Unique ID for this output
+	ID   string                   `json:"id"`
+	Type *OutputDynatraceHTTPType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The method to use when sending events
+	Method *Method `default:"POST" json:"method"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events. You can also add headers dynamically on a per-event basis in the __headers field, as explained in [Cribl Docs](https://docs.cribl.io/stream/destinations-webhook/#internal-fields).
+	ExtraHTTPHeaders []OutputDynatraceHTTPExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputDynatraceHTTPFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputDynatraceHTTPResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputDynatraceHTTPTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputDynatraceHTTPBackpressureBehavior `default:"block" json:"onBackpressure"`
+	AuthType       *OutputDynatraceHTTPAuthenticationType   `default:"token" json:"authType"`
+	// How to format events before sending. Defaults to JSON. Plaintext is not currently supported.
+	Format        *OutputDynatraceHTTPFormat `default:"json_array" json:"format"`
+	Endpoint      *Endpoint                  `default:"cloud" json:"endpoint"`
+	TelemetryType *TelemetryType             `default:"logs" json:"telemetryType"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64 `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputDynatraceHTTPCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputDynatraceHTTPQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputDynatraceHTTPMode       `default:"error" json:"pqMode"`
+	PqControls *OutputDynatraceHTTPPqControls `json:"pqControls,omitempty"`
+	// Bearer token to include in the authorization header
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// ID of the environment to send to
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// ActiveGate domain with Log analytics collector module enabled. For example https://{activeGate-domain}:9999/e/{environment-id}/api/v2/logs/ingest.
+	ActiveGateDomain *string `json:"activeGateDomain,omitempty"`
+	// URL to send events to. Can be overwritten by an event's __url field.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o OutputDynatraceHTTP) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDynatraceHTTP) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDynatraceHTTP) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputDynatraceHTTP) GetType() *OutputDynatraceHTTPType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputDynatraceHTTP) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputDynatraceHTTP) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputDynatraceHTTP) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputDynatraceHTTP) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputDynatraceHTTP) GetMethod() *Method {
+	if o == nil {
+		return nil
+	}
+	return o.Method
+}
+
+func (o *OutputDynatraceHTTP) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputDynatraceHTTP) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputDynatraceHTTP) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputDynatraceHTTP) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputDynatraceHTTP) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputDynatraceHTTP) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputDynatraceHTTP) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputDynatraceHTTP) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputDynatraceHTTP) GetExtraHTTPHeaders() []OutputDynatraceHTTPExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputDynatraceHTTP) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputDynatraceHTTP) GetFailedRequestLoggingMode() *OutputDynatraceHTTPFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputDynatraceHTTP) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputDynatraceHTTP) GetResponseRetrySettings() []OutputDynatraceHTTPResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputDynatraceHTTP) GetTimeoutRetrySettings() *OutputDynatraceHTTPTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputDynatraceHTTP) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputDynatraceHTTP) GetOnBackpressure() *OutputDynatraceHTTPBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputDynatraceHTTP) GetAuthType() *OutputDynatraceHTTPAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputDynatraceHTTP) GetFormat() *OutputDynatraceHTTPFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputDynatraceHTTP) GetEndpoint() *Endpoint {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputDynatraceHTTP) GetTelemetryType() *TelemetryType {
+	if o == nil {
+		return nil
+	}
+	return o.TelemetryType
+}
+
+func (o *OutputDynatraceHTTP) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputDynatraceHTTP) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputDynatraceHTTP) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputDynatraceHTTP) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputDynatraceHTTP) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputDynatraceHTTP) GetPqCompress() *OutputDynatraceHTTPCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputDynatraceHTTP) GetPqOnBackpressure() *OutputDynatraceHTTPQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputDynatraceHTTP) GetPqMode() *OutputDynatraceHTTPMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputDynatraceHTTP) GetPqControls() *OutputDynatraceHTTPPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputDynatraceHTTP) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputDynatraceHTTP) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputDynatraceHTTP) GetEnvironmentID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EnvironmentID
+}
+
+func (o *OutputDynatraceHTTP) GetActiveGateDomain() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ActiveGateDomain
+}
+
+func (o *OutputDynatraceHTTP) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+type OutputNetflowType string
+
+const (
+	OutputNetflowTypeNetflow OutputNetflowType = "netflow"
+)
+
+func (e OutputNetflowType) ToPointer() *OutputNetflowType {
+	return &e
+}
+
+type OutputNetflowHost struct {
+	// Destination host
+	Host string `json:"host"`
+	// Destination port, default is 2055
+	Port *float64 `default:"2055" json:"port"`
+}
+
+func (o OutputNetflowHost) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputNetflowHost) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputNetflowHost) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputNetflowHost) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type OutputNetflow struct {
+	// Unique ID for this output
+	ID   string            `json:"id"`
+	Type OutputNetflowType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// One or more NetFlow destinations to forward events to
+	Hosts []OutputNetflowHost `json:"hosts"`
+	// How often to resolve the destination hostname to an IP address. Ignored if all destinations are IP addresses. A value of 0 means every datagram sent will incur a DNS lookup.
+	DNSResolvePeriodSec *float64 `default:"0" json:"dnsResolvePeriodSec"`
+	Description         *string  `json:"description,omitempty"`
+}
+
+func (o OutputNetflow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputNetflow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputNetflow) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputNetflow) GetType() OutputNetflowType {
+	if o == nil {
+		return OutputNetflowType("")
+	}
+	return o.Type
+}
+
+func (o *OutputNetflow) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputNetflow) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputNetflow) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputNetflow) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputNetflow) GetHosts() []OutputNetflowHost {
+	if o == nil {
+		return []OutputNetflowHost{}
+	}
+	return o.Hosts
+}
+
+func (o *OutputNetflow) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputNetflow) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+type OutputClickHouseType string
+
+const (
+	OutputClickHouseTypeClickHouse OutputClickHouseType = "click_house"
+)
+
+func (e OutputClickHouseType) ToPointer() *OutputClickHouseType {
+	return &e
+}
+
+type OutputClickHouseAuthenticationType string
+
+const (
+	OutputClickHouseAuthenticationTypeNone               OutputClickHouseAuthenticationType = "none"
+	OutputClickHouseAuthenticationTypeBasic              OutputClickHouseAuthenticationType = "basic"
+	OutputClickHouseAuthenticationTypeCredentialsSecret  OutputClickHouseAuthenticationType = "credentialsSecret"
+	OutputClickHouseAuthenticationTypeSslUserCertificate OutputClickHouseAuthenticationType = "sslUserCertificate"
+	OutputClickHouseAuthenticationTypeToken              OutputClickHouseAuthenticationType = "token"
+	OutputClickHouseAuthenticationTypeTextSecret         OutputClickHouseAuthenticationType = "textSecret"
+	OutputClickHouseAuthenticationTypeOauth              OutputClickHouseAuthenticationType = "oauth"
+)
+
+func (e OutputClickHouseAuthenticationType) ToPointer() *OutputClickHouseAuthenticationType {
+	return &e
+}
+
+// OutputClickHouseFormat - Data format to use when sending data to ClickHouse. Defaults to JSON Compact.
+type OutputClickHouseFormat string
+
+const (
+	OutputClickHouseFormatJSONCompactEachRowWithNames OutputClickHouseFormat = "json-compact-each-row-with-names"
+	OutputClickHouseFormatJSONEachRow                 OutputClickHouseFormat = "json-each-row"
+)
+
+func (e OutputClickHouseFormat) ToPointer() *OutputClickHouseFormat {
+	return &e
+}
+
+// MappingType - How event fields are mapped to ClickHouse columns.
+type MappingType string
+
+const (
+	MappingTypeAutomatic MappingType = "automatic"
+	MappingTypeCustom    MappingType = "custom"
+)
+
+func (e MappingType) ToPointer() *MappingType {
+	return &e
+}
+
+type OutputClickHouseMinimumTLSVersion string
+
+const (
+	OutputClickHouseMinimumTLSVersionTlSv1  OutputClickHouseMinimumTLSVersion = "TLSv1"
+	OutputClickHouseMinimumTLSVersionTlSv11 OutputClickHouseMinimumTLSVersion = "TLSv1.1"
+	OutputClickHouseMinimumTLSVersionTlSv12 OutputClickHouseMinimumTLSVersion = "TLSv1.2"
+	OutputClickHouseMinimumTLSVersionTlSv13 OutputClickHouseMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputClickHouseMinimumTLSVersion) ToPointer() *OutputClickHouseMinimumTLSVersion {
+	return &e
+}
+
+type OutputClickHouseMaximumTLSVersion string
+
+const (
+	OutputClickHouseMaximumTLSVersionTlSv1  OutputClickHouseMaximumTLSVersion = "TLSv1"
+	OutputClickHouseMaximumTLSVersionTlSv11 OutputClickHouseMaximumTLSVersion = "TLSv1.1"
+	OutputClickHouseMaximumTLSVersionTlSv12 OutputClickHouseMaximumTLSVersion = "TLSv1.2"
+	OutputClickHouseMaximumTLSVersionTlSv13 OutputClickHouseMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputClickHouseMaximumTLSVersion) ToPointer() *OutputClickHouseMaximumTLSVersion {
+	return &e
+}
+
+type OutputClickHouseTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                            `json:"passphrase,omitempty"`
+	MinVersion *OutputClickHouseMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputClickHouseMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputClickHouseTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetMinVersion() *OutputClickHouseMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputClickHouseTLSSettingsClientSide) GetMaxVersion() *OutputClickHouseMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+type OutputClickHouseExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputClickHouseExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputClickHouseExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputClickHouseFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputClickHouseFailedRequestLoggingMode string
+
+const (
+	OutputClickHouseFailedRequestLoggingModePayload           OutputClickHouseFailedRequestLoggingMode = "payload"
+	OutputClickHouseFailedRequestLoggingModePayloadAndHeaders OutputClickHouseFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputClickHouseFailedRequestLoggingModeNone              OutputClickHouseFailedRequestLoggingMode = "none"
+)
+
+func (e OutputClickHouseFailedRequestLoggingMode) ToPointer() *OutputClickHouseFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputClickHouseResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputClickHouseResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputClickHouseResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputClickHouseResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputClickHouseResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputClickHouseResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputClickHouseResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputClickHouseTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputClickHouseTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputClickHouseTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputClickHouseTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputClickHouseTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputClickHouseTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputClickHouseTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputClickHouseBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputClickHouseBackpressureBehavior string
+
+const (
+	OutputClickHouseBackpressureBehaviorBlock OutputClickHouseBackpressureBehavior = "block"
+	OutputClickHouseBackpressureBehaviorDrop  OutputClickHouseBackpressureBehavior = "drop"
+	OutputClickHouseBackpressureBehaviorQueue OutputClickHouseBackpressureBehavior = "queue"
+)
+
+func (e OutputClickHouseBackpressureBehavior) ToPointer() *OutputClickHouseBackpressureBehavior {
+	return &e
+}
+
+type OutputClickHouseOauthParam struct {
+	// OAuth parameter name
+	Name string `json:"name"`
+	// OAuth parameter value
+	Value string `json:"value"`
+}
+
+func (o *OutputClickHouseOauthParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputClickHouseOauthParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputClickHouseOauthHeader struct {
+	// OAuth header name
+	Name string `json:"name"`
+	// OAuth header value
+	Value string `json:"value"`
+}
+
+func (o *OutputClickHouseOauthHeader) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputClickHouseOauthHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type ColumnMapping struct {
+	// Name of the column in ClickHouse that will store field value
+	ColumnName string `json:"columnName"`
+	// Type of the column in the ClickHouse database
+	ColumnType *string `json:"columnType,omitempty"`
+	// JavaScript expression to compute value to be inserted into ClickHouse table
+	ColumnValueExpression string `json:"columnValueExpression"`
+}
+
+func (o *ColumnMapping) GetColumnName() string {
+	if o == nil {
+		return ""
+	}
+	return o.ColumnName
+}
+
+func (o *ColumnMapping) GetColumnType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ColumnType
+}
+
+func (o *ColumnMapping) GetColumnValueExpression() string {
+	if o == nil {
+		return ""
+	}
+	return o.ColumnValueExpression
+}
+
+// OutputClickHouseCompression - Codec to use to compress the persisted data
+type OutputClickHouseCompression string
+
+const (
+	OutputClickHouseCompressionNone OutputClickHouseCompression = "none"
+	OutputClickHouseCompressionGzip OutputClickHouseCompression = "gzip"
+)
+
+func (e OutputClickHouseCompression) ToPointer() *OutputClickHouseCompression {
+	return &e
+}
+
+// OutputClickHouseQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputClickHouseQueueFullBehavior string
+
+const (
+	OutputClickHouseQueueFullBehaviorBlock OutputClickHouseQueueFullBehavior = "block"
+	OutputClickHouseQueueFullBehaviorDrop  OutputClickHouseQueueFullBehavior = "drop"
+)
+
+func (e OutputClickHouseQueueFullBehavior) ToPointer() *OutputClickHouseQueueFullBehavior {
+	return &e
+}
+
+// OutputClickHouseMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputClickHouseMode string
+
+const (
+	OutputClickHouseModeError        OutputClickHouseMode = "error"
+	OutputClickHouseModeBackpressure OutputClickHouseMode = "backpressure"
+	OutputClickHouseModeAlways       OutputClickHouseMode = "always"
+)
+
+func (e OutputClickHouseMode) ToPointer() *OutputClickHouseMode {
+	return &e
+}
+
+type OutputClickHousePqControls struct {
+}
+
+type OutputClickHouse struct {
+	// Unique ID for this output
+	ID   string                `json:"id"`
+	Type *OutputClickHouseType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// URL of the ClickHouse instance. Example: http://localhost:8123/
+	URL      string                              `json:"url"`
+	AuthType *OutputClickHouseAuthenticationType `default:"none" json:"authType"`
+	Database string                              `json:"database"`
+	// Name of the ClickHouse table where data will be inserted. Name can contain letters (A-Z, a-z), numbers (0-9), and the character "_", and must start with either a letter or the character "_".
+	TableName string `json:"tableName"`
+	// Data format to use when sending data to ClickHouse. Defaults to JSON Compact.
+	Format *OutputClickHouseFormat `default:"json-compact-each-row-with-names" json:"format"`
+	// How event fields are mapped to ClickHouse columns.
+	MappingType *MappingType `default:"automatic" json:"mappingType"`
+	// Collect data into batches for later processing. Disable to write to a ClickHouse table immediately.
+	AsyncInserts *bool                                  `default:"false" json:"asyncInserts"`
+	TLS          *OutputClickHouseTLSSettingsClientSide `json:"tls,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputClickHouseExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputClickHouseFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputClickHouseResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputClickHouseTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// Log the most recent event that fails to match the table schema
+	DumpFormatErrorsToDisk *bool `default:"false" json:"dumpFormatErrorsToDisk"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputClickHouseBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                               `json:"description,omitempty"`
+	Username       *string                               `json:"username,omitempty"`
+	Password       *string                               `json:"password,omitempty"`
+	// Bearer token to include in the authorization header
+	Token *string `json:"token,omitempty"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// URL for OAuth
+	LoginURL *string `json:"loginUrl,omitempty"`
+	// Secret parameter name to pass in request body
+	SecretParamName *string `json:"secretParamName,omitempty"`
+	// Secret parameter value to pass in request body
+	Secret *string `json:"secret,omitempty"`
+	// Name of the auth token attribute in the OAuth response. Can be top-level (e.g., 'token'); or nested, using a period (e.g., 'data.token').
+	TokenAttributeName *string `json:"tokenAttributeName,omitempty"`
+	// JavaScript expression to compute the Authorization header value to pass in requests. The value `${token}` is used to reference the token obtained from authentication, e.g.: `Bearer ${token}`.
+	AuthHeaderExpr *string `default:"Bearer \\${token}" json:"authHeaderExpr"`
+	// How often the OAuth token should be refreshed.
+	TokenTimeoutSecs *float64 `default:"3600" json:"tokenTimeoutSecs"`
+	// Additional parameters to send in the OAuth login request. @{product} will combine the secret with these parameters, and will send the URL-encoded result in a POST request to the endpoint specified in the 'Login URL'. We'll automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthParams []OutputClickHouseOauthParam `json:"oauthParams,omitempty"`
+	// Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthHeaders []OutputClickHouseOauthHeader `json:"oauthHeaders,omitempty"`
+	// Username for certificate authentication
+	SQLUsername *string `json:"sqlUsername,omitempty"`
+	// Cribl will wait for confirmation that data has been fully inserted into the ClickHouse database before proceeding. Disabling this option can increase throughput, but Cribl won’t be able to verify data has been completely inserted.
+	WaitForAsyncInserts *bool `default:"true" json:"waitForAsyncInserts"`
+	// Fields to exclude from sending to ClickHouse
+	ExcludeMappingFields []string `json:"excludeMappingFields,omitempty"`
+	// Retrieves the table schema from ClickHouse and populates the Column Mapping table
+	DescribeTable  *string         `json:"describeTable,omitempty"`
+	ColumnMappings []ColumnMapping `json:"columnMappings,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputClickHouseCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputClickHouseQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputClickHouseMode       `default:"error" json:"pqMode"`
+	PqControls *OutputClickHousePqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputClickHouse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputClickHouse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputClickHouse) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputClickHouse) GetType() *OutputClickHouseType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputClickHouse) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputClickHouse) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputClickHouse) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputClickHouse) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputClickHouse) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputClickHouse) GetAuthType() *OutputClickHouseAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputClickHouse) GetDatabase() string {
+	if o == nil {
+		return ""
+	}
+	return o.Database
+}
+
+func (o *OutputClickHouse) GetTableName() string {
+	if o == nil {
+		return ""
+	}
+	return o.TableName
+}
+
+func (o *OutputClickHouse) GetFormat() *OutputClickHouseFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputClickHouse) GetMappingType() *MappingType {
+	if o == nil {
+		return nil
+	}
+	return o.MappingType
+}
+
+func (o *OutputClickHouse) GetAsyncInserts() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AsyncInserts
+}
+
+func (o *OutputClickHouse) GetTLS() *OutputClickHouseTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputClickHouse) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputClickHouse) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputClickHouse) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputClickHouse) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputClickHouse) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputClickHouse) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputClickHouse) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputClickHouse) GetExtraHTTPHeaders() []OutputClickHouseExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputClickHouse) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputClickHouse) GetFailedRequestLoggingMode() *OutputClickHouseFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputClickHouse) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputClickHouse) GetResponseRetrySettings() []OutputClickHouseResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputClickHouse) GetTimeoutRetrySettings() *OutputClickHouseTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputClickHouse) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputClickHouse) GetDumpFormatErrorsToDisk() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DumpFormatErrorsToDisk
+}
+
+func (o *OutputClickHouse) GetOnBackpressure() *OutputClickHouseBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputClickHouse) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputClickHouse) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *OutputClickHouse) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OutputClickHouse) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputClickHouse) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+func (o *OutputClickHouse) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputClickHouse) GetLoginURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LoginURL
+}
+
+func (o *OutputClickHouse) GetSecretParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SecretParamName
+}
+
+func (o *OutputClickHouse) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputClickHouse) GetTokenAttributeName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenAttributeName
+}
+
+func (o *OutputClickHouse) GetAuthHeaderExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthHeaderExpr
+}
+
+func (o *OutputClickHouse) GetTokenTimeoutSecs() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TokenTimeoutSecs
+}
+
+func (o *OutputClickHouse) GetOauthParams() []OutputClickHouseOauthParam {
+	if o == nil {
+		return nil
+	}
+	return o.OauthParams
+}
+
+func (o *OutputClickHouse) GetOauthHeaders() []OutputClickHouseOauthHeader {
+	if o == nil {
+		return nil
+	}
+	return o.OauthHeaders
+}
+
+func (o *OutputClickHouse) GetSQLUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SQLUsername
+}
+
+func (o *OutputClickHouse) GetWaitForAsyncInserts() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForAsyncInserts
+}
+
+func (o *OutputClickHouse) GetExcludeMappingFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeMappingFields
+}
+
+func (o *OutputClickHouse) GetDescribeTable() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DescribeTable
+}
+
+func (o *OutputClickHouse) GetColumnMappings() []ColumnMapping {
+	if o == nil {
+		return nil
+	}
+	return o.ColumnMappings
+}
+
+func (o *OutputClickHouse) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputClickHouse) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputClickHouse) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputClickHouse) GetPqCompress() *OutputClickHouseCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputClickHouse) GetPqOnBackpressure() *OutputClickHouseQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputClickHouse) GetPqMode() *OutputClickHouseMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputClickHouse) GetPqControls() *OutputClickHousePqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputSecurityLakeType string
+
+const (
+	OutputSecurityLakeTypeSecurityLake OutputSecurityLakeType = "security_lake"
+)
+
+func (e OutputSecurityLakeType) ToPointer() *OutputSecurityLakeType {
+	return &e
+}
+
+// OutputSecurityLakeAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputSecurityLakeAuthenticationMethod string
+
+const (
+	OutputSecurityLakeAuthenticationMethodAuto   OutputSecurityLakeAuthenticationMethod = "auto"
+	OutputSecurityLakeAuthenticationMethodManual OutputSecurityLakeAuthenticationMethod = "manual"
+	OutputSecurityLakeAuthenticationMethodSecret OutputSecurityLakeAuthenticationMethod = "secret"
+)
+
+func (e OutputSecurityLakeAuthenticationMethod) ToPointer() *OutputSecurityLakeAuthenticationMethod {
+	return &e
+}
+
+// OutputSecurityLakeSignatureVersion - Signature version to use for signing Amazon Security Lake requests
+type OutputSecurityLakeSignatureVersion string
+
+const (
+	OutputSecurityLakeSignatureVersionV2 OutputSecurityLakeSignatureVersion = "v2"
+	OutputSecurityLakeSignatureVersionV4 OutputSecurityLakeSignatureVersion = "v4"
+)
+
+func (e OutputSecurityLakeSignatureVersion) ToPointer() *OutputSecurityLakeSignatureVersion {
+	return &e
+}
+
+// OutputSecurityLakeObjectACL - Object ACL to assign to uploaded objects
+type OutputSecurityLakeObjectACL string
+
+const (
+	OutputSecurityLakeObjectACLPrivate                OutputSecurityLakeObjectACL = "private"
+	OutputSecurityLakeObjectACLPublicRead             OutputSecurityLakeObjectACL = "public-read"
+	OutputSecurityLakeObjectACLPublicReadWrite        OutputSecurityLakeObjectACL = "public-read-write"
+	OutputSecurityLakeObjectACLAuthenticatedRead      OutputSecurityLakeObjectACL = "authenticated-read"
+	OutputSecurityLakeObjectACLAwsExecRead            OutputSecurityLakeObjectACL = "aws-exec-read"
+	OutputSecurityLakeObjectACLBucketOwnerRead        OutputSecurityLakeObjectACL = "bucket-owner-read"
+	OutputSecurityLakeObjectACLBucketOwnerFullControl OutputSecurityLakeObjectACL = "bucket-owner-full-control"
+)
+
+func (e OutputSecurityLakeObjectACL) ToPointer() *OutputSecurityLakeObjectACL {
+	return &e
+}
+
+// OutputSecurityLakeStorageClass - Storage class to select for uploaded objects
+type OutputSecurityLakeStorageClass string
+
+const (
+	OutputSecurityLakeStorageClassStandard           OutputSecurityLakeStorageClass = "STANDARD"
+	OutputSecurityLakeStorageClassReducedRedundancy  OutputSecurityLakeStorageClass = "REDUCED_REDUNDANCY"
+	OutputSecurityLakeStorageClassStandardIa         OutputSecurityLakeStorageClass = "STANDARD_IA"
+	OutputSecurityLakeStorageClassOnezoneIa          OutputSecurityLakeStorageClass = "ONEZONE_IA"
+	OutputSecurityLakeStorageClassIntelligentTiering OutputSecurityLakeStorageClass = "INTELLIGENT_TIERING"
+	OutputSecurityLakeStorageClassGlacier            OutputSecurityLakeStorageClass = "GLACIER"
+	OutputSecurityLakeStorageClassGlacierIr          OutputSecurityLakeStorageClass = "GLACIER_IR"
+	OutputSecurityLakeStorageClassDeepArchive        OutputSecurityLakeStorageClass = "DEEP_ARCHIVE"
+)
+
+func (e OutputSecurityLakeStorageClass) ToPointer() *OutputSecurityLakeStorageClass {
+	return &e
+}
+
+type OutputSecurityLakeServerSideEncryptionForUploadedObjects string
+
+const (
+	OutputSecurityLakeServerSideEncryptionForUploadedObjectsAes256 OutputSecurityLakeServerSideEncryptionForUploadedObjects = "AES256"
+	OutputSecurityLakeServerSideEncryptionForUploadedObjectsAwsKms OutputSecurityLakeServerSideEncryptionForUploadedObjects = "aws:kms"
+)
+
+func (e OutputSecurityLakeServerSideEncryptionForUploadedObjects) ToPointer() *OutputSecurityLakeServerSideEncryptionForUploadedObjects {
+	return &e
+}
+
+// OutputSecurityLakeBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSecurityLakeBackpressureBehavior string
+
+const (
+	OutputSecurityLakeBackpressureBehaviorBlock OutputSecurityLakeBackpressureBehavior = "block"
+	OutputSecurityLakeBackpressureBehaviorDrop  OutputSecurityLakeBackpressureBehavior = "drop"
+)
+
+func (e OutputSecurityLakeBackpressureBehavior) ToPointer() *OutputSecurityLakeBackpressureBehavior {
+	return &e
+}
+
+// OutputSecurityLakeDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputSecurityLakeDiskSpaceProtection string
+
+const (
+	OutputSecurityLakeDiskSpaceProtectionBlock OutputSecurityLakeDiskSpaceProtection = "block"
+	OutputSecurityLakeDiskSpaceProtectionDrop  OutputSecurityLakeDiskSpaceProtection = "drop"
+)
+
+func (e OutputSecurityLakeDiskSpaceProtection) ToPointer() *OutputSecurityLakeDiskSpaceProtection {
+	return &e
+}
+
+// OutputSecurityLakeParquetVersion - Determines which data types are supported and how they are represented
+type OutputSecurityLakeParquetVersion string
+
+const (
+	OutputSecurityLakeParquetVersionParquet10 OutputSecurityLakeParquetVersion = "PARQUET_1_0"
+	OutputSecurityLakeParquetVersionParquet24 OutputSecurityLakeParquetVersion = "PARQUET_2_4"
+	OutputSecurityLakeParquetVersionParquet26 OutputSecurityLakeParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputSecurityLakeParquetVersion) ToPointer() *OutputSecurityLakeParquetVersion {
+	return &e
+}
+
+// OutputSecurityLakeDataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputSecurityLakeDataPageVersion string
+
+const (
+	OutputSecurityLakeDataPageVersionDataPageV1 OutputSecurityLakeDataPageVersion = "DATA_PAGE_V1"
+	OutputSecurityLakeDataPageVersionDataPageV2 OutputSecurityLakeDataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputSecurityLakeDataPageVersion) ToPointer() *OutputSecurityLakeDataPageVersion {
+	return &e
+}
+
+type OutputSecurityLakeKeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputSecurityLakeKeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSecurityLakeKeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSecurityLakeKeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputSecurityLakeKeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputSecurityLake struct {
+	// Unique ID for this output
+	ID   string                  `json:"id"`
+	Type *OutputSecurityLakeType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards. These fields are added as dimensions and labels to generated metrics and logs, respectively.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the destination S3 bucket. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at initialization time. Example referencing a Global Variable: `myBucket-${C.vars.myVar}`
+	Bucket string `json:"bucket"`
+	// Region where the Amazon Security Lake is located.
+	Region       string  `json:"region"`
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputSecurityLakeAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	// Amazon Security Lake service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to Amazon Security Lake-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing Amazon Security Lake requests
+	SignatureVersion *OutputSecurityLakeSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access S3
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn string `json:"assumeRoleArn"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputSecurityLakeObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass         *OutputSecurityLakeStorageClass                           `json:"storageClass,omitempty"`
+	ServerSideEncryption *OutputSecurityLakeServerSideEncryptionForUploadedObjects `json:"serverSideEncryption,omitempty"`
+	// ID or ARN of the KMS customer-managed key to use for encryption
+	KmsKeyID *string `json:"kmsKeyId,omitempty"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSecurityLakeBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputSecurityLakeDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of parts to upload in parallel per file. Minimum part size is 5MB.
+	MaxConcurrentFileParts *float64 `default:"4" json:"maxConcurrentFileParts"`
+	// Disable if you can access files within the bucket but not the bucket itself
+	VerifyPermissions *bool `default:"true" json:"verifyPermissions"`
+	// Maximum number of files that can be waiting for upload before backpressure is applied
+	MaxClosingFilesToBackpressure *float64 `default:"100" json:"maxClosingFilesToBackpressure"`
+	// ID of the AWS account whose data the Destination will write to Security Lake. This should have been configured when creating the Amazon Security Lake custom source.
+	AccountID string `json:"accountId"`
+	// Name of the custom source configured in Amazon Security Lake
+	CustomSource string `json:"customSource"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputSecurityLakeParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputSecurityLakeDataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputSecurityLakeKeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool   `default:"false" json:"enablePageChecksum"`
+	Description        *string `json:"description,omitempty"`
+	// This value can be a constant or a JavaScript expression (`${C.env.SOME_ACCESS_KEY}`)
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// To add a new schema, navigate to Processing > Knowledge > Parquet Schemas
+	ParquetSchema *string `json:"parquetSchema,omitempty"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputSecurityLake) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSecurityLake) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSecurityLake) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSecurityLake) GetType() *OutputSecurityLakeType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSecurityLake) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSecurityLake) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSecurityLake) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSecurityLake) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSecurityLake) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputSecurityLake) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputSecurityLake) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputSecurityLake) GetAwsAuthenticationMethod() *OutputSecurityLakeAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputSecurityLake) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputSecurityLake) GetSignatureVersion() *OutputSecurityLakeSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputSecurityLake) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputSecurityLake) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSecurityLake) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputSecurityLake) GetAssumeRoleArn() string {
+	if o == nil {
+		return ""
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputSecurityLake) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputSecurityLake) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputSecurityLake) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputSecurityLake) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputSecurityLake) GetObjectACL() *OutputSecurityLakeObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputSecurityLake) GetStorageClass() *OutputSecurityLakeStorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputSecurityLake) GetServerSideEncryption() *OutputSecurityLakeServerSideEncryptionForUploadedObjects {
+	if o == nil {
+		return nil
+	}
+	return o.ServerSideEncryption
+}
+
+func (o *OutputSecurityLake) GetKmsKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KmsKeyID
+}
+
+func (o *OutputSecurityLake) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputSecurityLake) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputSecurityLake) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputSecurityLake) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputSecurityLake) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputSecurityLake) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputSecurityLake) GetOnBackpressure() *OutputSecurityLakeBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSecurityLake) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputSecurityLake) GetOnDiskFullBackpressure() *OutputSecurityLakeDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputSecurityLake) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputSecurityLake) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputSecurityLake) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputSecurityLake) GetVerifyPermissions() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyPermissions
+}
+
+func (o *OutputSecurityLake) GetMaxClosingFilesToBackpressure() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxClosingFilesToBackpressure
+}
+
+func (o *OutputSecurityLake) GetAccountID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AccountID
+}
+
+func (o *OutputSecurityLake) GetCustomSource() string {
+	if o == nil {
+		return ""
+	}
+	return o.CustomSource
+}
+
+func (o *OutputSecurityLake) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputSecurityLake) GetParquetVersion() *OutputSecurityLakeParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputSecurityLake) GetParquetDataPageVersion() *OutputSecurityLakeDataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputSecurityLake) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputSecurityLake) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputSecurityLake) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputSecurityLake) GetKeyValueMetadata() []OutputSecurityLakeKeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputSecurityLake) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputSecurityLake) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputSecurityLake) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputSecurityLake) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSecurityLake) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputSecurityLake) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputSecurityLake) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputSecurityLake) GetParquetSchema() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetSchema
+}
+
+func (o *OutputSecurityLake) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputSecurityLake) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputDlS3Type string
+
+const (
+	OutputDlS3TypeDlS3 OutputDlS3Type = "dl_s3"
+)
+
+func (e OutputDlS3Type) ToPointer() *OutputDlS3Type {
+	return &e
+}
+
+// OutputDlS3AuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputDlS3AuthenticationMethod string
+
+const (
+	OutputDlS3AuthenticationMethodAuto   OutputDlS3AuthenticationMethod = "auto"
+	OutputDlS3AuthenticationMethodManual OutputDlS3AuthenticationMethod = "manual"
+	OutputDlS3AuthenticationMethodSecret OutputDlS3AuthenticationMethod = "secret"
+)
+
+func (e OutputDlS3AuthenticationMethod) ToPointer() *OutputDlS3AuthenticationMethod {
+	return &e
+}
+
+// OutputDlS3SignatureVersion - Signature version to use for signing S3 requests
+type OutputDlS3SignatureVersion string
+
+const (
+	OutputDlS3SignatureVersionV2 OutputDlS3SignatureVersion = "v2"
+	OutputDlS3SignatureVersionV4 OutputDlS3SignatureVersion = "v4"
+)
+
+func (e OutputDlS3SignatureVersion) ToPointer() *OutputDlS3SignatureVersion {
+	return &e
+}
+
+// OutputDlS3ObjectACL - Object ACL to assign to uploaded objects
+type OutputDlS3ObjectACL string
+
+const (
+	OutputDlS3ObjectACLPrivate                OutputDlS3ObjectACL = "private"
+	OutputDlS3ObjectACLPublicRead             OutputDlS3ObjectACL = "public-read"
+	OutputDlS3ObjectACLPublicReadWrite        OutputDlS3ObjectACL = "public-read-write"
+	OutputDlS3ObjectACLAuthenticatedRead      OutputDlS3ObjectACL = "authenticated-read"
+	OutputDlS3ObjectACLAwsExecRead            OutputDlS3ObjectACL = "aws-exec-read"
+	OutputDlS3ObjectACLBucketOwnerRead        OutputDlS3ObjectACL = "bucket-owner-read"
+	OutputDlS3ObjectACLBucketOwnerFullControl OutputDlS3ObjectACL = "bucket-owner-full-control"
+)
+
+func (e OutputDlS3ObjectACL) ToPointer() *OutputDlS3ObjectACL {
+	return &e
+}
+
+// OutputDlS3StorageClass - Storage class to select for uploaded objects
+type OutputDlS3StorageClass string
+
+const (
+	OutputDlS3StorageClassStandard           OutputDlS3StorageClass = "STANDARD"
+	OutputDlS3StorageClassReducedRedundancy  OutputDlS3StorageClass = "REDUCED_REDUNDANCY"
+	OutputDlS3StorageClassStandardIa         OutputDlS3StorageClass = "STANDARD_IA"
+	OutputDlS3StorageClassOnezoneIa          OutputDlS3StorageClass = "ONEZONE_IA"
+	OutputDlS3StorageClassIntelligentTiering OutputDlS3StorageClass = "INTELLIGENT_TIERING"
+	OutputDlS3StorageClassGlacier            OutputDlS3StorageClass = "GLACIER"
+	OutputDlS3StorageClassGlacierIr          OutputDlS3StorageClass = "GLACIER_IR"
+	OutputDlS3StorageClassDeepArchive        OutputDlS3StorageClass = "DEEP_ARCHIVE"
+)
+
+func (e OutputDlS3StorageClass) ToPointer() *OutputDlS3StorageClass {
+	return &e
+}
+
+type OutputDlS3ServerSideEncryptionForUploadedObjects string
+
+const (
+	OutputDlS3ServerSideEncryptionForUploadedObjectsAes256 OutputDlS3ServerSideEncryptionForUploadedObjects = "AES256"
+	OutputDlS3ServerSideEncryptionForUploadedObjectsAwsKms OutputDlS3ServerSideEncryptionForUploadedObjects = "aws:kms"
+)
+
+func (e OutputDlS3ServerSideEncryptionForUploadedObjects) ToPointer() *OutputDlS3ServerSideEncryptionForUploadedObjects {
+	return &e
+}
+
+// OutputDlS3DataFormat - Format of the output data
+type OutputDlS3DataFormat string
+
+const (
+	OutputDlS3DataFormatJSON    OutputDlS3DataFormat = "json"
+	OutputDlS3DataFormatRaw     OutputDlS3DataFormat = "raw"
+	OutputDlS3DataFormatParquet OutputDlS3DataFormat = "parquet"
+)
+
+func (e OutputDlS3DataFormat) ToPointer() *OutputDlS3DataFormat {
+	return &e
+}
+
+// OutputDlS3BackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputDlS3BackpressureBehavior string
+
+const (
+	OutputDlS3BackpressureBehaviorBlock OutputDlS3BackpressureBehavior = "block"
+	OutputDlS3BackpressureBehaviorDrop  OutputDlS3BackpressureBehavior = "drop"
+)
+
+func (e OutputDlS3BackpressureBehavior) ToPointer() *OutputDlS3BackpressureBehavior {
+	return &e
+}
+
+// OutputDlS3DiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputDlS3DiskSpaceProtection string
+
+const (
+	OutputDlS3DiskSpaceProtectionBlock OutputDlS3DiskSpaceProtection = "block"
+	OutputDlS3DiskSpaceProtectionDrop  OutputDlS3DiskSpaceProtection = "drop"
+)
+
+func (e OutputDlS3DiskSpaceProtection) ToPointer() *OutputDlS3DiskSpaceProtection {
+	return &e
+}
+
+// OutputDlS3Compression - Data compression format to apply to HTTP content before it is delivered
+type OutputDlS3Compression string
+
+const (
+	OutputDlS3CompressionNone OutputDlS3Compression = "none"
+	OutputDlS3CompressionGzip OutputDlS3Compression = "gzip"
+)
+
+func (e OutputDlS3Compression) ToPointer() *OutputDlS3Compression {
+	return &e
+}
+
+// OutputDlS3CompressionLevel - Compression level to apply before moving files to final destination
+type OutputDlS3CompressionLevel string
+
+const (
+	OutputDlS3CompressionLevelBestSpeed       OutputDlS3CompressionLevel = "best_speed"
+	OutputDlS3CompressionLevelNormal          OutputDlS3CompressionLevel = "normal"
+	OutputDlS3CompressionLevelBestCompression OutputDlS3CompressionLevel = "best_compression"
+)
+
+func (e OutputDlS3CompressionLevel) ToPointer() *OutputDlS3CompressionLevel {
+	return &e
+}
+
+// OutputDlS3ParquetVersion - Determines which data types are supported and how they are represented
+type OutputDlS3ParquetVersion string
+
+const (
+	OutputDlS3ParquetVersionParquet10 OutputDlS3ParquetVersion = "PARQUET_1_0"
+	OutputDlS3ParquetVersionParquet24 OutputDlS3ParquetVersion = "PARQUET_2_4"
+	OutputDlS3ParquetVersionParquet26 OutputDlS3ParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputDlS3ParquetVersion) ToPointer() *OutputDlS3ParquetVersion {
+	return &e
+}
+
+// OutputDlS3DataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputDlS3DataPageVersion string
+
+const (
+	OutputDlS3DataPageVersionDataPageV1 OutputDlS3DataPageVersion = "DATA_PAGE_V1"
+	OutputDlS3DataPageVersionDataPageV2 OutputDlS3DataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputDlS3DataPageVersion) ToPointer() *OutputDlS3DataPageVersion {
+	return &e
+}
+
+type OutputDlS3KeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputDlS3KeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDlS3KeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDlS3KeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputDlS3KeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputDlS3 struct {
+	// Unique ID for this output
+	ID   string          `json:"id"`
+	Type *OutputDlS3Type `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the destination S3 bucket. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at initialization time. Example referencing a Global Variable: `myBucket-${C.vars.myVar}`
+	Bucket string `json:"bucket"`
+	// Region where the S3 bucket is located
+	Region *string `json:"region,omitempty"`
+	// Secret key. This value can be a constant or a JavaScript expression. Example: `${C.env.SOME_SECRET}`)
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputDlS3AuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	// S3 service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to S3-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing S3 requests
+	SignatureVersion *OutputDlS3SignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access S3
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Prefix to append to files before uploading. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at init time. Example referencing a Global Variable: `myKeyPrefix-${C.vars.myVar}`
+	DestPath *string `default:"" json:"destPath"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputDlS3ObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass         *OutputDlS3StorageClass                           `json:"storageClass,omitempty"`
+	ServerSideEncryption *OutputDlS3ServerSideEncryptionForUploadedObjects `json:"serverSideEncryption,omitempty"`
+	// ID or ARN of the KMS customer-managed key to use for encryption
+	KmsKeyID *string `json:"kmsKeyId,omitempty"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// Format of the output data
+	Format *OutputDlS3DataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputDlS3BackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputDlS3DiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of parts to upload in parallel per file. Minimum part size is 5MB.
+	MaxConcurrentFileParts *float64 `default:"4" json:"maxConcurrentFileParts"`
+	// Disable if you can access files within the bucket but not the bucket itself
+	VerifyPermissions *bool `default:"true" json:"verifyPermissions"`
+	// Maximum number of files that can be waiting for upload before backpressure is applied
+	MaxClosingFilesToBackpressure *float64 `default:"100" json:"maxClosingFilesToBackpressure"`
+	// List of fields to partition the path by, in addition to time, which is included automatically. The effective partition will be YYYY/MM/DD/HH/<list/of/fields>.
+	PartitioningFields []string `json:"partitioningFields,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// This value can be a constant or a JavaScript expression (`${C.env.SOME_ACCESS_KEY}`)
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputDlS3Compression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputDlS3CompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputDlS3ParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputDlS3DataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputDlS3KeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputDlS3) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputDlS3) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputDlS3) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputDlS3) GetType() *OutputDlS3Type {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputDlS3) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputDlS3) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputDlS3) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputDlS3) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputDlS3) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputDlS3) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputDlS3) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputDlS3) GetAwsAuthenticationMethod() *OutputDlS3AuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputDlS3) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputDlS3) GetSignatureVersion() *OutputDlS3SignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputDlS3) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputDlS3) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputDlS3) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputDlS3) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputDlS3) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputDlS3) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputDlS3) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputDlS3) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputDlS3) GetDestPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DestPath
+}
+
+func (o *OutputDlS3) GetObjectACL() *OutputDlS3ObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputDlS3) GetStorageClass() *OutputDlS3StorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputDlS3) GetServerSideEncryption() *OutputDlS3ServerSideEncryptionForUploadedObjects {
+	if o == nil {
+		return nil
+	}
+	return o.ServerSideEncryption
+}
+
+func (o *OutputDlS3) GetKmsKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KmsKeyID
+}
+
+func (o *OutputDlS3) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputDlS3) GetFormat() *OutputDlS3DataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputDlS3) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputDlS3) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputDlS3) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputDlS3) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputDlS3) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputDlS3) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputDlS3) GetOnBackpressure() *OutputDlS3BackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputDlS3) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputDlS3) GetOnDiskFullBackpressure() *OutputDlS3DiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputDlS3) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputDlS3) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputDlS3) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputDlS3) GetVerifyPermissions() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyPermissions
+}
+
+func (o *OutputDlS3) GetMaxClosingFilesToBackpressure() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxClosingFilesToBackpressure
+}
+
+func (o *OutputDlS3) GetPartitioningFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitioningFields
+}
+
+func (o *OutputDlS3) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputDlS3) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputDlS3) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputDlS3) GetCompress() *OutputDlS3Compression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputDlS3) GetCompressionLevel() *OutputDlS3CompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputDlS3) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputDlS3) GetParquetVersion() *OutputDlS3ParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputDlS3) GetParquetDataPageVersion() *OutputDlS3DataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputDlS3) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputDlS3) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputDlS3) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputDlS3) GetKeyValueMetadata() []OutputDlS3KeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputDlS3) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputDlS3) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputDlS3) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputDlS3) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputDlS3) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputDlS3) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputCrowdstrikeNextGenSiemType string
+
+const (
+	OutputCrowdstrikeNextGenSiemTypeCrowdstrikeNextGenSiem OutputCrowdstrikeNextGenSiemType = "crowdstrike_next_gen_siem"
+)
+
+func (e OutputCrowdstrikeNextGenSiemType) ToPointer() *OutputCrowdstrikeNextGenSiemType {
+	return &e
+}
+
+type OutputCrowdstrikeNextGenSiemExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputCrowdstrikeNextGenSiemExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputCrowdstrikeNextGenSiemExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode string
+
+const (
+	OutputCrowdstrikeNextGenSiemFailedRequestLoggingModePayload           OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode = "payload"
+	OutputCrowdstrikeNextGenSiemFailedRequestLoggingModePayloadAndHeaders OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputCrowdstrikeNextGenSiemFailedRequestLoggingModeNone              OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode = "none"
+)
+
+func (e OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode) ToPointer() *OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputCrowdstrikeNextGenSiemRequestFormat - When set to JSON, the event is automatically formatted with required fields before sending. When set to Raw, only the event's `_raw` value is sent.
+type OutputCrowdstrikeNextGenSiemRequestFormat string
+
+const (
+	OutputCrowdstrikeNextGenSiemRequestFormatJSON OutputCrowdstrikeNextGenSiemRequestFormat = "JSON"
+	OutputCrowdstrikeNextGenSiemRequestFormatRaw  OutputCrowdstrikeNextGenSiemRequestFormat = "raw"
+)
+
+func (e OutputCrowdstrikeNextGenSiemRequestFormat) ToPointer() *OutputCrowdstrikeNextGenSiemRequestFormat {
+	return &e
+}
+
+// OutputCrowdstrikeNextGenSiemAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputCrowdstrikeNextGenSiemAuthenticationMethod string
+
+const (
+	OutputCrowdstrikeNextGenSiemAuthenticationMethodManual OutputCrowdstrikeNextGenSiemAuthenticationMethod = "manual"
+	OutputCrowdstrikeNextGenSiemAuthenticationMethodSecret OutputCrowdstrikeNextGenSiemAuthenticationMethod = "secret"
+)
+
+func (e OutputCrowdstrikeNextGenSiemAuthenticationMethod) ToPointer() *OutputCrowdstrikeNextGenSiemAuthenticationMethod {
+	return &e
+}
+
+type OutputCrowdstrikeNextGenSiemResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputCrowdstrikeNextGenSiemResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputCrowdstrikeNextGenSiemResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputCrowdstrikeNextGenSiemResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputCrowdstrikeNextGenSiemResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputCrowdstrikeNextGenSiemResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputCrowdstrikeNextGenSiemResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputCrowdstrikeNextGenSiemTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputCrowdstrikeNextGenSiemBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputCrowdstrikeNextGenSiemBackpressureBehavior string
+
+const (
+	OutputCrowdstrikeNextGenSiemBackpressureBehaviorBlock OutputCrowdstrikeNextGenSiemBackpressureBehavior = "block"
+	OutputCrowdstrikeNextGenSiemBackpressureBehaviorDrop  OutputCrowdstrikeNextGenSiemBackpressureBehavior = "drop"
+	OutputCrowdstrikeNextGenSiemBackpressureBehaviorQueue OutputCrowdstrikeNextGenSiemBackpressureBehavior = "queue"
+)
+
+func (e OutputCrowdstrikeNextGenSiemBackpressureBehavior) ToPointer() *OutputCrowdstrikeNextGenSiemBackpressureBehavior {
+	return &e
+}
+
+// OutputCrowdstrikeNextGenSiemCompression - Codec to use to compress the persisted data
+type OutputCrowdstrikeNextGenSiemCompression string
+
+const (
+	OutputCrowdstrikeNextGenSiemCompressionNone OutputCrowdstrikeNextGenSiemCompression = "none"
+	OutputCrowdstrikeNextGenSiemCompressionGzip OutputCrowdstrikeNextGenSiemCompression = "gzip"
+)
+
+func (e OutputCrowdstrikeNextGenSiemCompression) ToPointer() *OutputCrowdstrikeNextGenSiemCompression {
+	return &e
+}
+
+// OutputCrowdstrikeNextGenSiemQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputCrowdstrikeNextGenSiemQueueFullBehavior string
+
+const (
+	OutputCrowdstrikeNextGenSiemQueueFullBehaviorBlock OutputCrowdstrikeNextGenSiemQueueFullBehavior = "block"
+	OutputCrowdstrikeNextGenSiemQueueFullBehaviorDrop  OutputCrowdstrikeNextGenSiemQueueFullBehavior = "drop"
+)
+
+func (e OutputCrowdstrikeNextGenSiemQueueFullBehavior) ToPointer() *OutputCrowdstrikeNextGenSiemQueueFullBehavior {
+	return &e
+}
+
+// OutputCrowdstrikeNextGenSiemMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputCrowdstrikeNextGenSiemMode string
+
+const (
+	OutputCrowdstrikeNextGenSiemModeError        OutputCrowdstrikeNextGenSiemMode = "error"
+	OutputCrowdstrikeNextGenSiemModeBackpressure OutputCrowdstrikeNextGenSiemMode = "backpressure"
+	OutputCrowdstrikeNextGenSiemModeAlways       OutputCrowdstrikeNextGenSiemMode = "always"
+)
+
+func (e OutputCrowdstrikeNextGenSiemMode) ToPointer() *OutputCrowdstrikeNextGenSiemMode {
+	return &e
+}
+
+type OutputCrowdstrikeNextGenSiemPqControls struct {
+}
+
+type OutputCrowdstrikeNextGenSiem struct {
+	// Unique ID for this output
+	ID   string                            `json:"id"`
+	Type *OutputCrowdstrikeNextGenSiemType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// URL provided from a CrowdStrike data connector.
+	// Example: https://ingest.<region>.crowdstrike.com/api/ingest/hec/<connection-id>/v1/services/collector
+	URL string `json:"url"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputCrowdstrikeNextGenSiemExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"true" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// When set to JSON, the event is automatically formatted with required fields before sending. When set to Raw, only the event's `_raw` value is sent.
+	Format *OutputCrowdstrikeNextGenSiemRequestFormat `default:"raw" json:"format"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *OutputCrowdstrikeNextGenSiemAuthenticationMethod `default:"manual" json:"authType"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputCrowdstrikeNextGenSiemResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputCrowdstrikeNextGenSiemBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                           `json:"description,omitempty"`
+	Token          *string                                           `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputCrowdstrikeNextGenSiemCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputCrowdstrikeNextGenSiemQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputCrowdstrikeNextGenSiemMode       `default:"error" json:"pqMode"`
+	PqControls *OutputCrowdstrikeNextGenSiemPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputCrowdstrikeNextGenSiem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetType() *OutputCrowdstrikeNextGenSiemType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetExtraHTTPHeaders() []OutputCrowdstrikeNextGenSiemExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetFailedRequestLoggingMode() *OutputCrowdstrikeNextGenSiemFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetFormat() *OutputCrowdstrikeNextGenSiemRequestFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetAuthType() *OutputCrowdstrikeNextGenSiemAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetResponseRetrySettings() []OutputCrowdstrikeNextGenSiemResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetTimeoutRetrySettings() *OutputCrowdstrikeNextGenSiemTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetOnBackpressure() *OutputCrowdstrikeNextGenSiemBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqCompress() *OutputCrowdstrikeNextGenSiemCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqOnBackpressure() *OutputCrowdstrikeNextGenSiemQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqMode() *OutputCrowdstrikeNextGenSiemMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputCrowdstrikeNextGenSiem) GetPqControls() *OutputCrowdstrikeNextGenSiemPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputHumioHecType string
+
+const (
+	OutputHumioHecTypeHumioHec OutputHumioHecType = "humio_hec"
+)
+
+func (e OutputHumioHecType) ToPointer() *OutputHumioHecType {
+	return &e
+}
+
+type OutputHumioHecExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputHumioHecExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputHumioHecExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputHumioHecFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputHumioHecFailedRequestLoggingMode string
+
+const (
+	OutputHumioHecFailedRequestLoggingModePayload           OutputHumioHecFailedRequestLoggingMode = "payload"
+	OutputHumioHecFailedRequestLoggingModePayloadAndHeaders OutputHumioHecFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputHumioHecFailedRequestLoggingModeNone              OutputHumioHecFailedRequestLoggingMode = "none"
+)
+
+func (e OutputHumioHecFailedRequestLoggingMode) ToPointer() *OutputHumioHecFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputHumioHecRequestFormat - When set to JSON, the event is automatically formatted with required fields before sending. When set to Raw, only the event's `_raw` value is sent.
+type OutputHumioHecRequestFormat string
+
+const (
+	OutputHumioHecRequestFormatJSON OutputHumioHecRequestFormat = "JSON"
+	OutputHumioHecRequestFormatRaw  OutputHumioHecRequestFormat = "raw"
+)
+
+func (e OutputHumioHecRequestFormat) ToPointer() *OutputHumioHecRequestFormat {
+	return &e
+}
+
+// OutputHumioHecAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputHumioHecAuthenticationMethod string
+
+const (
+	OutputHumioHecAuthenticationMethodManual OutputHumioHecAuthenticationMethod = "manual"
+	OutputHumioHecAuthenticationMethodSecret OutputHumioHecAuthenticationMethod = "secret"
+)
+
+func (e OutputHumioHecAuthenticationMethod) ToPointer() *OutputHumioHecAuthenticationMethod {
+	return &e
+}
+
+type OutputHumioHecResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputHumioHecResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHumioHecResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHumioHecResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputHumioHecResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputHumioHecResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputHumioHecResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputHumioHecTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputHumioHecTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHumioHecTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHumioHecTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputHumioHecTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputHumioHecTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputHumioHecTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputHumioHecBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputHumioHecBackpressureBehavior string
+
+const (
+	OutputHumioHecBackpressureBehaviorBlock OutputHumioHecBackpressureBehavior = "block"
+	OutputHumioHecBackpressureBehaviorDrop  OutputHumioHecBackpressureBehavior = "drop"
+	OutputHumioHecBackpressureBehaviorQueue OutputHumioHecBackpressureBehavior = "queue"
+)
+
+func (e OutputHumioHecBackpressureBehavior) ToPointer() *OutputHumioHecBackpressureBehavior {
+	return &e
+}
+
+// OutputHumioHecCompression - Codec to use to compress the persisted data
+type OutputHumioHecCompression string
+
+const (
+	OutputHumioHecCompressionNone OutputHumioHecCompression = "none"
+	OutputHumioHecCompressionGzip OutputHumioHecCompression = "gzip"
+)
+
+func (e OutputHumioHecCompression) ToPointer() *OutputHumioHecCompression {
+	return &e
+}
+
+// OutputHumioHecQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputHumioHecQueueFullBehavior string
+
+const (
+	OutputHumioHecQueueFullBehaviorBlock OutputHumioHecQueueFullBehavior = "block"
+	OutputHumioHecQueueFullBehaviorDrop  OutputHumioHecQueueFullBehavior = "drop"
+)
+
+func (e OutputHumioHecQueueFullBehavior) ToPointer() *OutputHumioHecQueueFullBehavior {
+	return &e
+}
+
+// OutputHumioHecMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputHumioHecMode string
+
+const (
+	OutputHumioHecModeError        OutputHumioHecMode = "error"
+	OutputHumioHecModeBackpressure OutputHumioHecMode = "backpressure"
+	OutputHumioHecModeAlways       OutputHumioHecMode = "always"
+)
+
+func (e OutputHumioHecMode) ToPointer() *OutputHumioHecMode {
+	return &e
+}
+
+type OutputHumioHecPqControls struct {
+}
+
+type OutputHumioHec struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type *OutputHumioHecType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// URL to a CrowdStrike Falcon LogScale endpoint to send events to. Examples: https://cloud.us.humio.com/api/v1/ingest/hec for JSON and https://cloud.us.humio.com/api/v1/ingest/hec/raw for raw
+	URL *string `default:"https://cloud.us.humio.com/api/v1/ingest/hec" json:"url"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputHumioHecExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"true" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputHumioHecFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// When set to JSON, the event is automatically formatted with required fields before sending. When set to Raw, only the event's `_raw` value is sent.
+	Format *OutputHumioHecRequestFormat `default:"JSON" json:"format"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *OutputHumioHecAuthenticationMethod `default:"manual" json:"authType"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputHumioHecResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputHumioHecTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputHumioHecBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                             `json:"description,omitempty"`
+	// CrowdStrike Falcon LogScale authentication token
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputHumioHecCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputHumioHecQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputHumioHecMode       `default:"error" json:"pqMode"`
+	PqControls *OutputHumioHecPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputHumioHec) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHumioHec) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHumioHec) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputHumioHec) GetType() *OutputHumioHecType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputHumioHec) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputHumioHec) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputHumioHec) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputHumioHec) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputHumioHec) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+func (o *OutputHumioHec) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputHumioHec) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputHumioHec) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputHumioHec) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputHumioHec) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputHumioHec) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputHumioHec) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputHumioHec) GetExtraHTTPHeaders() []OutputHumioHecExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputHumioHec) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputHumioHec) GetFailedRequestLoggingMode() *OutputHumioHecFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputHumioHec) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputHumioHec) GetFormat() *OutputHumioHecRequestFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputHumioHec) GetAuthType() *OutputHumioHecAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputHumioHec) GetResponseRetrySettings() []OutputHumioHecResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputHumioHec) GetTimeoutRetrySettings() *OutputHumioHecTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputHumioHec) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputHumioHec) GetOnBackpressure() *OutputHumioHecBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputHumioHec) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputHumioHec) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputHumioHec) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputHumioHec) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputHumioHec) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputHumioHec) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputHumioHec) GetPqCompress() *OutputHumioHecCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputHumioHec) GetPqOnBackpressure() *OutputHumioHecQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputHumioHec) GetPqMode() *OutputHumioHecMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputHumioHec) GetPqControls() *OutputHumioHecPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputServiceNowType string
+
+const (
+	OutputServiceNowTypeServiceNow OutputServiceNowType = "service_now"
+)
+
+func (e OutputServiceNowType) ToPointer() *OutputServiceNowType {
+	return &e
+}
+
+// OutputServiceNowOTLPVersion - The version of OTLP Protobuf definitions to use when structuring data to send
+type OutputServiceNowOTLPVersion string
+
+const (
+	OutputServiceNowOTLPVersionOneDot3Dot1 OutputServiceNowOTLPVersion = "1.3.1"
+)
+
+func (e OutputServiceNowOTLPVersion) ToPointer() *OutputServiceNowOTLPVersion {
+	return &e
+}
+
+// OutputServiceNowProtocol - Select a transport option for OpenTelemetry
+type OutputServiceNowProtocol string
+
+const (
+	OutputServiceNowProtocolGrpc OutputServiceNowProtocol = "grpc"
+	OutputServiceNowProtocolHTTP OutputServiceNowProtocol = "http"
+)
+
+func (e OutputServiceNowProtocol) ToPointer() *OutputServiceNowProtocol {
+	return &e
+}
+
+// OutputServiceNowCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputServiceNowCompressCompression string
+
+const (
+	OutputServiceNowCompressCompressionNone    OutputServiceNowCompressCompression = "none"
+	OutputServiceNowCompressCompressionDeflate OutputServiceNowCompressCompression = "deflate"
+	OutputServiceNowCompressCompressionGzip    OutputServiceNowCompressCompression = "gzip"
+)
+
+func (e OutputServiceNowCompressCompression) ToPointer() *OutputServiceNowCompressCompression {
+	return &e
+}
+
+// OutputServiceNowHTTPCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputServiceNowHTTPCompressCompression string
+
+const (
+	OutputServiceNowHTTPCompressCompressionNone OutputServiceNowHTTPCompressCompression = "none"
+	OutputServiceNowHTTPCompressCompressionGzip OutputServiceNowHTTPCompressCompression = "gzip"
+)
+
+func (e OutputServiceNowHTTPCompressCompression) ToPointer() *OutputServiceNowHTTPCompressCompression {
+	return &e
+}
+
+type OutputServiceNowMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputServiceNowMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputServiceNowMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputServiceNowMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputServiceNowMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputServiceNowFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputServiceNowFailedRequestLoggingMode string
+
+const (
+	OutputServiceNowFailedRequestLoggingModePayload           OutputServiceNowFailedRequestLoggingMode = "payload"
+	OutputServiceNowFailedRequestLoggingModePayloadAndHeaders OutputServiceNowFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputServiceNowFailedRequestLoggingModeNone              OutputServiceNowFailedRequestLoggingMode = "none"
+)
+
+func (e OutputServiceNowFailedRequestLoggingMode) ToPointer() *OutputServiceNowFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputServiceNowBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputServiceNowBackpressureBehavior string
+
+const (
+	OutputServiceNowBackpressureBehaviorBlock OutputServiceNowBackpressureBehavior = "block"
+	OutputServiceNowBackpressureBehaviorDrop  OutputServiceNowBackpressureBehavior = "drop"
+	OutputServiceNowBackpressureBehaviorQueue OutputServiceNowBackpressureBehavior = "queue"
+)
+
+func (e OutputServiceNowBackpressureBehavior) ToPointer() *OutputServiceNowBackpressureBehavior {
+	return &e
+}
+
+type OutputServiceNowExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputServiceNowExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputServiceNowExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputServiceNowResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputServiceNowResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputServiceNowResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputServiceNowResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputServiceNowResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputServiceNowResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputServiceNowResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputServiceNowTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputServiceNowTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputServiceNowTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputServiceNowTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputServiceNowTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputServiceNowTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputServiceNowTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputServiceNowMinimumTLSVersion string
+
+const (
+	OutputServiceNowMinimumTLSVersionTlSv1  OutputServiceNowMinimumTLSVersion = "TLSv1"
+	OutputServiceNowMinimumTLSVersionTlSv11 OutputServiceNowMinimumTLSVersion = "TLSv1.1"
+	OutputServiceNowMinimumTLSVersionTlSv12 OutputServiceNowMinimumTLSVersion = "TLSv1.2"
+	OutputServiceNowMinimumTLSVersionTlSv13 OutputServiceNowMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputServiceNowMinimumTLSVersion) ToPointer() *OutputServiceNowMinimumTLSVersion {
+	return &e
+}
+
+type OutputServiceNowMaximumTLSVersion string
+
+const (
+	OutputServiceNowMaximumTLSVersionTlSv1  OutputServiceNowMaximumTLSVersion = "TLSv1"
+	OutputServiceNowMaximumTLSVersionTlSv11 OutputServiceNowMaximumTLSVersion = "TLSv1.1"
+	OutputServiceNowMaximumTLSVersionTlSv12 OutputServiceNowMaximumTLSVersion = "TLSv1.2"
+	OutputServiceNowMaximumTLSVersionTlSv13 OutputServiceNowMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputServiceNowMaximumTLSVersion) ToPointer() *OutputServiceNowMaximumTLSVersion {
+	return &e
+}
+
+type OutputServiceNowTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                            `json:"passphrase,omitempty"`
+	MinVersion *OutputServiceNowMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputServiceNowMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputServiceNowTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetMinVersion() *OutputServiceNowMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputServiceNowTLSSettingsClientSide) GetMaxVersion() *OutputServiceNowMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputServiceNowPqCompressCompression - Codec to use to compress the persisted data
+type OutputServiceNowPqCompressCompression string
+
+const (
+	OutputServiceNowPqCompressCompressionNone OutputServiceNowPqCompressCompression = "none"
+	OutputServiceNowPqCompressCompressionGzip OutputServiceNowPqCompressCompression = "gzip"
+)
+
+func (e OutputServiceNowPqCompressCompression) ToPointer() *OutputServiceNowPqCompressCompression {
+	return &e
+}
+
+// OutputServiceNowQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputServiceNowQueueFullBehavior string
+
+const (
+	OutputServiceNowQueueFullBehaviorBlock OutputServiceNowQueueFullBehavior = "block"
+	OutputServiceNowQueueFullBehaviorDrop  OutputServiceNowQueueFullBehavior = "drop"
+)
+
+func (e OutputServiceNowQueueFullBehavior) ToPointer() *OutputServiceNowQueueFullBehavior {
+	return &e
+}
+
+// OutputServiceNowMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputServiceNowMode string
+
+const (
+	OutputServiceNowModeError        OutputServiceNowMode = "error"
+	OutputServiceNowModeBackpressure OutputServiceNowMode = "backpressure"
+	OutputServiceNowModeAlways       OutputServiceNowMode = "always"
+)
+
+func (e OutputServiceNowMode) ToPointer() *OutputServiceNowMode {
+	return &e
+}
+
+type OutputServiceNowPqControls struct {
+}
+
+type OutputServiceNow struct {
+	// Unique ID for this output
+	ID   string                `json:"id"`
+	Type *OutputServiceNowType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The endpoint where ServiceNow events will be sent. Enter any valid URL or an IP address (IPv4 or IPv6; enclose IPv6 addresses in square brackets)
+	Endpoint *string `default:"ingest.lightstep.com:443" json:"endpoint"`
+	// Select or create a stored text secret
+	TokenSecret   string  `json:"tokenSecret"`
+	AuthTokenName *string `default:"lightstep-access-token" json:"authTokenName"`
+	// The version of OTLP Protobuf definitions to use when structuring data to send
+	OtlpVersion *OutputServiceNowOTLPVersion `default:"1.3.1" json:"otlpVersion"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"2048" json:"maxPayloadSizeKB"`
+	// Select a transport option for OpenTelemetry
+	Protocol *OutputServiceNowProtocol `default:"grpc" json:"protocol"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	Compress *OutputServiceNowCompressCompression `default:"gzip" json:"compress"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	HTTPCompress *OutputServiceNowHTTPCompressCompression `default:"gzip" json:"httpCompress"`
+	// If you want to send traces to the default `{endpoint}/v1/traces` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPTracesEndpointOverride *string `json:"httpTracesEndpointOverride,omitempty"`
+	// If you want to send metrics to the default `{endpoint}/v1/metrics` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPMetricsEndpointOverride *string `json:"httpMetricsEndpointOverride,omitempty"`
+	// If you want to send logs to the default `{endpoint}/v1/logs` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPLogsEndpointOverride *string `json:"httpLogsEndpointOverride,omitempty"`
+	// List of key-value pairs to send with each gRPC request. Value supports JavaScript expressions that are evaluated just once, when the destination gets started. To pass credentials as metadata, use 'C.Secret'.
+	Metadata []OutputServiceNowMetadatum `json:"metadata,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputServiceNowFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// How often the sender should ping the peer to keep the connection open
+	KeepAliveTime *float64 `default:"30" json:"keepAliveTime"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputServiceNowBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                               `json:"description,omitempty"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputServiceNowExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputServiceNowResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputServiceNowTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool                                  `default:"false" json:"responseHonorRetryAfterHeader"`
+	TLS                           *OutputServiceNowTLSSettingsClientSide `json:"tls,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputServiceNowPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputServiceNowQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputServiceNowMode       `default:"error" json:"pqMode"`
+	PqControls *OutputServiceNowPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputServiceNow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputServiceNow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputServiceNow) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputServiceNow) GetType() *OutputServiceNowType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputServiceNow) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputServiceNow) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputServiceNow) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputServiceNow) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputServiceNow) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputServiceNow) GetTokenSecret() string {
+	if o == nil {
+		return ""
+	}
+	return o.TokenSecret
+}
+
+func (o *OutputServiceNow) GetAuthTokenName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthTokenName
+}
+
+func (o *OutputServiceNow) GetOtlpVersion() *OutputServiceNowOTLPVersion {
+	if o == nil {
+		return nil
+	}
+	return o.OtlpVersion
+}
+
+func (o *OutputServiceNow) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputServiceNow) GetProtocol() *OutputServiceNowProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputServiceNow) GetCompress() *OutputServiceNowCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputServiceNow) GetHTTPCompress() *OutputServiceNowHTTPCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPCompress
+}
+
+func (o *OutputServiceNow) GetHTTPTracesEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPTracesEndpointOverride
+}
+
+func (o *OutputServiceNow) GetHTTPMetricsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPMetricsEndpointOverride
+}
+
+func (o *OutputServiceNow) GetHTTPLogsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPLogsEndpointOverride
+}
+
+func (o *OutputServiceNow) GetMetadata() []OutputServiceNowMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.Metadata
+}
+
+func (o *OutputServiceNow) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputServiceNow) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputServiceNow) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputServiceNow) GetFailedRequestLoggingMode() *OutputServiceNowFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputServiceNow) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputServiceNow) GetKeepAliveTime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAliveTime
+}
+
+func (o *OutputServiceNow) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputServiceNow) GetOnBackpressure() *OutputServiceNowBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputServiceNow) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputServiceNow) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputServiceNow) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputServiceNow) GetExtraHTTPHeaders() []OutputServiceNowExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputServiceNow) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputServiceNow) GetResponseRetrySettings() []OutputServiceNowResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputServiceNow) GetTimeoutRetrySettings() *OutputServiceNowTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputServiceNow) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputServiceNow) GetTLS() *OutputServiceNowTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputServiceNow) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputServiceNow) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputServiceNow) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputServiceNow) GetPqCompress() *OutputServiceNowPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputServiceNow) GetPqOnBackpressure() *OutputServiceNowQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputServiceNow) GetPqMode() *OutputServiceNowMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputServiceNow) GetPqControls() *OutputServiceNowPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputOpenTelemetryType string
+
+const (
+	OutputOpenTelemetryTypeOpenTelemetry OutputOpenTelemetryType = "open_telemetry"
+)
+
+func (e OutputOpenTelemetryType) ToPointer() *OutputOpenTelemetryType {
+	return &e
+}
+
+// OutputOpenTelemetryProtocol - Select a transport option for OpenTelemetry
+type OutputOpenTelemetryProtocol string
+
+const (
+	OutputOpenTelemetryProtocolGrpc OutputOpenTelemetryProtocol = "grpc"
+	OutputOpenTelemetryProtocolHTTP OutputOpenTelemetryProtocol = "http"
+)
+
+func (e OutputOpenTelemetryProtocol) ToPointer() *OutputOpenTelemetryProtocol {
+	return &e
+}
+
+// OutputOpenTelemetryOTLPVersion - The version of OTLP Protobuf definitions to use when structuring data to send
+type OutputOpenTelemetryOTLPVersion string
+
+const (
+	OutputOpenTelemetryOTLPVersionZeroDot10Dot0 OutputOpenTelemetryOTLPVersion = "0.10.0"
+	OutputOpenTelemetryOTLPVersionOneDot3Dot1   OutputOpenTelemetryOTLPVersion = "1.3.1"
+)
+
+func (e OutputOpenTelemetryOTLPVersion) ToPointer() *OutputOpenTelemetryOTLPVersion {
+	return &e
+}
+
+// OutputOpenTelemetryCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputOpenTelemetryCompressCompression string
+
+const (
+	OutputOpenTelemetryCompressCompressionNone    OutputOpenTelemetryCompressCompression = "none"
+	OutputOpenTelemetryCompressCompressionDeflate OutputOpenTelemetryCompressCompression = "deflate"
+	OutputOpenTelemetryCompressCompressionGzip    OutputOpenTelemetryCompressCompression = "gzip"
+)
+
+func (e OutputOpenTelemetryCompressCompression) ToPointer() *OutputOpenTelemetryCompressCompression {
+	return &e
+}
+
+// OutputOpenTelemetryHTTPCompressCompression - Type of compression to apply to messages sent to the OpenTelemetry endpoint
+type OutputOpenTelemetryHTTPCompressCompression string
+
+const (
+	OutputOpenTelemetryHTTPCompressCompressionNone OutputOpenTelemetryHTTPCompressCompression = "none"
+	OutputOpenTelemetryHTTPCompressCompressionGzip OutputOpenTelemetryHTTPCompressCompression = "gzip"
+)
+
+func (e OutputOpenTelemetryHTTPCompressCompression) ToPointer() *OutputOpenTelemetryHTTPCompressCompression {
+	return &e
+}
+
+// OutputOpenTelemetryAuthenticationType - OpenTelemetry authentication type
+type OutputOpenTelemetryAuthenticationType string
+
+const (
+	OutputOpenTelemetryAuthenticationTypeNone              OutputOpenTelemetryAuthenticationType = "none"
+	OutputOpenTelemetryAuthenticationTypeBasic             OutputOpenTelemetryAuthenticationType = "basic"
+	OutputOpenTelemetryAuthenticationTypeCredentialsSecret OutputOpenTelemetryAuthenticationType = "credentialsSecret"
+	OutputOpenTelemetryAuthenticationTypeToken             OutputOpenTelemetryAuthenticationType = "token"
+	OutputOpenTelemetryAuthenticationTypeTextSecret        OutputOpenTelemetryAuthenticationType = "textSecret"
+	OutputOpenTelemetryAuthenticationTypeOauth             OutputOpenTelemetryAuthenticationType = "oauth"
+)
+
+func (e OutputOpenTelemetryAuthenticationType) ToPointer() *OutputOpenTelemetryAuthenticationType {
+	return &e
+}
+
+type OutputOpenTelemetryMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputOpenTelemetryMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputOpenTelemetryMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputOpenTelemetryMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputOpenTelemetryMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputOpenTelemetryFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputOpenTelemetryFailedRequestLoggingMode string
+
+const (
+	OutputOpenTelemetryFailedRequestLoggingModePayload           OutputOpenTelemetryFailedRequestLoggingMode = "payload"
+	OutputOpenTelemetryFailedRequestLoggingModePayloadAndHeaders OutputOpenTelemetryFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputOpenTelemetryFailedRequestLoggingModeNone              OutputOpenTelemetryFailedRequestLoggingMode = "none"
+)
+
+func (e OutputOpenTelemetryFailedRequestLoggingMode) ToPointer() *OutputOpenTelemetryFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputOpenTelemetryBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputOpenTelemetryBackpressureBehavior string
+
+const (
+	OutputOpenTelemetryBackpressureBehaviorBlock OutputOpenTelemetryBackpressureBehavior = "block"
+	OutputOpenTelemetryBackpressureBehaviorDrop  OutputOpenTelemetryBackpressureBehavior = "drop"
+	OutputOpenTelemetryBackpressureBehaviorQueue OutputOpenTelemetryBackpressureBehavior = "queue"
+)
+
+func (e OutputOpenTelemetryBackpressureBehavior) ToPointer() *OutputOpenTelemetryBackpressureBehavior {
+	return &e
+}
+
+type OutputOpenTelemetryOauthParam struct {
+	// OAuth parameter name
+	Name string `json:"name"`
+	// OAuth parameter value
+	Value string `json:"value"`
+}
+
+func (o *OutputOpenTelemetryOauthParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputOpenTelemetryOauthParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputOpenTelemetryOauthHeader struct {
+	// OAuth header name
+	Name string `json:"name"`
+	// OAuth header value
+	Value string `json:"value"`
+}
+
+func (o *OutputOpenTelemetryOauthHeader) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputOpenTelemetryOauthHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputOpenTelemetryExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputOpenTelemetryExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputOpenTelemetryExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputOpenTelemetryResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputOpenTelemetryResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputOpenTelemetryResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputOpenTelemetryResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputOpenTelemetryResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputOpenTelemetryResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputOpenTelemetryResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputOpenTelemetryTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputOpenTelemetryTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputOpenTelemetryTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputOpenTelemetryTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputOpenTelemetryTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputOpenTelemetryTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputOpenTelemetryTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputOpenTelemetryMinimumTLSVersion string
+
+const (
+	OutputOpenTelemetryMinimumTLSVersionTlSv1  OutputOpenTelemetryMinimumTLSVersion = "TLSv1"
+	OutputOpenTelemetryMinimumTLSVersionTlSv11 OutputOpenTelemetryMinimumTLSVersion = "TLSv1.1"
+	OutputOpenTelemetryMinimumTLSVersionTlSv12 OutputOpenTelemetryMinimumTLSVersion = "TLSv1.2"
+	OutputOpenTelemetryMinimumTLSVersionTlSv13 OutputOpenTelemetryMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputOpenTelemetryMinimumTLSVersion) ToPointer() *OutputOpenTelemetryMinimumTLSVersion {
+	return &e
+}
+
+type OutputOpenTelemetryMaximumTLSVersion string
+
+const (
+	OutputOpenTelemetryMaximumTLSVersionTlSv1  OutputOpenTelemetryMaximumTLSVersion = "TLSv1"
+	OutputOpenTelemetryMaximumTLSVersionTlSv11 OutputOpenTelemetryMaximumTLSVersion = "TLSv1.1"
+	OutputOpenTelemetryMaximumTLSVersionTlSv12 OutputOpenTelemetryMaximumTLSVersion = "TLSv1.2"
+	OutputOpenTelemetryMaximumTLSVersionTlSv13 OutputOpenTelemetryMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputOpenTelemetryMaximumTLSVersion) ToPointer() *OutputOpenTelemetryMaximumTLSVersion {
+	return &e
+}
+
+type OutputOpenTelemetryTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                               `json:"passphrase,omitempty"`
+	MinVersion *OutputOpenTelemetryMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputOpenTelemetryMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputOpenTelemetryTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetMinVersion() *OutputOpenTelemetryMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputOpenTelemetryTLSSettingsClientSide) GetMaxVersion() *OutputOpenTelemetryMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputOpenTelemetryPqCompressCompression - Codec to use to compress the persisted data
+type OutputOpenTelemetryPqCompressCompression string
+
+const (
+	OutputOpenTelemetryPqCompressCompressionNone OutputOpenTelemetryPqCompressCompression = "none"
+	OutputOpenTelemetryPqCompressCompressionGzip OutputOpenTelemetryPqCompressCompression = "gzip"
+)
+
+func (e OutputOpenTelemetryPqCompressCompression) ToPointer() *OutputOpenTelemetryPqCompressCompression {
+	return &e
+}
+
+// OutputOpenTelemetryQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputOpenTelemetryQueueFullBehavior string
+
+const (
+	OutputOpenTelemetryQueueFullBehaviorBlock OutputOpenTelemetryQueueFullBehavior = "block"
+	OutputOpenTelemetryQueueFullBehaviorDrop  OutputOpenTelemetryQueueFullBehavior = "drop"
+)
+
+func (e OutputOpenTelemetryQueueFullBehavior) ToPointer() *OutputOpenTelemetryQueueFullBehavior {
+	return &e
+}
+
+// OutputOpenTelemetryMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputOpenTelemetryMode string
+
+const (
+	OutputOpenTelemetryModeError        OutputOpenTelemetryMode = "error"
+	OutputOpenTelemetryModeBackpressure OutputOpenTelemetryMode = "backpressure"
+	OutputOpenTelemetryModeAlways       OutputOpenTelemetryMode = "always"
+)
+
+func (e OutputOpenTelemetryMode) ToPointer() *OutputOpenTelemetryMode {
+	return &e
+}
+
+type OutputOpenTelemetryPqControls struct {
+}
+
+type OutputOpenTelemetry struct {
+	// Unique ID for this output
+	ID   string                  `json:"id"`
+	Type OutputOpenTelemetryType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Select a transport option for OpenTelemetry
+	Protocol *OutputOpenTelemetryProtocol `default:"grpc" json:"protocol"`
+	// The endpoint where OTel events will be sent. Enter any valid URL or an IP address (IPv4 or IPv6; enclose IPv6 addresses in square brackets). Unspecified ports will default to 4317, unless the endpoint is an HTTPS-based URL or TLS is enabled, in which case 443 will be used.
+	Endpoint string `json:"endpoint"`
+	// The version of OTLP Protobuf definitions to use when structuring data to send
+	OtlpVersion *OutputOpenTelemetryOTLPVersion `default:"0.10.0" json:"otlpVersion"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	Compress *OutputOpenTelemetryCompressCompression `default:"gzip" json:"compress"`
+	// Type of compression to apply to messages sent to the OpenTelemetry endpoint
+	HTTPCompress *OutputOpenTelemetryHTTPCompressCompression `default:"gzip" json:"httpCompress"`
+	// OpenTelemetry authentication type
+	AuthType *OutputOpenTelemetryAuthenticationType `default:"none" json:"authType"`
+	// If you want to send traces to the default `{endpoint}/v1/traces` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPTracesEndpointOverride *string `json:"httpTracesEndpointOverride,omitempty"`
+	// If you want to send metrics to the default `{endpoint}/v1/metrics` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPMetricsEndpointOverride *string `json:"httpMetricsEndpointOverride,omitempty"`
+	// If you want to send logs to the default `{endpoint}/v1/logs` endpoint, leave this field empty; otherwise, specify the desired endpoint
+	HTTPLogsEndpointOverride *string `json:"httpLogsEndpointOverride,omitempty"`
+	// List of key-value pairs to send with each gRPC request. Value supports JavaScript expressions that are evaluated just once, when the destination gets started. To pass credentials as metadata, use 'C.Secret'.
+	Metadata []OutputOpenTelemetryMetadatum `json:"metadata,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputOpenTelemetryFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// How often the sender should ping the peer to keep the connection open
+	KeepAliveTime *float64 `default:"30" json:"keepAliveTime"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputOpenTelemetryBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                  `json:"description,omitempty"`
+	Username       *string                                  `json:"username,omitempty"`
+	Password       *string                                  `json:"password,omitempty"`
+	// Bearer token to include in the authorization header
+	Token *string `json:"token,omitempty"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// URL for OAuth
+	LoginURL *string `json:"loginUrl,omitempty"`
+	// Secret parameter name to pass in request body
+	SecretParamName *string `json:"secretParamName,omitempty"`
+	// Secret parameter value to pass in request body
+	Secret *string `json:"secret,omitempty"`
+	// Name of the auth token attribute in the OAuth response. Can be top-level (e.g., 'token'); or nested, using a period (e.g., 'data.token').
+	TokenAttributeName *string `json:"tokenAttributeName,omitempty"`
+	// JavaScript expression to compute the Authorization header value to pass in requests. The value `${token}` is used to reference the token obtained from authentication, e.g.: `Bearer ${token}`.
+	AuthHeaderExpr *string `default:"Bearer \\${token}" json:"authHeaderExpr"`
+	// How often the OAuth token should be refreshed.
+	TokenTimeoutSecs *float64 `default:"3600" json:"tokenTimeoutSecs"`
+	// Additional parameters to send in the OAuth login request. @{product} will combine the secret with these parameters, and will send the URL-encoded result in a POST request to the endpoint specified in the 'Login URL'. We'll automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthParams []OutputOpenTelemetryOauthParam `json:"oauthParams,omitempty"`
+	// Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthHeaders []OutputOpenTelemetryOauthHeader `json:"oauthHeaders,omitempty"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputOpenTelemetryExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputOpenTelemetryResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputOpenTelemetryTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool                                     `default:"false" json:"responseHonorRetryAfterHeader"`
+	TLS                           *OutputOpenTelemetryTLSSettingsClientSide `json:"tls,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputOpenTelemetryPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputOpenTelemetryQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputOpenTelemetryMode       `default:"error" json:"pqMode"`
+	PqControls *OutputOpenTelemetryPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputOpenTelemetry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputOpenTelemetry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputOpenTelemetry) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputOpenTelemetry) GetType() OutputOpenTelemetryType {
+	if o == nil {
+		return OutputOpenTelemetryType("")
+	}
+	return o.Type
+}
+
+func (o *OutputOpenTelemetry) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputOpenTelemetry) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputOpenTelemetry) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputOpenTelemetry) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputOpenTelemetry) GetProtocol() *OutputOpenTelemetryProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputOpenTelemetry) GetEndpoint() string {
+	if o == nil {
+		return ""
+	}
+	return o.Endpoint
+}
+
+func (o *OutputOpenTelemetry) GetOtlpVersion() *OutputOpenTelemetryOTLPVersion {
+	if o == nil {
+		return nil
+	}
+	return o.OtlpVersion
+}
+
+func (o *OutputOpenTelemetry) GetCompress() *OutputOpenTelemetryCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputOpenTelemetry) GetHTTPCompress() *OutputOpenTelemetryHTTPCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPCompress
+}
+
+func (o *OutputOpenTelemetry) GetAuthType() *OutputOpenTelemetryAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputOpenTelemetry) GetHTTPTracesEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPTracesEndpointOverride
+}
+
+func (o *OutputOpenTelemetry) GetHTTPMetricsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPMetricsEndpointOverride
+}
+
+func (o *OutputOpenTelemetry) GetHTTPLogsEndpointOverride() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPLogsEndpointOverride
+}
+
+func (o *OutputOpenTelemetry) GetMetadata() []OutputOpenTelemetryMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.Metadata
+}
+
+func (o *OutputOpenTelemetry) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputOpenTelemetry) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputOpenTelemetry) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputOpenTelemetry) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputOpenTelemetry) GetFailedRequestLoggingMode() *OutputOpenTelemetryFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputOpenTelemetry) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputOpenTelemetry) GetKeepAliveTime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAliveTime
+}
+
+func (o *OutputOpenTelemetry) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputOpenTelemetry) GetOnBackpressure() *OutputOpenTelemetryBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputOpenTelemetry) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputOpenTelemetry) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *OutputOpenTelemetry) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OutputOpenTelemetry) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputOpenTelemetry) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+func (o *OutputOpenTelemetry) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputOpenTelemetry) GetLoginURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LoginURL
+}
+
+func (o *OutputOpenTelemetry) GetSecretParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SecretParamName
+}
+
+func (o *OutputOpenTelemetry) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputOpenTelemetry) GetTokenAttributeName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenAttributeName
+}
+
+func (o *OutputOpenTelemetry) GetAuthHeaderExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthHeaderExpr
+}
+
+func (o *OutputOpenTelemetry) GetTokenTimeoutSecs() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TokenTimeoutSecs
+}
+
+func (o *OutputOpenTelemetry) GetOauthParams() []OutputOpenTelemetryOauthParam {
+	if o == nil {
+		return nil
+	}
+	return o.OauthParams
+}
+
+func (o *OutputOpenTelemetry) GetOauthHeaders() []OutputOpenTelemetryOauthHeader {
+	if o == nil {
+		return nil
+	}
+	return o.OauthHeaders
+}
+
+func (o *OutputOpenTelemetry) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputOpenTelemetry) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputOpenTelemetry) GetExtraHTTPHeaders() []OutputOpenTelemetryExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputOpenTelemetry) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputOpenTelemetry) GetResponseRetrySettings() []OutputOpenTelemetryResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputOpenTelemetry) GetTimeoutRetrySettings() *OutputOpenTelemetryTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputOpenTelemetry) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputOpenTelemetry) GetTLS() *OutputOpenTelemetryTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputOpenTelemetry) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputOpenTelemetry) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputOpenTelemetry) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputOpenTelemetry) GetPqCompress() *OutputOpenTelemetryPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputOpenTelemetry) GetPqOnBackpressure() *OutputOpenTelemetryQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputOpenTelemetry) GetPqMode() *OutputOpenTelemetryMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputOpenTelemetry) GetPqControls() *OutputOpenTelemetryPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputPrometheusType string
+
+const (
+	OutputPrometheusTypePrometheus OutputPrometheusType = "prometheus"
+)
+
+func (e OutputPrometheusType) ToPointer() *OutputPrometheusType {
+	return &e
+}
+
+type OutputPrometheusExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputPrometheusExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputPrometheusExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputPrometheusFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputPrometheusFailedRequestLoggingMode string
+
+const (
+	OutputPrometheusFailedRequestLoggingModePayload           OutputPrometheusFailedRequestLoggingMode = "payload"
+	OutputPrometheusFailedRequestLoggingModePayloadAndHeaders OutputPrometheusFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputPrometheusFailedRequestLoggingModeNone              OutputPrometheusFailedRequestLoggingMode = "none"
+)
+
+func (e OutputPrometheusFailedRequestLoggingMode) ToPointer() *OutputPrometheusFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputPrometheusResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputPrometheusResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputPrometheusResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputPrometheusResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputPrometheusResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputPrometheusResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputPrometheusResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputPrometheusTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputPrometheusTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputPrometheusTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputPrometheusTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputPrometheusTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputPrometheusTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputPrometheusTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputPrometheusBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputPrometheusBackpressureBehavior string
+
+const (
+	OutputPrometheusBackpressureBehaviorBlock OutputPrometheusBackpressureBehavior = "block"
+	OutputPrometheusBackpressureBehaviorDrop  OutputPrometheusBackpressureBehavior = "drop"
+	OutputPrometheusBackpressureBehaviorQueue OutputPrometheusBackpressureBehavior = "queue"
+)
+
+func (e OutputPrometheusBackpressureBehavior) ToPointer() *OutputPrometheusBackpressureBehavior {
+	return &e
+}
+
+// OutputPrometheusAuthenticationType - Remote Write authentication type
+type OutputPrometheusAuthenticationType string
+
+const (
+	OutputPrometheusAuthenticationTypeNone              OutputPrometheusAuthenticationType = "none"
+	OutputPrometheusAuthenticationTypeBasic             OutputPrometheusAuthenticationType = "basic"
+	OutputPrometheusAuthenticationTypeCredentialsSecret OutputPrometheusAuthenticationType = "credentialsSecret"
+	OutputPrometheusAuthenticationTypeToken             OutputPrometheusAuthenticationType = "token"
+	OutputPrometheusAuthenticationTypeTextSecret        OutputPrometheusAuthenticationType = "textSecret"
+	OutputPrometheusAuthenticationTypeOauth             OutputPrometheusAuthenticationType = "oauth"
+)
+
+func (e OutputPrometheusAuthenticationType) ToPointer() *OutputPrometheusAuthenticationType {
+	return &e
+}
+
+// OutputPrometheusCompression - Codec to use to compress the persisted data
+type OutputPrometheusCompression string
+
+const (
+	OutputPrometheusCompressionNone OutputPrometheusCompression = "none"
+	OutputPrometheusCompressionGzip OutputPrometheusCompression = "gzip"
+)
+
+func (e OutputPrometheusCompression) ToPointer() *OutputPrometheusCompression {
+	return &e
+}
+
+// OutputPrometheusQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputPrometheusQueueFullBehavior string
+
+const (
+	OutputPrometheusQueueFullBehaviorBlock OutputPrometheusQueueFullBehavior = "block"
+	OutputPrometheusQueueFullBehaviorDrop  OutputPrometheusQueueFullBehavior = "drop"
+)
+
+func (e OutputPrometheusQueueFullBehavior) ToPointer() *OutputPrometheusQueueFullBehavior {
+	return &e
+}
+
+// OutputPrometheusMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputPrometheusMode string
+
+const (
+	OutputPrometheusModeError        OutputPrometheusMode = "error"
+	OutputPrometheusModeBackpressure OutputPrometheusMode = "backpressure"
+	OutputPrometheusModeAlways       OutputPrometheusMode = "always"
+)
+
+func (e OutputPrometheusMode) ToPointer() *OutputPrometheusMode {
+	return &e
+}
+
+type OutputPrometheusPqControls struct {
+}
+
+type OutputPrometheusOauthParam struct {
+	// OAuth parameter name
+	Name string `json:"name"`
+	// OAuth parameter value
+	Value string `json:"value"`
+}
+
+func (o *OutputPrometheusOauthParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputPrometheusOauthParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputPrometheusOauthHeader struct {
+	// OAuth header name
+	Name string `json:"name"`
+	// OAuth header value
+	Value string `json:"value"`
+}
+
+func (o *OutputPrometheusOauthHeader) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputPrometheusOauthHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputPrometheus struct {
+	// Unique ID for this output
+	ID   string               `json:"id"`
+	Type OutputPrometheusType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards. These fields are added as dimensions to generated metrics.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The endpoint to send metrics to
+	URL string `json:"url"`
+	// JavaScript expression that can be used to rename metrics. For example, name.replace(/\./g, '_') will replace all '.' characters in a metric's name with the supported '_' character. Use the 'name' global variable to access the metric's name. You can access event fields' values via __e.<fieldName>.
+	MetricRenameExpr *string `default:"name.replace(/[^a-zA-Z0-9_]/g, '_')" json:"metricRenameExpr"`
+	// Generate and send metadata (`type` and `metricFamilyName`) requests
+	SendMetadata *bool `default:"true" json:"sendMetadata"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputPrometheusExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputPrometheusFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputPrometheusResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputPrometheusTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputPrometheusBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Remote Write authentication type
+	AuthType    *OutputPrometheusAuthenticationType `default:"none" json:"authType"`
+	Description *string                             `json:"description,omitempty"`
+	// How frequently metrics metadata is sent out. Value cannot be smaller than the base Flush period set above.
+	MetricsFlushPeriodSec *float64 `default:"60" json:"metricsFlushPeriodSec"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputPrometheusCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputPrometheusQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputPrometheusMode       `default:"error" json:"pqMode"`
+	PqControls *OutputPrometheusPqControls `json:"pqControls,omitempty"`
+	Username   *string                     `json:"username,omitempty"`
+	Password   *string                     `json:"password,omitempty"`
+	// Bearer token to include in the authorization header
+	Token *string `json:"token,omitempty"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// URL for OAuth
+	LoginURL *string `json:"loginUrl,omitempty"`
+	// Secret parameter name to pass in request body
+	SecretParamName *string `json:"secretParamName,omitempty"`
+	// Secret parameter value to pass in request body
+	Secret *string `json:"secret,omitempty"`
+	// Name of the auth token attribute in the OAuth response. Can be top-level (e.g., 'token'); or nested, using a period (e.g., 'data.token').
+	TokenAttributeName *string `json:"tokenAttributeName,omitempty"`
+	// JavaScript expression to compute the Authorization header value to pass in requests. The value `${token}` is used to reference the token obtained from authentication, e.g.: `Bearer ${token}`.
+	AuthHeaderExpr *string `default:"Bearer \\${token}" json:"authHeaderExpr"`
+	// How often the OAuth token should be refreshed.
+	TokenTimeoutSecs *float64 `default:"3600" json:"tokenTimeoutSecs"`
+	// Additional parameters to send in the OAuth login request. @{product} will combine the secret with these parameters, and will send the URL-encoded result in a POST request to the endpoint specified in the 'Login URL'. We'll automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthParams []OutputPrometheusOauthParam `json:"oauthParams,omitempty"`
+	// Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthHeaders []OutputPrometheusOauthHeader `json:"oauthHeaders,omitempty"`
+}
+
+func (o OutputPrometheus) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputPrometheus) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputPrometheus) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputPrometheus) GetType() OutputPrometheusType {
+	if o == nil {
+		return OutputPrometheusType("")
+	}
+	return o.Type
+}
+
+func (o *OutputPrometheus) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputPrometheus) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputPrometheus) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputPrometheus) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputPrometheus) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputPrometheus) GetMetricRenameExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MetricRenameExpr
+}
+
+func (o *OutputPrometheus) GetSendMetadata() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SendMetadata
+}
+
+func (o *OutputPrometheus) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputPrometheus) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputPrometheus) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputPrometheus) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputPrometheus) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputPrometheus) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputPrometheus) GetExtraHTTPHeaders() []OutputPrometheusExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputPrometheus) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputPrometheus) GetFailedRequestLoggingMode() *OutputPrometheusFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputPrometheus) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputPrometheus) GetResponseRetrySettings() []OutputPrometheusResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputPrometheus) GetTimeoutRetrySettings() *OutputPrometheusTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputPrometheus) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputPrometheus) GetOnBackpressure() *OutputPrometheusBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputPrometheus) GetAuthType() *OutputPrometheusAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputPrometheus) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputPrometheus) GetMetricsFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MetricsFlushPeriodSec
+}
+
+func (o *OutputPrometheus) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputPrometheus) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputPrometheus) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputPrometheus) GetPqCompress() *OutputPrometheusCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputPrometheus) GetPqOnBackpressure() *OutputPrometheusQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputPrometheus) GetPqMode() *OutputPrometheusMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputPrometheus) GetPqControls() *OutputPrometheusPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputPrometheus) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *OutputPrometheus) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OutputPrometheus) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputPrometheus) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+func (o *OutputPrometheus) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputPrometheus) GetLoginURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LoginURL
+}
+
+func (o *OutputPrometheus) GetSecretParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SecretParamName
+}
+
+func (o *OutputPrometheus) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputPrometheus) GetTokenAttributeName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenAttributeName
+}
+
+func (o *OutputPrometheus) GetAuthHeaderExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthHeaderExpr
+}
+
+func (o *OutputPrometheus) GetTokenTimeoutSecs() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TokenTimeoutSecs
+}
+
+func (o *OutputPrometheus) GetOauthParams() []OutputPrometheusOauthParam {
+	if o == nil {
+		return nil
+	}
+	return o.OauthParams
+}
+
+func (o *OutputPrometheus) GetOauthHeaders() []OutputPrometheusOauthHeader {
+	if o == nil {
+		return nil
+	}
+	return o.OauthHeaders
+}
+
+type OutputLokiType string
+
+const (
+	OutputLokiTypeLoki OutputLokiType = "loki"
+)
+
+func (e OutputLokiType) ToPointer() *OutputLokiType {
+	return &e
+}
+
+// MessageFormat - Format to use when sending logs to Loki (Protobuf or JSON)
+type MessageFormat string
+
+const (
+	MessageFormatProtobuf MessageFormat = "protobuf"
+	MessageFormatJSON     MessageFormat = "json"
+)
+
+func (e MessageFormat) ToPointer() *MessageFormat {
+	return &e
+}
+
+type Label struct {
+	Name  *string `default:"" json:"name"`
+	Value string  `json:"value"`
+}
+
+func (l Label) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *Label) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Label) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *Label) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputLokiAuthenticationType string
+
+const (
+	OutputLokiAuthenticationTypeNone              OutputLokiAuthenticationType = "none"
+	OutputLokiAuthenticationTypeToken             OutputLokiAuthenticationType = "token"
+	OutputLokiAuthenticationTypeTextSecret        OutputLokiAuthenticationType = "textSecret"
+	OutputLokiAuthenticationTypeBasic             OutputLokiAuthenticationType = "basic"
+	OutputLokiAuthenticationTypeCredentialsSecret OutputLokiAuthenticationType = "credentialsSecret"
+)
+
+func (e OutputLokiAuthenticationType) ToPointer() *OutputLokiAuthenticationType {
+	return &e
+}
+
+type OutputLokiExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputLokiExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputLokiExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputLokiFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputLokiFailedRequestLoggingMode string
+
+const (
+	OutputLokiFailedRequestLoggingModePayload           OutputLokiFailedRequestLoggingMode = "payload"
+	OutputLokiFailedRequestLoggingModePayloadAndHeaders OutputLokiFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputLokiFailedRequestLoggingModeNone              OutputLokiFailedRequestLoggingMode = "none"
+)
+
+func (e OutputLokiFailedRequestLoggingMode) ToPointer() *OutputLokiFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputLokiResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputLokiResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputLokiResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputLokiResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputLokiResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputLokiResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputLokiResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputLokiTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputLokiTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputLokiTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputLokiTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputLokiTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputLokiTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputLokiTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputLokiBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputLokiBackpressureBehavior string
+
+const (
+	OutputLokiBackpressureBehaviorBlock OutputLokiBackpressureBehavior = "block"
+	OutputLokiBackpressureBehaviorDrop  OutputLokiBackpressureBehavior = "drop"
+	OutputLokiBackpressureBehaviorQueue OutputLokiBackpressureBehavior = "queue"
+)
+
+func (e OutputLokiBackpressureBehavior) ToPointer() *OutputLokiBackpressureBehavior {
+	return &e
+}
+
+// OutputLokiCompression - Codec to use to compress the persisted data
+type OutputLokiCompression string
+
+const (
+	OutputLokiCompressionNone OutputLokiCompression = "none"
+	OutputLokiCompressionGzip OutputLokiCompression = "gzip"
+)
+
+func (e OutputLokiCompression) ToPointer() *OutputLokiCompression {
+	return &e
+}
+
+// OutputLokiQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputLokiQueueFullBehavior string
+
+const (
+	OutputLokiQueueFullBehaviorBlock OutputLokiQueueFullBehavior = "block"
+	OutputLokiQueueFullBehaviorDrop  OutputLokiQueueFullBehavior = "drop"
+)
+
+func (e OutputLokiQueueFullBehavior) ToPointer() *OutputLokiQueueFullBehavior {
+	return &e
+}
+
+// OutputLokiMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputLokiMode string
+
+const (
+	OutputLokiModeError        OutputLokiMode = "error"
+	OutputLokiModeBackpressure OutputLokiMode = "backpressure"
+	OutputLokiModeAlways       OutputLokiMode = "always"
+)
+
+func (e OutputLokiMode) ToPointer() *OutputLokiMode {
+	return &e
+}
+
+type OutputLokiPqControls struct {
+}
+
+type OutputLoki struct {
+	// Unique ID for this output
+	ID   string         `json:"id"`
+	Type OutputLokiType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards. These fields are added as labels to generated logs.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The endpoint to send logs to
+	URL string `json:"url"`
+	// Name of the event field that contains the message to send. If not specified, Stream sends a JSON representation of the whole event.
+	Message *string `json:"message,omitempty"`
+	// Format to use when sending logs to Loki (Protobuf or JSON)
+	MessageFormat *MessageFormat `default:"protobuf" json:"messageFormat"`
+	// List of labels to send with logs. Labels define Loki streams, so use static labels to avoid proliferating label value combinations and streams. Can be merged and/or overridden by the event's __labels field. Example: '__labels: {host: "cribl.io", level: "error"}'
+	Labels   []Label                       `json:"labels,omitempty"`
+	AuthType *OutputLokiAuthenticationType `default:"none" json:"authType"`
+	// Maximum number of ongoing requests before blocking. Warning: Setting this value > 1 can cause Loki to complain about entries being delivered out of order.
+	Concurrency *float64 `default:"1" json:"concurrency"`
+	// Maximum size, in KB, of the request body. Warning: Setting this too low can increase the number of ongoing requests (depending on the value of 'Request concurrency'); this can cause Loki to complain about entries being delivered out of order.
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Defaults to 0 (unlimited). Warning: Setting this too low can increase the number of ongoing requests (depending on the value of 'Request concurrency'); this can cause Loki to complain about entries being delivered out of order.
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Maximum time between requests. Small values can reduce the payload size below the configured 'Max record size' and 'Max events per request'. Warning: Setting this too low can increase the number of ongoing requests (depending on the value of 'Request concurrency'); this can cause Loki to complain about entries being delivered out of order.
+	FlushPeriodSec *float64 `default:"15" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputLokiExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputLokiFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputLokiResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputLokiTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputLokiBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64 `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Bearer token to include in the authorization header. In Grafana Cloud, this is generally built by concatenating the username and the API key, separated by a colon. Example: <your-username>:<your-api-key>
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// Username for authentication
+	Username *string `json:"username,omitempty"`
+	// Password (API key in Grafana Cloud domain) for authentication
+	Password *string `json:"password,omitempty"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputLokiCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputLokiQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputLokiMode       `default:"error" json:"pqMode"`
+	PqControls *OutputLokiPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputLoki) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputLoki) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputLoki) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputLoki) GetType() OutputLokiType {
+	if o == nil {
+		return OutputLokiType("")
+	}
+	return o.Type
+}
+
+func (o *OutputLoki) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputLoki) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputLoki) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputLoki) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputLoki) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputLoki) GetMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Message
+}
+
+func (o *OutputLoki) GetMessageFormat() *MessageFormat {
+	if o == nil {
+		return nil
+	}
+	return o.MessageFormat
+}
+
+func (o *OutputLoki) GetLabels() []Label {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *OutputLoki) GetAuthType() *OutputLokiAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputLoki) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputLoki) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputLoki) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputLoki) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputLoki) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputLoki) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputLoki) GetExtraHTTPHeaders() []OutputLokiExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputLoki) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputLoki) GetFailedRequestLoggingMode() *OutputLokiFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputLoki) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputLoki) GetResponseRetrySettings() []OutputLokiResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputLoki) GetTimeoutRetrySettings() *OutputLokiTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputLoki) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputLoki) GetOnBackpressure() *OutputLokiBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputLoki) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputLoki) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputLoki) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputLoki) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputLoki) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputLoki) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *OutputLoki) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OutputLoki) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+func (o *OutputLoki) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputLoki) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputLoki) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputLoki) GetPqCompress() *OutputLokiCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputLoki) GetPqOnBackpressure() *OutputLokiQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputLoki) GetPqMode() *OutputLokiMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputLoki) GetPqControls() *OutputLokiPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputSumoLogicType string
+
+const (
+	OutputSumoLogicTypeSumoLogic OutputSumoLogicType = "sumo_logic"
+)
+
+func (e OutputSumoLogicType) ToPointer() *OutputSumoLogicType {
+	return &e
+}
+
+// OutputSumoLogicDataFormat - Preserve the raw event format instead of JSONifying it
+type OutputSumoLogicDataFormat string
+
+const (
+	OutputSumoLogicDataFormatJSON OutputSumoLogicDataFormat = "json"
+	OutputSumoLogicDataFormatRaw  OutputSumoLogicDataFormat = "raw"
+)
+
+func (e OutputSumoLogicDataFormat) ToPointer() *OutputSumoLogicDataFormat {
+	return &e
+}
+
+type OutputSumoLogicExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputSumoLogicExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputSumoLogicExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputSumoLogicFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputSumoLogicFailedRequestLoggingMode string
+
+const (
+	OutputSumoLogicFailedRequestLoggingModePayload           OutputSumoLogicFailedRequestLoggingMode = "payload"
+	OutputSumoLogicFailedRequestLoggingModePayloadAndHeaders OutputSumoLogicFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputSumoLogicFailedRequestLoggingModeNone              OutputSumoLogicFailedRequestLoggingMode = "none"
+)
+
+func (e OutputSumoLogicFailedRequestLoggingMode) ToPointer() *OutputSumoLogicFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputSumoLogicResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSumoLogicResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSumoLogicResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSumoLogicResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputSumoLogicResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSumoLogicResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSumoLogicResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputSumoLogicTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSumoLogicTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSumoLogicTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSumoLogicTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputSumoLogicTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSumoLogicTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSumoLogicTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputSumoLogicBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSumoLogicBackpressureBehavior string
+
+const (
+	OutputSumoLogicBackpressureBehaviorBlock OutputSumoLogicBackpressureBehavior = "block"
+	OutputSumoLogicBackpressureBehaviorDrop  OutputSumoLogicBackpressureBehavior = "drop"
+	OutputSumoLogicBackpressureBehaviorQueue OutputSumoLogicBackpressureBehavior = "queue"
+)
+
+func (e OutputSumoLogicBackpressureBehavior) ToPointer() *OutputSumoLogicBackpressureBehavior {
+	return &e
+}
+
+// OutputSumoLogicCompression - Codec to use to compress the persisted data
+type OutputSumoLogicCompression string
+
+const (
+	OutputSumoLogicCompressionNone OutputSumoLogicCompression = "none"
+	OutputSumoLogicCompressionGzip OutputSumoLogicCompression = "gzip"
+)
+
+func (e OutputSumoLogicCompression) ToPointer() *OutputSumoLogicCompression {
+	return &e
+}
+
+// OutputSumoLogicQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSumoLogicQueueFullBehavior string
+
+const (
+	OutputSumoLogicQueueFullBehaviorBlock OutputSumoLogicQueueFullBehavior = "block"
+	OutputSumoLogicQueueFullBehaviorDrop  OutputSumoLogicQueueFullBehavior = "drop"
+)
+
+func (e OutputSumoLogicQueueFullBehavior) ToPointer() *OutputSumoLogicQueueFullBehavior {
+	return &e
+}
+
+// OutputSumoLogicMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSumoLogicMode string
+
+const (
+	OutputSumoLogicModeError        OutputSumoLogicMode = "error"
+	OutputSumoLogicModeBackpressure OutputSumoLogicMode = "backpressure"
+	OutputSumoLogicModeAlways       OutputSumoLogicMode = "always"
+)
+
+func (e OutputSumoLogicMode) ToPointer() *OutputSumoLogicMode {
+	return &e
+}
+
+type OutputSumoLogicPqControls struct {
+}
+
+type OutputSumoLogic struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type OutputSumoLogicType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Sumo Logic HTTP collector URL to which events should be sent
+	URL string `json:"url"`
+	// Override the source name configured on the Sumo Logic HTTP collector. This can also be overridden at the event level with the __sourceName field.
+	CustomSource *string `json:"customSource,omitempty"`
+	// Override the source category configured on the Sumo Logic HTTP collector. This can also be overridden at the event level with the __sourceCategory field.
+	CustomCategory *string `json:"customCategory,omitempty"`
+	// Preserve the raw event format instead of JSONifying it
+	Format *OutputSumoLogicDataFormat `default:"json" json:"format"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"1024" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputSumoLogicExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputSumoLogicFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputSumoLogicResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputSumoLogicTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSumoLogicBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64 `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSumoLogicCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSumoLogicQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSumoLogicMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSumoLogicPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputSumoLogic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSumoLogic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSumoLogic) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSumoLogic) GetType() OutputSumoLogicType {
+	if o == nil {
+		return OutputSumoLogicType("")
+	}
+	return o.Type
+}
+
+func (o *OutputSumoLogic) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSumoLogic) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSumoLogic) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSumoLogic) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSumoLogic) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputSumoLogic) GetCustomSource() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomSource
+}
+
+func (o *OutputSumoLogic) GetCustomCategory() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomCategory
+}
+
+func (o *OutputSumoLogic) GetFormat() *OutputSumoLogicDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputSumoLogic) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputSumoLogic) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputSumoLogic) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputSumoLogic) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSumoLogic) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSumoLogic) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputSumoLogic) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputSumoLogic) GetExtraHTTPHeaders() []OutputSumoLogicExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputSumoLogic) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputSumoLogic) GetFailedRequestLoggingMode() *OutputSumoLogicFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputSumoLogic) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputSumoLogic) GetResponseRetrySettings() []OutputSumoLogicResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputSumoLogic) GetTimeoutRetrySettings() *OutputSumoLogicTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputSumoLogic) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputSumoLogic) GetOnBackpressure() *OutputSumoLogicBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSumoLogic) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputSumoLogic) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSumoLogic) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSumoLogic) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSumoLogic) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSumoLogic) GetPqCompress() *OutputSumoLogicCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSumoLogic) GetPqOnBackpressure() *OutputSumoLogicQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSumoLogic) GetPqMode() *OutputSumoLogicMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSumoLogic) GetPqControls() *OutputSumoLogicPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputSnmpType string
+
+const (
+	OutputSnmpTypeSnmp OutputSnmpType = "snmp"
+)
+
+func (e OutputSnmpType) ToPointer() *OutputSnmpType {
+	return &e
+}
+
+type OutputSnmpHost struct {
+	// Destination host
+	Host string `json:"host"`
+	// Destination port, default is 162
+	Port *float64 `default:"162" json:"port"`
+}
+
+func (o OutputSnmpHost) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSnmpHost) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSnmpHost) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputSnmpHost) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type OutputSnmp struct {
+	// Unique ID for this output
+	ID   string         `json:"id"`
+	Type OutputSnmpType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// One or more SNMP destinations to forward traps to
+	Hosts []OutputSnmpHost `json:"hosts"`
+	// How often to resolve the destination hostname to an IP address. Ignored if all destinations are IP addresses. A value of 0 means every trap sent will incur a DNS lookup.
+	DNSResolvePeriodSec *float64 `default:"0" json:"dnsResolvePeriodSec"`
+	Description         *string  `json:"description,omitempty"`
+}
+
+func (o OutputSnmp) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSnmp) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSnmp) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSnmp) GetType() OutputSnmpType {
+	if o == nil {
+		return OutputSnmpType("")
+	}
+	return o.Type
+}
+
+func (o *OutputSnmp) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSnmp) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSnmp) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSnmp) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSnmp) GetHosts() []OutputSnmpHost {
+	if o == nil {
+		return []OutputSnmpHost{}
+	}
+	return o.Hosts
+}
+
+func (o *OutputSnmp) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputSnmp) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+type OutputSqsType string
+
+const (
+	OutputSqsTypeSqs OutputSqsType = "sqs"
+)
+
+func (e OutputSqsType) ToPointer() *OutputSqsType {
+	return &e
+}
+
+// CreateOutputQueueType - The queue type used (or created). Defaults to Standard.
+type CreateOutputQueueType string
+
+const (
+	CreateOutputQueueTypeStandard CreateOutputQueueType = "standard"
+	CreateOutputQueueTypeFifo     CreateOutputQueueType = "fifo"
+)
+
+func (e CreateOutputQueueType) ToPointer() *CreateOutputQueueType {
+	return &e
+}
+
+// OutputSqsAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputSqsAuthenticationMethod string
+
+const (
+	OutputSqsAuthenticationMethodAuto   OutputSqsAuthenticationMethod = "auto"
+	OutputSqsAuthenticationMethodManual OutputSqsAuthenticationMethod = "manual"
+	OutputSqsAuthenticationMethodSecret OutputSqsAuthenticationMethod = "secret"
+)
+
+func (e OutputSqsAuthenticationMethod) ToPointer() *OutputSqsAuthenticationMethod {
+	return &e
+}
+
+// OutputSqsSignatureVersion - Signature version to use for signing SQS requests
+type OutputSqsSignatureVersion string
+
+const (
+	OutputSqsSignatureVersionV2 OutputSqsSignatureVersion = "v2"
+	OutputSqsSignatureVersionV4 OutputSqsSignatureVersion = "v4"
+)
+
+func (e OutputSqsSignatureVersion) ToPointer() *OutputSqsSignatureVersion {
+	return &e
+}
+
+// OutputSqsBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSqsBackpressureBehavior string
+
+const (
+	OutputSqsBackpressureBehaviorBlock OutputSqsBackpressureBehavior = "block"
+	OutputSqsBackpressureBehaviorDrop  OutputSqsBackpressureBehavior = "drop"
+	OutputSqsBackpressureBehaviorQueue OutputSqsBackpressureBehavior = "queue"
+)
+
+func (e OutputSqsBackpressureBehavior) ToPointer() *OutputSqsBackpressureBehavior {
+	return &e
+}
+
+// OutputSqsCompression - Codec to use to compress the persisted data
+type OutputSqsCompression string
+
+const (
+	OutputSqsCompressionNone OutputSqsCompression = "none"
+	OutputSqsCompressionGzip OutputSqsCompression = "gzip"
+)
+
+func (e OutputSqsCompression) ToPointer() *OutputSqsCompression {
+	return &e
+}
+
+// OutputSqsQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSqsQueueFullBehavior string
+
+const (
+	OutputSqsQueueFullBehaviorBlock OutputSqsQueueFullBehavior = "block"
+	OutputSqsQueueFullBehaviorDrop  OutputSqsQueueFullBehavior = "drop"
+)
+
+func (e OutputSqsQueueFullBehavior) ToPointer() *OutputSqsQueueFullBehavior {
+	return &e
+}
+
+// OutputSqsMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSqsMode string
+
+const (
+	OutputSqsModeError        OutputSqsMode = "error"
+	OutputSqsModeBackpressure OutputSqsMode = "backpressure"
+	OutputSqsModeAlways       OutputSqsMode = "always"
+)
+
+func (e OutputSqsMode) ToPointer() *OutputSqsMode {
+	return &e
+}
+
+type OutputSqsPqControls struct {
+}
+
+type OutputSqs struct {
+	// Unique ID for this output
+	ID   string         `json:"id"`
+	Type *OutputSqsType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The name, URL, or ARN of the SQS queue to send events to. When a non-AWS URL is specified, format must be: '{url}/myQueueName'. Example: 'https://host:port/myQueueName'. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at init time. Example referencing a Global Variable: `https://host:port/myQueue-${C.vars.myVar}`.
+	QueueName string `json:"queueName"`
+	// The queue type used (or created). Defaults to Standard.
+	QueueType *CreateOutputQueueType `default:"standard" json:"queueType"`
+	// SQS queue owner's AWS account ID. Leave empty if SQS queue is in same AWS account.
+	AwsAccountID *string `json:"awsAccountId,omitempty"`
+	// This parameter applies only to FIFO queues. The tag that specifies that a message belongs to a specific message group. Messages that belong to the same message group are processed in a FIFO manner. Use event field __messageGroupId to override this value.
+	MessageGroupID *string `default:"cribl" json:"messageGroupId"`
+	// Create queue if it does not exist.
+	CreateQueue *bool `default:"true" json:"createQueue"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputSqsAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	AwsSecretKey            *string                        `json:"awsSecretKey,omitempty"`
+	// AWS Region where the SQS queue is located. Required, unless the Queue entry is a URL or ARN that includes a Region.
+	Region *string `json:"region,omitempty"`
+	// SQS service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to SQS-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing SQS requests
+	SignatureVersion *OutputSqsSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access SQS
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Maximum number of queued batches before blocking.
+	MaxQueueSize *float64 `default:"100" json:"maxQueueSize"`
+	// Maximum size (KB) of batches to send. Per the SQS spec, the max allowed value is 256 KB.
+	MaxRecordSizeKB *float64 `default:"256" json:"maxRecordSizeKB"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Max record size.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// The maximum number of in-progress API requests before backpressure is applied.
+	MaxInProgress *float64 `default:"10" json:"maxInProgress"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSqsBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                        `json:"description,omitempty"`
+	AwsAPIKey      *string                        `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSqsCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSqsQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSqsMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSqsPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputSqs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSqs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSqs) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSqs) GetType() *OutputSqsType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSqs) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSqs) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSqs) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSqs) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSqs) GetQueueName() string {
+	if o == nil {
+		return ""
+	}
+	return o.QueueName
+}
+
+func (o *OutputSqs) GetQueueType() *CreateOutputQueueType {
+	if o == nil {
+		return nil
+	}
+	return o.QueueType
+}
+
+func (o *OutputSqs) GetAwsAccountID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAccountID
+}
+
+func (o *OutputSqs) GetMessageGroupID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MessageGroupID
+}
+
+func (o *OutputSqs) GetCreateQueue() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CreateQueue
+}
+
+func (o *OutputSqs) GetAwsAuthenticationMethod() *OutputSqsAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputSqs) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputSqs) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputSqs) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputSqs) GetSignatureVersion() *OutputSqsSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputSqs) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputSqs) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSqs) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputSqs) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputSqs) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputSqs) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputSqs) GetMaxQueueSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxQueueSize
+}
+
+func (o *OutputSqs) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputSqs) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputSqs) GetMaxInProgress() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxInProgress
+}
+
+func (o *OutputSqs) GetOnBackpressure() *OutputSqsBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSqs) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSqs) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputSqs) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputSqs) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSqs) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSqs) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSqs) GetPqCompress() *OutputSqsCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSqs) GetPqOnBackpressure() *OutputSqsQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSqs) GetPqMode() *OutputSqsMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSqs) GetPqControls() *OutputSqsPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputSnsType string
+
+const (
+	OutputSnsTypeSns OutputSnsType = "sns"
+)
+
+func (e OutputSnsType) ToPointer() *OutputSnsType {
+	return &e
+}
+
+// OutputSnsAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputSnsAuthenticationMethod string
+
+const (
+	OutputSnsAuthenticationMethodAuto   OutputSnsAuthenticationMethod = "auto"
+	OutputSnsAuthenticationMethodManual OutputSnsAuthenticationMethod = "manual"
+	OutputSnsAuthenticationMethodSecret OutputSnsAuthenticationMethod = "secret"
+)
+
+func (e OutputSnsAuthenticationMethod) ToPointer() *OutputSnsAuthenticationMethod {
+	return &e
+}
+
+// OutputSnsSignatureVersion - Signature version to use for signing SNS requests
+type OutputSnsSignatureVersion string
+
+const (
+	OutputSnsSignatureVersionV2 OutputSnsSignatureVersion = "v2"
+	OutputSnsSignatureVersionV4 OutputSnsSignatureVersion = "v4"
+)
+
+func (e OutputSnsSignatureVersion) ToPointer() *OutputSnsSignatureVersion {
+	return &e
+}
+
+// OutputSnsBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSnsBackpressureBehavior string
+
+const (
+	OutputSnsBackpressureBehaviorBlock OutputSnsBackpressureBehavior = "block"
+	OutputSnsBackpressureBehaviorDrop  OutputSnsBackpressureBehavior = "drop"
+	OutputSnsBackpressureBehaviorQueue OutputSnsBackpressureBehavior = "queue"
+)
+
+func (e OutputSnsBackpressureBehavior) ToPointer() *OutputSnsBackpressureBehavior {
+	return &e
+}
+
+// OutputSnsCompression - Codec to use to compress the persisted data
+type OutputSnsCompression string
+
+const (
+	OutputSnsCompressionNone OutputSnsCompression = "none"
+	OutputSnsCompressionGzip OutputSnsCompression = "gzip"
+)
+
+func (e OutputSnsCompression) ToPointer() *OutputSnsCompression {
+	return &e
+}
+
+// OutputSnsQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSnsQueueFullBehavior string
+
+const (
+	OutputSnsQueueFullBehaviorBlock OutputSnsQueueFullBehavior = "block"
+	OutputSnsQueueFullBehaviorDrop  OutputSnsQueueFullBehavior = "drop"
+)
+
+func (e OutputSnsQueueFullBehavior) ToPointer() *OutputSnsQueueFullBehavior {
+	return &e
+}
+
+// OutputSnsMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSnsMode string
+
+const (
+	OutputSnsModeError        OutputSnsMode = "error"
+	OutputSnsModeBackpressure OutputSnsMode = "backpressure"
+	OutputSnsModeAlways       OutputSnsMode = "always"
+)
+
+func (e OutputSnsMode) ToPointer() *OutputSnsMode {
+	return &e
+}
+
+type OutputSnsPqControls struct {
+}
+
+type OutputSns struct {
+	// Unique ID for this output
+	ID   string         `json:"id"`
+	Type *OutputSnsType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The ARN of the SNS topic to send events to. When a non-AWS URL is specified, format must be: '{url}/myQueueName'. E.g., 'https://host:port/myQueueName'. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at initialization time. Example referencing a Global Variable: `https://host:port/myQueue-${C.vars.myVar}`
+	TopicArn string `json:"topicArn"`
+	// Messages in the same group are processed in a FIFO manner. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at init time. Example referencing a Global Variable: `https://host:port/myQueue-${C.vars.myVar}`.
+	MessageGroupID string `json:"messageGroupId"`
+	// Maximum number of retries before the output returns an error. Note that not all errors are retryable. The retries use an exponential backoff policy.
+	MaxRetries *float64 `json:"maxRetries,omitempty"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputSnsAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	AwsSecretKey            *string                        `json:"awsSecretKey,omitempty"`
+	// Region where the SNS is located
+	Region *string `json:"region,omitempty"`
+	// SNS service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to SNS-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing SNS requests
+	SignatureVersion *OutputSnsSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access SNS
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSnsBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                        `json:"description,omitempty"`
+	AwsAPIKey      *string                        `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSnsCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSnsQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSnsMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSnsPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputSns) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSns) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSns) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSns) GetType() *OutputSnsType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSns) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSns) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSns) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSns) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSns) GetTopicArn() string {
+	if o == nil {
+		return ""
+	}
+	return o.TopicArn
+}
+
+func (o *OutputSns) GetMessageGroupID() string {
+	if o == nil {
+		return ""
+	}
+	return o.MessageGroupID
+}
+
+func (o *OutputSns) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputSns) GetAwsAuthenticationMethod() *OutputSnsAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputSns) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputSns) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputSns) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputSns) GetSignatureVersion() *OutputSnsSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputSns) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputSns) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSns) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputSns) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputSns) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputSns) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputSns) GetOnBackpressure() *OutputSnsBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSns) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSns) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputSns) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputSns) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSns) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSns) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSns) GetPqCompress() *OutputSnsCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSns) GetPqOnBackpressure() *OutputSnsQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSns) GetPqMode() *OutputSnsMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSns) GetPqControls() *OutputSnsPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputRouterType string
+
+const (
+	OutputRouterTypeRouter OutputRouterType = "router"
+)
+
+func (e OutputRouterType) ToPointer() *OutputRouterType {
+	return &e
+}
+
+type CreateOutputRule struct {
+	// JavaScript expression to select events to send to output
+	Filter string `json:"filter"`
+	// Output to send matching events to
+	Output string `json:"output"`
+	// Description of this rule's purpose
+	Description *string `json:"description,omitempty"`
+	// Flag to control whether to stop the event from being checked against other rules
+	Final *bool `default:"true" json:"final"`
+}
+
+func (c CreateOutputRule) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOutputRule) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateOutputRule) GetFilter() string {
+	if o == nil {
+		return ""
+	}
+	return o.Filter
+}
+
+func (o *CreateOutputRule) GetOutput() string {
+	if o == nil {
+		return ""
+	}
+	return o.Output
+}
+
+func (o *CreateOutputRule) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreateOutputRule) GetFinal() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Final
+}
+
+type OutputRouter struct {
+	// Unique ID for this output
+	ID   string           `json:"id"`
+	Type OutputRouterType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Event routing rules
+	Rules       []CreateOutputRule `json:"rules"`
+	Description *string            `json:"description,omitempty"`
+}
+
+func (o *OutputRouter) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputRouter) GetType() OutputRouterType {
+	if o == nil {
+		return OutputRouterType("")
+	}
+	return o.Type
+}
+
+func (o *OutputRouter) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputRouter) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputRouter) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputRouter) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputRouter) GetRules() []CreateOutputRule {
+	if o == nil {
+		return []CreateOutputRule{}
+	}
+	return o.Rules
+}
+
+func (o *OutputRouter) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+type OutputGraphiteType string
+
+const (
+	OutputGraphiteTypeGraphite OutputGraphiteType = "graphite"
+)
+
+func (e OutputGraphiteType) ToPointer() *OutputGraphiteType {
+	return &e
+}
+
+// OutputGraphiteDestinationProtocol - Protocol to use when communicating with the destination.
+type OutputGraphiteDestinationProtocol string
+
+const (
+	OutputGraphiteDestinationProtocolUDP OutputGraphiteDestinationProtocol = "udp"
+	OutputGraphiteDestinationProtocolTCP OutputGraphiteDestinationProtocol = "tcp"
+)
+
+func (e OutputGraphiteDestinationProtocol) ToPointer() *OutputGraphiteDestinationProtocol {
+	return &e
+}
+
+// OutputGraphiteBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputGraphiteBackpressureBehavior string
+
+const (
+	OutputGraphiteBackpressureBehaviorBlock OutputGraphiteBackpressureBehavior = "block"
+	OutputGraphiteBackpressureBehaviorDrop  OutputGraphiteBackpressureBehavior = "drop"
+	OutputGraphiteBackpressureBehaviorQueue OutputGraphiteBackpressureBehavior = "queue"
+)
+
+func (e OutputGraphiteBackpressureBehavior) ToPointer() *OutputGraphiteBackpressureBehavior {
+	return &e
+}
+
+// OutputGraphiteCompression - Codec to use to compress the persisted data
+type OutputGraphiteCompression string
+
+const (
+	OutputGraphiteCompressionNone OutputGraphiteCompression = "none"
+	OutputGraphiteCompressionGzip OutputGraphiteCompression = "gzip"
+)
+
+func (e OutputGraphiteCompression) ToPointer() *OutputGraphiteCompression {
+	return &e
+}
+
+// OutputGraphiteQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputGraphiteQueueFullBehavior string
+
+const (
+	OutputGraphiteQueueFullBehaviorBlock OutputGraphiteQueueFullBehavior = "block"
+	OutputGraphiteQueueFullBehaviorDrop  OutputGraphiteQueueFullBehavior = "drop"
+)
+
+func (e OutputGraphiteQueueFullBehavior) ToPointer() *OutputGraphiteQueueFullBehavior {
+	return &e
+}
+
+// OutputGraphiteMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputGraphiteMode string
+
+const (
+	OutputGraphiteModeError        OutputGraphiteMode = "error"
+	OutputGraphiteModeBackpressure OutputGraphiteMode = "backpressure"
+	OutputGraphiteModeAlways       OutputGraphiteMode = "always"
+)
+
+func (e OutputGraphiteMode) ToPointer() *OutputGraphiteMode {
+	return &e
+}
+
+type OutputGraphitePqControls struct {
+}
+
+type OutputGraphite struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type *OutputGraphiteType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Protocol to use when communicating with the destination.
+	Protocol *OutputGraphiteDestinationProtocol `default:"udp" json:"protocol"`
+	// The hostname of the destination.
+	Host string `json:"host"`
+	// Destination port.
+	Port *float64 `default:"8125" json:"port"`
+	// When protocol is UDP, specifies the maximum size of packets sent to the destination. Also known as the MTU for the network path to the destination system.
+	Mtu *float64 `default:"512" json:"mtu"`
+	// When protocol is TCP, specifies how often buffers should be flushed, resulting in records sent to the destination.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// How often to resolve the destination hostname to an IP address. Ignored if the destination is an IP address. A value of 0 means every batch sent will incur a DNS lookup.
+	DNSResolvePeriodSec *float64 `default:"0" json:"dnsResolvePeriodSec"`
+	Description         *string  `json:"description,omitempty"`
+	// Rate (in bytes per second) to throttle while writing to an output. Accepts values with multiple-byte units, such as KB, MB, and GB. (Example: 42 MB) Default value of 0 specifies no throttling.
+	ThrottleRatePerSec *string `default:"0" json:"throttleRatePerSec"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time (milliseconds) to wait for a write to complete before assuming connection is dead
+	WriteTimeout *float64 `default:"60000" json:"writeTimeout"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputGraphiteBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputGraphiteCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputGraphiteQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputGraphiteMode       `default:"error" json:"pqMode"`
+	PqControls *OutputGraphitePqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputGraphite) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGraphite) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGraphite) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputGraphite) GetType() *OutputGraphiteType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputGraphite) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputGraphite) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputGraphite) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputGraphite) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputGraphite) GetProtocol() *OutputGraphiteDestinationProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputGraphite) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputGraphite) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OutputGraphite) GetMtu() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Mtu
+}
+
+func (o *OutputGraphite) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputGraphite) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputGraphite) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputGraphite) GetThrottleRatePerSec() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRatePerSec
+}
+
+func (o *OutputGraphite) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputGraphite) GetWriteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteTimeout
+}
+
+func (o *OutputGraphite) GetOnBackpressure() *OutputGraphiteBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputGraphite) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputGraphite) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputGraphite) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputGraphite) GetPqCompress() *OutputGraphiteCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputGraphite) GetPqOnBackpressure() *OutputGraphiteQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputGraphite) GetPqMode() *OutputGraphiteMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputGraphite) GetPqControls() *OutputGraphitePqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputStatsdExtType string
+
+const (
+	OutputStatsdExtTypeStatsdExt OutputStatsdExtType = "statsd_ext"
+)
+
+func (e OutputStatsdExtType) ToPointer() *OutputStatsdExtType {
+	return &e
+}
+
+// OutputStatsdExtDestinationProtocol - Protocol to use when communicating with the destination.
+type OutputStatsdExtDestinationProtocol string
+
+const (
+	OutputStatsdExtDestinationProtocolUDP OutputStatsdExtDestinationProtocol = "udp"
+	OutputStatsdExtDestinationProtocolTCP OutputStatsdExtDestinationProtocol = "tcp"
+)
+
+func (e OutputStatsdExtDestinationProtocol) ToPointer() *OutputStatsdExtDestinationProtocol {
+	return &e
+}
+
+// OutputStatsdExtBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputStatsdExtBackpressureBehavior string
+
+const (
+	OutputStatsdExtBackpressureBehaviorBlock OutputStatsdExtBackpressureBehavior = "block"
+	OutputStatsdExtBackpressureBehaviorDrop  OutputStatsdExtBackpressureBehavior = "drop"
+	OutputStatsdExtBackpressureBehaviorQueue OutputStatsdExtBackpressureBehavior = "queue"
+)
+
+func (e OutputStatsdExtBackpressureBehavior) ToPointer() *OutputStatsdExtBackpressureBehavior {
+	return &e
+}
+
+// OutputStatsdExtCompression - Codec to use to compress the persisted data
+type OutputStatsdExtCompression string
+
+const (
+	OutputStatsdExtCompressionNone OutputStatsdExtCompression = "none"
+	OutputStatsdExtCompressionGzip OutputStatsdExtCompression = "gzip"
+)
+
+func (e OutputStatsdExtCompression) ToPointer() *OutputStatsdExtCompression {
+	return &e
+}
+
+// OutputStatsdExtQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputStatsdExtQueueFullBehavior string
+
+const (
+	OutputStatsdExtQueueFullBehaviorBlock OutputStatsdExtQueueFullBehavior = "block"
+	OutputStatsdExtQueueFullBehaviorDrop  OutputStatsdExtQueueFullBehavior = "drop"
+)
+
+func (e OutputStatsdExtQueueFullBehavior) ToPointer() *OutputStatsdExtQueueFullBehavior {
+	return &e
+}
+
+// OutputStatsdExtMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputStatsdExtMode string
+
+const (
+	OutputStatsdExtModeError        OutputStatsdExtMode = "error"
+	OutputStatsdExtModeBackpressure OutputStatsdExtMode = "backpressure"
+	OutputStatsdExtModeAlways       OutputStatsdExtMode = "always"
+)
+
+func (e OutputStatsdExtMode) ToPointer() *OutputStatsdExtMode {
+	return &e
+}
+
+type OutputStatsdExtPqControls struct {
+}
+
+type OutputStatsdExt struct {
+	// Unique ID for this output
+	ID   string               `json:"id"`
+	Type *OutputStatsdExtType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Protocol to use when communicating with the destination.
+	Protocol *OutputStatsdExtDestinationProtocol `default:"udp" json:"protocol"`
+	// The hostname of the destination.
+	Host string `json:"host"`
+	// Destination port.
+	Port *float64 `default:"8125" json:"port"`
+	// When protocol is UDP, specifies the maximum size of packets sent to the destination. Also known as the MTU for the network path to the destination system.
+	Mtu *float64 `default:"512" json:"mtu"`
+	// When protocol is TCP, specifies how often buffers should be flushed, resulting in records sent to the destination.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// How often to resolve the destination hostname to an IP address. Ignored if the destination is an IP address. A value of 0 means every batch sent will incur a DNS lookup.
+	DNSResolvePeriodSec *float64 `default:"0" json:"dnsResolvePeriodSec"`
+	Description         *string  `json:"description,omitempty"`
+	// Rate (in bytes per second) to throttle while writing to an output. Accepts values with multiple-byte units, such as KB, MB, and GB. (Example: 42 MB) Default value of 0 specifies no throttling.
+	ThrottleRatePerSec *string `default:"0" json:"throttleRatePerSec"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time (milliseconds) to wait for a write to complete before assuming connection is dead
+	WriteTimeout *float64 `default:"60000" json:"writeTimeout"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputStatsdExtBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputStatsdExtCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputStatsdExtQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputStatsdExtMode       `default:"error" json:"pqMode"`
+	PqControls *OutputStatsdExtPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputStatsdExt) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputStatsdExt) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputStatsdExt) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputStatsdExt) GetType() *OutputStatsdExtType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputStatsdExt) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputStatsdExt) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputStatsdExt) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputStatsdExt) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputStatsdExt) GetProtocol() *OutputStatsdExtDestinationProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputStatsdExt) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputStatsdExt) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OutputStatsdExt) GetMtu() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Mtu
+}
+
+func (o *OutputStatsdExt) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputStatsdExt) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputStatsdExt) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputStatsdExt) GetThrottleRatePerSec() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRatePerSec
+}
+
+func (o *OutputStatsdExt) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputStatsdExt) GetWriteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteTimeout
+}
+
+func (o *OutputStatsdExt) GetOnBackpressure() *OutputStatsdExtBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputStatsdExt) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputStatsdExt) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputStatsdExt) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputStatsdExt) GetPqCompress() *OutputStatsdExtCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputStatsdExt) GetPqOnBackpressure() *OutputStatsdExtQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputStatsdExt) GetPqMode() *OutputStatsdExtMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputStatsdExt) GetPqControls() *OutputStatsdExtPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputStatsdType string
+
+const (
+	OutputStatsdTypeStatsd OutputStatsdType = "statsd"
+)
+
+func (e OutputStatsdType) ToPointer() *OutputStatsdType {
+	return &e
+}
+
+// OutputStatsdDestinationProtocol - Protocol to use when communicating with the destination.
+type OutputStatsdDestinationProtocol string
+
+const (
+	OutputStatsdDestinationProtocolUDP OutputStatsdDestinationProtocol = "udp"
+	OutputStatsdDestinationProtocolTCP OutputStatsdDestinationProtocol = "tcp"
+)
+
+func (e OutputStatsdDestinationProtocol) ToPointer() *OutputStatsdDestinationProtocol {
+	return &e
+}
+
+// OutputStatsdBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputStatsdBackpressureBehavior string
+
+const (
+	OutputStatsdBackpressureBehaviorBlock OutputStatsdBackpressureBehavior = "block"
+	OutputStatsdBackpressureBehaviorDrop  OutputStatsdBackpressureBehavior = "drop"
+	OutputStatsdBackpressureBehaviorQueue OutputStatsdBackpressureBehavior = "queue"
+)
+
+func (e OutputStatsdBackpressureBehavior) ToPointer() *OutputStatsdBackpressureBehavior {
+	return &e
+}
+
+// OutputStatsdCompression - Codec to use to compress the persisted data
+type OutputStatsdCompression string
+
+const (
+	OutputStatsdCompressionNone OutputStatsdCompression = "none"
+	OutputStatsdCompressionGzip OutputStatsdCompression = "gzip"
+)
+
+func (e OutputStatsdCompression) ToPointer() *OutputStatsdCompression {
+	return &e
+}
+
+// OutputStatsdQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputStatsdQueueFullBehavior string
+
+const (
+	OutputStatsdQueueFullBehaviorBlock OutputStatsdQueueFullBehavior = "block"
+	OutputStatsdQueueFullBehaviorDrop  OutputStatsdQueueFullBehavior = "drop"
+)
+
+func (e OutputStatsdQueueFullBehavior) ToPointer() *OutputStatsdQueueFullBehavior {
+	return &e
+}
+
+// OutputStatsdMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputStatsdMode string
+
+const (
+	OutputStatsdModeError        OutputStatsdMode = "error"
+	OutputStatsdModeBackpressure OutputStatsdMode = "backpressure"
+	OutputStatsdModeAlways       OutputStatsdMode = "always"
+)
+
+func (e OutputStatsdMode) ToPointer() *OutputStatsdMode {
+	return &e
+}
+
+type OutputStatsdPqControls struct {
+}
+
+type OutputStatsd struct {
+	// Unique ID for this output
+	ID   string            `json:"id"`
+	Type *OutputStatsdType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Protocol to use when communicating with the destination.
+	Protocol *OutputStatsdDestinationProtocol `default:"udp" json:"protocol"`
+	// The hostname of the destination.
+	Host string `json:"host"`
+	// Destination port.
+	Port *float64 `default:"8125" json:"port"`
+	// When protocol is UDP, specifies the maximum size of packets sent to the destination. Also known as the MTU for the network path to the destination system.
+	Mtu *float64 `default:"512" json:"mtu"`
+	// When protocol is TCP, specifies how often buffers should be flushed, resulting in records sent to the destination.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// How often to resolve the destination hostname to an IP address. Ignored if the destination is an IP address. A value of 0 means every batch sent will incur a DNS lookup.
+	DNSResolvePeriodSec *float64 `default:"0" json:"dnsResolvePeriodSec"`
+	Description         *string  `json:"description,omitempty"`
+	// Rate (in bytes per second) to throttle while writing to an output. Accepts values with multiple-byte units, such as KB, MB, and GB. (Example: 42 MB) Default value of 0 specifies no throttling.
+	ThrottleRatePerSec *string `default:"0" json:"throttleRatePerSec"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time (milliseconds) to wait for a write to complete before assuming connection is dead
+	WriteTimeout *float64 `default:"60000" json:"writeTimeout"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputStatsdBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputStatsdCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputStatsdQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputStatsdMode       `default:"error" json:"pqMode"`
+	PqControls *OutputStatsdPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputStatsd) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputStatsd) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputStatsd) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputStatsd) GetType() *OutputStatsdType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputStatsd) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputStatsd) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputStatsd) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputStatsd) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputStatsd) GetProtocol() *OutputStatsdDestinationProtocol {
+	if o == nil {
+		return nil
+	}
+	return o.Protocol
+}
+
+func (o *OutputStatsd) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputStatsd) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OutputStatsd) GetMtu() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Mtu
+}
+
+func (o *OutputStatsd) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputStatsd) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputStatsd) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputStatsd) GetThrottleRatePerSec() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRatePerSec
+}
+
+func (o *OutputStatsd) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputStatsd) GetWriteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteTimeout
+}
+
+func (o *OutputStatsd) GetOnBackpressure() *OutputStatsdBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputStatsd) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputStatsd) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputStatsd) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputStatsd) GetPqCompress() *OutputStatsdCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputStatsd) GetPqOnBackpressure() *OutputStatsdQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputStatsd) GetPqMode() *OutputStatsdMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputStatsd) GetPqControls() *OutputStatsdPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputMinioType string
+
+const (
+	OutputMinioTypeMinio OutputMinioType = "minio"
+)
+
+func (e OutputMinioType) ToPointer() *OutputMinioType {
+	return &e
+}
+
+// OutputMinioAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputMinioAuthenticationMethod string
+
+const (
+	OutputMinioAuthenticationMethodAuto   OutputMinioAuthenticationMethod = "auto"
+	OutputMinioAuthenticationMethodManual OutputMinioAuthenticationMethod = "manual"
+	OutputMinioAuthenticationMethodSecret OutputMinioAuthenticationMethod = "secret"
+)
+
+func (e OutputMinioAuthenticationMethod) ToPointer() *OutputMinioAuthenticationMethod {
+	return &e
+}
+
+// OutputMinioSignatureVersion - Signature version to use for signing MinIO requests
+type OutputMinioSignatureVersion string
+
+const (
+	OutputMinioSignatureVersionV2 OutputMinioSignatureVersion = "v2"
+	OutputMinioSignatureVersionV4 OutputMinioSignatureVersion = "v4"
+)
+
+func (e OutputMinioSignatureVersion) ToPointer() *OutputMinioSignatureVersion {
+	return &e
+}
+
+// OutputMinioObjectACL - Object ACL to assign to uploaded objects
+type OutputMinioObjectACL string
+
+const (
+	OutputMinioObjectACLPrivate                OutputMinioObjectACL = "private"
+	OutputMinioObjectACLPublicRead             OutputMinioObjectACL = "public-read"
+	OutputMinioObjectACLPublicReadWrite        OutputMinioObjectACL = "public-read-write"
+	OutputMinioObjectACLAuthenticatedRead      OutputMinioObjectACL = "authenticated-read"
+	OutputMinioObjectACLAwsExecRead            OutputMinioObjectACL = "aws-exec-read"
+	OutputMinioObjectACLBucketOwnerRead        OutputMinioObjectACL = "bucket-owner-read"
+	OutputMinioObjectACLBucketOwnerFullControl OutputMinioObjectACL = "bucket-owner-full-control"
+)
+
+func (e OutputMinioObjectACL) ToPointer() *OutputMinioObjectACL {
+	return &e
+}
+
+// OutputMinioStorageClass - Storage class to select for uploaded objects
+type OutputMinioStorageClass string
+
+const (
+	OutputMinioStorageClassStandard          OutputMinioStorageClass = "STANDARD"
+	OutputMinioStorageClassReducedRedundancy OutputMinioStorageClass = "REDUCED_REDUNDANCY"
+)
+
+func (e OutputMinioStorageClass) ToPointer() *OutputMinioStorageClass {
+	return &e
+}
+
+// ServerSideEncryption - Server-side encryption for uploaded objects
+type ServerSideEncryption string
+
+const (
+	ServerSideEncryptionAes256 ServerSideEncryption = "AES256"
+)
+
+func (e ServerSideEncryption) ToPointer() *ServerSideEncryption {
+	return &e
+}
+
+// OutputMinioDataFormat - Format of the output data
+type OutputMinioDataFormat string
+
+const (
+	OutputMinioDataFormatJSON    OutputMinioDataFormat = "json"
+	OutputMinioDataFormatRaw     OutputMinioDataFormat = "raw"
+	OutputMinioDataFormatParquet OutputMinioDataFormat = "parquet"
+)
+
+func (e OutputMinioDataFormat) ToPointer() *OutputMinioDataFormat {
+	return &e
+}
+
+// OutputMinioBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputMinioBackpressureBehavior string
+
+const (
+	OutputMinioBackpressureBehaviorBlock OutputMinioBackpressureBehavior = "block"
+	OutputMinioBackpressureBehaviorDrop  OutputMinioBackpressureBehavior = "drop"
+)
+
+func (e OutputMinioBackpressureBehavior) ToPointer() *OutputMinioBackpressureBehavior {
+	return &e
+}
+
+// OutputMinioDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputMinioDiskSpaceProtection string
+
+const (
+	OutputMinioDiskSpaceProtectionBlock OutputMinioDiskSpaceProtection = "block"
+	OutputMinioDiskSpaceProtectionDrop  OutputMinioDiskSpaceProtection = "drop"
+)
+
+func (e OutputMinioDiskSpaceProtection) ToPointer() *OutputMinioDiskSpaceProtection {
+	return &e
+}
+
+// OutputMinioCompression - Data compression format to apply to HTTP content before it is delivered
+type OutputMinioCompression string
+
+const (
+	OutputMinioCompressionNone OutputMinioCompression = "none"
+	OutputMinioCompressionGzip OutputMinioCompression = "gzip"
+)
+
+func (e OutputMinioCompression) ToPointer() *OutputMinioCompression {
+	return &e
+}
+
+// OutputMinioCompressionLevel - Compression level to apply before moving files to final destination
+type OutputMinioCompressionLevel string
+
+const (
+	OutputMinioCompressionLevelBestSpeed       OutputMinioCompressionLevel = "best_speed"
+	OutputMinioCompressionLevelNormal          OutputMinioCompressionLevel = "normal"
+	OutputMinioCompressionLevelBestCompression OutputMinioCompressionLevel = "best_compression"
+)
+
+func (e OutputMinioCompressionLevel) ToPointer() *OutputMinioCompressionLevel {
+	return &e
+}
+
+// OutputMinioParquetVersion - Determines which data types are supported and how they are represented
+type OutputMinioParquetVersion string
+
+const (
+	OutputMinioParquetVersionParquet10 OutputMinioParquetVersion = "PARQUET_1_0"
+	OutputMinioParquetVersionParquet24 OutputMinioParquetVersion = "PARQUET_2_4"
+	OutputMinioParquetVersionParquet26 OutputMinioParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputMinioParquetVersion) ToPointer() *OutputMinioParquetVersion {
+	return &e
+}
+
+// OutputMinioDataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputMinioDataPageVersion string
+
+const (
+	OutputMinioDataPageVersionDataPageV1 OutputMinioDataPageVersion = "DATA_PAGE_V1"
+	OutputMinioDataPageVersionDataPageV2 OutputMinioDataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputMinioDataPageVersion) ToPointer() *OutputMinioDataPageVersion {
+	return &e
+}
+
+type OutputMinioKeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputMinioKeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMinioKeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMinioKeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputMinioKeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputMinio struct {
+	// Unique ID for this output
+	ID   string           `json:"id"`
+	Type *OutputMinioType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// MinIO service url (e.g. http://minioHost:9000)
+	Endpoint string `json:"endpoint"`
+	// Name of the destination MinIO bucket. This value can be a constant or a JavaScript expression that can only be evaluated at init time. Example referencing a Global Variable: `myBucket-${C.vars.myVar}`
+	Bucket string `json:"bucket"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputMinioAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	// Secret key. This value can be a constant or a JavaScript expression, such as `${C.env.SOME_SECRET}`).
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	// Region where the MinIO service/cluster is located
+	Region *string `json:"region,omitempty"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Root directory to prepend to path before uploading. Enter a constant, or a JavaScript expression enclosed in quotes or backticks.
+	DestPath *string `json:"destPath,omitempty"`
+	// Signature version to use for signing MinIO requests
+	SignatureVersion *OutputMinioSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputMinioObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass *OutputMinioStorageClass `json:"storageClass,omitempty"`
+	// Server-side encryption for uploaded objects
+	ServerSideEncryption *ServerSideEncryption `json:"serverSideEncryption,omitempty"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates)
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Disable if you can access files within the bucket but not the bucket itself
+	VerifyPermissions *bool `default:"true" json:"verifyPermissions"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression defining how files are partitioned and organized. Default is date-based. If blank, Stream will fall back to the event's __partition field value – if present – otherwise to each location's root directory.
+	PartitionExpr *string `default:"C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')" json:"partitionExpr"`
+	// Format of the output data
+	Format *OutputMinioDataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputMinioBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputMinioDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of parts to upload in parallel per file. Minimum part size is 5MB.
+	MaxConcurrentFileParts *float64 `default:"4" json:"maxConcurrentFileParts"`
+	Description            *string  `json:"description,omitempty"`
+	// This value can be a constant or a JavaScript expression (`${C.env.SOME_ACCESS_KEY}`)
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputMinioCompression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputMinioCompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputMinioParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputMinioDataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputMinioKeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputMinio) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMinio) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMinio) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputMinio) GetType() *OutputMinioType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputMinio) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputMinio) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputMinio) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputMinio) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputMinio) GetEndpoint() string {
+	if o == nil {
+		return ""
+	}
+	return o.Endpoint
+}
+
+func (o *OutputMinio) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputMinio) GetAwsAuthenticationMethod() *OutputMinioAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputMinio) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputMinio) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputMinio) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputMinio) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputMinio) GetDestPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DestPath
+}
+
+func (o *OutputMinio) GetSignatureVersion() *OutputMinioSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputMinio) GetObjectACL() *OutputMinioObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputMinio) GetStorageClass() *OutputMinioStorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputMinio) GetServerSideEncryption() *ServerSideEncryption {
+	if o == nil {
+		return nil
+	}
+	return o.ServerSideEncryption
+}
+
+func (o *OutputMinio) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputMinio) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputMinio) GetVerifyPermissions() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyPermissions
+}
+
+func (o *OutputMinio) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputMinio) GetPartitionExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitionExpr
+}
+
+func (o *OutputMinio) GetFormat() *OutputMinioDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputMinio) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputMinio) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputMinio) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputMinio) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputMinio) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputMinio) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputMinio) GetOnBackpressure() *OutputMinioBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputMinio) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputMinio) GetOnDiskFullBackpressure() *OutputMinioDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputMinio) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputMinio) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputMinio) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputMinio) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputMinio) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputMinio) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputMinio) GetCompress() *OutputMinioCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputMinio) GetCompressionLevel() *OutputMinioCompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputMinio) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputMinio) GetParquetVersion() *OutputMinioParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputMinio) GetParquetDataPageVersion() *OutputMinioDataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputMinio) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputMinio) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputMinio) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputMinio) GetKeyValueMetadata() []OutputMinioKeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputMinio) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputMinio) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputMinio) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputMinio) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputMinio) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputMinio) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputCloudwatchType string
+
+const (
+	OutputCloudwatchTypeCloudwatch OutputCloudwatchType = "cloudwatch"
+)
+
+func (e OutputCloudwatchType) ToPointer() *OutputCloudwatchType {
+	return &e
+}
+
+// OutputCloudwatchAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputCloudwatchAuthenticationMethod string
+
+const (
+	OutputCloudwatchAuthenticationMethodAuto   OutputCloudwatchAuthenticationMethod = "auto"
+	OutputCloudwatchAuthenticationMethodManual OutputCloudwatchAuthenticationMethod = "manual"
+	OutputCloudwatchAuthenticationMethodSecret OutputCloudwatchAuthenticationMethod = "secret"
+)
+
+func (e OutputCloudwatchAuthenticationMethod) ToPointer() *OutputCloudwatchAuthenticationMethod {
+	return &e
+}
+
+// OutputCloudwatchBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputCloudwatchBackpressureBehavior string
+
+const (
+	OutputCloudwatchBackpressureBehaviorBlock OutputCloudwatchBackpressureBehavior = "block"
+	OutputCloudwatchBackpressureBehaviorDrop  OutputCloudwatchBackpressureBehavior = "drop"
+	OutputCloudwatchBackpressureBehaviorQueue OutputCloudwatchBackpressureBehavior = "queue"
+)
+
+func (e OutputCloudwatchBackpressureBehavior) ToPointer() *OutputCloudwatchBackpressureBehavior {
+	return &e
+}
+
+// OutputCloudwatchCompression - Codec to use to compress the persisted data
+type OutputCloudwatchCompression string
+
+const (
+	OutputCloudwatchCompressionNone OutputCloudwatchCompression = "none"
+	OutputCloudwatchCompressionGzip OutputCloudwatchCompression = "gzip"
+)
+
+func (e OutputCloudwatchCompression) ToPointer() *OutputCloudwatchCompression {
+	return &e
+}
+
+// OutputCloudwatchQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputCloudwatchQueueFullBehavior string
+
+const (
+	OutputCloudwatchQueueFullBehaviorBlock OutputCloudwatchQueueFullBehavior = "block"
+	OutputCloudwatchQueueFullBehaviorDrop  OutputCloudwatchQueueFullBehavior = "drop"
+)
+
+func (e OutputCloudwatchQueueFullBehavior) ToPointer() *OutputCloudwatchQueueFullBehavior {
+	return &e
+}
+
+// OutputCloudwatchMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputCloudwatchMode string
+
+const (
+	OutputCloudwatchModeError        OutputCloudwatchMode = "error"
+	OutputCloudwatchModeBackpressure OutputCloudwatchMode = "backpressure"
+	OutputCloudwatchModeAlways       OutputCloudwatchMode = "always"
+)
+
+func (e OutputCloudwatchMode) ToPointer() *OutputCloudwatchMode {
+	return &e
+}
+
+type OutputCloudwatchPqControls struct {
+}
+
+type OutputCloudwatch struct {
+	// Unique ID for this output
+	ID   string                `json:"id"`
+	Type *OutputCloudwatchType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// CloudWatch log group to associate events with
+	LogGroupName string `json:"logGroupName"`
+	// Prefix for CloudWatch log stream name. This prefix will be used to generate a unique log stream name per cribl instance, for example: myStream_myHost_myOutputId
+	LogStreamName string `json:"logStreamName"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputCloudwatchAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	AwsSecretKey            *string                               `json:"awsSecretKey,omitempty"`
+	// Region where the CloudWatchLogs is located
+	Region string `json:"region"`
+	// CloudWatchLogs service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to CloudWatchLogs-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access CloudWatchLogs
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Maximum number of queued batches before blocking
+	MaxQueueSize *float64 `default:"5" json:"maxQueueSize"`
+	// Maximum size (KB) of each individual record before compression. For non compressible data 1MB is the max recommended size
+	MaxRecordSizeKB *float64 `default:"1024" json:"maxRecordSizeKB"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Max record size.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputCloudwatchBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                               `json:"description,omitempty"`
+	AwsAPIKey      *string                               `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputCloudwatchCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputCloudwatchQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputCloudwatchMode       `default:"error" json:"pqMode"`
+	PqControls *OutputCloudwatchPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputCloudwatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputCloudwatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputCloudwatch) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputCloudwatch) GetType() *OutputCloudwatchType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputCloudwatch) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputCloudwatch) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputCloudwatch) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputCloudwatch) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputCloudwatch) GetLogGroupName() string {
+	if o == nil {
+		return ""
+	}
+	return o.LogGroupName
+}
+
+func (o *OutputCloudwatch) GetLogStreamName() string {
+	if o == nil {
+		return ""
+	}
+	return o.LogStreamName
+}
+
+func (o *OutputCloudwatch) GetAwsAuthenticationMethod() *OutputCloudwatchAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputCloudwatch) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputCloudwatch) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputCloudwatch) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputCloudwatch) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputCloudwatch) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputCloudwatch) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputCloudwatch) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputCloudwatch) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputCloudwatch) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputCloudwatch) GetMaxQueueSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxQueueSize
+}
+
+func (o *OutputCloudwatch) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputCloudwatch) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputCloudwatch) GetOnBackpressure() *OutputCloudwatchBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputCloudwatch) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputCloudwatch) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputCloudwatch) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputCloudwatch) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputCloudwatch) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputCloudwatch) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputCloudwatch) GetPqCompress() *OutputCloudwatchCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputCloudwatch) GetPqOnBackpressure() *OutputCloudwatchQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputCloudwatch) GetPqMode() *OutputCloudwatchMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputCloudwatch) GetPqControls() *OutputCloudwatchPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputInfluxdbType string
+
+const (
+	OutputInfluxdbTypeInfluxdb OutputInfluxdbType = "influxdb"
+)
+
+func (e OutputInfluxdbType) ToPointer() *OutputInfluxdbType {
+	return &e
+}
+
+// TimestampPrecision - Sets the precision for the supplied Unix time values. Defaults to milliseconds.
+type TimestampPrecision string
+
+const (
+	TimestampPrecisionNs TimestampPrecision = "ns"
+	TimestampPrecisionU  TimestampPrecision = "u"
+	TimestampPrecisionMs TimestampPrecision = "ms"
+	TimestampPrecisionS  TimestampPrecision = "s"
+	TimestampPrecisionM  TimestampPrecision = "m"
+	TimestampPrecisionH  TimestampPrecision = "h"
+)
+
+func (e TimestampPrecision) ToPointer() *TimestampPrecision {
+	return &e
+}
+
+type OutputInfluxdbExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputInfluxdbExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputInfluxdbExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputInfluxdbFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputInfluxdbFailedRequestLoggingMode string
+
+const (
+	OutputInfluxdbFailedRequestLoggingModePayload           OutputInfluxdbFailedRequestLoggingMode = "payload"
+	OutputInfluxdbFailedRequestLoggingModePayloadAndHeaders OutputInfluxdbFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputInfluxdbFailedRequestLoggingModeNone              OutputInfluxdbFailedRequestLoggingMode = "none"
+)
+
+func (e OutputInfluxdbFailedRequestLoggingMode) ToPointer() *OutputInfluxdbFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputInfluxdbResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputInfluxdbResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputInfluxdbResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputInfluxdbResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputInfluxdbResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputInfluxdbResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputInfluxdbResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputInfluxdbTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputInfluxdbTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputInfluxdbTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputInfluxdbTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputInfluxdbTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputInfluxdbTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputInfluxdbTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputInfluxdbBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputInfluxdbBackpressureBehavior string
+
+const (
+	OutputInfluxdbBackpressureBehaviorBlock OutputInfluxdbBackpressureBehavior = "block"
+	OutputInfluxdbBackpressureBehaviorDrop  OutputInfluxdbBackpressureBehavior = "drop"
+	OutputInfluxdbBackpressureBehaviorQueue OutputInfluxdbBackpressureBehavior = "queue"
+)
+
+func (e OutputInfluxdbBackpressureBehavior) ToPointer() *OutputInfluxdbBackpressureBehavior {
+	return &e
+}
+
+// OutputInfluxdbAuthenticationType - InfluxDB authentication type
+type OutputInfluxdbAuthenticationType string
+
+const (
+	OutputInfluxdbAuthenticationTypeNone              OutputInfluxdbAuthenticationType = "none"
+	OutputInfluxdbAuthenticationTypeBasic             OutputInfluxdbAuthenticationType = "basic"
+	OutputInfluxdbAuthenticationTypeCredentialsSecret OutputInfluxdbAuthenticationType = "credentialsSecret"
+	OutputInfluxdbAuthenticationTypeToken             OutputInfluxdbAuthenticationType = "token"
+	OutputInfluxdbAuthenticationTypeTextSecret        OutputInfluxdbAuthenticationType = "textSecret"
+	OutputInfluxdbAuthenticationTypeOauth             OutputInfluxdbAuthenticationType = "oauth"
+)
+
+func (e OutputInfluxdbAuthenticationType) ToPointer() *OutputInfluxdbAuthenticationType {
+	return &e
+}
+
+// OutputInfluxdbCompression - Codec to use to compress the persisted data
+type OutputInfluxdbCompression string
+
+const (
+	OutputInfluxdbCompressionNone OutputInfluxdbCompression = "none"
+	OutputInfluxdbCompressionGzip OutputInfluxdbCompression = "gzip"
+)
+
+func (e OutputInfluxdbCompression) ToPointer() *OutputInfluxdbCompression {
+	return &e
+}
+
+// OutputInfluxdbQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputInfluxdbQueueFullBehavior string
+
+const (
+	OutputInfluxdbQueueFullBehaviorBlock OutputInfluxdbQueueFullBehavior = "block"
+	OutputInfluxdbQueueFullBehaviorDrop  OutputInfluxdbQueueFullBehavior = "drop"
+)
+
+func (e OutputInfluxdbQueueFullBehavior) ToPointer() *OutputInfluxdbQueueFullBehavior {
+	return &e
+}
+
+// OutputInfluxdbMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputInfluxdbMode string
+
+const (
+	OutputInfluxdbModeError        OutputInfluxdbMode = "error"
+	OutputInfluxdbModeBackpressure OutputInfluxdbMode = "backpressure"
+	OutputInfluxdbModeAlways       OutputInfluxdbMode = "always"
+)
+
+func (e OutputInfluxdbMode) ToPointer() *OutputInfluxdbMode {
+	return &e
+}
+
+type OutputInfluxdbPqControls struct {
+}
+
+type OutputInfluxdbOauthParam struct {
+	// OAuth parameter name
+	Name string `json:"name"`
+	// OAuth parameter value
+	Value string `json:"value"`
+}
+
+func (o *OutputInfluxdbOauthParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputInfluxdbOauthParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputInfluxdbOauthHeader struct {
+	// OAuth header name
+	Name string `json:"name"`
+	// OAuth header value
+	Value string `json:"value"`
+}
+
+func (o *OutputInfluxdbOauthHeader) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputInfluxdbOauthHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputInfluxdb struct {
+	// Unique ID for this output
+	ID   string             `json:"id"`
+	Type OutputInfluxdbType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// URL of an InfluxDB cluster to send events to, e.g., http://localhost:8086/write
+	URL string `json:"url"`
+	// The v2 API can be enabled with InfluxDB versions 1.8 and later.
+	UseV2API *bool `default:"false" json:"useV2API"`
+	// Sets the precision for the supplied Unix time values. Defaults to milliseconds.
+	TimestampPrecision *TimestampPrecision `default:"ms" json:"timestampPrecision"`
+	// Enabling this will pull the value field from the metric name. E,g, 'db.query.user' will use 'db.query' as the measurement and 'user' as the value field.
+	DynamicValueFieldName *bool `default:"true" json:"dynamicValueFieldName"`
+	// Name of the field in which to store the metric when sending to InfluxDB. If dynamic generation is enabled and fails, this will be used as a fallback.
+	ValueFieldName *string `default:"value" json:"valueFieldName"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputInfluxdbExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputInfluxdbFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputInfluxdbResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputInfluxdbTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputInfluxdbBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// InfluxDB authentication type
+	AuthType    *OutputInfluxdbAuthenticationType `default:"none" json:"authType"`
+	Description *string                           `json:"description,omitempty"`
+	// Database to write to.
+	Database *string `json:"database,omitempty"`
+	// Bucket to write to.
+	Bucket *string `json:"bucket,omitempty"`
+	// Organization ID for this bucket.
+	Org *string `json:"org,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputInfluxdbCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputInfluxdbQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputInfluxdbMode       `default:"error" json:"pqMode"`
+	PqControls *OutputInfluxdbPqControls `json:"pqControls,omitempty"`
+	Username   *string                   `json:"username,omitempty"`
+	Password   *string                   `json:"password,omitempty"`
+	// Bearer token to include in the authorization header
+	Token *string `json:"token,omitempty"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// URL for OAuth
+	LoginURL *string `json:"loginUrl,omitempty"`
+	// Secret parameter name to pass in request body
+	SecretParamName *string `json:"secretParamName,omitempty"`
+	// Secret parameter value to pass in request body
+	Secret *string `json:"secret,omitempty"`
+	// Name of the auth token attribute in the OAuth response. Can be top-level (e.g., 'token'); or nested, using a period (e.g., 'data.token').
+	TokenAttributeName *string `json:"tokenAttributeName,omitempty"`
+	// JavaScript expression to compute the Authorization header value to pass in requests. The value `${token}` is used to reference the token obtained from authentication, e.g.: `Bearer ${token}`.
+	AuthHeaderExpr *string `default:"Bearer \\${token}" json:"authHeaderExpr"`
+	// How often the OAuth token should be refreshed.
+	TokenTimeoutSecs *float64 `default:"3600" json:"tokenTimeoutSecs"`
+	// Additional parameters to send in the OAuth login request. @{product} will combine the secret with these parameters, and will send the URL-encoded result in a POST request to the endpoint specified in the 'Login URL'. We'll automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthParams []OutputInfluxdbOauthParam `json:"oauthParams,omitempty"`
+	// Additional headers to send in the OAuth login request. @{product} will automatically add the content-type header 'application/x-www-form-urlencoded' when sending this request.
+	OauthHeaders []OutputInfluxdbOauthHeader `json:"oauthHeaders,omitempty"`
+}
+
+func (o OutputInfluxdb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputInfluxdb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputInfluxdb) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputInfluxdb) GetType() OutputInfluxdbType {
+	if o == nil {
+		return OutputInfluxdbType("")
+	}
+	return o.Type
+}
+
+func (o *OutputInfluxdb) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputInfluxdb) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputInfluxdb) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputInfluxdb) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputInfluxdb) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputInfluxdb) GetUseV2API() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseV2API
+}
+
+func (o *OutputInfluxdb) GetTimestampPrecision() *TimestampPrecision {
+	if o == nil {
+		return nil
+	}
+	return o.TimestampPrecision
+}
+
+func (o *OutputInfluxdb) GetDynamicValueFieldName() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DynamicValueFieldName
+}
+
+func (o *OutputInfluxdb) GetValueFieldName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ValueFieldName
+}
+
+func (o *OutputInfluxdb) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputInfluxdb) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputInfluxdb) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputInfluxdb) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputInfluxdb) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputInfluxdb) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputInfluxdb) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputInfluxdb) GetExtraHTTPHeaders() []OutputInfluxdbExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputInfluxdb) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputInfluxdb) GetFailedRequestLoggingMode() *OutputInfluxdbFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputInfluxdb) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputInfluxdb) GetResponseRetrySettings() []OutputInfluxdbResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputInfluxdb) GetTimeoutRetrySettings() *OutputInfluxdbTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputInfluxdb) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputInfluxdb) GetOnBackpressure() *OutputInfluxdbBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputInfluxdb) GetAuthType() *OutputInfluxdbAuthenticationType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputInfluxdb) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputInfluxdb) GetDatabase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *OutputInfluxdb) GetBucket() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Bucket
+}
+
+func (o *OutputInfluxdb) GetOrg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Org
+}
+
+func (o *OutputInfluxdb) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputInfluxdb) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputInfluxdb) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputInfluxdb) GetPqCompress() *OutputInfluxdbCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputInfluxdb) GetPqOnBackpressure() *OutputInfluxdbQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputInfluxdb) GetPqMode() *OutputInfluxdbMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputInfluxdb) GetPqControls() *OutputInfluxdbPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputInfluxdb) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *OutputInfluxdb) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OutputInfluxdb) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputInfluxdb) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+func (o *OutputInfluxdb) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputInfluxdb) GetLoginURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LoginURL
+}
+
+func (o *OutputInfluxdb) GetSecretParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SecretParamName
+}
+
+func (o *OutputInfluxdb) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputInfluxdb) GetTokenAttributeName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenAttributeName
+}
+
+func (o *OutputInfluxdb) GetAuthHeaderExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthHeaderExpr
+}
+
+func (o *OutputInfluxdb) GetTokenTimeoutSecs() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TokenTimeoutSecs
+}
+
+func (o *OutputInfluxdb) GetOauthParams() []OutputInfluxdbOauthParam {
+	if o == nil {
+		return nil
+	}
+	return o.OauthParams
+}
+
+func (o *OutputInfluxdb) GetOauthHeaders() []OutputInfluxdbOauthHeader {
+	if o == nil {
+		return nil
+	}
+	return o.OauthHeaders
+}
+
+type OutputNewrelicEventsType string
+
+const (
+	OutputNewrelicEventsTypeNewrelicEvents OutputNewrelicEventsType = "newrelic_events"
+)
+
+func (e OutputNewrelicEventsType) ToPointer() *OutputNewrelicEventsType {
+	return &e
+}
+
+// OutputNewrelicEventsRegion - Which New Relic region endpoint to use.
+type OutputNewrelicEventsRegion string
+
+const (
+	OutputNewrelicEventsRegionUs     OutputNewrelicEventsRegion = "US"
+	OutputNewrelicEventsRegionEu     OutputNewrelicEventsRegion = "EU"
+	OutputNewrelicEventsRegionCustom OutputNewrelicEventsRegion = "Custom"
+)
+
+func (e OutputNewrelicEventsRegion) ToPointer() *OutputNewrelicEventsRegion {
+	return &e
+}
+
+type OutputNewrelicEventsExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputNewrelicEventsExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputNewrelicEventsExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputNewrelicEventsFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputNewrelicEventsFailedRequestLoggingMode string
+
+const (
+	OutputNewrelicEventsFailedRequestLoggingModePayload           OutputNewrelicEventsFailedRequestLoggingMode = "payload"
+	OutputNewrelicEventsFailedRequestLoggingModePayloadAndHeaders OutputNewrelicEventsFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputNewrelicEventsFailedRequestLoggingModeNone              OutputNewrelicEventsFailedRequestLoggingMode = "none"
+)
+
+func (e OutputNewrelicEventsFailedRequestLoggingMode) ToPointer() *OutputNewrelicEventsFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputNewrelicEventsResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputNewrelicEventsResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputNewrelicEventsResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputNewrelicEventsResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputNewrelicEventsResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputNewrelicEventsResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputNewrelicEventsResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputNewrelicEventsTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputNewrelicEventsTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputNewrelicEventsTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputNewrelicEventsTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputNewrelicEventsTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputNewrelicEventsTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputNewrelicEventsTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputNewrelicEventsBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputNewrelicEventsBackpressureBehavior string
+
+const (
+	OutputNewrelicEventsBackpressureBehaviorBlock OutputNewrelicEventsBackpressureBehavior = "block"
+	OutputNewrelicEventsBackpressureBehaviorDrop  OutputNewrelicEventsBackpressureBehavior = "drop"
+	OutputNewrelicEventsBackpressureBehaviorQueue OutputNewrelicEventsBackpressureBehavior = "queue"
+)
+
+func (e OutputNewrelicEventsBackpressureBehavior) ToPointer() *OutputNewrelicEventsBackpressureBehavior {
+	return &e
+}
+
+// OutputNewrelicEventsAuthenticationMethod - Enter API key directly, or select a stored secret
+type OutputNewrelicEventsAuthenticationMethod string
+
+const (
+	OutputNewrelicEventsAuthenticationMethodManual OutputNewrelicEventsAuthenticationMethod = "manual"
+	OutputNewrelicEventsAuthenticationMethodSecret OutputNewrelicEventsAuthenticationMethod = "secret"
+)
+
+func (e OutputNewrelicEventsAuthenticationMethod) ToPointer() *OutputNewrelicEventsAuthenticationMethod {
+	return &e
+}
+
+// OutputNewrelicEventsCompression - Codec to use to compress the persisted data
+type OutputNewrelicEventsCompression string
+
+const (
+	OutputNewrelicEventsCompressionNone OutputNewrelicEventsCompression = "none"
+	OutputNewrelicEventsCompressionGzip OutputNewrelicEventsCompression = "gzip"
+)
+
+func (e OutputNewrelicEventsCompression) ToPointer() *OutputNewrelicEventsCompression {
+	return &e
+}
+
+// OutputNewrelicEventsQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputNewrelicEventsQueueFullBehavior string
+
+const (
+	OutputNewrelicEventsQueueFullBehaviorBlock OutputNewrelicEventsQueueFullBehavior = "block"
+	OutputNewrelicEventsQueueFullBehaviorDrop  OutputNewrelicEventsQueueFullBehavior = "drop"
+)
+
+func (e OutputNewrelicEventsQueueFullBehavior) ToPointer() *OutputNewrelicEventsQueueFullBehavior {
+	return &e
+}
+
+// OutputNewrelicEventsMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputNewrelicEventsMode string
+
+const (
+	OutputNewrelicEventsModeError        OutputNewrelicEventsMode = "error"
+	OutputNewrelicEventsModeBackpressure OutputNewrelicEventsMode = "backpressure"
+	OutputNewrelicEventsModeAlways       OutputNewrelicEventsMode = "always"
+)
+
+func (e OutputNewrelicEventsMode) ToPointer() *OutputNewrelicEventsMode {
+	return &e
+}
+
+type OutputNewrelicEventsPqControls struct {
+}
+
+type OutputNewrelicEvents struct {
+	// Unique ID for this output
+	ID   string                    `json:"id"`
+	Type *OutputNewrelicEventsType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Which New Relic region endpoint to use.
+	Region *OutputNewrelicEventsRegion `default:"US" json:"region"`
+	// New Relic account ID
+	AccountID string `json:"accountId"`
+	// Default eventType to use when not present in an event. For more information, see [here](https://docs.newrelic.com/docs/telemetry-data-platform/custom-data/custom-events/data-requirements-limits-custom-event-data/#reserved-words).
+	EventType string `json:"eventType"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"1024" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputNewrelicEventsExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputNewrelicEventsFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputNewrelicEventsResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputNewrelicEventsTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputNewrelicEventsBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Enter API key directly, or select a stored secret
+	AuthType    *OutputNewrelicEventsAuthenticationMethod `default:"manual" json:"authType"`
+	Description *string                                   `json:"description,omitempty"`
+	CustomURL   *string                                   `json:"customUrl,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputNewrelicEventsCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputNewrelicEventsQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputNewrelicEventsMode       `default:"error" json:"pqMode"`
+	PqControls *OutputNewrelicEventsPqControls `json:"pqControls,omitempty"`
+	// New Relic API key. Can be overridden using __newRelic_apiKey field.
+	APIKey *string `json:"apiKey,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+}
+
+func (o OutputNewrelicEvents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputNewrelicEvents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputNewrelicEvents) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputNewrelicEvents) GetType() *OutputNewrelicEventsType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputNewrelicEvents) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputNewrelicEvents) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputNewrelicEvents) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputNewrelicEvents) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputNewrelicEvents) GetRegion() *OutputNewrelicEventsRegion {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputNewrelicEvents) GetAccountID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AccountID
+}
+
+func (o *OutputNewrelicEvents) GetEventType() string {
+	if o == nil {
+		return ""
+	}
+	return o.EventType
+}
+
+func (o *OutputNewrelicEvents) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputNewrelicEvents) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputNewrelicEvents) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputNewrelicEvents) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputNewrelicEvents) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputNewrelicEvents) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputNewrelicEvents) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputNewrelicEvents) GetExtraHTTPHeaders() []OutputNewrelicEventsExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputNewrelicEvents) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputNewrelicEvents) GetFailedRequestLoggingMode() *OutputNewrelicEventsFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputNewrelicEvents) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputNewrelicEvents) GetResponseRetrySettings() []OutputNewrelicEventsResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputNewrelicEvents) GetTimeoutRetrySettings() *OutputNewrelicEventsTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputNewrelicEvents) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputNewrelicEvents) GetOnBackpressure() *OutputNewrelicEventsBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputNewrelicEvents) GetAuthType() *OutputNewrelicEventsAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputNewrelicEvents) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputNewrelicEvents) GetCustomURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomURL
+}
+
+func (o *OutputNewrelicEvents) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputNewrelicEvents) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputNewrelicEvents) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputNewrelicEvents) GetPqCompress() *OutputNewrelicEventsCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputNewrelicEvents) GetPqOnBackpressure() *OutputNewrelicEventsQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputNewrelicEvents) GetPqMode() *OutputNewrelicEventsMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputNewrelicEvents) GetPqControls() *OutputNewrelicEventsPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputNewrelicEvents) GetAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIKey
+}
+
+func (o *OutputNewrelicEvents) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+type OutputElasticCloudType string
+
+const (
+	OutputElasticCloudTypeElasticCloud OutputElasticCloudType = "elastic_cloud"
+)
+
+func (e OutputElasticCloudType) ToPointer() *OutputElasticCloudType {
+	return &e
+}
+
+type OutputElasticCloudExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputElasticCloudExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputElasticCloudExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputElasticCloudFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputElasticCloudFailedRequestLoggingMode string
+
+const (
+	OutputElasticCloudFailedRequestLoggingModePayload           OutputElasticCloudFailedRequestLoggingMode = "payload"
+	OutputElasticCloudFailedRequestLoggingModePayloadAndHeaders OutputElasticCloudFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputElasticCloudFailedRequestLoggingModeNone              OutputElasticCloudFailedRequestLoggingMode = "none"
+)
+
+func (e OutputElasticCloudFailedRequestLoggingMode) ToPointer() *OutputElasticCloudFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputElasticCloudExtraParam struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+func (o *OutputElasticCloudExtraParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputElasticCloudExtraParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputElasticCloudAuthenticationMethod - Enter credentials directly, or select a stored secret
+type OutputElasticCloudAuthenticationMethod string
+
+const (
+	OutputElasticCloudAuthenticationMethodManual       OutputElasticCloudAuthenticationMethod = "manual"
+	OutputElasticCloudAuthenticationMethodSecret       OutputElasticCloudAuthenticationMethod = "secret"
+	OutputElasticCloudAuthenticationMethodManualAPIKey OutputElasticCloudAuthenticationMethod = "manualAPIKey"
+	OutputElasticCloudAuthenticationMethodTextSecret   OutputElasticCloudAuthenticationMethod = "textSecret"
+)
+
+func (e OutputElasticCloudAuthenticationMethod) ToPointer() *OutputElasticCloudAuthenticationMethod {
+	return &e
+}
+
+type OutputElasticCloudAuth struct {
+	Disabled *bool `default:"false" json:"disabled"`
+	// Enter credentials directly, or select a stored secret
+	AuthType *OutputElasticCloudAuthenticationMethod `default:"manual" json:"authType"`
+}
+
+func (o OutputElasticCloudAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticCloudAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticCloudAuth) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputElasticCloudAuth) GetAuthType() *OutputElasticCloudAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+type OutputElasticCloudResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputElasticCloudResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticCloudResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticCloudResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputElasticCloudResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputElasticCloudResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputElasticCloudResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputElasticCloudTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputElasticCloudTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticCloudTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticCloudTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputElasticCloudTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputElasticCloudTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputElasticCloudTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputElasticCloudBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputElasticCloudBackpressureBehavior string
+
+const (
+	OutputElasticCloudBackpressureBehaviorBlock OutputElasticCloudBackpressureBehavior = "block"
+	OutputElasticCloudBackpressureBehaviorDrop  OutputElasticCloudBackpressureBehavior = "drop"
+	OutputElasticCloudBackpressureBehaviorQueue OutputElasticCloudBackpressureBehavior = "queue"
+)
+
+func (e OutputElasticCloudBackpressureBehavior) ToPointer() *OutputElasticCloudBackpressureBehavior {
+	return &e
+}
+
+// OutputElasticCloudCompression - Codec to use to compress the persisted data
+type OutputElasticCloudCompression string
+
+const (
+	OutputElasticCloudCompressionNone OutputElasticCloudCompression = "none"
+	OutputElasticCloudCompressionGzip OutputElasticCloudCompression = "gzip"
+)
+
+func (e OutputElasticCloudCompression) ToPointer() *OutputElasticCloudCompression {
+	return &e
+}
+
+// OutputElasticCloudQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputElasticCloudQueueFullBehavior string
+
+const (
+	OutputElasticCloudQueueFullBehaviorBlock OutputElasticCloudQueueFullBehavior = "block"
+	OutputElasticCloudQueueFullBehaviorDrop  OutputElasticCloudQueueFullBehavior = "drop"
+)
+
+func (e OutputElasticCloudQueueFullBehavior) ToPointer() *OutputElasticCloudQueueFullBehavior {
+	return &e
+}
+
+// OutputElasticCloudMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputElasticCloudMode string
+
+const (
+	OutputElasticCloudModeError        OutputElasticCloudMode = "error"
+	OutputElasticCloudModeBackpressure OutputElasticCloudMode = "backpressure"
+	OutputElasticCloudModeAlways       OutputElasticCloudMode = "always"
+)
+
+func (e OutputElasticCloudMode) ToPointer() *OutputElasticCloudMode {
+	return &e
+}
+
+type OutputElasticCloudPqControls struct {
+}
+
+type OutputElasticCloud struct {
+	// Unique ID for this output
+	ID   string                  `json:"id"`
+	Type *OutputElasticCloudType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Enter Cloud ID of the Elastic Cloud environment to send events to
+	URL string `json:"url"`
+	// Data stream or index to send events to. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be overwritten by an event's __index field.
+	Index string `json:"index"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputElasticCloudExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputElasticCloudFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Extra parameters to use in HTTP requests
+	ExtraParams []OutputElasticCloudExtraParam `json:"extraParams,omitempty"`
+	Auth        *OutputElasticCloudAuth        `json:"auth,omitempty"`
+	// Optional Elastic Cloud Destination pipeline
+	ElasticPipeline *string `json:"elasticPipeline,omitempty"`
+	// Include the `document_id` field when sending events to an Elastic TSDS (time series data stream)
+	IncludeDocID *bool `default:"true" json:"includeDocId"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputElasticCloudResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputElasticCloudTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputElasticCloudBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                 `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputElasticCloudCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputElasticCloudQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputElasticCloudMode       `default:"error" json:"pqMode"`
+	PqControls *OutputElasticCloudPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputElasticCloud) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticCloud) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticCloud) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputElasticCloud) GetType() *OutputElasticCloudType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputElasticCloud) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputElasticCloud) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputElasticCloud) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputElasticCloud) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputElasticCloud) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *OutputElasticCloud) GetIndex() string {
+	if o == nil {
+		return ""
+	}
+	return o.Index
+}
+
+func (o *OutputElasticCloud) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputElasticCloud) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputElasticCloud) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputElasticCloud) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputElasticCloud) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputElasticCloud) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputElasticCloud) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputElasticCloud) GetExtraHTTPHeaders() []OutputElasticCloudExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputElasticCloud) GetFailedRequestLoggingMode() *OutputElasticCloudFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputElasticCloud) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputElasticCloud) GetExtraParams() []OutputElasticCloudExtraParam {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraParams
+}
+
+func (o *OutputElasticCloud) GetAuth() *OutputElasticCloudAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *OutputElasticCloud) GetElasticPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ElasticPipeline
+}
+
+func (o *OutputElasticCloud) GetIncludeDocID() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDocID
+}
+
+func (o *OutputElasticCloud) GetResponseRetrySettings() []OutputElasticCloudResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputElasticCloud) GetTimeoutRetrySettings() *OutputElasticCloudTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputElasticCloud) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputElasticCloud) GetOnBackpressure() *OutputElasticCloudBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputElasticCloud) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputElasticCloud) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputElasticCloud) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputElasticCloud) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputElasticCloud) GetPqCompress() *OutputElasticCloudCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputElasticCloud) GetPqOnBackpressure() *OutputElasticCloudQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputElasticCloud) GetPqMode() *OutputElasticCloudMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputElasticCloud) GetPqControls() *OutputElasticCloudPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputElasticType string
+
+const (
+	OutputElasticTypeElastic OutputElasticType = "elastic"
+)
+
+func (e OutputElasticType) ToPointer() *OutputElasticType {
+	return &e
+}
+
+type OutputElasticExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputElasticExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputElasticExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputElasticFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputElasticFailedRequestLoggingMode string
+
+const (
+	OutputElasticFailedRequestLoggingModePayload           OutputElasticFailedRequestLoggingMode = "payload"
+	OutputElasticFailedRequestLoggingModePayloadAndHeaders OutputElasticFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputElasticFailedRequestLoggingModeNone              OutputElasticFailedRequestLoggingMode = "none"
+)
+
+func (e OutputElasticFailedRequestLoggingMode) ToPointer() *OutputElasticFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputElasticResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputElasticResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputElasticResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputElasticResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputElasticResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputElasticTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputElasticTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputElasticTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputElasticTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputElasticTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputElasticExtraParam struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+func (o *OutputElasticExtraParam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *OutputElasticExtraParam) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputElasticAuthenticationMethod - Enter credentials directly, or select a stored secret
+type OutputElasticAuthenticationMethod string
+
+const (
+	OutputElasticAuthenticationMethodManual       OutputElasticAuthenticationMethod = "manual"
+	OutputElasticAuthenticationMethodSecret       OutputElasticAuthenticationMethod = "secret"
+	OutputElasticAuthenticationMethodManualAPIKey OutputElasticAuthenticationMethod = "manualAPIKey"
+	OutputElasticAuthenticationMethodTextSecret   OutputElasticAuthenticationMethod = "textSecret"
+)
+
+func (e OutputElasticAuthenticationMethod) ToPointer() *OutputElasticAuthenticationMethod {
+	return &e
+}
+
+type OutputElasticAuth struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Enter credentials directly, or select a stored secret
+	AuthType *OutputElasticAuthenticationMethod `default:"manual" json:"authType"`
+}
+
+func (o OutputElasticAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElasticAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElasticAuth) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputElasticAuth) GetAuthType() *OutputElasticAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+// ElasticVersion - Optional Elasticsearch version, used to format events. If not specified, will auto-discover version.
+type ElasticVersion string
+
+const (
+	ElasticVersionAuto  ElasticVersion = "auto"
+	ElasticVersionSix   ElasticVersion = "6"
+	ElasticVersionSeven ElasticVersion = "7"
+)
+
+func (e ElasticVersion) ToPointer() *ElasticVersion {
+	return &e
+}
+
+// WriteAction - Action to use when writing events. Must be set to `Create` when writing to a data stream.
+type WriteAction string
+
+const (
+	WriteActionIndex  WriteAction = "index"
+	WriteActionCreate WriteAction = "create"
+)
+
+func (e WriteAction) ToPointer() *WriteAction {
+	return &e
+}
+
+// OutputElasticBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputElasticBackpressureBehavior string
+
+const (
+	OutputElasticBackpressureBehaviorBlock OutputElasticBackpressureBehavior = "block"
+	OutputElasticBackpressureBehaviorDrop  OutputElasticBackpressureBehavior = "drop"
+	OutputElasticBackpressureBehaviorQueue OutputElasticBackpressureBehavior = "queue"
+)
+
+func (e OutputElasticBackpressureBehavior) ToPointer() *OutputElasticBackpressureBehavior {
+	return &e
+}
+
+type URL struct {
+	// The URL to an Elastic node to send events to. Example: http://elastic:9200/_bulk
+	URL string `json:"url"`
+	// Assign a weight (>0) to each endpoint to indicate its traffic-handling capability
+	Weight *float64 `default:"1" json:"weight"`
+}
+
+func (u URL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *URL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *URL) GetURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.URL
+}
+
+func (o *URL) GetWeight() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Weight
+}
+
+// OutputElasticCompression - Codec to use to compress the persisted data
+type OutputElasticCompression string
+
+const (
+	OutputElasticCompressionNone OutputElasticCompression = "none"
+	OutputElasticCompressionGzip OutputElasticCompression = "gzip"
+)
+
+func (e OutputElasticCompression) ToPointer() *OutputElasticCompression {
+	return &e
+}
+
+// OutputElasticQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputElasticQueueFullBehavior string
+
+const (
+	OutputElasticQueueFullBehaviorBlock OutputElasticQueueFullBehavior = "block"
+	OutputElasticQueueFullBehaviorDrop  OutputElasticQueueFullBehavior = "drop"
+)
+
+func (e OutputElasticQueueFullBehavior) ToPointer() *OutputElasticQueueFullBehavior {
+	return &e
+}
+
+// OutputElasticMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputElasticMode string
+
+const (
+	OutputElasticModeError        OutputElasticMode = "error"
+	OutputElasticModeBackpressure OutputElasticMode = "backpressure"
+	OutputElasticModeAlways       OutputElasticMode = "always"
+)
+
+func (e OutputElasticMode) ToPointer() *OutputElasticMode {
+	return &e
+}
+
+type OutputElasticPqControls struct {
+}
+
+type OutputElastic struct {
+	// Unique ID for this output
+	ID   string            `json:"id"`
+	Type OutputElasticType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Enable for optimal performance. Even if you have one hostname, it can expand to multiple IPs. If disabled, consider enabling round-robin DNS.
+	LoadBalanced *bool `default:"true" json:"loadBalanced"`
+	// Index or data stream to send events to. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be overwritten by an event's __index field.
+	Index string `json:"index"`
+	// Document type to use for events. Can be overwritten by an event's __type field.
+	DocType *string `json:"docType,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputElasticExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputElasticFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputElasticResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputElasticTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool                     `default:"false" json:"responseHonorRetryAfterHeader"`
+	ExtraParams                   []OutputElasticExtraParam `json:"extraParams,omitempty"`
+	Auth                          *OutputElasticAuth        `json:"auth,omitempty"`
+	// Optional Elasticsearch version, used to format events. If not specified, will auto-discover version.
+	ElasticVersion *ElasticVersion `default:"auto" json:"elasticVersion"`
+	// Optional Elasticsearch destination pipeline
+	ElasticPipeline *string `json:"elasticPipeline,omitempty"`
+	// Include the `document_id` field when sending events to an Elastic TSDS (time series data stream)
+	IncludeDocID *bool `default:"false" json:"includeDocId"`
+	// Action to use when writing events. Must be set to `Create` when writing to a data stream.
+	WriteAction *WriteAction `default:"create" json:"writeAction"`
+	// Retry failed events when a bulk request to Elastic is successful, but the response body returns an error for one or more events in the batch
+	RetryPartialErrors *bool `default:"false" json:"retryPartialErrors"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputElasticBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                            `json:"description,omitempty"`
+	// The Cloud ID or URL to an Elastic cluster to send events to. Example: http://elastic:9200/_bulk
+	URL *string `json:"url,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Exclude all IPs of the current host from the list of any resolved hostnames
+	ExcludeSelf *bool `default:"false" json:"excludeSelf"`
+	Urls        []URL `json:"urls,omitempty"`
+	// The interval in which to re-resolve any hostnames and pick up destinations from A records
+	DNSResolvePeriodSec *float64 `default:"600" json:"dnsResolvePeriodSec"`
+	// How far back in time to keep traffic stats for load balancing purposes
+	LoadBalanceStatsPeriodSec *float64 `default:"300" json:"loadBalanceStatsPeriodSec"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputElasticCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputElasticQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputElasticMode       `default:"error" json:"pqMode"`
+	PqControls *OutputElasticPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputElastic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputElastic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputElastic) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputElastic) GetType() OutputElasticType {
+	if o == nil {
+		return OutputElasticType("")
+	}
+	return o.Type
+}
+
+func (o *OutputElastic) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputElastic) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputElastic) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputElastic) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputElastic) GetLoadBalanced() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LoadBalanced
+}
+
+func (o *OutputElastic) GetIndex() string {
+	if o == nil {
+		return ""
+	}
+	return o.Index
+}
+
+func (o *OutputElastic) GetDocType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DocType
+}
+
+func (o *OutputElastic) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputElastic) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputElastic) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputElastic) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputElastic) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputElastic) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputElastic) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputElastic) GetExtraHTTPHeaders() []OutputElasticExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputElastic) GetFailedRequestLoggingMode() *OutputElasticFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputElastic) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputElastic) GetResponseRetrySettings() []OutputElasticResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputElastic) GetTimeoutRetrySettings() *OutputElasticTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputElastic) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputElastic) GetExtraParams() []OutputElasticExtraParam {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraParams
+}
+
+func (o *OutputElastic) GetAuth() *OutputElasticAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *OutputElastic) GetElasticVersion() *ElasticVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ElasticVersion
+}
+
+func (o *OutputElastic) GetElasticPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ElasticPipeline
+}
+
+func (o *OutputElastic) GetIncludeDocID() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDocID
+}
+
+func (o *OutputElastic) GetWriteAction() *WriteAction {
+	if o == nil {
+		return nil
+	}
+	return o.WriteAction
+}
+
+func (o *OutputElastic) GetRetryPartialErrors() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RetryPartialErrors
+}
+
+func (o *OutputElastic) GetOnBackpressure() *OutputElasticBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputElastic) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputElastic) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+func (o *OutputElastic) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputElastic) GetExcludeSelf() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeSelf
+}
+
+func (o *OutputElastic) GetUrls() []URL {
+	if o == nil {
+		return nil
+	}
+	return o.Urls
+}
+
+func (o *OutputElastic) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputElastic) GetLoadBalanceStatsPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.LoadBalanceStatsPeriodSec
+}
+
+func (o *OutputElastic) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputElastic) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputElastic) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputElastic) GetPqCompress() *OutputElasticCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputElastic) GetPqOnBackpressure() *OutputElasticQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputElastic) GetPqMode() *OutputElasticMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputElastic) GetPqControls() *OutputElasticPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputMskType string
+
+const (
+	OutputMskTypeMsk OutputMskType = "msk"
+)
+
+func (e OutputMskType) ToPointer() *OutputMskType {
+	return &e
+}
+
+// OutputMskAcknowledgments - Control the number of required acknowledgments.
+type OutputMskAcknowledgments int64
+
+const (
+	OutputMskAcknowledgmentsOne    OutputMskAcknowledgments = 1
+	OutputMskAcknowledgmentsZero   OutputMskAcknowledgments = 0
+	OutputMskAcknowledgmentsMinus1 OutputMskAcknowledgments = -1
+)
+
+func (e OutputMskAcknowledgments) ToPointer() *OutputMskAcknowledgments {
+	return &e
+}
+
+// OutputMskRecordDataFormat - Format to use to serialize events before writing to Kafka.
+type OutputMskRecordDataFormat string
+
+const (
+	OutputMskRecordDataFormatJSON     OutputMskRecordDataFormat = "json"
+	OutputMskRecordDataFormatRaw      OutputMskRecordDataFormat = "raw"
+	OutputMskRecordDataFormatProtobuf OutputMskRecordDataFormat = "protobuf"
+)
+
+func (e OutputMskRecordDataFormat) ToPointer() *OutputMskRecordDataFormat {
+	return &e
+}
+
+// OutputMskCompression - Codec to use to compress the data before sending to Kafka
+type OutputMskCompression string
+
+const (
+	OutputMskCompressionNone   OutputMskCompression = "none"
+	OutputMskCompressionGzip   OutputMskCompression = "gzip"
+	OutputMskCompressionSnappy OutputMskCompression = "snappy"
+	OutputMskCompressionLz4    OutputMskCompression = "lz4"
+)
+
+func (e OutputMskCompression) ToPointer() *OutputMskCompression {
+	return &e
+}
+
+// OutputMskAuth - Credentials to use when authenticating with the schema registry using basic HTTP authentication
+type OutputMskAuth struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+}
+
+func (o OutputMskAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMskAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMskAuth) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputMskAuth) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+type OutputMskKafkaSchemaRegistryMinimumTLSVersion string
+
+const (
+	OutputMskKafkaSchemaRegistryMinimumTLSVersionTlSv1  OutputMskKafkaSchemaRegistryMinimumTLSVersion = "TLSv1"
+	OutputMskKafkaSchemaRegistryMinimumTLSVersionTlSv11 OutputMskKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.1"
+	OutputMskKafkaSchemaRegistryMinimumTLSVersionTlSv12 OutputMskKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.2"
+	OutputMskKafkaSchemaRegistryMinimumTLSVersionTlSv13 OutputMskKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputMskKafkaSchemaRegistryMinimumTLSVersion) ToPointer() *OutputMskKafkaSchemaRegistryMinimumTLSVersion {
+	return &e
+}
+
+type OutputMskKafkaSchemaRegistryMaximumTLSVersion string
+
+const (
+	OutputMskKafkaSchemaRegistryMaximumTLSVersionTlSv1  OutputMskKafkaSchemaRegistryMaximumTLSVersion = "TLSv1"
+	OutputMskKafkaSchemaRegistryMaximumTLSVersionTlSv11 OutputMskKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.1"
+	OutputMskKafkaSchemaRegistryMaximumTLSVersionTlSv12 OutputMskKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.2"
+	OutputMskKafkaSchemaRegistryMaximumTLSVersionTlSv13 OutputMskKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputMskKafkaSchemaRegistryMaximumTLSVersion) ToPointer() *OutputMskKafkaSchemaRegistryMaximumTLSVersion {
+	return &e
+}
+
+type OutputMskKafkaSchemaRegistryTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                                        `json:"passphrase,omitempty"`
+	MinVersion *OutputMskKafkaSchemaRegistryMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputMskKafkaSchemaRegistryMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputMskKafkaSchemaRegistryTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetMinVersion() *OutputMskKafkaSchemaRegistryMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputMskKafkaSchemaRegistryTLSSettingsClientSide) GetMaxVersion() *OutputMskKafkaSchemaRegistryMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+type OutputMskKafkaSchemaRegistryAuthentication struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// URL for accessing the Confluent Schema Registry. Example: http://localhost:8081. To connect over TLS, use https instead of http.
+	SchemaRegistryURL *string `default:"http://localhost:8081" json:"schemaRegistryURL"`
+	// Maximum time to wait for a Schema Registry connection to complete successfully
+	ConnectionTimeout *float64 `default:"30000" json:"connectionTimeout"`
+	// Maximum time to wait for the Schema Registry to respond to a request
+	RequestTimeout *float64 `default:"30000" json:"requestTimeout"`
+	// Maximum number of times to try fetching schemas from the Schema Registry
+	MaxRetries *float64 `default:"1" json:"maxRetries"`
+	// Credentials to use when authenticating with the schema registry using basic HTTP authentication
+	Auth *OutputMskAuth                                     `json:"auth,omitempty"`
+	TLS  *OutputMskKafkaSchemaRegistryTLSSettingsClientSide `json:"tls,omitempty"`
+	// Used when __keySchemaIdOut is not present, to transform key values, leave blank if key transformation is not required by default.
+	DefaultKeySchemaID *float64 `json:"defaultKeySchemaId,omitempty"`
+	// Used when __valueSchemaIdOut is not present, to transform _raw, leave blank if value transformation is not required by default.
+	DefaultValueSchemaID *float64 `json:"defaultValueSchemaId,omitempty"`
+}
+
+func (o OutputMskKafkaSchemaRegistryAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetSchemaRegistryURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistryURL
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetAuth() *OutputMskAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetTLS() *OutputMskKafkaSchemaRegistryTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetDefaultKeySchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultKeySchemaID
+}
+
+func (o *OutputMskKafkaSchemaRegistryAuthentication) GetDefaultValueSchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultValueSchemaID
+}
+
+// OutputMskAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputMskAuthenticationMethod string
+
+const (
+	OutputMskAuthenticationMethodAuto   OutputMskAuthenticationMethod = "auto"
+	OutputMskAuthenticationMethodManual OutputMskAuthenticationMethod = "manual"
+	OutputMskAuthenticationMethodSecret OutputMskAuthenticationMethod = "secret"
+)
+
+func (e OutputMskAuthenticationMethod) ToPointer() *OutputMskAuthenticationMethod {
+	return &e
+}
+
+// OutputMskSignatureVersion - Signature version to use for signing MSK cluster requests
+type OutputMskSignatureVersion string
+
+const (
+	OutputMskSignatureVersionV2 OutputMskSignatureVersion = "v2"
+	OutputMskSignatureVersionV4 OutputMskSignatureVersion = "v4"
+)
+
+func (e OutputMskSignatureVersion) ToPointer() *OutputMskSignatureVersion {
+	return &e
+}
+
+type OutputMskMinimumTLSVersion string
+
+const (
+	OutputMskMinimumTLSVersionTlSv1  OutputMskMinimumTLSVersion = "TLSv1"
+	OutputMskMinimumTLSVersionTlSv11 OutputMskMinimumTLSVersion = "TLSv1.1"
+	OutputMskMinimumTLSVersionTlSv12 OutputMskMinimumTLSVersion = "TLSv1.2"
+	OutputMskMinimumTLSVersionTlSv13 OutputMskMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputMskMinimumTLSVersion) ToPointer() *OutputMskMinimumTLSVersion {
+	return &e
+}
+
+type OutputMskMaximumTLSVersion string
+
+const (
+	OutputMskMaximumTLSVersionTlSv1  OutputMskMaximumTLSVersion = "TLSv1"
+	OutputMskMaximumTLSVersionTlSv11 OutputMskMaximumTLSVersion = "TLSv1.1"
+	OutputMskMaximumTLSVersionTlSv12 OutputMskMaximumTLSVersion = "TLSv1.2"
+	OutputMskMaximumTLSVersionTlSv13 OutputMskMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputMskMaximumTLSVersion) ToPointer() *OutputMskMaximumTLSVersion {
+	return &e
+}
+
+type OutputMskTLSSettingsClientSide struct {
+	Disabled *bool `default:"false" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                     `json:"passphrase,omitempty"`
+	MinVersion *OutputMskMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputMskMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputMskTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMskTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetMinVersion() *OutputMskMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputMskTLSSettingsClientSide) GetMaxVersion() *OutputMskMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputMskBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputMskBackpressureBehavior string
+
+const (
+	OutputMskBackpressureBehaviorBlock OutputMskBackpressureBehavior = "block"
+	OutputMskBackpressureBehaviorDrop  OutputMskBackpressureBehavior = "drop"
+	OutputMskBackpressureBehaviorQueue OutputMskBackpressureBehavior = "queue"
+)
+
+func (e OutputMskBackpressureBehavior) ToPointer() *OutputMskBackpressureBehavior {
+	return &e
+}
+
+// OutputMskPqCompressCompression - Codec to use to compress the persisted data
+type OutputMskPqCompressCompression string
+
+const (
+	OutputMskPqCompressCompressionNone OutputMskPqCompressCompression = "none"
+	OutputMskPqCompressCompressionGzip OutputMskPqCompressCompression = "gzip"
+)
+
+func (e OutputMskPqCompressCompression) ToPointer() *OutputMskPqCompressCompression {
+	return &e
+}
+
+// OutputMskQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputMskQueueFullBehavior string
+
+const (
+	OutputMskQueueFullBehaviorBlock OutputMskQueueFullBehavior = "block"
+	OutputMskQueueFullBehaviorDrop  OutputMskQueueFullBehavior = "drop"
+)
+
+func (e OutputMskQueueFullBehavior) ToPointer() *OutputMskQueueFullBehavior {
+	return &e
+}
+
+// OutputMskMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputMskMode string
+
+const (
+	OutputMskModeError        OutputMskMode = "error"
+	OutputMskModeBackpressure OutputMskMode = "backpressure"
+	OutputMskModeAlways       OutputMskMode = "always"
+)
+
+func (e OutputMskMode) ToPointer() *OutputMskMode {
+	return &e
+}
+
+type OutputMskPqControls struct {
+}
+
+type OutputMsk struct {
+	// Unique ID for this output
+	ID   string         `json:"id"`
+	Type *OutputMskType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Enter each Kafka bootstrap server you want to use. Specify hostname and port, e.g., mykafkabroker:9092, or just hostname, in which case @{product} will assign port 9092.
+	Brokers []string `json:"brokers"`
+	// The topic to publish events to. Can be overridden using the __topicOut field.
+	Topic string `json:"topic"`
+	// Control the number of required acknowledgments.
+	Ack *OutputMskAcknowledgments `default:"1" json:"ack"`
+	// Format to use to serialize events before writing to Kafka.
+	Format *OutputMskRecordDataFormat `default:"json" json:"format"`
+	// Codec to use to compress the data before sending to Kafka
+	Compression *OutputMskCompression `default:"gzip" json:"compression"`
+	// Maximum size of each record batch before compression. The value must not exceed the Kafka brokers' message.max.bytes setting.
+	MaxRecordSizeKB *float64 `default:"768" json:"maxRecordSizeKB"`
+	// The maximum number of events you want the Destination to allow in a batch before forcing a flush
+	FlushEventCount *float64 `default:"1000" json:"flushEventCount"`
+	// The maximum amount of time you want the Destination to wait before forcing a flush. Shorter intervals tend to result in smaller batches being sent.
+	FlushPeriodSec      *float64                                    `default:"1" json:"flushPeriodSec"`
+	KafkaSchemaRegistry *OutputMskKafkaSchemaRegistryAuthentication `json:"kafkaSchemaRegistry,omitempty"`
+	// Maximum time to wait for a connection to complete successfully
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Maximum time to wait for Kafka to respond to a request
+	RequestTimeout *float64 `default:"60000" json:"requestTimeout"`
+	// If messages are failing, you can set the maximum number of retries as high as 100 to prevent loss of data
+	MaxRetries *float64 `default:"5" json:"maxRetries"`
+	// The maximum wait time for a retry, in milliseconds. Default (and minimum) is 30,000 ms (30 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackOff *float64 `default:"30000" json:"maxBackOff"`
+	// Initial value used to calculate the retry, in milliseconds. Maximum is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"300" json:"initialBackoff"`
+	// Set the backoff multiplier (2-20) to control the retry frequency for failed messages. For faster retries, use a lower multiplier. For slower retries with more delay between attempts, use a higher multiplier. The multiplier is used in an exponential backoff formula; see the Kafka [documentation](https://kafka.js.org/docs/retry-detailed) for details.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// Maximum time to wait for Kafka to respond to an authentication request
+	AuthenticationTimeout *float64 `default:"10000" json:"authenticationTimeout"`
+	// Specifies a time window during which @{product} can reauthenticate if needed. Creates the window measuring backward from the moment when credentials are set to expire.
+	ReauthenticationThreshold *float64 `default:"10000" json:"reauthenticationThreshold"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputMskAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	AwsSecretKey            *string                        `json:"awsSecretKey,omitempty"`
+	// Region where the MSK cluster is located
+	Region string `json:"region"`
+	// MSK cluster service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to MSK cluster-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing MSK cluster requests
+	SignatureVersion *OutputMskSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access MSK
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64                        `default:"3600" json:"durationSeconds"`
+	TLS             *OutputMskTLSSettingsClientSide `json:"tls,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputMskBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                        `json:"description,omitempty"`
+	AwsAPIKey      *string                        `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// Select a set of Protobuf definitions for the events you want to send
+	ProtobufLibraryID *string `json:"protobufLibraryId,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputMskPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputMskQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputMskMode       `default:"error" json:"pqMode"`
+	PqControls *OutputMskPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputMsk) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputMsk) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputMsk) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputMsk) GetType() *OutputMskType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputMsk) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputMsk) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputMsk) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputMsk) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputMsk) GetBrokers() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Brokers
+}
+
+func (o *OutputMsk) GetTopic() string {
+	if o == nil {
+		return ""
+	}
+	return o.Topic
+}
+
+func (o *OutputMsk) GetAck() *OutputMskAcknowledgments {
+	if o == nil {
+		return nil
+	}
+	return o.Ack
+}
+
+func (o *OutputMsk) GetFormat() *OutputMskRecordDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputMsk) GetCompression() *OutputMskCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compression
+}
+
+func (o *OutputMsk) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputMsk) GetFlushEventCount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushEventCount
+}
+
+func (o *OutputMsk) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputMsk) GetKafkaSchemaRegistry() *OutputMskKafkaSchemaRegistryAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.KafkaSchemaRegistry
+}
+
+func (o *OutputMsk) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputMsk) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputMsk) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputMsk) GetMaxBackOff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackOff
+}
+
+func (o *OutputMsk) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputMsk) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputMsk) GetAuthenticationTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.AuthenticationTimeout
+}
+
+func (o *OutputMsk) GetReauthenticationThreshold() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReauthenticationThreshold
+}
+
+func (o *OutputMsk) GetAwsAuthenticationMethod() *OutputMskAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputMsk) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputMsk) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputMsk) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputMsk) GetSignatureVersion() *OutputMskSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputMsk) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputMsk) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputMsk) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputMsk) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputMsk) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputMsk) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputMsk) GetTLS() *OutputMskTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputMsk) GetOnBackpressure() *OutputMskBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputMsk) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputMsk) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputMsk) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputMsk) GetProtobufLibraryID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProtobufLibraryID
+}
+
+func (o *OutputMsk) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputMsk) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputMsk) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputMsk) GetPqCompress() *OutputMskPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputMsk) GetPqOnBackpressure() *OutputMskQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputMsk) GetPqMode() *OutputMskMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputMsk) GetPqControls() *OutputMskPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputConfluentCloudType string
+
+const (
+	OutputConfluentCloudTypeConfluentCloud OutputConfluentCloudType = "confluent_cloud"
+)
+
+func (e OutputConfluentCloudType) ToPointer() *OutputConfluentCloudType {
+	return &e
+}
+
+type OutputConfluentCloudMinimumTLSVersion string
+
+const (
+	OutputConfluentCloudMinimumTLSVersionTlSv1  OutputConfluentCloudMinimumTLSVersion = "TLSv1"
+	OutputConfluentCloudMinimumTLSVersionTlSv11 OutputConfluentCloudMinimumTLSVersion = "TLSv1.1"
+	OutputConfluentCloudMinimumTLSVersionTlSv12 OutputConfluentCloudMinimumTLSVersion = "TLSv1.2"
+	OutputConfluentCloudMinimumTLSVersionTlSv13 OutputConfluentCloudMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputConfluentCloudMinimumTLSVersion) ToPointer() *OutputConfluentCloudMinimumTLSVersion {
+	return &e
+}
+
+type OutputConfluentCloudMaximumTLSVersion string
+
+const (
+	OutputConfluentCloudMaximumTLSVersionTlSv1  OutputConfluentCloudMaximumTLSVersion = "TLSv1"
+	OutputConfluentCloudMaximumTLSVersionTlSv11 OutputConfluentCloudMaximumTLSVersion = "TLSv1.1"
+	OutputConfluentCloudMaximumTLSVersionTlSv12 OutputConfluentCloudMaximumTLSVersion = "TLSv1.2"
+	OutputConfluentCloudMaximumTLSVersionTlSv13 OutputConfluentCloudMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputConfluentCloudMaximumTLSVersion) ToPointer() *OutputConfluentCloudMaximumTLSVersion {
+	return &e
+}
+
+type OutputConfluentCloudTLSSettingsClientSide struct {
+	Disabled *bool `default:"false" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                                `json:"passphrase,omitempty"`
+	MinVersion *OutputConfluentCloudMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputConfluentCloudMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputConfluentCloudTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetMinVersion() *OutputConfluentCloudMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputConfluentCloudTLSSettingsClientSide) GetMaxVersion() *OutputConfluentCloudMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputConfluentCloudAcknowledgments - Control the number of required acknowledgments.
+type OutputConfluentCloudAcknowledgments int64
+
+const (
+	OutputConfluentCloudAcknowledgmentsOne    OutputConfluentCloudAcknowledgments = 1
+	OutputConfluentCloudAcknowledgmentsZero   OutputConfluentCloudAcknowledgments = 0
+	OutputConfluentCloudAcknowledgmentsMinus1 OutputConfluentCloudAcknowledgments = -1
+)
+
+func (e OutputConfluentCloudAcknowledgments) ToPointer() *OutputConfluentCloudAcknowledgments {
+	return &e
+}
+
+// OutputConfluentCloudRecordDataFormat - Format to use to serialize events before writing to Kafka.
+type OutputConfluentCloudRecordDataFormat string
+
+const (
+	OutputConfluentCloudRecordDataFormatJSON     OutputConfluentCloudRecordDataFormat = "json"
+	OutputConfluentCloudRecordDataFormatRaw      OutputConfluentCloudRecordDataFormat = "raw"
+	OutputConfluentCloudRecordDataFormatProtobuf OutputConfluentCloudRecordDataFormat = "protobuf"
+)
+
+func (e OutputConfluentCloudRecordDataFormat) ToPointer() *OutputConfluentCloudRecordDataFormat {
+	return &e
+}
+
+// OutputConfluentCloudCompression - Codec to use to compress the data before sending to Kafka
+type OutputConfluentCloudCompression string
+
+const (
+	OutputConfluentCloudCompressionNone   OutputConfluentCloudCompression = "none"
+	OutputConfluentCloudCompressionGzip   OutputConfluentCloudCompression = "gzip"
+	OutputConfluentCloudCompressionSnappy OutputConfluentCloudCompression = "snappy"
+	OutputConfluentCloudCompressionLz4    OutputConfluentCloudCompression = "lz4"
+)
+
+func (e OutputConfluentCloudCompression) ToPointer() *OutputConfluentCloudCompression {
+	return &e
+}
+
+// OutputConfluentCloudAuth - Credentials to use when authenticating with the schema registry using basic HTTP authentication
+type OutputConfluentCloudAuth struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+}
+
+func (o OutputConfluentCloudAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloudAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloudAuth) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputConfluentCloudAuth) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+type OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion string
+
+const (
+	OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersionTlSv1  OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion = "TLSv1"
+	OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersionTlSv11 OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.1"
+	OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersionTlSv12 OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.2"
+	OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersionTlSv13 OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion) ToPointer() *OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion {
+	return &e
+}
+
+type OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion string
+
+const (
+	OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersionTlSv1  OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion = "TLSv1"
+	OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersionTlSv11 OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.1"
+	OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersionTlSv12 OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.2"
+	OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersionTlSv13 OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion) ToPointer() *OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion {
+	return &e
+}
+
+type OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                                                   `json:"passphrase,omitempty"`
+	MinVersion *OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetMinVersion() *OutputConfluentCloudKafkaSchemaRegistryMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide) GetMaxVersion() *OutputConfluentCloudKafkaSchemaRegistryMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+type OutputConfluentCloudKafkaSchemaRegistryAuthentication struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// URL for accessing the Confluent Schema Registry. Example: http://localhost:8081. To connect over TLS, use https instead of http.
+	SchemaRegistryURL *string `default:"http://localhost:8081" json:"schemaRegistryURL"`
+	// Maximum time to wait for a Schema Registry connection to complete successfully
+	ConnectionTimeout *float64 `default:"30000" json:"connectionTimeout"`
+	// Maximum time to wait for the Schema Registry to respond to a request
+	RequestTimeout *float64 `default:"30000" json:"requestTimeout"`
+	// Maximum number of times to try fetching schemas from the Schema Registry
+	MaxRetries *float64 `default:"1" json:"maxRetries"`
+	// Credentials to use when authenticating with the schema registry using basic HTTP authentication
+	Auth *OutputConfluentCloudAuth                                     `json:"auth,omitempty"`
+	TLS  *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide `json:"tls,omitempty"`
+	// Used when __keySchemaIdOut is not present, to transform key values, leave blank if key transformation is not required by default.
+	DefaultKeySchemaID *float64 `json:"defaultKeySchemaId,omitempty"`
+	// Used when __valueSchemaIdOut is not present, to transform _raw, leave blank if value transformation is not required by default.
+	DefaultValueSchemaID *float64 `json:"defaultValueSchemaId,omitempty"`
+}
+
+func (o OutputConfluentCloudKafkaSchemaRegistryAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetSchemaRegistryURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistryURL
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetAuth() *OutputConfluentCloudAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetTLS() *OutputConfluentCloudKafkaSchemaRegistryTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetDefaultKeySchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultKeySchemaID
+}
+
+func (o *OutputConfluentCloudKafkaSchemaRegistryAuthentication) GetDefaultValueSchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultValueSchemaID
+}
+
+type OutputConfluentCloudSASLMechanism string
+
+const (
+	OutputConfluentCloudSASLMechanismPlain       OutputConfluentCloudSASLMechanism = "plain"
+	OutputConfluentCloudSASLMechanismScramSha256 OutputConfluentCloudSASLMechanism = "scram-sha-256"
+	OutputConfluentCloudSASLMechanismScramSha512 OutputConfluentCloudSASLMechanism = "scram-sha-512"
+	OutputConfluentCloudSASLMechanismKerberos    OutputConfluentCloudSASLMechanism = "kerberos"
+)
+
+func (e OutputConfluentCloudSASLMechanism) ToPointer() *OutputConfluentCloudSASLMechanism {
+	return &e
+}
+
+// OutputConfluentCloudAuthentication - Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+type OutputConfluentCloudAuthentication struct {
+	Disabled  *bool                              `default:"true" json:"disabled"`
+	Mechanism *OutputConfluentCloudSASLMechanism `default:"plain" json:"mechanism"`
+}
+
+func (o OutputConfluentCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloudAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputConfluentCloudAuthentication) GetMechanism() *OutputConfluentCloudSASLMechanism {
+	if o == nil {
+		return nil
+	}
+	return o.Mechanism
+}
+
+// OutputConfluentCloudBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputConfluentCloudBackpressureBehavior string
+
+const (
+	OutputConfluentCloudBackpressureBehaviorBlock OutputConfluentCloudBackpressureBehavior = "block"
+	OutputConfluentCloudBackpressureBehaviorDrop  OutputConfluentCloudBackpressureBehavior = "drop"
+	OutputConfluentCloudBackpressureBehaviorQueue OutputConfluentCloudBackpressureBehavior = "queue"
+)
+
+func (e OutputConfluentCloudBackpressureBehavior) ToPointer() *OutputConfluentCloudBackpressureBehavior {
+	return &e
+}
+
+// OutputConfluentCloudPqCompressCompression - Codec to use to compress the persisted data
+type OutputConfluentCloudPqCompressCompression string
+
+const (
+	OutputConfluentCloudPqCompressCompressionNone OutputConfluentCloudPqCompressCompression = "none"
+	OutputConfluentCloudPqCompressCompressionGzip OutputConfluentCloudPqCompressCompression = "gzip"
+)
+
+func (e OutputConfluentCloudPqCompressCompression) ToPointer() *OutputConfluentCloudPqCompressCompression {
+	return &e
+}
+
+// OutputConfluentCloudQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputConfluentCloudQueueFullBehavior string
+
+const (
+	OutputConfluentCloudQueueFullBehaviorBlock OutputConfluentCloudQueueFullBehavior = "block"
+	OutputConfluentCloudQueueFullBehaviorDrop  OutputConfluentCloudQueueFullBehavior = "drop"
+)
+
+func (e OutputConfluentCloudQueueFullBehavior) ToPointer() *OutputConfluentCloudQueueFullBehavior {
+	return &e
+}
+
+// OutputConfluentCloudMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputConfluentCloudMode string
+
+const (
+	OutputConfluentCloudModeError        OutputConfluentCloudMode = "error"
+	OutputConfluentCloudModeBackpressure OutputConfluentCloudMode = "backpressure"
+	OutputConfluentCloudModeAlways       OutputConfluentCloudMode = "always"
+)
+
+func (e OutputConfluentCloudMode) ToPointer() *OutputConfluentCloudMode {
+	return &e
+}
+
+type OutputConfluentCloudPqControls struct {
+}
+
+type OutputConfluentCloud struct {
+	// Unique ID for this output
+	ID   string                    `json:"id"`
+	Type *OutputConfluentCloudType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// List of Confluent Cloud bootstrap servers to use, such as yourAccount.confluent.cloud:9092.
+	Brokers []string                                   `json:"brokers"`
+	TLS     *OutputConfluentCloudTLSSettingsClientSide `json:"tls,omitempty"`
+	// The topic to publish events to. Can be overridden using the __topicOut field.
+	Topic string `json:"topic"`
+	// Control the number of required acknowledgments.
+	Ack *OutputConfluentCloudAcknowledgments `default:"1" json:"ack"`
+	// Format to use to serialize events before writing to Kafka.
+	Format *OutputConfluentCloudRecordDataFormat `default:"json" json:"format"`
+	// Codec to use to compress the data before sending to Kafka
+	Compression *OutputConfluentCloudCompression `default:"gzip" json:"compression"`
+	// Maximum size of each record batch before compression. The value must not exceed the Kafka brokers' message.max.bytes setting.
+	MaxRecordSizeKB *float64 `default:"768" json:"maxRecordSizeKB"`
+	// The maximum number of events you want the Destination to allow in a batch before forcing a flush
+	FlushEventCount *float64 `default:"1000" json:"flushEventCount"`
+	// The maximum amount of time you want the Destination to wait before forcing a flush. Shorter intervals tend to result in smaller batches being sent.
+	FlushPeriodSec      *float64                                               `default:"1" json:"flushPeriodSec"`
+	KafkaSchemaRegistry *OutputConfluentCloudKafkaSchemaRegistryAuthentication `json:"kafkaSchemaRegistry,omitempty"`
+	// Maximum time to wait for a connection to complete successfully
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Maximum time to wait for Kafka to respond to a request
+	RequestTimeout *float64 `default:"60000" json:"requestTimeout"`
+	// If messages are failing, you can set the maximum number of retries as high as 100 to prevent loss of data
+	MaxRetries *float64 `default:"5" json:"maxRetries"`
+	// The maximum wait time for a retry, in milliseconds. Default (and minimum) is 30,000 ms (30 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackOff *float64 `default:"30000" json:"maxBackOff"`
+	// Initial value used to calculate the retry, in milliseconds. Maximum is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"300" json:"initialBackoff"`
+	// Set the backoff multiplier (2-20) to control the retry frequency for failed messages. For faster retries, use a lower multiplier. For slower retries with more delay between attempts, use a higher multiplier. The multiplier is used in an exponential backoff formula; see the Kafka [documentation](https://kafka.js.org/docs/retry-detailed) for details.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// Maximum time to wait for Kafka to respond to an authentication request
+	AuthenticationTimeout *float64 `default:"10000" json:"authenticationTimeout"`
+	// Specifies a time window during which @{product} can reauthenticate if needed. Creates the window measuring backward from the moment when credentials are set to expire.
+	ReauthenticationThreshold *float64 `default:"10000" json:"reauthenticationThreshold"`
+	// Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+	Sasl *OutputConfluentCloudAuthentication `json:"sasl,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputConfluentCloudBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                   `json:"description,omitempty"`
+	// Select a set of Protobuf definitions for the events you want to send
+	ProtobufLibraryID *string `json:"protobufLibraryId,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputConfluentCloudPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputConfluentCloudQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputConfluentCloudMode       `default:"error" json:"pqMode"`
+	PqControls *OutputConfluentCloudPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputConfluentCloud) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputConfluentCloud) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputConfluentCloud) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputConfluentCloud) GetType() *OutputConfluentCloudType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputConfluentCloud) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputConfluentCloud) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputConfluentCloud) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputConfluentCloud) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputConfluentCloud) GetBrokers() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Brokers
+}
+
+func (o *OutputConfluentCloud) GetTLS() *OutputConfluentCloudTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputConfluentCloud) GetTopic() string {
+	if o == nil {
+		return ""
+	}
+	return o.Topic
+}
+
+func (o *OutputConfluentCloud) GetAck() *OutputConfluentCloudAcknowledgments {
+	if o == nil {
+		return nil
+	}
+	return o.Ack
+}
+
+func (o *OutputConfluentCloud) GetFormat() *OutputConfluentCloudRecordDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputConfluentCloud) GetCompression() *OutputConfluentCloudCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compression
+}
+
+func (o *OutputConfluentCloud) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputConfluentCloud) GetFlushEventCount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushEventCount
+}
+
+func (o *OutputConfluentCloud) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputConfluentCloud) GetKafkaSchemaRegistry() *OutputConfluentCloudKafkaSchemaRegistryAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.KafkaSchemaRegistry
+}
+
+func (o *OutputConfluentCloud) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputConfluentCloud) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputConfluentCloud) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputConfluentCloud) GetMaxBackOff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackOff
+}
+
+func (o *OutputConfluentCloud) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputConfluentCloud) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputConfluentCloud) GetAuthenticationTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.AuthenticationTimeout
+}
+
+func (o *OutputConfluentCloud) GetReauthenticationThreshold() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReauthenticationThreshold
+}
+
+func (o *OutputConfluentCloud) GetSasl() *OutputConfluentCloudAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.Sasl
+}
+
+func (o *OutputConfluentCloud) GetOnBackpressure() *OutputConfluentCloudBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputConfluentCloud) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputConfluentCloud) GetProtobufLibraryID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProtobufLibraryID
+}
+
+func (o *OutputConfluentCloud) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputConfluentCloud) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputConfluentCloud) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputConfluentCloud) GetPqCompress() *OutputConfluentCloudPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputConfluentCloud) GetPqOnBackpressure() *OutputConfluentCloudQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputConfluentCloud) GetPqMode() *OutputConfluentCloudMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputConfluentCloud) GetPqControls() *OutputConfluentCloudPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputKafkaType string
+
+const (
+	OutputKafkaTypeKafka OutputKafkaType = "kafka"
+)
+
+func (e OutputKafkaType) ToPointer() *OutputKafkaType {
+	return &e
+}
+
+// OutputKafkaAcknowledgments - Control the number of required acknowledgments.
+type OutputKafkaAcknowledgments int64
+
+const (
+	OutputKafkaAcknowledgmentsOne    OutputKafkaAcknowledgments = 1
+	OutputKafkaAcknowledgmentsZero   OutputKafkaAcknowledgments = 0
+	OutputKafkaAcknowledgmentsMinus1 OutputKafkaAcknowledgments = -1
+)
+
+func (e OutputKafkaAcknowledgments) ToPointer() *OutputKafkaAcknowledgments {
+	return &e
+}
+
+// OutputKafkaRecordDataFormat - Format to use to serialize events before writing to Kafka.
+type OutputKafkaRecordDataFormat string
+
+const (
+	OutputKafkaRecordDataFormatJSON     OutputKafkaRecordDataFormat = "json"
+	OutputKafkaRecordDataFormatRaw      OutputKafkaRecordDataFormat = "raw"
+	OutputKafkaRecordDataFormatProtobuf OutputKafkaRecordDataFormat = "protobuf"
+)
+
+func (e OutputKafkaRecordDataFormat) ToPointer() *OutputKafkaRecordDataFormat {
+	return &e
+}
+
+// OutputKafkaCompression - Codec to use to compress the data before sending to Kafka
+type OutputKafkaCompression string
+
+const (
+	OutputKafkaCompressionNone   OutputKafkaCompression = "none"
+	OutputKafkaCompressionGzip   OutputKafkaCompression = "gzip"
+	OutputKafkaCompressionSnappy OutputKafkaCompression = "snappy"
+	OutputKafkaCompressionLz4    OutputKafkaCompression = "lz4"
+)
+
+func (e OutputKafkaCompression) ToPointer() *OutputKafkaCompression {
+	return &e
+}
+
+// OutputKafkaAuth - Credentials to use when authenticating with the schema registry using basic HTTP authentication
+type OutputKafkaAuth struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Select or create a secret that references your credentials
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+}
+
+func (o OutputKafkaAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafkaAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafkaAuth) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputKafkaAuth) GetCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialsSecret
+}
+
+type OutputKafkaKafkaSchemaRegistryMinimumTLSVersion string
+
+const (
+	OutputKafkaKafkaSchemaRegistryMinimumTLSVersionTlSv1  OutputKafkaKafkaSchemaRegistryMinimumTLSVersion = "TLSv1"
+	OutputKafkaKafkaSchemaRegistryMinimumTLSVersionTlSv11 OutputKafkaKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.1"
+	OutputKafkaKafkaSchemaRegistryMinimumTLSVersionTlSv12 OutputKafkaKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.2"
+	OutputKafkaKafkaSchemaRegistryMinimumTLSVersionTlSv13 OutputKafkaKafkaSchemaRegistryMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputKafkaKafkaSchemaRegistryMinimumTLSVersion) ToPointer() *OutputKafkaKafkaSchemaRegistryMinimumTLSVersion {
+	return &e
+}
+
+type OutputKafkaKafkaSchemaRegistryMaximumTLSVersion string
+
+const (
+	OutputKafkaKafkaSchemaRegistryMaximumTLSVersionTlSv1  OutputKafkaKafkaSchemaRegistryMaximumTLSVersion = "TLSv1"
+	OutputKafkaKafkaSchemaRegistryMaximumTLSVersionTlSv11 OutputKafkaKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.1"
+	OutputKafkaKafkaSchemaRegistryMaximumTLSVersionTlSv12 OutputKafkaKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.2"
+	OutputKafkaKafkaSchemaRegistryMaximumTLSVersionTlSv13 OutputKafkaKafkaSchemaRegistryMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputKafkaKafkaSchemaRegistryMaximumTLSVersion) ToPointer() *OutputKafkaKafkaSchemaRegistryMaximumTLSVersion {
+	return &e
+}
+
+type OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                                          `json:"passphrase,omitempty"`
+	MinVersion *OutputKafkaKafkaSchemaRegistryMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputKafkaKafkaSchemaRegistryMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetMinVersion() *OutputKafkaKafkaSchemaRegistryMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide) GetMaxVersion() *OutputKafkaKafkaSchemaRegistryMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+type OutputKafkaKafkaSchemaRegistryAuthentication struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// URL for accessing the Confluent Schema Registry. Example: http://localhost:8081. To connect over TLS, use https instead of http.
+	SchemaRegistryURL *string `default:"http://localhost:8081" json:"schemaRegistryURL"`
+	// Maximum time to wait for a Schema Registry connection to complete successfully
+	ConnectionTimeout *float64 `default:"30000" json:"connectionTimeout"`
+	// Maximum time to wait for the Schema Registry to respond to a request
+	RequestTimeout *float64 `default:"30000" json:"requestTimeout"`
+	// Maximum number of times to try fetching schemas from the Schema Registry
+	MaxRetries *float64 `default:"1" json:"maxRetries"`
+	// Credentials to use when authenticating with the schema registry using basic HTTP authentication
+	Auth *OutputKafkaAuth                                     `json:"auth,omitempty"`
+	TLS  *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide `json:"tls,omitempty"`
+	// Used when __keySchemaIdOut is not present, to transform key values, leave blank if key transformation is not required by default.
+	DefaultKeySchemaID *float64 `json:"defaultKeySchemaId,omitempty"`
+	// Used when __valueSchemaIdOut is not present, to transform _raw, leave blank if value transformation is not required by default.
+	DefaultValueSchemaID *float64 `json:"defaultValueSchemaId,omitempty"`
+}
+
+func (o OutputKafkaKafkaSchemaRegistryAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetSchemaRegistryURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistryURL
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetAuth() *OutputKafkaAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetTLS() *OutputKafkaKafkaSchemaRegistryTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetDefaultKeySchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultKeySchemaID
+}
+
+func (o *OutputKafkaKafkaSchemaRegistryAuthentication) GetDefaultValueSchemaID() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultValueSchemaID
+}
+
+type OutputKafkaSASLMechanism string
+
+const (
+	OutputKafkaSASLMechanismPlain       OutputKafkaSASLMechanism = "plain"
+	OutputKafkaSASLMechanismScramSha256 OutputKafkaSASLMechanism = "scram-sha-256"
+	OutputKafkaSASLMechanismScramSha512 OutputKafkaSASLMechanism = "scram-sha-512"
+	OutputKafkaSASLMechanismKerberos    OutputKafkaSASLMechanism = "kerberos"
+)
+
+func (e OutputKafkaSASLMechanism) ToPointer() *OutputKafkaSASLMechanism {
+	return &e
+}
+
+// OutputKafkaAuthentication - Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+type OutputKafkaAuthentication struct {
+	Disabled  *bool                     `default:"true" json:"disabled"`
+	Mechanism *OutputKafkaSASLMechanism `default:"plain" json:"mechanism"`
+}
+
+func (o OutputKafkaAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafkaAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafkaAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputKafkaAuthentication) GetMechanism() *OutputKafkaSASLMechanism {
+	if o == nil {
+		return nil
+	}
+	return o.Mechanism
+}
+
+type OutputKafkaMinimumTLSVersion string
+
+const (
+	OutputKafkaMinimumTLSVersionTlSv1  OutputKafkaMinimumTLSVersion = "TLSv1"
+	OutputKafkaMinimumTLSVersionTlSv11 OutputKafkaMinimumTLSVersion = "TLSv1.1"
+	OutputKafkaMinimumTLSVersionTlSv12 OutputKafkaMinimumTLSVersion = "TLSv1.2"
+	OutputKafkaMinimumTLSVersionTlSv13 OutputKafkaMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputKafkaMinimumTLSVersion) ToPointer() *OutputKafkaMinimumTLSVersion {
+	return &e
+}
+
+type OutputKafkaMaximumTLSVersion string
+
+const (
+	OutputKafkaMaximumTLSVersionTlSv1  OutputKafkaMaximumTLSVersion = "TLSv1"
+	OutputKafkaMaximumTLSVersionTlSv11 OutputKafkaMaximumTLSVersion = "TLSv1.1"
+	OutputKafkaMaximumTLSVersionTlSv12 OutputKafkaMaximumTLSVersion = "TLSv1.2"
+	OutputKafkaMaximumTLSVersionTlSv13 OutputKafkaMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputKafkaMaximumTLSVersion) ToPointer() *OutputKafkaMaximumTLSVersion {
+	return &e
+}
+
+type OutputKafkaTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                       `json:"passphrase,omitempty"`
+	MinVersion *OutputKafkaMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputKafkaMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputKafkaTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetMinVersion() *OutputKafkaMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputKafkaTLSSettingsClientSide) GetMaxVersion() *OutputKafkaMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputKafkaBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputKafkaBackpressureBehavior string
+
+const (
+	OutputKafkaBackpressureBehaviorBlock OutputKafkaBackpressureBehavior = "block"
+	OutputKafkaBackpressureBehaviorDrop  OutputKafkaBackpressureBehavior = "drop"
+	OutputKafkaBackpressureBehaviorQueue OutputKafkaBackpressureBehavior = "queue"
+)
+
+func (e OutputKafkaBackpressureBehavior) ToPointer() *OutputKafkaBackpressureBehavior {
+	return &e
+}
+
+// OutputKafkaPqCompressCompression - Codec to use to compress the persisted data
+type OutputKafkaPqCompressCompression string
+
+const (
+	OutputKafkaPqCompressCompressionNone OutputKafkaPqCompressCompression = "none"
+	OutputKafkaPqCompressCompressionGzip OutputKafkaPqCompressCompression = "gzip"
+)
+
+func (e OutputKafkaPqCompressCompression) ToPointer() *OutputKafkaPqCompressCompression {
+	return &e
+}
+
+// OutputKafkaQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputKafkaQueueFullBehavior string
+
+const (
+	OutputKafkaQueueFullBehaviorBlock OutputKafkaQueueFullBehavior = "block"
+	OutputKafkaQueueFullBehaviorDrop  OutputKafkaQueueFullBehavior = "drop"
+)
+
+func (e OutputKafkaQueueFullBehavior) ToPointer() *OutputKafkaQueueFullBehavior {
+	return &e
+}
+
+// OutputKafkaMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputKafkaMode string
+
+const (
+	OutputKafkaModeError        OutputKafkaMode = "error"
+	OutputKafkaModeBackpressure OutputKafkaMode = "backpressure"
+	OutputKafkaModeAlways       OutputKafkaMode = "always"
+)
+
+func (e OutputKafkaMode) ToPointer() *OutputKafkaMode {
+	return &e
+}
+
+type OutputKafkaPqControls struct {
+}
+
+type OutputKafka struct {
+	// Unique ID for this output
+	ID   string           `json:"id"`
+	Type *OutputKafkaType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Enter each Kafka bootstrap server you want to use. Specify hostname and port, e.g., mykafkabroker:9092, or just hostname, in which case @{product} will assign port 9092.
+	Brokers []string `json:"brokers"`
+	// The topic to publish events to. Can be overridden using the __topicOut field.
+	Topic string `json:"topic"`
+	// Control the number of required acknowledgments.
+	Ack *OutputKafkaAcknowledgments `default:"1" json:"ack"`
+	// Format to use to serialize events before writing to Kafka.
+	Format *OutputKafkaRecordDataFormat `default:"json" json:"format"`
+	// Codec to use to compress the data before sending to Kafka
+	Compression *OutputKafkaCompression `default:"gzip" json:"compression"`
+	// Maximum size of each record batch before compression. The value must not exceed the Kafka brokers' message.max.bytes setting.
+	MaxRecordSizeKB *float64 `default:"768" json:"maxRecordSizeKB"`
+	// The maximum number of events you want the Destination to allow in a batch before forcing a flush
+	FlushEventCount *float64 `default:"1000" json:"flushEventCount"`
+	// The maximum amount of time you want the Destination to wait before forcing a flush. Shorter intervals tend to result in smaller batches being sent.
+	FlushPeriodSec      *float64                                      `default:"1" json:"flushPeriodSec"`
+	KafkaSchemaRegistry *OutputKafkaKafkaSchemaRegistryAuthentication `json:"kafkaSchemaRegistry,omitempty"`
+	// Maximum time to wait for a connection to complete successfully
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Maximum time to wait for Kafka to respond to a request
+	RequestTimeout *float64 `default:"60000" json:"requestTimeout"`
+	// If messages are failing, you can set the maximum number of retries as high as 100 to prevent loss of data
+	MaxRetries *float64 `default:"5" json:"maxRetries"`
+	// The maximum wait time for a retry, in milliseconds. Default (and minimum) is 30,000 ms (30 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackOff *float64 `default:"30000" json:"maxBackOff"`
+	// Initial value used to calculate the retry, in milliseconds. Maximum is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"300" json:"initialBackoff"`
+	// Set the backoff multiplier (2-20) to control the retry frequency for failed messages. For faster retries, use a lower multiplier. For slower retries with more delay between attempts, use a higher multiplier. The multiplier is used in an exponential backoff formula; see the Kafka [documentation](https://kafka.js.org/docs/retry-detailed) for details.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// Maximum time to wait for Kafka to respond to an authentication request
+	AuthenticationTimeout *float64 `default:"10000" json:"authenticationTimeout"`
+	// Specifies a time window during which @{product} can reauthenticate if needed. Creates the window measuring backward from the moment when credentials are set to expire.
+	ReauthenticationThreshold *float64 `default:"10000" json:"reauthenticationThreshold"`
+	// Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+	Sasl *OutputKafkaAuthentication        `json:"sasl,omitempty"`
+	TLS  *OutputKafkaTLSSettingsClientSide `json:"tls,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputKafkaBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                          `json:"description,omitempty"`
+	// Select a set of Protobuf definitions for the events you want to send
+	ProtobufLibraryID *string `json:"protobufLibraryId,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputKafkaPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputKafkaQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputKafkaMode       `default:"error" json:"pqMode"`
+	PqControls *OutputKafkaPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputKafka) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKafka) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKafka) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputKafka) GetType() *OutputKafkaType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputKafka) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputKafka) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputKafka) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputKafka) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputKafka) GetBrokers() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Brokers
+}
+
+func (o *OutputKafka) GetTopic() string {
+	if o == nil {
+		return ""
+	}
+	return o.Topic
+}
+
+func (o *OutputKafka) GetAck() *OutputKafkaAcknowledgments {
+	if o == nil {
+		return nil
+	}
+	return o.Ack
+}
+
+func (o *OutputKafka) GetFormat() *OutputKafkaRecordDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputKafka) GetCompression() *OutputKafkaCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compression
+}
+
+func (o *OutputKafka) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputKafka) GetFlushEventCount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushEventCount
+}
+
+func (o *OutputKafka) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputKafka) GetKafkaSchemaRegistry() *OutputKafkaKafkaSchemaRegistryAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.KafkaSchemaRegistry
+}
+
+func (o *OutputKafka) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputKafka) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputKafka) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputKafka) GetMaxBackOff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackOff
+}
+
+func (o *OutputKafka) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputKafka) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputKafka) GetAuthenticationTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.AuthenticationTimeout
+}
+
+func (o *OutputKafka) GetReauthenticationThreshold() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReauthenticationThreshold
+}
+
+func (o *OutputKafka) GetSasl() *OutputKafkaAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.Sasl
+}
+
+func (o *OutputKafka) GetTLS() *OutputKafkaTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputKafka) GetOnBackpressure() *OutputKafkaBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputKafka) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputKafka) GetProtobufLibraryID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProtobufLibraryID
+}
+
+func (o *OutputKafka) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputKafka) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputKafka) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputKafka) GetPqCompress() *OutputKafkaPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputKafka) GetPqOnBackpressure() *OutputKafkaQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputKafka) GetPqMode() *OutputKafkaMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputKafka) GetPqControls() *OutputKafkaPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputExabeamType string
+
+const (
+	OutputExabeamTypeExabeam OutputExabeamType = "exabeam"
+)
+
+func (e OutputExabeamType) ToPointer() *OutputExabeamType {
+	return &e
+}
+
+// OutputExabeamSignatureVersion - Signature version to use for signing Google Cloud Storage requests
+type OutputExabeamSignatureVersion string
+
+const (
+	OutputExabeamSignatureVersionV2 OutputExabeamSignatureVersion = "v2"
+	OutputExabeamSignatureVersionV4 OutputExabeamSignatureVersion = "v4"
+)
+
+func (e OutputExabeamSignatureVersion) ToPointer() *OutputExabeamSignatureVersion {
+	return &e
+}
+
+// OutputExabeamObjectACL - Object ACL to assign to uploaded objects
+type OutputExabeamObjectACL string
+
+const (
+	OutputExabeamObjectACLPrivate                OutputExabeamObjectACL = "private"
+	OutputExabeamObjectACLBucketOwnerRead        OutputExabeamObjectACL = "bucket-owner-read"
+	OutputExabeamObjectACLBucketOwnerFullControl OutputExabeamObjectACL = "bucket-owner-full-control"
+	OutputExabeamObjectACLProjectPrivate         OutputExabeamObjectACL = "project-private"
+	OutputExabeamObjectACLAuthenticatedRead      OutputExabeamObjectACL = "authenticated-read"
+	OutputExabeamObjectACLPublicRead             OutputExabeamObjectACL = "public-read"
+)
+
+func (e OutputExabeamObjectACL) ToPointer() *OutputExabeamObjectACL {
+	return &e
+}
+
+// OutputExabeamStorageClass - Storage class to select for uploaded objects
+type OutputExabeamStorageClass string
+
+const (
+	OutputExabeamStorageClassStandard OutputExabeamStorageClass = "STANDARD"
+	OutputExabeamStorageClassNearline OutputExabeamStorageClass = "NEARLINE"
+	OutputExabeamStorageClassColdline OutputExabeamStorageClass = "COLDLINE"
+	OutputExabeamStorageClassArchive  OutputExabeamStorageClass = "ARCHIVE"
+)
+
+func (e OutputExabeamStorageClass) ToPointer() *OutputExabeamStorageClass {
+	return &e
+}
+
+// OutputExabeamBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputExabeamBackpressureBehavior string
+
+const (
+	OutputExabeamBackpressureBehaviorBlock OutputExabeamBackpressureBehavior = "block"
+	OutputExabeamBackpressureBehaviorDrop  OutputExabeamBackpressureBehavior = "drop"
+)
+
+func (e OutputExabeamBackpressureBehavior) ToPointer() *OutputExabeamBackpressureBehavior {
+	return &e
+}
+
+// OutputExabeamDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputExabeamDiskSpaceProtection string
+
+const (
+	OutputExabeamDiskSpaceProtectionBlock OutputExabeamDiskSpaceProtection = "block"
+	OutputExabeamDiskSpaceProtectionDrop  OutputExabeamDiskSpaceProtection = "drop"
+)
+
+func (e OutputExabeamDiskSpaceProtection) ToPointer() *OutputExabeamDiskSpaceProtection {
+	return &e
+}
+
+type OutputExabeam struct {
+	// Unique ID for this output
+	ID   string             `json:"id"`
+	Type *OutputExabeamType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the destination bucket. A constant or a JavaScript expression that can only be evaluated at init time. Example of referencing a JavaScript Global Variable: `myBucket-${C.vars.myVar}`.
+	Bucket string `json:"bucket"`
+	// Region where the bucket is located
+	Region string `json:"region"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Google Cloud Storage service endpoint
+	Endpoint *string `default:"https://storage.googleapis.com" json:"endpoint"`
+	// Signature version to use for signing Google Cloud Storage requests
+	SignatureVersion *OutputExabeamSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputExabeamObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass *OutputExabeamStorageClass `json:"storageClass,omitempty"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputExabeamBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputExabeamDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"10" json:"maxFileSizeMB"`
+	// Enter an encoded string containing Exabeam configurations
+	EncodedConfiguration *string `json:"encodedConfiguration,omitempty"`
+	// ID of the Exabeam Collector where data should be sent. Example: 11112222-3333-4444-5555-666677778888
+	//
+	CollectorInstanceID string `json:"collectorInstanceId"`
+	// Constant or JavaScript expression to create an Exabeam site name. Values that aren't successfully evaluated will be treated as string constants.
+	SiteName *string `json:"siteName,omitempty"`
+	// Exabeam site ID. If left blank, @{product} will use the value of the Exabeam site name.
+	SiteID         *string `json:"siteId,omitempty"`
+	TimezoneOffset *string `json:"timezoneOffset,omitempty"`
+	// HMAC access key. Can be a constant or a JavaScript expression, such as `${C.env.GCS_ACCESS_KEY}`.
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// HMAC secret. Can be a constant or a JavaScript expression, such as `${C.env.GCS_SECRET}`.
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	Description  *string `json:"description,omitempty"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputExabeam) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputExabeam) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputExabeam) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputExabeam) GetType() *OutputExabeamType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputExabeam) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputExabeam) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputExabeam) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputExabeam) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputExabeam) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputExabeam) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputExabeam) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputExabeam) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputExabeam) GetSignatureVersion() *OutputExabeamSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputExabeam) GetObjectACL() *OutputExabeamObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputExabeam) GetStorageClass() *OutputExabeamStorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputExabeam) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputExabeam) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputExabeam) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputExabeam) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputExabeam) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputExabeam) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputExabeam) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputExabeam) GetOnBackpressure() *OutputExabeamBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputExabeam) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputExabeam) GetOnDiskFullBackpressure() *OutputExabeamDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputExabeam) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputExabeam) GetEncodedConfiguration() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EncodedConfiguration
+}
+
+func (o *OutputExabeam) GetCollectorInstanceID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CollectorInstanceID
+}
+
+func (o *OutputExabeam) GetSiteName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SiteName
+}
+
+func (o *OutputExabeam) GetSiteID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SiteID
+}
+
+func (o *OutputExabeam) GetTimezoneOffset() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TimezoneOffset
+}
+
+func (o *OutputExabeam) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputExabeam) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputExabeam) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputExabeam) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputExabeam) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputExabeam) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputGooglePubsubType string
+
+const (
+	OutputGooglePubsubTypeGooglePubsub OutputGooglePubsubType = "google_pubsub"
+)
+
+func (e OutputGooglePubsubType) ToPointer() *OutputGooglePubsubType {
+	return &e
+}
+
+// OutputGooglePubsubGoogleAuthenticationMethod - Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
+type OutputGooglePubsubGoogleAuthenticationMethod string
+
+const (
+	OutputGooglePubsubGoogleAuthenticationMethodAuto   OutputGooglePubsubGoogleAuthenticationMethod = "auto"
+	OutputGooglePubsubGoogleAuthenticationMethodManual OutputGooglePubsubGoogleAuthenticationMethod = "manual"
+	OutputGooglePubsubGoogleAuthenticationMethodSecret OutputGooglePubsubGoogleAuthenticationMethod = "secret"
+)
+
+func (e OutputGooglePubsubGoogleAuthenticationMethod) ToPointer() *OutputGooglePubsubGoogleAuthenticationMethod {
+	return &e
+}
+
+type FlushPeriodSecType string
+
+const (
+	FlushPeriodSecTypeNumber FlushPeriodSecType = "number"
+)
+
+func (e FlushPeriodSecType) ToPointer() *FlushPeriodSecType {
+	return &e
+}
+
+// FlushPeriodSec - Maximum time to wait before sending a batch (when batch size limit is not reached).
+type FlushPeriodSec struct {
+	Type    *FlushPeriodSecType `json:"type,omitempty"`
+	Default *float64            `json:"default,omitempty"`
+}
+
+func (o *FlushPeriodSec) GetType() *FlushPeriodSecType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *FlushPeriodSec) GetDefault() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Default
+}
+
+// OutputGooglePubsubBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputGooglePubsubBackpressureBehavior string
+
+const (
+	OutputGooglePubsubBackpressureBehaviorBlock OutputGooglePubsubBackpressureBehavior = "block"
+	OutputGooglePubsubBackpressureBehaviorDrop  OutputGooglePubsubBackpressureBehavior = "drop"
+	OutputGooglePubsubBackpressureBehaviorQueue OutputGooglePubsubBackpressureBehavior = "queue"
+)
+
+func (e OutputGooglePubsubBackpressureBehavior) ToPointer() *OutputGooglePubsubBackpressureBehavior {
+	return &e
+}
+
+// OutputGooglePubsubCompression - Codec to use to compress the persisted data
+type OutputGooglePubsubCompression string
+
+const (
+	OutputGooglePubsubCompressionNone OutputGooglePubsubCompression = "none"
+	OutputGooglePubsubCompressionGzip OutputGooglePubsubCompression = "gzip"
+)
+
+func (e OutputGooglePubsubCompression) ToPointer() *OutputGooglePubsubCompression {
+	return &e
+}
+
+// OutputGooglePubsubQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputGooglePubsubQueueFullBehavior string
+
+const (
+	OutputGooglePubsubQueueFullBehaviorBlock OutputGooglePubsubQueueFullBehavior = "block"
+	OutputGooglePubsubQueueFullBehaviorDrop  OutputGooglePubsubQueueFullBehavior = "drop"
+)
+
+func (e OutputGooglePubsubQueueFullBehavior) ToPointer() *OutputGooglePubsubQueueFullBehavior {
+	return &e
+}
+
+// OutputGooglePubsubMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputGooglePubsubMode string
+
+const (
+	OutputGooglePubsubModeError        OutputGooglePubsubMode = "error"
+	OutputGooglePubsubModeBackpressure OutputGooglePubsubMode = "backpressure"
+	OutputGooglePubsubModeAlways       OutputGooglePubsubMode = "always"
+)
+
+func (e OutputGooglePubsubMode) ToPointer() *OutputGooglePubsubMode {
+	return &e
+}
+
+type OutputGooglePubsubPqControls struct {
+}
+
+type OutputGooglePubsub struct {
+	// Unique ID for this output
+	ID   string                 `json:"id"`
+	Type OutputGooglePubsubType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// ID of the topic to send events to.
+	TopicName string `json:"topicName"`
+	// If enabled, create topic if it does not exist.
+	CreateTopic *bool `default:"false" json:"createTopic"`
+	// If enabled, send events in the order they were added to the queue. For this to work correctly, the process receiving events must have ordering enabled.
+	OrderedDelivery *bool `default:"false" json:"orderedDelivery"`
+	// Region to publish messages to. Select 'default' to allow Google to auto-select the nearest region. When using ordered delivery, the selected region must be allowed by message storage policy.
+	Region *string `json:"region,omitempty"`
+	// Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
+	GoogleAuthMethod *OutputGooglePubsubGoogleAuthenticationMethod `default:"manual" json:"googleAuthMethod"`
+	// Contents of service account credentials (JSON keys) file downloaded from Google Cloud. To upload a file, click the upload button at this field's upper right.
+	ServiceAccountCredentials *string `json:"serviceAccountCredentials,omitempty"`
+	// Select or create a stored text secret
+	Secret *string `json:"secret,omitempty"`
+	// The maximum number of items the Google API should batch before it sends them to the topic.
+	BatchSize *float64 `default:"1000" json:"batchSize"`
+	// The maximum amount of time, in milliseconds, that the Google API should wait to send a batch (if the Batch size is not reached).
+	BatchTimeout *float64 `default:"100" json:"batchTimeout"`
+	// Maximum number of queued batches before blocking.
+	MaxQueueSize *float64 `default:"100" json:"maxQueueSize"`
+	// Maximum size (KB) of batches to send.
+	MaxRecordSizeKB *float64 `default:"256" json:"maxRecordSizeKB"`
+	// Maximum time to wait before sending a batch (when batch size limit is not reached).
+	FlushPeriodSec *FlushPeriodSec `json:"flushPeriodSec,omitempty"`
+	// The maximum number of in-progress API requests before backpressure is applied.
+	MaxInProgress *float64 `default:"10" json:"maxInProgress"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputGooglePubsubBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                 `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputGooglePubsubCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputGooglePubsubQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputGooglePubsubMode       `default:"error" json:"pqMode"`
+	PqControls *OutputGooglePubsubPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputGooglePubsub) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGooglePubsub) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGooglePubsub) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputGooglePubsub) GetType() OutputGooglePubsubType {
+	if o == nil {
+		return OutputGooglePubsubType("")
+	}
+	return o.Type
+}
+
+func (o *OutputGooglePubsub) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputGooglePubsub) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputGooglePubsub) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputGooglePubsub) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputGooglePubsub) GetTopicName() string {
+	if o == nil {
+		return ""
+	}
+	return o.TopicName
+}
+
+func (o *OutputGooglePubsub) GetCreateTopic() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CreateTopic
+}
+
+func (o *OutputGooglePubsub) GetOrderedDelivery() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.OrderedDelivery
+}
+
+func (o *OutputGooglePubsub) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputGooglePubsub) GetGoogleAuthMethod() *OutputGooglePubsubGoogleAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.GoogleAuthMethod
+}
+
+func (o *OutputGooglePubsub) GetServiceAccountCredentials() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServiceAccountCredentials
+}
+
+func (o *OutputGooglePubsub) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputGooglePubsub) GetBatchSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BatchSize
+}
+
+func (o *OutputGooglePubsub) GetBatchTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BatchTimeout
+}
+
+func (o *OutputGooglePubsub) GetMaxQueueSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxQueueSize
+}
+
+func (o *OutputGooglePubsub) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputGooglePubsub) GetFlushPeriodSec() *FlushPeriodSec {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputGooglePubsub) GetMaxInProgress() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxInProgress
+}
+
+func (o *OutputGooglePubsub) GetOnBackpressure() *OutputGooglePubsubBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputGooglePubsub) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputGooglePubsub) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputGooglePubsub) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputGooglePubsub) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputGooglePubsub) GetPqCompress() *OutputGooglePubsubCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputGooglePubsub) GetPqOnBackpressure() *OutputGooglePubsubQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputGooglePubsub) GetPqMode() *OutputGooglePubsubMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputGooglePubsub) GetPqControls() *OutputGooglePubsubPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputGoogleCloudLoggingType string
+
+const (
+	OutputGoogleCloudLoggingTypeGoogleCloudLogging OutputGoogleCloudLoggingType = "google_cloud_logging"
+)
+
+func (e OutputGoogleCloudLoggingType) ToPointer() *OutputGoogleCloudLoggingType {
+	return &e
+}
+
+type LogLocationType string
+
+const (
+	LogLocationTypeProject        LogLocationType = "project"
+	LogLocationTypeOrganization   LogLocationType = "organization"
+	LogLocationTypeBillingAccount LogLocationType = "billingAccount"
+	LogLocationTypeFolder         LogLocationType = "folder"
+)
+
+func (e LogLocationType) ToPointer() *LogLocationType {
+	return &e
+}
+
+// PayloadFormat - Format to use when sending payload. Defaults to Text.
+type PayloadFormat string
+
+const (
+	PayloadFormatText PayloadFormat = "text"
+	PayloadFormatJSON PayloadFormat = "json"
+)
+
+func (e PayloadFormat) ToPointer() *PayloadFormat {
+	return &e
+}
+
+type LogLabel struct {
+	// Label name
+	Label string `json:"label"`
+	// JavaScript expression to compute the label's value.
+	ValueExpression string `json:"valueExpression"`
+}
+
+func (o *LogLabel) GetLabel() string {
+	if o == nil {
+		return ""
+	}
+	return o.Label
+}
+
+func (o *LogLabel) GetValueExpression() string {
+	if o == nil {
+		return ""
+	}
+	return o.ValueExpression
+}
+
+type ResourceTypeLabel struct {
+	// Label name
+	Label string `json:"label"`
+	// JavaScript expression to compute the label's value.
+	ValueExpression string `json:"valueExpression"`
+}
+
+func (o *ResourceTypeLabel) GetLabel() string {
+	if o == nil {
+		return ""
+	}
+	return o.Label
+}
+
+func (o *ResourceTypeLabel) GetValueExpression() string {
+	if o == nil {
+		return ""
+	}
+	return o.ValueExpression
+}
+
+// OutputGoogleCloudLoggingGoogleAuthenticationMethod - Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
+type OutputGoogleCloudLoggingGoogleAuthenticationMethod string
+
+const (
+	OutputGoogleCloudLoggingGoogleAuthenticationMethodAuto   OutputGoogleCloudLoggingGoogleAuthenticationMethod = "auto"
+	OutputGoogleCloudLoggingGoogleAuthenticationMethodManual OutputGoogleCloudLoggingGoogleAuthenticationMethod = "manual"
+	OutputGoogleCloudLoggingGoogleAuthenticationMethodSecret OutputGoogleCloudLoggingGoogleAuthenticationMethod = "secret"
+)
+
+func (e OutputGoogleCloudLoggingGoogleAuthenticationMethod) ToPointer() *OutputGoogleCloudLoggingGoogleAuthenticationMethod {
+	return &e
+}
+
+// OutputGoogleCloudLoggingBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputGoogleCloudLoggingBackpressureBehavior string
+
+const (
+	OutputGoogleCloudLoggingBackpressureBehaviorBlock OutputGoogleCloudLoggingBackpressureBehavior = "block"
+	OutputGoogleCloudLoggingBackpressureBehaviorDrop  OutputGoogleCloudLoggingBackpressureBehavior = "drop"
+	OutputGoogleCloudLoggingBackpressureBehaviorQueue OutputGoogleCloudLoggingBackpressureBehavior = "queue"
+)
+
+func (e OutputGoogleCloudLoggingBackpressureBehavior) ToPointer() *OutputGoogleCloudLoggingBackpressureBehavior {
+	return &e
+}
+
+// OutputGoogleCloudLoggingCompression - Codec to use to compress the persisted data
+type OutputGoogleCloudLoggingCompression string
+
+const (
+	OutputGoogleCloudLoggingCompressionNone OutputGoogleCloudLoggingCompression = "none"
+	OutputGoogleCloudLoggingCompressionGzip OutputGoogleCloudLoggingCompression = "gzip"
+)
+
+func (e OutputGoogleCloudLoggingCompression) ToPointer() *OutputGoogleCloudLoggingCompression {
+	return &e
+}
+
+// OutputGoogleCloudLoggingQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputGoogleCloudLoggingQueueFullBehavior string
+
+const (
+	OutputGoogleCloudLoggingQueueFullBehaviorBlock OutputGoogleCloudLoggingQueueFullBehavior = "block"
+	OutputGoogleCloudLoggingQueueFullBehaviorDrop  OutputGoogleCloudLoggingQueueFullBehavior = "drop"
+)
+
+func (e OutputGoogleCloudLoggingQueueFullBehavior) ToPointer() *OutputGoogleCloudLoggingQueueFullBehavior {
+	return &e
+}
+
+// OutputGoogleCloudLoggingMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputGoogleCloudLoggingMode string
+
+const (
+	OutputGoogleCloudLoggingModeError        OutputGoogleCloudLoggingMode = "error"
+	OutputGoogleCloudLoggingModeBackpressure OutputGoogleCloudLoggingMode = "backpressure"
+	OutputGoogleCloudLoggingModeAlways       OutputGoogleCloudLoggingMode = "always"
+)
+
+func (e OutputGoogleCloudLoggingMode) ToPointer() *OutputGoogleCloudLoggingMode {
+	return &e
+}
+
+type OutputGoogleCloudLoggingPqControls struct {
+}
+
+type OutputGoogleCloudLogging struct {
+	// Unique ID for this output
+	ID   string                        `json:"id"`
+	Type *OutputGoogleCloudLoggingType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags      []string        `json:"streamtags,omitempty"`
+	LogLocationType LogLocationType `json:"logLocationType"`
+	// JavaScript expression to compute the value of the log name.
+	LogNameExpression string `json:"logNameExpression"`
+	// Format to use when sending payload. Defaults to Text.
+	PayloadFormat *PayloadFormat `default:"text" json:"payloadFormat"`
+	// Labels to apply to the log entry
+	LogLabels []LogLabel `json:"logLabels,omitempty"`
+	// JavaScript expression to compute the value of the managed resource type field. Must evaluate to one of the valid values [here](https://cloud.google.com/logging/docs/api/v2/resource-list#resource-types). Defaults to "global".
+	ResourceTypeExpression *string `json:"resourceTypeExpression,omitempty"`
+	// Labels to apply to the managed resource. These must correspond to the valid labels for the specified resource type (see [here](https://cloud.google.com/logging/docs/api/v2/resource-list#resource-types)). Otherwise, they will be dropped by Google Cloud Logging.
+	ResourceTypeLabels []ResourceTypeLabel `json:"resourceTypeLabels,omitempty"`
+	// JavaScript expression to compute the value of the severity field. Must evaluate to one of the severity values supported by Google Cloud Logging [here](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity) (case insensitive). Defaults to "DEFAULT".
+	SeverityExpression *string `json:"severityExpression,omitempty"`
+	// JavaScript expression to compute the value of the insert ID field.
+	InsertIDExpression *string `json:"insertIdExpression,omitempty"`
+	// Choose Auto to use Google Application Default Credentials (ADC), Manual to enter Google service account credentials directly, or Secret to select or create a stored secret that references Google service account credentials.
+	GoogleAuthMethod *OutputGoogleCloudLoggingGoogleAuthenticationMethod `default:"manual" json:"googleAuthMethod"`
+	// Contents of service account credentials (JSON keys) file downloaded from Google Cloud. To upload a file, click the upload button at this field's upper right.
+	ServiceAccountCredentials *string `json:"serviceAccountCredentials,omitempty"`
+	// Select or create a stored text secret
+	Secret *string `json:"secret,omitempty"`
+	// Maximum size, in KB, of the request body.
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Max number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Max record size.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Maximum number of ongoing requests before blocking.
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it.
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum number of requests to limit to per second.
+	ThrottleRateReqPerSec *int64 `json:"throttleRateReqPerSec,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request method as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	RequestMethodExpression *string `json:"requestMethodExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request URL as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	RequestURLExpression *string `json:"requestUrlExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request size as a string, in int64 format. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	RequestSizeExpression *string `json:"requestSizeExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request method as a number. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	StatusExpression *string `json:"statusExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP response size as a string, in int64 format. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	ResponseSizeExpression *string `json:"responseSizeExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request user agent as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	UserAgentExpression *string `json:"userAgentExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request remote IP as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	RemoteIPExpression *string `json:"remoteIpExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request server IP as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	ServerIPExpression *string `json:"serverIpExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request referer as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	RefererExpression *string `json:"refererExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request latency, formatted as <seconds>.<nanoseconds>s (for example, 1.23s). See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	LatencyExpression *string `json:"latencyExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request cache lookup as a boolean. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	CacheLookupExpression *string `json:"cacheLookupExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request cache hit as a boolean. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	CacheHitExpression *string `json:"cacheHitExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request cache validated with origin server as a boolean. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	CacheValidatedExpression *string `json:"cacheValidatedExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request cache fill bytes as a string, in int64 format. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	CacheFillBytesExpression *string `json:"cacheFillBytesExpression,omitempty"`
+	// A JavaScript expression that evaluates to the HTTP request protocol as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest) for details.
+	ProtocolExpression *string `json:"protocolExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry operation ID as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentryoperation) for details.
+	IDExpression *string `json:"idExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry operation producer as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentryoperation) for details.
+	ProducerExpression *string `json:"producerExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry operation first flag as a boolean. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentryoperation) for details.
+	FirstExpression *string `json:"firstExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry operation last flag as a boolean. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentryoperation) for details.
+	LastExpression *string `json:"lastExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry source location file as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentrysourcelocation) for details.
+	FileExpression *string `json:"fileExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry source location line as a string, in int64 format. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentrysourcelocation) for details.
+	LineExpression *string `json:"lineExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry source location function as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logentrysourcelocation) for details.
+	FunctionExpression *string `json:"functionExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry log split UID as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logsplit) for details.
+	UIDExpression *string `json:"uidExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry log split index as a number. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logsplit) for details.
+	IndexExpression *string `json:"indexExpression,omitempty"`
+	// A JavaScript expression that evaluates to the log entry log split total splits as a number. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logsplit) for details.
+	TotalSplitsExpression *string `json:"totalSplitsExpression,omitempty"`
+	// A JavaScript expression that evaluates to the REST resource name of the trace being written as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) for details.
+	TraceExpression *string `json:"traceExpression,omitempty"`
+	// A JavaScript expression that evaluates to the ID of the cloud trace span associated with the current operation in which the log is being written as a string. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) for details.
+	SpanIDExpression *string `json:"spanIdExpression,omitempty"`
+	// A JavaScript expression that evaluates to the the sampling decision of the span associated with the log entry. See the [documentation](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) for details.
+	TraceSampledExpression *string `json:"traceSampledExpression,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputGoogleCloudLoggingBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64 `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// JavaScript expression to compute the value of the folder ID with which log entries should be associated.
+	LogLocationExpression string `json:"logLocationExpression"`
+	// JavaScript expression to compute the value of the payload. Must evaluate to a JavaScript object value. If an invalid value is encountered it will result in the default value instead. Defaults to the entire event.
+	PayloadExpression *string `json:"payloadExpression,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputGoogleCloudLoggingCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputGoogleCloudLoggingQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputGoogleCloudLoggingMode       `default:"error" json:"pqMode"`
+	PqControls *OutputGoogleCloudLoggingPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputGoogleCloudLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleCloudLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleCloudLogging) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputGoogleCloudLogging) GetType() *OutputGoogleCloudLoggingType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputGoogleCloudLogging) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputGoogleCloudLogging) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputGoogleCloudLogging) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputGoogleCloudLogging) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputGoogleCloudLogging) GetLogLocationType() LogLocationType {
+	if o == nil {
+		return LogLocationType("")
+	}
+	return o.LogLocationType
+}
+
+func (o *OutputGoogleCloudLogging) GetLogNameExpression() string {
+	if o == nil {
+		return ""
+	}
+	return o.LogNameExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetPayloadFormat() *PayloadFormat {
+	if o == nil {
+		return nil
+	}
+	return o.PayloadFormat
+}
+
+func (o *OutputGoogleCloudLogging) GetLogLabels() []LogLabel {
+	if o == nil {
+		return nil
+	}
+	return o.LogLabels
+}
+
+func (o *OutputGoogleCloudLogging) GetResourceTypeExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceTypeExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetResourceTypeLabels() []ResourceTypeLabel {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceTypeLabels
+}
+
+func (o *OutputGoogleCloudLogging) GetSeverityExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SeverityExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetInsertIDExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InsertIDExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetGoogleAuthMethod() *OutputGoogleCloudLoggingGoogleAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.GoogleAuthMethod
+}
+
+func (o *OutputGoogleCloudLogging) GetServiceAccountCredentials() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServiceAccountCredentials
+}
+
+func (o *OutputGoogleCloudLogging) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+func (o *OutputGoogleCloudLogging) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputGoogleCloudLogging) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputGoogleCloudLogging) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputGoogleCloudLogging) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputGoogleCloudLogging) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputGoogleCloudLogging) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputGoogleCloudLogging) GetThrottleRateReqPerSec() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRateReqPerSec
+}
+
+func (o *OutputGoogleCloudLogging) GetRequestMethodExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RequestMethodExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetRequestURLExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RequestURLExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetRequestSizeExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RequestSizeExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetStatusExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StatusExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetResponseSizeExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseSizeExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetUserAgentExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserAgentExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetRemoteIPExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RemoteIPExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetServerIPExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerIPExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetRefererExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RefererExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetLatencyExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LatencyExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetCacheLookupExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CacheLookupExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetCacheHitExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CacheHitExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetCacheValidatedExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CacheValidatedExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetCacheFillBytesExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CacheFillBytesExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetProtocolExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProtocolExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetIDExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IDExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetProducerExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProducerExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetFirstExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FirstExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetLastExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LastExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetFileExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetLineExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LineExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetFunctionExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FunctionExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetUIDExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UIDExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetIndexExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IndexExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetTotalSplitsExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TotalSplitsExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetTraceExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TraceExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetSpanIDExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SpanIDExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetTraceSampledExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TraceSampledExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetOnBackpressure() *OutputGoogleCloudLoggingBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputGoogleCloudLogging) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputGoogleCloudLogging) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputGoogleCloudLogging) GetLogLocationExpression() string {
+	if o == nil {
+		return ""
+	}
+	return o.LogLocationExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetPayloadExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PayloadExpression
+}
+
+func (o *OutputGoogleCloudLogging) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputGoogleCloudLogging) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputGoogleCloudLogging) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputGoogleCloudLogging) GetPqCompress() *OutputGoogleCloudLoggingCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputGoogleCloudLogging) GetPqOnBackpressure() *OutputGoogleCloudLoggingQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputGoogleCloudLogging) GetPqMode() *OutputGoogleCloudLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputGoogleCloudLogging) GetPqControls() *OutputGoogleCloudLoggingPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputGoogleCloudStorageType string
+
+const (
+	OutputGoogleCloudStorageTypeGoogleCloudStorage OutputGoogleCloudStorageType = "google_cloud_storage"
+)
+
+func (e OutputGoogleCloudStorageType) ToPointer() *OutputGoogleCloudStorageType {
+	return &e
+}
+
+// OutputGoogleCloudStorageSignatureVersion - Signature version to use for signing Google Cloud Storage requests
+type OutputGoogleCloudStorageSignatureVersion string
+
+const (
+	OutputGoogleCloudStorageSignatureVersionV2 OutputGoogleCloudStorageSignatureVersion = "v2"
+	OutputGoogleCloudStorageSignatureVersionV4 OutputGoogleCloudStorageSignatureVersion = "v4"
+)
+
+func (e OutputGoogleCloudStorageSignatureVersion) ToPointer() *OutputGoogleCloudStorageSignatureVersion {
+	return &e
+}
+
+type OutputGoogleCloudStorageAuthenticationMethod string
+
+const (
+	OutputGoogleCloudStorageAuthenticationMethodAuto   OutputGoogleCloudStorageAuthenticationMethod = "auto"
+	OutputGoogleCloudStorageAuthenticationMethodManual OutputGoogleCloudStorageAuthenticationMethod = "manual"
+	OutputGoogleCloudStorageAuthenticationMethodSecret OutputGoogleCloudStorageAuthenticationMethod = "secret"
+)
+
+func (e OutputGoogleCloudStorageAuthenticationMethod) ToPointer() *OutputGoogleCloudStorageAuthenticationMethod {
+	return &e
+}
+
+// OutputGoogleCloudStorageObjectACL - Object ACL to assign to uploaded objects
+type OutputGoogleCloudStorageObjectACL string
+
+const (
+	OutputGoogleCloudStorageObjectACLPrivate                OutputGoogleCloudStorageObjectACL = "private"
+	OutputGoogleCloudStorageObjectACLBucketOwnerRead        OutputGoogleCloudStorageObjectACL = "bucket-owner-read"
+	OutputGoogleCloudStorageObjectACLBucketOwnerFullControl OutputGoogleCloudStorageObjectACL = "bucket-owner-full-control"
+	OutputGoogleCloudStorageObjectACLProjectPrivate         OutputGoogleCloudStorageObjectACL = "project-private"
+	OutputGoogleCloudStorageObjectACLAuthenticatedRead      OutputGoogleCloudStorageObjectACL = "authenticated-read"
+	OutputGoogleCloudStorageObjectACLPublicRead             OutputGoogleCloudStorageObjectACL = "public-read"
+)
+
+func (e OutputGoogleCloudStorageObjectACL) ToPointer() *OutputGoogleCloudStorageObjectACL {
+	return &e
+}
+
+// OutputGoogleCloudStorageStorageClass - Storage class to select for uploaded objects
+type OutputGoogleCloudStorageStorageClass string
+
+const (
+	OutputGoogleCloudStorageStorageClassStandard OutputGoogleCloudStorageStorageClass = "STANDARD"
+	OutputGoogleCloudStorageStorageClassNearline OutputGoogleCloudStorageStorageClass = "NEARLINE"
+	OutputGoogleCloudStorageStorageClassColdline OutputGoogleCloudStorageStorageClass = "COLDLINE"
+	OutputGoogleCloudStorageStorageClassArchive  OutputGoogleCloudStorageStorageClass = "ARCHIVE"
+)
+
+func (e OutputGoogleCloudStorageStorageClass) ToPointer() *OutputGoogleCloudStorageStorageClass {
+	return &e
+}
+
+// OutputGoogleCloudStorageDataFormat - Format of the output data
+type OutputGoogleCloudStorageDataFormat string
+
+const (
+	OutputGoogleCloudStorageDataFormatJSON    OutputGoogleCloudStorageDataFormat = "json"
+	OutputGoogleCloudStorageDataFormatRaw     OutputGoogleCloudStorageDataFormat = "raw"
+	OutputGoogleCloudStorageDataFormatParquet OutputGoogleCloudStorageDataFormat = "parquet"
+)
+
+func (e OutputGoogleCloudStorageDataFormat) ToPointer() *OutputGoogleCloudStorageDataFormat {
+	return &e
+}
+
+// OutputGoogleCloudStorageBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputGoogleCloudStorageBackpressureBehavior string
+
+const (
+	OutputGoogleCloudStorageBackpressureBehaviorBlock OutputGoogleCloudStorageBackpressureBehavior = "block"
+	OutputGoogleCloudStorageBackpressureBehaviorDrop  OutputGoogleCloudStorageBackpressureBehavior = "drop"
+)
+
+func (e OutputGoogleCloudStorageBackpressureBehavior) ToPointer() *OutputGoogleCloudStorageBackpressureBehavior {
+	return &e
+}
+
+// OutputGoogleCloudStorageDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputGoogleCloudStorageDiskSpaceProtection string
+
+const (
+	OutputGoogleCloudStorageDiskSpaceProtectionBlock OutputGoogleCloudStorageDiskSpaceProtection = "block"
+	OutputGoogleCloudStorageDiskSpaceProtectionDrop  OutputGoogleCloudStorageDiskSpaceProtection = "drop"
+)
+
+func (e OutputGoogleCloudStorageDiskSpaceProtection) ToPointer() *OutputGoogleCloudStorageDiskSpaceProtection {
+	return &e
+}
+
+// OutputGoogleCloudStorageCompression - Data compression format to apply to HTTP content before it is delivered
+type OutputGoogleCloudStorageCompression string
+
+const (
+	OutputGoogleCloudStorageCompressionNone OutputGoogleCloudStorageCompression = "none"
+	OutputGoogleCloudStorageCompressionGzip OutputGoogleCloudStorageCompression = "gzip"
+)
+
+func (e OutputGoogleCloudStorageCompression) ToPointer() *OutputGoogleCloudStorageCompression {
+	return &e
+}
+
+// OutputGoogleCloudStorageCompressionLevel - Compression level to apply before moving files to final destination
+type OutputGoogleCloudStorageCompressionLevel string
+
+const (
+	OutputGoogleCloudStorageCompressionLevelBestSpeed       OutputGoogleCloudStorageCompressionLevel = "best_speed"
+	OutputGoogleCloudStorageCompressionLevelNormal          OutputGoogleCloudStorageCompressionLevel = "normal"
+	OutputGoogleCloudStorageCompressionLevelBestCompression OutputGoogleCloudStorageCompressionLevel = "best_compression"
+)
+
+func (e OutputGoogleCloudStorageCompressionLevel) ToPointer() *OutputGoogleCloudStorageCompressionLevel {
+	return &e
+}
+
+// OutputGoogleCloudStorageParquetVersion - Determines which data types are supported and how they are represented
+type OutputGoogleCloudStorageParquetVersion string
+
+const (
+	OutputGoogleCloudStorageParquetVersionParquet10 OutputGoogleCloudStorageParquetVersion = "PARQUET_1_0"
+	OutputGoogleCloudStorageParquetVersionParquet24 OutputGoogleCloudStorageParquetVersion = "PARQUET_2_4"
+	OutputGoogleCloudStorageParquetVersionParquet26 OutputGoogleCloudStorageParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputGoogleCloudStorageParquetVersion) ToPointer() *OutputGoogleCloudStorageParquetVersion {
+	return &e
+}
+
+// OutputGoogleCloudStorageDataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputGoogleCloudStorageDataPageVersion string
+
+const (
+	OutputGoogleCloudStorageDataPageVersionDataPageV1 OutputGoogleCloudStorageDataPageVersion = "DATA_PAGE_V1"
+	OutputGoogleCloudStorageDataPageVersionDataPageV2 OutputGoogleCloudStorageDataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputGoogleCloudStorageDataPageVersion) ToPointer() *OutputGoogleCloudStorageDataPageVersion {
+	return &e
+}
+
+type OutputGoogleCloudStorageKeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputGoogleCloudStorageKeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleCloudStorageKeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleCloudStorageKeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputGoogleCloudStorageKeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputGoogleCloudStorage struct {
+	// Unique ID for this output
+	ID   string                        `json:"id"`
+	Type *OutputGoogleCloudStorageType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the destination bucket. This value can be a constant or a JavaScript expression that can only be evaluated at init time. Example of referencing a Global Variable: `myBucket-${C.vars.myVar}`.
+	Bucket string `json:"bucket"`
+	// Region where the bucket is located
+	Region string `json:"region"`
+	// Google Cloud Storage service endpoint
+	Endpoint *string `default:"https://storage.googleapis.com" json:"endpoint"`
+	// Signature version to use for signing Google Cloud Storage requests
+	SignatureVersion        *OutputGoogleCloudStorageSignatureVersion     `default:"v4" json:"signatureVersion"`
+	AwsAuthenticationMethod *OutputGoogleCloudStorageAuthenticationMethod `default:"manual" json:"awsAuthenticationMethod"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Prefix to append to files before uploading. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at init time. Example referencing a Global Variable: `myKeyPrefix-${C.vars.myVar}`
+	DestPath *string `default:"" json:"destPath"`
+	// Disable if you can access files within the bucket but not the bucket itself
+	VerifyPermissions *bool `default:"true" json:"verifyPermissions"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputGoogleCloudStorageObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass *OutputGoogleCloudStorageStorageClass `json:"storageClass,omitempty"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression defining how files are partitioned and organized. Default is date-based. If blank, Stream will fall back to the event's __partition field value – if present – otherwise to each location's root directory.
+	PartitionExpr *string `default:"C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')" json:"partitionExpr"`
+	// Format of the output data
+	Format *OutputGoogleCloudStorageDataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputGoogleCloudStorageBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputGoogleCloudStorageDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	Description            *string                                      `json:"description,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputGoogleCloudStorageCompression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputGoogleCloudStorageCompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputGoogleCloudStorageParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputGoogleCloudStorageDataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputGoogleCloudStorageKeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+	// HMAC access key. This value can be a constant or a JavaScript expression, such as `${C.env.GCS_ACCESS_KEY}`.
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// HMAC secret. This value can be a constant or a JavaScript expression, such as `${C.env.GCS_SECRET}`.
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+}
+
+func (o OutputGoogleCloudStorage) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleCloudStorage) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleCloudStorage) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputGoogleCloudStorage) GetType() *OutputGoogleCloudStorageType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputGoogleCloudStorage) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputGoogleCloudStorage) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputGoogleCloudStorage) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputGoogleCloudStorage) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputGoogleCloudStorage) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputGoogleCloudStorage) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputGoogleCloudStorage) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputGoogleCloudStorage) GetSignatureVersion() *OutputGoogleCloudStorageSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputGoogleCloudStorage) GetAwsAuthenticationMethod() *OutputGoogleCloudStorageAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputGoogleCloudStorage) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputGoogleCloudStorage) GetDestPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DestPath
+}
+
+func (o *OutputGoogleCloudStorage) GetVerifyPermissions() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyPermissions
+}
+
+func (o *OutputGoogleCloudStorage) GetObjectACL() *OutputGoogleCloudStorageObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputGoogleCloudStorage) GetStorageClass() *OutputGoogleCloudStorageStorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputGoogleCloudStorage) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputGoogleCloudStorage) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputGoogleCloudStorage) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputGoogleCloudStorage) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputGoogleCloudStorage) GetPartitionExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitionExpr
+}
+
+func (o *OutputGoogleCloudStorage) GetFormat() *OutputGoogleCloudStorageDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputGoogleCloudStorage) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputGoogleCloudStorage) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputGoogleCloudStorage) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputGoogleCloudStorage) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputGoogleCloudStorage) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputGoogleCloudStorage) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputGoogleCloudStorage) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputGoogleCloudStorage) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputGoogleCloudStorage) GetOnBackpressure() *OutputGoogleCloudStorageBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputGoogleCloudStorage) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputGoogleCloudStorage) GetOnDiskFullBackpressure() *OutputGoogleCloudStorageDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputGoogleCloudStorage) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputGoogleCloudStorage) GetCompress() *OutputGoogleCloudStorageCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputGoogleCloudStorage) GetCompressionLevel() *OutputGoogleCloudStorageCompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputGoogleCloudStorage) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputGoogleCloudStorage) GetParquetVersion() *OutputGoogleCloudStorageParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputGoogleCloudStorage) GetParquetDataPageVersion() *OutputGoogleCloudStorageDataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputGoogleCloudStorage) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputGoogleCloudStorage) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputGoogleCloudStorage) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputGoogleCloudStorage) GetKeyValueMetadata() []OutputGoogleCloudStorageKeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputGoogleCloudStorage) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputGoogleCloudStorage) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputGoogleCloudStorage) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputGoogleCloudStorage) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputGoogleCloudStorage) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputGoogleCloudStorage) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+func (o *OutputGoogleCloudStorage) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputGoogleCloudStorage) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputGoogleCloudStorage) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+type OutputGoogleChronicleType string
+
+const (
+	OutputGoogleChronicleTypeGoogleChronicle OutputGoogleChronicleType = "google_chronicle"
+)
+
+func (e OutputGoogleChronicleType) ToPointer() *OutputGoogleChronicleType {
+	return &e
+}
+
+type CreateOutputAPIVersion string
+
+const (
+	CreateOutputAPIVersionV1 CreateOutputAPIVersion = "v1"
+	CreateOutputAPIVersionV2 CreateOutputAPIVersion = "v2"
+)
+
+func (e CreateOutputAPIVersion) ToPointer() *CreateOutputAPIVersion {
+	return &e
+}
+
+type OutputGoogleChronicleAuthenticationMethod string
+
+const (
+	OutputGoogleChronicleAuthenticationMethodManual               OutputGoogleChronicleAuthenticationMethod = "manual"
+	OutputGoogleChronicleAuthenticationMethodSecret               OutputGoogleChronicleAuthenticationMethod = "secret"
+	OutputGoogleChronicleAuthenticationMethodServiceAccount       OutputGoogleChronicleAuthenticationMethod = "serviceAccount"
+	OutputGoogleChronicleAuthenticationMethodServiceAccountSecret OutputGoogleChronicleAuthenticationMethod = "serviceAccountSecret"
+)
+
+func (e OutputGoogleChronicleAuthenticationMethod) ToPointer() *OutputGoogleChronicleAuthenticationMethod {
+	return &e
+}
+
+type OutputGoogleChronicleResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputGoogleChronicleResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleChronicleResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleChronicleResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputGoogleChronicleResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputGoogleChronicleResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputGoogleChronicleResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputGoogleChronicleTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputGoogleChronicleTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleChronicleTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleChronicleTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputGoogleChronicleTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputGoogleChronicleTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputGoogleChronicleTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type SendEventsAs string
+
+const (
+	SendEventsAsUnstructured SendEventsAs = "unstructured"
+	SendEventsAsUdm          SendEventsAs = "udm"
+)
+
+func (e SendEventsAs) ToPointer() *SendEventsAs {
+	return &e
+}
+
+type OutputGoogleChronicleExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputGoogleChronicleExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputGoogleChronicleExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputGoogleChronicleFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputGoogleChronicleFailedRequestLoggingMode string
+
+const (
+	OutputGoogleChronicleFailedRequestLoggingModePayload           OutputGoogleChronicleFailedRequestLoggingMode = "payload"
+	OutputGoogleChronicleFailedRequestLoggingModePayloadAndHeaders OutputGoogleChronicleFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputGoogleChronicleFailedRequestLoggingModeNone              OutputGoogleChronicleFailedRequestLoggingMode = "none"
+)
+
+func (e OutputGoogleChronicleFailedRequestLoggingMode) ToPointer() *OutputGoogleChronicleFailedRequestLoggingMode {
+	return &e
+}
+
+// OutputGoogleChronicleBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputGoogleChronicleBackpressureBehavior string
+
+const (
+	OutputGoogleChronicleBackpressureBehaviorBlock OutputGoogleChronicleBackpressureBehavior = "block"
+	OutputGoogleChronicleBackpressureBehaviorDrop  OutputGoogleChronicleBackpressureBehavior = "drop"
+	OutputGoogleChronicleBackpressureBehaviorQueue OutputGoogleChronicleBackpressureBehavior = "queue"
+)
+
+func (e OutputGoogleChronicleBackpressureBehavior) ToPointer() *OutputGoogleChronicleBackpressureBehavior {
+	return &e
+}
+
+type ExtraLogType struct {
+	LogType     string  `json:"logType"`
+	Description *string `json:"description,omitempty"`
+}
+
+func (o *ExtraLogType) GetLogType() string {
+	if o == nil {
+		return ""
+	}
+	return o.LogType
+}
+
+func (o *ExtraLogType) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+type CustomLabel struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+func (o *CustomLabel) GetKey() string {
+	if o == nil {
+		return ""
+	}
+	return o.Key
+}
+
+func (o *CustomLabel) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputGoogleChronicleCompression - Codec to use to compress the persisted data
+type OutputGoogleChronicleCompression string
+
+const (
+	OutputGoogleChronicleCompressionNone OutputGoogleChronicleCompression = "none"
+	OutputGoogleChronicleCompressionGzip OutputGoogleChronicleCompression = "gzip"
+)
+
+func (e OutputGoogleChronicleCompression) ToPointer() *OutputGoogleChronicleCompression {
+	return &e
+}
+
+// OutputGoogleChronicleQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputGoogleChronicleQueueFullBehavior string
+
+const (
+	OutputGoogleChronicleQueueFullBehaviorBlock OutputGoogleChronicleQueueFullBehavior = "block"
+	OutputGoogleChronicleQueueFullBehaviorDrop  OutputGoogleChronicleQueueFullBehavior = "drop"
+)
+
+func (e OutputGoogleChronicleQueueFullBehavior) ToPointer() *OutputGoogleChronicleQueueFullBehavior {
+	return &e
+}
+
+// OutputGoogleChronicleMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputGoogleChronicleMode string
+
+const (
+	OutputGoogleChronicleModeError        OutputGoogleChronicleMode = "error"
+	OutputGoogleChronicleModeBackpressure OutputGoogleChronicleMode = "backpressure"
+	OutputGoogleChronicleModeAlways       OutputGoogleChronicleMode = "always"
+)
+
+func (e OutputGoogleChronicleMode) ToPointer() *OutputGoogleChronicleMode {
+	return &e
+}
+
+type OutputGoogleChroniclePqControls struct {
+}
+
+type OutputGoogleChronicle struct {
+	// Unique ID for this output
+	ID   string                    `json:"id"`
+	Type OutputGoogleChronicleType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags           []string                                   `json:"streamtags,omitempty"`
+	APIVersion           *CreateOutputAPIVersion                    `default:"v1" json:"apiVersion"`
+	AuthenticationMethod *OutputGoogleChronicleAuthenticationMethod `default:"serviceAccount" json:"authenticationMethod"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputGoogleChronicleResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputGoogleChronicleTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool         `default:"false" json:"responseHonorRetryAfterHeader"`
+	LogFormatType                 *SendEventsAs `default:"unstructured" json:"logFormatType"`
+	// Regional endpoint to send events to
+	Region *string `json:"region,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"1024" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"90" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputGoogleChronicleExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputGoogleChronicleFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputGoogleChronicleBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64 `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string  `json:"description,omitempty"`
+	// Custom log types. If the value "Custom" is selected in the setting "Default log type" above, the first custom log type in this table will be automatically selected as default log type.
+	ExtraLogTypes []ExtraLogType `json:"extraLogTypes,omitempty"`
+	// Default log type value to send to SecOps. Can be overwritten by event field __logType.
+	LogType *string `json:"logType,omitempty"`
+	// Name of the event field that contains the log text to send. If not specified, Stream sends a JSON representation of the whole event.
+	LogTextField *string `json:"logTextField,omitempty"`
+	// Unique identifier (UUID) corresponding to a particular SecOps instance. Provided by your SecOps representative.
+	CustomerID *string `json:"customerId,omitempty"`
+	// User-configured environment namespace to identify the data domain the logs originated from. Use namespace as a tag to identify the appropriate data domain for indexing and enrichment functionality. Can be overwritten by event field __namespace.
+	Namespace *string `json:"namespace,omitempty"`
+	// Custom labels to be added to every batch
+	CustomLabels []CustomLabel `json:"customLabels,omitempty"`
+	// Organization's API key in Google SecOps
+	APIKey *string `json:"apiKey,omitempty"`
+	// Select or create a stored text secret
+	APIKeySecret *string `json:"apiKeySecret,omitempty"`
+	// Contents of service account credentials (JSON keys) file downloaded from Google Cloud. To upload a file, click the upload button at this field's upper right.
+	ServiceAccountCredentials *string `json:"serviceAccountCredentials,omitempty"`
+	// Select or create a stored text secret
+	ServiceAccountCredentialsSecret *string `json:"serviceAccountCredentialsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputGoogleChronicleCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputGoogleChronicleQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputGoogleChronicleMode       `default:"error" json:"pqMode"`
+	PqControls *OutputGoogleChroniclePqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputGoogleChronicle) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputGoogleChronicle) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputGoogleChronicle) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputGoogleChronicle) GetType() OutputGoogleChronicleType {
+	if o == nil {
+		return OutputGoogleChronicleType("")
+	}
+	return o.Type
+}
+
+func (o *OutputGoogleChronicle) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputGoogleChronicle) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputGoogleChronicle) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputGoogleChronicle) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputGoogleChronicle) GetAPIVersion() *CreateOutputAPIVersion {
+	if o == nil {
+		return nil
+	}
+	return o.APIVersion
+}
+
+func (o *OutputGoogleChronicle) GetAuthenticationMethod() *OutputGoogleChronicleAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthenticationMethod
+}
+
+func (o *OutputGoogleChronicle) GetResponseRetrySettings() []OutputGoogleChronicleResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputGoogleChronicle) GetTimeoutRetrySettings() *OutputGoogleChronicleTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputGoogleChronicle) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputGoogleChronicle) GetLogFormatType() *SendEventsAs {
+	if o == nil {
+		return nil
+	}
+	return o.LogFormatType
+}
+
+func (o *OutputGoogleChronicle) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputGoogleChronicle) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputGoogleChronicle) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputGoogleChronicle) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputGoogleChronicle) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputGoogleChronicle) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputGoogleChronicle) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputGoogleChronicle) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputGoogleChronicle) GetExtraHTTPHeaders() []OutputGoogleChronicleExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputGoogleChronicle) GetFailedRequestLoggingMode() *OutputGoogleChronicleFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputGoogleChronicle) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputGoogleChronicle) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputGoogleChronicle) GetOnBackpressure() *OutputGoogleChronicleBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputGoogleChronicle) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputGoogleChronicle) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputGoogleChronicle) GetExtraLogTypes() []ExtraLogType {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraLogTypes
+}
+
+func (o *OutputGoogleChronicle) GetLogType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogType
+}
+
+func (o *OutputGoogleChronicle) GetLogTextField() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogTextField
+}
+
+func (o *OutputGoogleChronicle) GetCustomerID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomerID
+}
+
+func (o *OutputGoogleChronicle) GetNamespace() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Namespace
+}
+
+func (o *OutputGoogleChronicle) GetCustomLabels() []CustomLabel {
+	if o == nil {
+		return nil
+	}
+	return o.CustomLabels
+}
+
+func (o *OutputGoogleChronicle) GetAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIKey
+}
+
+func (o *OutputGoogleChronicle) GetAPIKeySecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIKeySecret
+}
+
+func (o *OutputGoogleChronicle) GetServiceAccountCredentials() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServiceAccountCredentials
+}
+
+func (o *OutputGoogleChronicle) GetServiceAccountCredentialsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServiceAccountCredentialsSecret
+}
+
+func (o *OutputGoogleChronicle) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputGoogleChronicle) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputGoogleChronicle) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputGoogleChronicle) GetPqCompress() *OutputGoogleChronicleCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputGoogleChronicle) GetPqOnBackpressure() *OutputGoogleChronicleQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputGoogleChronicle) GetPqMode() *OutputGoogleChronicleMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputGoogleChronicle) GetPqControls() *OutputGoogleChroniclePqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputAzureEventhubType string
+
+const (
+	OutputAzureEventhubTypeAzureEventhub OutputAzureEventhubType = "azure_eventhub"
+)
+
+func (e OutputAzureEventhubType) ToPointer() *OutputAzureEventhubType {
+	return &e
+}
+
+// OutputAzureEventhubAcknowledgments - Control the number of required acknowledgments
+type OutputAzureEventhubAcknowledgments int64
+
+const (
+	OutputAzureEventhubAcknowledgmentsOne    OutputAzureEventhubAcknowledgments = 1
+	OutputAzureEventhubAcknowledgmentsZero   OutputAzureEventhubAcknowledgments = 0
+	OutputAzureEventhubAcknowledgmentsMinus1 OutputAzureEventhubAcknowledgments = -1
+)
+
+func (e OutputAzureEventhubAcknowledgments) ToPointer() *OutputAzureEventhubAcknowledgments {
+	return &e
+}
+
+// OutputAzureEventhubRecordDataFormat - Format to use to serialize events before writing to the Event Hubs Kafka brokers
+type OutputAzureEventhubRecordDataFormat string
+
+const (
+	OutputAzureEventhubRecordDataFormatJSON OutputAzureEventhubRecordDataFormat = "json"
+	OutputAzureEventhubRecordDataFormatRaw  OutputAzureEventhubRecordDataFormat = "raw"
+)
+
+func (e OutputAzureEventhubRecordDataFormat) ToPointer() *OutputAzureEventhubRecordDataFormat {
+	return &e
+}
+
+type OutputAzureEventhubSASLMechanism string
+
+const (
+	OutputAzureEventhubSASLMechanismPlain       OutputAzureEventhubSASLMechanism = "plain"
+	OutputAzureEventhubSASLMechanismOauthbearer OutputAzureEventhubSASLMechanism = "oauthbearer"
+)
+
+func (e OutputAzureEventhubSASLMechanism) ToPointer() *OutputAzureEventhubSASLMechanism {
+	return &e
+}
+
+// OutputAzureEventhubAuthentication - Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+type OutputAzureEventhubAuthentication struct {
+	Disabled  *bool                             `default:"false" json:"disabled"`
+	Mechanism *OutputAzureEventhubSASLMechanism `default:"plain" json:"mechanism"`
+}
+
+func (o OutputAzureEventhubAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureEventhubAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureEventhubAuthentication) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputAzureEventhubAuthentication) GetMechanism() *OutputAzureEventhubSASLMechanism {
+	if o == nil {
+		return nil
+	}
+	return o.Mechanism
+}
+
+type OutputAzureEventhubTLSSettingsClientSide struct {
+	Disabled *bool `default:"false" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another trusted CA (such as the system's)
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+}
+
+func (o OutputAzureEventhubTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureEventhubTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureEventhubTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputAzureEventhubTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+// OutputAzureEventhubBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputAzureEventhubBackpressureBehavior string
+
+const (
+	OutputAzureEventhubBackpressureBehaviorBlock OutputAzureEventhubBackpressureBehavior = "block"
+	OutputAzureEventhubBackpressureBehaviorDrop  OutputAzureEventhubBackpressureBehavior = "drop"
+	OutputAzureEventhubBackpressureBehaviorQueue OutputAzureEventhubBackpressureBehavior = "queue"
+)
+
+func (e OutputAzureEventhubBackpressureBehavior) ToPointer() *OutputAzureEventhubBackpressureBehavior {
+	return &e
+}
+
+// OutputAzureEventhubCompression - Codec to use to compress the persisted data
+type OutputAzureEventhubCompression string
+
+const (
+	OutputAzureEventhubCompressionNone OutputAzureEventhubCompression = "none"
+	OutputAzureEventhubCompressionGzip OutputAzureEventhubCompression = "gzip"
+)
+
+func (e OutputAzureEventhubCompression) ToPointer() *OutputAzureEventhubCompression {
+	return &e
+}
+
+// OutputAzureEventhubQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputAzureEventhubQueueFullBehavior string
+
+const (
+	OutputAzureEventhubQueueFullBehaviorBlock OutputAzureEventhubQueueFullBehavior = "block"
+	OutputAzureEventhubQueueFullBehaviorDrop  OutputAzureEventhubQueueFullBehavior = "drop"
+)
+
+func (e OutputAzureEventhubQueueFullBehavior) ToPointer() *OutputAzureEventhubQueueFullBehavior {
+	return &e
+}
+
+// OutputAzureEventhubMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputAzureEventhubMode string
+
+const (
+	OutputAzureEventhubModeError        OutputAzureEventhubMode = "error"
+	OutputAzureEventhubModeBackpressure OutputAzureEventhubMode = "backpressure"
+	OutputAzureEventhubModeAlways       OutputAzureEventhubMode = "always"
+)
+
+func (e OutputAzureEventhubMode) ToPointer() *OutputAzureEventhubMode {
+	return &e
+}
+
+type OutputAzureEventhubPqControls struct {
+}
+
+type OutputAzureEventhub struct {
+	// Unique ID for this output
+	ID   string                   `json:"id"`
+	Type *OutputAzureEventhubType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// List of Event Hubs Kafka brokers to connect to, eg. yourdomain.servicebus.windows.net:9093. The hostname can be found in the host portion of the primary or secondary connection string in Shared Access Policies.
+	Brokers []string `json:"brokers"`
+	// The name of the Event Hub (Kafka Topic) to publish events. Can be overwritten using field __topicOut.
+	Topic string `json:"topic"`
+	// Control the number of required acknowledgments
+	Ack *OutputAzureEventhubAcknowledgments `default:"1" json:"ack"`
+	// Format to use to serialize events before writing to the Event Hubs Kafka brokers
+	Format *OutputAzureEventhubRecordDataFormat `default:"json" json:"format"`
+	// Maximum size of each record batch before compression. Setting should be < message.max.bytes settings in Event Hubs brokers.
+	MaxRecordSizeKB *float64 `default:"768" json:"maxRecordSizeKB"`
+	// Maximum number of events in a batch before forcing a flush
+	FlushEventCount *float64 `default:"1000" json:"flushEventCount"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Max record size.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Maximum time to wait for a connection to complete successfully
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Maximum time to wait for Kafka to respond to a request
+	RequestTimeout *float64 `default:"60000" json:"requestTimeout"`
+	// If messages are failing, you can set the maximum number of retries as high as 100 to prevent loss of data
+	MaxRetries *float64 `default:"5" json:"maxRetries"`
+	// The maximum wait time for a retry, in milliseconds. Default (and minimum) is 30,000 ms (30 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackOff *float64 `default:"30000" json:"maxBackOff"`
+	// Initial value used to calculate the retry, in milliseconds. Maximum is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"300" json:"initialBackoff"`
+	// Set the backoff multiplier (2-20) to control the retry frequency for failed messages. For faster retries, use a lower multiplier. For slower retries with more delay between attempts, use a higher multiplier. The multiplier is used in an exponential backoff formula; see the Kafka [documentation](https://kafka.js.org/docs/retry-detailed) for details.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// Maximum time to wait for Kafka to respond to an authentication request
+	AuthenticationTimeout *float64 `default:"10000" json:"authenticationTimeout"`
+	// Specifies a time window during which @{product} can reauthenticate if needed. Creates the window measuring backward from the moment when credentials are set to expire.
+	ReauthenticationThreshold *float64 `default:"10000" json:"reauthenticationThreshold"`
+	// Authentication parameters to use when connecting to brokers. Using TLS is highly recommended.
+	Sasl *OutputAzureEventhubAuthentication        `json:"sasl,omitempty"`
+	TLS  *OutputAzureEventhubTLSSettingsClientSide `json:"tls,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputAzureEventhubBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                                  `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputAzureEventhubCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputAzureEventhubQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputAzureEventhubMode       `default:"error" json:"pqMode"`
+	PqControls *OutputAzureEventhubPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputAzureEventhub) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureEventhub) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureEventhub) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputAzureEventhub) GetType() *OutputAzureEventhubType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputAzureEventhub) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputAzureEventhub) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputAzureEventhub) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputAzureEventhub) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputAzureEventhub) GetBrokers() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Brokers
+}
+
+func (o *OutputAzureEventhub) GetTopic() string {
+	if o == nil {
+		return ""
+	}
+	return o.Topic
+}
+
+func (o *OutputAzureEventhub) GetAck() *OutputAzureEventhubAcknowledgments {
+	if o == nil {
+		return nil
+	}
+	return o.Ack
+}
+
+func (o *OutputAzureEventhub) GetFormat() *OutputAzureEventhubRecordDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputAzureEventhub) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputAzureEventhub) GetFlushEventCount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushEventCount
+}
+
+func (o *OutputAzureEventhub) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputAzureEventhub) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputAzureEventhub) GetRequestTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RequestTimeout
+}
+
+func (o *OutputAzureEventhub) GetMaxRetries() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetries
+}
+
+func (o *OutputAzureEventhub) GetMaxBackOff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackOff
+}
+
+func (o *OutputAzureEventhub) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputAzureEventhub) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputAzureEventhub) GetAuthenticationTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.AuthenticationTimeout
+}
+
+func (o *OutputAzureEventhub) GetReauthenticationThreshold() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReauthenticationThreshold
+}
+
+func (o *OutputAzureEventhub) GetSasl() *OutputAzureEventhubAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.Sasl
+}
+
+func (o *OutputAzureEventhub) GetTLS() *OutputAzureEventhubTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputAzureEventhub) GetOnBackpressure() *OutputAzureEventhubBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputAzureEventhub) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputAzureEventhub) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputAzureEventhub) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputAzureEventhub) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputAzureEventhub) GetPqCompress() *OutputAzureEventhubCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputAzureEventhub) GetPqOnBackpressure() *OutputAzureEventhubQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputAzureEventhub) GetPqMode() *OutputAzureEventhubMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputAzureEventhub) GetPqControls() *OutputAzureEventhubPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputHoneycombType string
+
+const (
+	OutputHoneycombTypeHoneycomb OutputHoneycombType = "honeycomb"
+)
+
+func (e OutputHoneycombType) ToPointer() *OutputHoneycombType {
+	return &e
+}
+
+type OutputHoneycombExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputHoneycombExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputHoneycombExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputHoneycombFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputHoneycombFailedRequestLoggingMode string
+
+const (
+	OutputHoneycombFailedRequestLoggingModePayload           OutputHoneycombFailedRequestLoggingMode = "payload"
+	OutputHoneycombFailedRequestLoggingModePayloadAndHeaders OutputHoneycombFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputHoneycombFailedRequestLoggingModeNone              OutputHoneycombFailedRequestLoggingMode = "none"
+)
+
+func (e OutputHoneycombFailedRequestLoggingMode) ToPointer() *OutputHoneycombFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputHoneycombResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputHoneycombResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHoneycombResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHoneycombResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputHoneycombResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputHoneycombResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputHoneycombResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputHoneycombTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputHoneycombTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHoneycombTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHoneycombTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputHoneycombTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputHoneycombTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputHoneycombTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputHoneycombBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputHoneycombBackpressureBehavior string
+
+const (
+	OutputHoneycombBackpressureBehaviorBlock OutputHoneycombBackpressureBehavior = "block"
+	OutputHoneycombBackpressureBehaviorDrop  OutputHoneycombBackpressureBehavior = "drop"
+	OutputHoneycombBackpressureBehaviorQueue OutputHoneycombBackpressureBehavior = "queue"
+)
+
+func (e OutputHoneycombBackpressureBehavior) ToPointer() *OutputHoneycombBackpressureBehavior {
+	return &e
+}
+
+// OutputHoneycombAuthenticationMethod - Enter API key directly, or select a stored secret
+type OutputHoneycombAuthenticationMethod string
+
+const (
+	OutputHoneycombAuthenticationMethodManual OutputHoneycombAuthenticationMethod = "manual"
+	OutputHoneycombAuthenticationMethodSecret OutputHoneycombAuthenticationMethod = "secret"
+)
+
+func (e OutputHoneycombAuthenticationMethod) ToPointer() *OutputHoneycombAuthenticationMethod {
+	return &e
+}
+
+// OutputHoneycombCompression - Codec to use to compress the persisted data
+type OutputHoneycombCompression string
+
+const (
+	OutputHoneycombCompressionNone OutputHoneycombCompression = "none"
+	OutputHoneycombCompressionGzip OutputHoneycombCompression = "gzip"
+)
+
+func (e OutputHoneycombCompression) ToPointer() *OutputHoneycombCompression {
+	return &e
+}
+
+// OutputHoneycombQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputHoneycombQueueFullBehavior string
+
+const (
+	OutputHoneycombQueueFullBehaviorBlock OutputHoneycombQueueFullBehavior = "block"
+	OutputHoneycombQueueFullBehaviorDrop  OutputHoneycombQueueFullBehavior = "drop"
+)
+
+func (e OutputHoneycombQueueFullBehavior) ToPointer() *OutputHoneycombQueueFullBehavior {
+	return &e
+}
+
+// OutputHoneycombMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputHoneycombMode string
+
+const (
+	OutputHoneycombModeError        OutputHoneycombMode = "error"
+	OutputHoneycombModeBackpressure OutputHoneycombMode = "backpressure"
+	OutputHoneycombModeAlways       OutputHoneycombMode = "always"
+)
+
+func (e OutputHoneycombMode) ToPointer() *OutputHoneycombMode {
+	return &e
+}
+
+type OutputHoneycombPqControls struct {
+}
+
+type OutputHoneycomb struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type OutputHoneycombType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the dataset to send events to – e.g., observability
+	Dataset string `json:"dataset"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputHoneycombExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputHoneycombFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputHoneycombResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputHoneycombTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputHoneycombBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Enter API key directly, or select a stored secret
+	AuthType    *OutputHoneycombAuthenticationMethod `default:"manual" json:"authType"`
+	Description *string                              `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputHoneycombCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputHoneycombQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputHoneycombMode       `default:"error" json:"pqMode"`
+	PqControls *OutputHoneycombPqControls `json:"pqControls,omitempty"`
+	// Team API key where the dataset belongs
+	Team *string `json:"team,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+}
+
+func (o OutputHoneycomb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputHoneycomb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputHoneycomb) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputHoneycomb) GetType() OutputHoneycombType {
+	if o == nil {
+		return OutputHoneycombType("")
+	}
+	return o.Type
+}
+
+func (o *OutputHoneycomb) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputHoneycomb) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputHoneycomb) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputHoneycomb) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputHoneycomb) GetDataset() string {
+	if o == nil {
+		return ""
+	}
+	return o.Dataset
+}
+
+func (o *OutputHoneycomb) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputHoneycomb) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputHoneycomb) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputHoneycomb) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputHoneycomb) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputHoneycomb) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputHoneycomb) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputHoneycomb) GetExtraHTTPHeaders() []OutputHoneycombExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputHoneycomb) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputHoneycomb) GetFailedRequestLoggingMode() *OutputHoneycombFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputHoneycomb) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputHoneycomb) GetResponseRetrySettings() []OutputHoneycombResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputHoneycomb) GetTimeoutRetrySettings() *OutputHoneycombTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputHoneycomb) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputHoneycomb) GetOnBackpressure() *OutputHoneycombBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputHoneycomb) GetAuthType() *OutputHoneycombAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputHoneycomb) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputHoneycomb) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputHoneycomb) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputHoneycomb) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputHoneycomb) GetPqCompress() *OutputHoneycombCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputHoneycomb) GetPqOnBackpressure() *OutputHoneycombQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputHoneycomb) GetPqMode() *OutputHoneycombMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputHoneycomb) GetPqControls() *OutputHoneycombPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputHoneycomb) GetTeam() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Team
+}
+
+func (o *OutputHoneycomb) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+type OutputKinesisType string
+
+const (
+	OutputKinesisTypeKinesis OutputKinesisType = "kinesis"
+)
+
+func (e OutputKinesisType) ToPointer() *OutputKinesisType {
+	return &e
+}
+
+// OutputKinesisAuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputKinesisAuthenticationMethod string
+
+const (
+	OutputKinesisAuthenticationMethodAuto   OutputKinesisAuthenticationMethod = "auto"
+	OutputKinesisAuthenticationMethodManual OutputKinesisAuthenticationMethod = "manual"
+	OutputKinesisAuthenticationMethodSecret OutputKinesisAuthenticationMethod = "secret"
+)
+
+func (e OutputKinesisAuthenticationMethod) ToPointer() *OutputKinesisAuthenticationMethod {
+	return &e
+}
+
+// OutputKinesisSignatureVersion - Signature version to use for signing Kinesis stream requests
+type OutputKinesisSignatureVersion string
+
+const (
+	OutputKinesisSignatureVersionV2 OutputKinesisSignatureVersion = "v2"
+	OutputKinesisSignatureVersionV4 OutputKinesisSignatureVersion = "v4"
+)
+
+func (e OutputKinesisSignatureVersion) ToPointer() *OutputKinesisSignatureVersion {
+	return &e
+}
+
+// OutputKinesisCompression - Compression type to use for records
+type OutputKinesisCompression string
+
+const (
+	OutputKinesisCompressionNone OutputKinesisCompression = "none"
+	OutputKinesisCompressionGzip OutputKinesisCompression = "gzip"
+)
+
+func (e OutputKinesisCompression) ToPointer() *OutputKinesisCompression {
+	return &e
+}
+
+// OutputKinesisBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputKinesisBackpressureBehavior string
+
+const (
+	OutputKinesisBackpressureBehaviorBlock OutputKinesisBackpressureBehavior = "block"
+	OutputKinesisBackpressureBehaviorDrop  OutputKinesisBackpressureBehavior = "drop"
+	OutputKinesisBackpressureBehaviorQueue OutputKinesisBackpressureBehavior = "queue"
+)
+
+func (e OutputKinesisBackpressureBehavior) ToPointer() *OutputKinesisBackpressureBehavior {
+	return &e
+}
+
+// OutputKinesisPqCompressCompression - Codec to use to compress the persisted data
+type OutputKinesisPqCompressCompression string
+
+const (
+	OutputKinesisPqCompressCompressionNone OutputKinesisPqCompressCompression = "none"
+	OutputKinesisPqCompressCompressionGzip OutputKinesisPqCompressCompression = "gzip"
+)
+
+func (e OutputKinesisPqCompressCompression) ToPointer() *OutputKinesisPqCompressCompression {
+	return &e
+}
+
+// OutputKinesisQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputKinesisQueueFullBehavior string
+
+const (
+	OutputKinesisQueueFullBehaviorBlock OutputKinesisQueueFullBehavior = "block"
+	OutputKinesisQueueFullBehaviorDrop  OutputKinesisQueueFullBehavior = "drop"
+)
+
+func (e OutputKinesisQueueFullBehavior) ToPointer() *OutputKinesisQueueFullBehavior {
+	return &e
+}
+
+// OutputKinesisMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputKinesisMode string
+
+const (
+	OutputKinesisModeError        OutputKinesisMode = "error"
+	OutputKinesisModeBackpressure OutputKinesisMode = "backpressure"
+	OutputKinesisModeAlways       OutputKinesisMode = "always"
+)
+
+func (e OutputKinesisMode) ToPointer() *OutputKinesisMode {
+	return &e
+}
+
+type OutputKinesisPqControls struct {
+}
+
+type OutputKinesis struct {
+	// Unique ID for this output
+	ID   string             `json:"id"`
+	Type *OutputKinesisType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Kinesis stream name to send events to.
+	StreamName string `json:"streamName"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputKinesisAuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	AwsSecretKey            *string                            `json:"awsSecretKey,omitempty"`
+	// Region where the Kinesis stream is located
+	Region string `json:"region"`
+	// Kinesis stream service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to Kinesis stream-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing Kinesis stream requests
+	SignatureVersion *OutputKinesisSignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access Kinesis stream
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Maximum number of ongoing put requests before blocking.
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size (KB) of each individual record before compression. For uncompressed or non-compressible data 1MB is the max recommended size
+	MaxRecordSizeKB *float64 `default:"1024" json:"maxRecordSizeKB"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Max record size.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Compression type to use for records
+	Compression *OutputKinesisCompression `default:"gzip" json:"compression"`
+	// Provides higher stream rate limits, improving delivery speed and reliability by minimizing throttling. See the [ListShards API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_ListShards.html) documentation for details.
+	UseListShards *bool `default:"false" json:"useListShards"`
+	// Batch events into a single record as NDJSON
+	AsNdjson *bool `default:"true" json:"asNdjson"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputKinesisBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                            `json:"description,omitempty"`
+	AwsAPIKey      *string                            `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputKinesisPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputKinesisQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputKinesisMode       `default:"error" json:"pqMode"`
+	PqControls *OutputKinesisPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputKinesis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputKinesis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputKinesis) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputKinesis) GetType() *OutputKinesisType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputKinesis) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputKinesis) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputKinesis) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputKinesis) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputKinesis) GetStreamName() string {
+	if o == nil {
+		return ""
+	}
+	return o.StreamName
+}
+
+func (o *OutputKinesis) GetAwsAuthenticationMethod() *OutputKinesisAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputKinesis) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputKinesis) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
+}
+
+func (o *OutputKinesis) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputKinesis) GetSignatureVersion() *OutputKinesisSignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputKinesis) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputKinesis) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputKinesis) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputKinesis) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputKinesis) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputKinesis) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputKinesis) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputKinesis) GetMaxRecordSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRecordSizeKB
+}
+
+func (o *OutputKinesis) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputKinesis) GetCompression() *OutputKinesisCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compression
+}
+
+func (o *OutputKinesis) GetUseListShards() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseListShards
+}
+
+func (o *OutputKinesis) GetAsNdjson() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AsNdjson
+}
+
+func (o *OutputKinesis) GetOnBackpressure() *OutputKinesisBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputKinesis) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputKinesis) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputKinesis) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputKinesis) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputKinesis) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputKinesis) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputKinesis) GetPqCompress() *OutputKinesisPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputKinesis) GetPqOnBackpressure() *OutputKinesisQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputKinesis) GetPqMode() *OutputKinesisMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputKinesis) GetPqControls() *OutputKinesisPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputAzureLogsType string
+
+const (
+	OutputAzureLogsTypeAzureLogs OutputAzureLogsType = "azure_logs"
+)
+
+func (e OutputAzureLogsType) ToPointer() *OutputAzureLogsType {
+	return &e
+}
+
+type OutputAzureLogsExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputAzureLogsExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputAzureLogsExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputAzureLogsFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputAzureLogsFailedRequestLoggingMode string
+
+const (
+	OutputAzureLogsFailedRequestLoggingModePayload           OutputAzureLogsFailedRequestLoggingMode = "payload"
+	OutputAzureLogsFailedRequestLoggingModePayloadAndHeaders OutputAzureLogsFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputAzureLogsFailedRequestLoggingModeNone              OutputAzureLogsFailedRequestLoggingMode = "none"
+)
+
+func (e OutputAzureLogsFailedRequestLoggingMode) ToPointer() *OutputAzureLogsFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputAzureLogsResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputAzureLogsResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureLogsResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureLogsResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputAzureLogsResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputAzureLogsResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputAzureLogsResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputAzureLogsTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputAzureLogsTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureLogsTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureLogsTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputAzureLogsTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputAzureLogsTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputAzureLogsTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputAzureLogsBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputAzureLogsBackpressureBehavior string
+
+const (
+	OutputAzureLogsBackpressureBehaviorBlock OutputAzureLogsBackpressureBehavior = "block"
+	OutputAzureLogsBackpressureBehaviorDrop  OutputAzureLogsBackpressureBehavior = "drop"
+	OutputAzureLogsBackpressureBehaviorQueue OutputAzureLogsBackpressureBehavior = "queue"
+)
+
+func (e OutputAzureLogsBackpressureBehavior) ToPointer() *OutputAzureLogsBackpressureBehavior {
+	return &e
+}
+
+// OutputAzureLogsAuthenticationMethod - Enter workspace ID and workspace key directly, or select a stored secret
+type OutputAzureLogsAuthenticationMethod string
+
+const (
+	OutputAzureLogsAuthenticationMethodManual OutputAzureLogsAuthenticationMethod = "manual"
+	OutputAzureLogsAuthenticationMethodSecret OutputAzureLogsAuthenticationMethod = "secret"
+)
+
+func (e OutputAzureLogsAuthenticationMethod) ToPointer() *OutputAzureLogsAuthenticationMethod {
+	return &e
+}
+
+// OutputAzureLogsCompression - Codec to use to compress the persisted data
+type OutputAzureLogsCompression string
+
+const (
+	OutputAzureLogsCompressionNone OutputAzureLogsCompression = "none"
+	OutputAzureLogsCompressionGzip OutputAzureLogsCompression = "gzip"
+)
+
+func (e OutputAzureLogsCompression) ToPointer() *OutputAzureLogsCompression {
+	return &e
+}
+
+// OutputAzureLogsQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputAzureLogsQueueFullBehavior string
+
+const (
+	OutputAzureLogsQueueFullBehaviorBlock OutputAzureLogsQueueFullBehavior = "block"
+	OutputAzureLogsQueueFullBehaviorDrop  OutputAzureLogsQueueFullBehavior = "drop"
+)
+
+func (e OutputAzureLogsQueueFullBehavior) ToPointer() *OutputAzureLogsQueueFullBehavior {
+	return &e
+}
+
+// OutputAzureLogsMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputAzureLogsMode string
+
+const (
+	OutputAzureLogsModeError        OutputAzureLogsMode = "error"
+	OutputAzureLogsModeBackpressure OutputAzureLogsMode = "backpressure"
+	OutputAzureLogsModeAlways       OutputAzureLogsMode = "always"
+)
+
+func (e OutputAzureLogsMode) ToPointer() *OutputAzureLogsMode {
+	return &e
+}
+
+type OutputAzureLogsPqControls struct {
+}
+
+type OutputAzureLogs struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type OutputAzureLogsType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The Log Type of events sent to this LogAnalytics workspace. Defaults to `Cribl`. Use only letters, numbers, and `_` characters, and can't exceed 100 characters. Can be overwritten by event field __logType.
+	LogType *string `default:"Cribl" json:"logType"`
+	// Optional Resource ID of the Azure resource to associate the data with. Can be overridden by the __resourceId event field. This ID populates the _ResourceId property, allowing the data to be included in resource-centric queries. If the ID is neither specified nor overridden, resource-centric queries will omit the data.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"1024" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	Compress         *bool    `json:"compress,omitempty"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputAzureLogsExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputAzureLogsFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// The DNS name of the Log API endpoint that sends log data to a Log Analytics workspace in Azure Monitor. Defaults to .ods.opinsights.azure.com. @{product} will add a prefix and suffix to construct a URI in this format: <https://<Workspace_ID><your_DNS_name>/api/logs?api-version=<API version>.
+	APIURL *string `default:".ods.opinsights.azure.com" json:"apiUrl"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputAzureLogsResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputAzureLogsTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputAzureLogsBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Enter workspace ID and workspace key directly, or select a stored secret
+	AuthType    *OutputAzureLogsAuthenticationMethod `default:"manual" json:"authType"`
+	Description *string                              `json:"description,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputAzureLogsCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputAzureLogsQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputAzureLogsMode       `default:"error" json:"pqMode"`
+	PqControls *OutputAzureLogsPqControls `json:"pqControls,omitempty"`
+	// Azure Log Analytics Workspace ID. See Azure Dashboard Workspace > Advanced settings.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Azure Log Analytics Workspace Primary or Secondary Shared Key. See Azure Dashboard Workspace > Advanced settings.
+	WorkspaceKey *string `json:"workspaceKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	KeypairSecret *string `json:"keypairSecret,omitempty"`
+}
+
+func (o OutputAzureLogs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureLogs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureLogs) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputAzureLogs) GetType() OutputAzureLogsType {
+	if o == nil {
+		return OutputAzureLogsType("")
+	}
+	return o.Type
+}
+
+func (o *OutputAzureLogs) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputAzureLogs) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputAzureLogs) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputAzureLogs) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputAzureLogs) GetLogType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogType
+}
+
+func (o *OutputAzureLogs) GetResourceID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceID
+}
+
+func (o *OutputAzureLogs) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputAzureLogs) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputAzureLogs) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputAzureLogs) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputAzureLogs) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputAzureLogs) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputAzureLogs) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputAzureLogs) GetExtraHTTPHeaders() []OutputAzureLogsExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputAzureLogs) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputAzureLogs) GetFailedRequestLoggingMode() *OutputAzureLogsFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputAzureLogs) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputAzureLogs) GetAPIURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIURL
+}
+
+func (o *OutputAzureLogs) GetResponseRetrySettings() []OutputAzureLogsResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputAzureLogs) GetTimeoutRetrySettings() *OutputAzureLogsTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputAzureLogs) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputAzureLogs) GetOnBackpressure() *OutputAzureLogsBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputAzureLogs) GetAuthType() *OutputAzureLogsAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputAzureLogs) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputAzureLogs) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputAzureLogs) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputAzureLogs) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputAzureLogs) GetPqCompress() *OutputAzureLogsCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputAzureLogs) GetPqOnBackpressure() *OutputAzureLogsQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputAzureLogs) GetPqMode() *OutputAzureLogsMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputAzureLogs) GetPqControls() *OutputAzureLogsPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputAzureLogs) GetWorkspaceID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WorkspaceID
+}
+
+func (o *OutputAzureLogs) GetWorkspaceKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WorkspaceKey
+}
+
+func (o *OutputAzureLogs) GetKeypairSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KeypairSecret
+}
+
+type OutputAzureDataExplorerType string
+
+const (
+	OutputAzureDataExplorerTypeAzureDataExplorer OutputAzureDataExplorerType = "azure_data_explorer"
+)
+
+func (e OutputAzureDataExplorerType) ToPointer() *OutputAzureDataExplorerType {
+	return &e
+}
+
+type IngestionMode string
+
+const (
+	IngestionModeBatching  IngestionMode = "batching"
+	IngestionModeStreaming IngestionMode = "streaming"
+)
+
+func (e IngestionMode) ToPointer() *IngestionMode {
+	return &e
+}
+
+// MicrosoftEntraIDAuthenticationEndpoint - Endpoint used to acquire authentication tokens from Azure
+type MicrosoftEntraIDAuthenticationEndpoint string
+
+const (
+	MicrosoftEntraIDAuthenticationEndpointHTTPSLoginMicrosoftonlineCom       MicrosoftEntraIDAuthenticationEndpoint = "https://login.microsoftonline.com"
+	MicrosoftEntraIDAuthenticationEndpointHTTPSLoginMicrosoftonlineUs        MicrosoftEntraIDAuthenticationEndpoint = "https://login.microsoftonline.us"
+	MicrosoftEntraIDAuthenticationEndpointHTTPSLoginPartnerMicrosoftonlineCn MicrosoftEntraIDAuthenticationEndpoint = "https://login.partner.microsoftonline.cn"
+)
+
+func (e MicrosoftEntraIDAuthenticationEndpoint) ToPointer() *MicrosoftEntraIDAuthenticationEndpoint {
+	return &e
+}
+
+// OutputAzureDataExplorerAuthenticationMethod - The type of OAuth 2.0 client credentials grant flow to use
+type OutputAzureDataExplorerAuthenticationMethod string
+
+const (
+	OutputAzureDataExplorerAuthenticationMethodClientSecret     OutputAzureDataExplorerAuthenticationMethod = "clientSecret"
+	OutputAzureDataExplorerAuthenticationMethodClientTextSecret OutputAzureDataExplorerAuthenticationMethod = "clientTextSecret"
+	OutputAzureDataExplorerAuthenticationMethodCertificate      OutputAzureDataExplorerAuthenticationMethod = "certificate"
+)
+
+func (e OutputAzureDataExplorerAuthenticationMethod) ToPointer() *OutputAzureDataExplorerAuthenticationMethod {
+	return &e
+}
+
+type OutputAzureDataExplorerCertificate struct {
+	// The certificate you registered as credentials for your app in the Azure portal
+	CertificateName *string `json:"certificateName,omitempty"`
+}
+
+func (o *OutputAzureDataExplorerCertificate) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+// OutputAzureDataExplorerBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputAzureDataExplorerBackpressureBehavior string
+
+const (
+	OutputAzureDataExplorerBackpressureBehaviorBlock OutputAzureDataExplorerBackpressureBehavior = "block"
+	OutputAzureDataExplorerBackpressureBehaviorDrop  OutputAzureDataExplorerBackpressureBehavior = "drop"
+	OutputAzureDataExplorerBackpressureBehaviorQueue OutputAzureDataExplorerBackpressureBehavior = "queue"
+)
+
+func (e OutputAzureDataExplorerBackpressureBehavior) ToPointer() *OutputAzureDataExplorerBackpressureBehavior {
+	return &e
+}
+
+// OutputAzureDataExplorerDataFormat - Format of the output data
+type OutputAzureDataExplorerDataFormat string
+
+const (
+	OutputAzureDataExplorerDataFormatJSON    OutputAzureDataExplorerDataFormat = "json"
+	OutputAzureDataExplorerDataFormatRaw     OutputAzureDataExplorerDataFormat = "raw"
+	OutputAzureDataExplorerDataFormatParquet OutputAzureDataExplorerDataFormat = "parquet"
+)
+
+func (e OutputAzureDataExplorerDataFormat) ToPointer() *OutputAzureDataExplorerDataFormat {
+	return &e
+}
+
+// OutputAzureDataExplorerDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputAzureDataExplorerDiskSpaceProtection string
+
+const (
+	OutputAzureDataExplorerDiskSpaceProtectionBlock OutputAzureDataExplorerDiskSpaceProtection = "block"
+	OutputAzureDataExplorerDiskSpaceProtectionDrop  OutputAzureDataExplorerDiskSpaceProtection = "drop"
+)
+
+func (e OutputAzureDataExplorerDiskSpaceProtection) ToPointer() *OutputAzureDataExplorerDiskSpaceProtection {
+	return &e
+}
+
+type PrefixOptional string
+
+const (
+	PrefixOptionalDropBy   PrefixOptional = "dropBy"
+	PrefixOptionalIngestBy PrefixOptional = "ingestBy"
+)
+
+func (e PrefixOptional) ToPointer() *PrefixOptional {
+	return &e
+}
+
+type ExtentTag struct {
+	Prefix *PrefixOptional `json:"prefix,omitempty"`
+	Value  string          `json:"value"`
+}
+
+func (o *ExtentTag) GetPrefix() *PrefixOptional {
+	if o == nil {
+		return nil
+	}
+	return o.Prefix
+}
+
+func (o *ExtentTag) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type IngestIfNotExist struct {
+	Value string `json:"value"`
+}
+
+func (o *IngestIfNotExist) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// ReportLevel - Level of ingestion status reporting. Defaults to FailuresOnly.
+type ReportLevel string
+
+const (
+	ReportLevelFailuresOnly         ReportLevel = "failuresOnly"
+	ReportLevelDoNotReport          ReportLevel = "doNotReport"
+	ReportLevelFailuresAndSuccesses ReportLevel = "failuresAndSuccesses"
+)
+
+func (e ReportLevel) ToPointer() *ReportLevel {
+	return &e
+}
+
+// ReportMethod - Target of the ingestion status reporting. Defaults to Queue.
+type ReportMethod string
+
+const (
+	ReportMethodQueue         ReportMethod = "queue"
+	ReportMethodTable         ReportMethod = "table"
+	ReportMethodQueueAndTable ReportMethod = "queueAndTable"
+)
+
+func (e ReportMethod) ToPointer() *ReportMethod {
+	return &e
+}
+
+type AdditionalProperty struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+func (o *AdditionalProperty) GetKey() string {
+	if o == nil {
+		return ""
+	}
+	return o.Key
+}
+
+func (o *AdditionalProperty) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputAzureDataExplorerResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputAzureDataExplorerResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureDataExplorerResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureDataExplorerResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputAzureDataExplorerResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputAzureDataExplorerResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputAzureDataExplorerResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputAzureDataExplorerTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputAzureDataExplorerTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureDataExplorerTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureDataExplorerTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputAzureDataExplorerTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputAzureDataExplorerTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputAzureDataExplorerTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputAzureDataExplorerCompressCompression - Data compression format to apply to HTTP content before it is delivered
+type OutputAzureDataExplorerCompressCompression string
+
+const (
+	OutputAzureDataExplorerCompressCompressionNone OutputAzureDataExplorerCompressCompression = "none"
+	OutputAzureDataExplorerCompressCompressionGzip OutputAzureDataExplorerCompressCompression = "gzip"
+)
+
+func (e OutputAzureDataExplorerCompressCompression) ToPointer() *OutputAzureDataExplorerCompressCompression {
+	return &e
+}
+
+// OutputAzureDataExplorerPqCompressCompression - Codec to use to compress the persisted data
+type OutputAzureDataExplorerPqCompressCompression string
+
+const (
+	OutputAzureDataExplorerPqCompressCompressionNone OutputAzureDataExplorerPqCompressCompression = "none"
+	OutputAzureDataExplorerPqCompressCompressionGzip OutputAzureDataExplorerPqCompressCompression = "gzip"
+)
+
+func (e OutputAzureDataExplorerPqCompressCompression) ToPointer() *OutputAzureDataExplorerPqCompressCompression {
+	return &e
+}
+
+// OutputAzureDataExplorerQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputAzureDataExplorerQueueFullBehavior string
+
+const (
+	OutputAzureDataExplorerQueueFullBehaviorBlock OutputAzureDataExplorerQueueFullBehavior = "block"
+	OutputAzureDataExplorerQueueFullBehaviorDrop  OutputAzureDataExplorerQueueFullBehavior = "drop"
+)
+
+func (e OutputAzureDataExplorerQueueFullBehavior) ToPointer() *OutputAzureDataExplorerQueueFullBehavior {
+	return &e
+}
+
+// OutputAzureDataExplorerMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputAzureDataExplorerMode string
+
+const (
+	OutputAzureDataExplorerModeError        OutputAzureDataExplorerMode = "error"
+	OutputAzureDataExplorerModeBackpressure OutputAzureDataExplorerMode = "backpressure"
+	OutputAzureDataExplorerModeAlways       OutputAzureDataExplorerMode = "always"
+)
+
+func (e OutputAzureDataExplorerMode) ToPointer() *OutputAzureDataExplorerMode {
+	return &e
+}
+
+type OutputAzureDataExplorerPqControls struct {
+}
+
+type OutputAzureDataExplorer struct {
+	// Unique ID for this output
+	ID   string                       `json:"id"`
+	Type *OutputAzureDataExplorerType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The base URI for your cluster. Typically, `https://<cluster>.<region>.kusto.windows.net`.
+	ClusterURL string `json:"clusterUrl"`
+	// Name of the database containing the table where data will be ingested
+	Database string `json:"database"`
+	// Name of the table to ingest data into
+	Table string `json:"table"`
+	// When saving or starting the Destination, validate the database name and credentials; also validate table name, except when creating a new table. Disable if your Azure app does not have both the Database Viewer and the Table Viewer role.
+	ValidateDatabaseSettings *bool          `default:"true" json:"validateDatabaseSettings"`
+	IngestMode               *IngestionMode `default:"batching" json:"ingestMode"`
+	// Endpoint used to acquire authentication tokens from Azure
+	OauthEndpoint *MicrosoftEntraIDAuthenticationEndpoint `default:"https://login.microsoftonline.com" json:"oauthEndpoint"`
+	// Directory ID (tenant identifier) in Azure Active Directory
+	TenantID string `json:"tenantId"`
+	// client_id to pass in the OAuth request parameter
+	ClientID string `json:"clientId"`
+	// Scope to pass in the OAuth request parameter
+	Scope string `json:"scope"`
+	// The type of OAuth 2.0 client credentials grant flow to use
+	OauthType   *OutputAzureDataExplorerAuthenticationMethod `default:"clientSecret" json:"oauthType"`
+	Description *string                                      `json:"description,omitempty"`
+	// The client secret that you generated for your app in the Azure portal
+	ClientSecret *string `json:"clientSecret,omitempty"`
+	// Select or create a stored text secret
+	TextSecret  *string                             `json:"textSecret,omitempty"`
+	Certificate *OutputAzureDataExplorerCertificate `json:"certificate,omitempty"`
+	// The ingestion service URI for your cluster. Typically, `https://ingest-<cluster>.<region>.kusto.windows.net`.
+	IngestURL *string `json:"ingestUrl,omitempty"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputAzureDataExplorerBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Send a JSON mapping object instead of specifying an existing named data mapping
+	IsMappingObj *bool `default:"false" json:"isMappingObj"`
+	// Format of the output data
+	Format *OutputAzureDataExplorerDataFormat `default:"json" json:"format"`
+	// Filesystem location in which to buffer files before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// Maximum number of parts to upload in parallel per file
+	MaxConcurrentFileParts *float64 `default:"1" json:"maxConcurrentFileParts"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputAzureDataExplorerDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Bypass the data management service's aggregation mechanism
+	FlushImmediately *bool `default:"false" json:"flushImmediately"`
+	// Prevent blob deletion after ingestion is complete
+	RetainBlobOnSuccess *bool `default:"false" json:"retainBlobOnSuccess"`
+	// Strings or tags associated with the extent (ingested data shard)
+	ExtentTags []ExtentTag `json:"extentTags,omitempty"`
+	// Prevents duplicate ingestion by verifying whether an extent with the specified ingest-by tag already exists
+	IngestIfNotExists []IngestIfNotExist `json:"ingestIfNotExists,omitempty"`
+	// Level of ingestion status reporting. Defaults to FailuresOnly.
+	ReportLevel *ReportLevel `default:"failuresOnly" json:"reportLevel"`
+	// Target of the ingestion status reporting. Defaults to Queue.
+	ReportMethod *ReportMethod `default:"queue" json:"reportMethod"`
+	// Optionally, enter additional configuration properties to send to the ingestion service
+	AdditionalProperties []AdditionalProperty `json:"additionalProperties,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputAzureDataExplorerResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputAzureDataExplorerTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputAzureDataExplorerCompressCompression `default:"gzip" json:"compress"`
+	// Enter the name of a data mapping associated with your target table. Or, if incoming event and target table fields match exactly, you can leave the field empty.
+	MappingRef *string `json:"mappingRef,omitempty"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputAzureDataExplorerPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputAzureDataExplorerQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputAzureDataExplorerMode       `default:"error" json:"pqMode"`
+	PqControls *OutputAzureDataExplorerPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputAzureDataExplorer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureDataExplorer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureDataExplorer) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputAzureDataExplorer) GetType() *OutputAzureDataExplorerType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputAzureDataExplorer) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputAzureDataExplorer) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputAzureDataExplorer) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputAzureDataExplorer) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputAzureDataExplorer) GetClusterURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.ClusterURL
+}
+
+func (o *OutputAzureDataExplorer) GetDatabase() string {
+	if o == nil {
+		return ""
+	}
+	return o.Database
+}
+
+func (o *OutputAzureDataExplorer) GetTable() string {
+	if o == nil {
+		return ""
+	}
+	return o.Table
+}
+
+func (o *OutputAzureDataExplorer) GetValidateDatabaseSettings() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ValidateDatabaseSettings
+}
+
+func (o *OutputAzureDataExplorer) GetIngestMode() *IngestionMode {
+	if o == nil {
+		return nil
+	}
+	return o.IngestMode
+}
+
+func (o *OutputAzureDataExplorer) GetOauthEndpoint() *MicrosoftEntraIDAuthenticationEndpoint {
+	if o == nil {
+		return nil
+	}
+	return o.OauthEndpoint
+}
+
+func (o *OutputAzureDataExplorer) GetTenantID() string {
+	if o == nil {
+		return ""
+	}
+	return o.TenantID
+}
+
+func (o *OutputAzureDataExplorer) GetClientID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ClientID
+}
+
+func (o *OutputAzureDataExplorer) GetScope() string {
+	if o == nil {
+		return ""
+	}
+	return o.Scope
+}
+
+func (o *OutputAzureDataExplorer) GetOauthType() *OutputAzureDataExplorerAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.OauthType
+}
+
+func (o *OutputAzureDataExplorer) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputAzureDataExplorer) GetClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
+}
+
+func (o *OutputAzureDataExplorer) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputAzureDataExplorer) GetCertificate() *OutputAzureDataExplorerCertificate {
+	if o == nil {
+		return nil
+	}
+	return o.Certificate
+}
+
+func (o *OutputAzureDataExplorer) GetIngestURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IngestURL
+}
+
+func (o *OutputAzureDataExplorer) GetOnBackpressure() *OutputAzureDataExplorerBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputAzureDataExplorer) GetIsMappingObj() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsMappingObj
+}
+
+func (o *OutputAzureDataExplorer) GetFormat() *OutputAzureDataExplorerDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputAzureDataExplorer) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputAzureDataExplorer) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputAzureDataExplorer) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputAzureDataExplorer) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputAzureDataExplorer) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputAzureDataExplorer) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputAzureDataExplorer) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputAzureDataExplorer) GetOnDiskFullBackpressure() *OutputAzureDataExplorerDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputAzureDataExplorer) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputAzureDataExplorer) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputAzureDataExplorer) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputAzureDataExplorer) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputAzureDataExplorer) GetFlushImmediately() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.FlushImmediately
+}
+
+func (o *OutputAzureDataExplorer) GetRetainBlobOnSuccess() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RetainBlobOnSuccess
+}
+
+func (o *OutputAzureDataExplorer) GetExtentTags() []ExtentTag {
+	if o == nil {
+		return nil
+	}
+	return o.ExtentTags
+}
+
+func (o *OutputAzureDataExplorer) GetIngestIfNotExists() []IngestIfNotExist {
+	if o == nil {
+		return nil
+	}
+	return o.IngestIfNotExists
+}
+
+func (o *OutputAzureDataExplorer) GetReportLevel() *ReportLevel {
+	if o == nil {
+		return nil
+	}
+	return o.ReportLevel
+}
+
+func (o *OutputAzureDataExplorer) GetReportMethod() *ReportMethod {
+	if o == nil {
+		return nil
+	}
+	return o.ReportMethod
+}
+
+func (o *OutputAzureDataExplorer) GetAdditionalProperties() []AdditionalProperty {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+func (o *OutputAzureDataExplorer) GetResponseRetrySettings() []OutputAzureDataExplorerResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputAzureDataExplorer) GetTimeoutRetrySettings() *OutputAzureDataExplorerTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputAzureDataExplorer) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputAzureDataExplorer) GetCompress() *OutputAzureDataExplorerCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputAzureDataExplorer) GetMappingRef() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MappingRef
+}
+
+func (o *OutputAzureDataExplorer) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputAzureDataExplorer) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputAzureDataExplorer) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputAzureDataExplorer) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputAzureDataExplorer) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputAzureDataExplorer) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputAzureDataExplorer) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputAzureDataExplorer) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputAzureDataExplorer) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputAzureDataExplorer) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputAzureDataExplorer) GetPqCompress() *OutputAzureDataExplorerPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputAzureDataExplorer) GetPqOnBackpressure() *OutputAzureDataExplorerQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputAzureDataExplorer) GetPqMode() *OutputAzureDataExplorerMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputAzureDataExplorer) GetPqControls() *OutputAzureDataExplorerPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputAzureBlobType string
+
+const (
+	OutputAzureBlobTypeAzureBlob OutputAzureBlobType = "azure_blob"
+)
+
+func (e OutputAzureBlobType) ToPointer() *OutputAzureBlobType {
+	return &e
+}
+
+// OutputAzureBlobDataFormat - Format of the output data
+type OutputAzureBlobDataFormat string
+
+const (
+	OutputAzureBlobDataFormatJSON    OutputAzureBlobDataFormat = "json"
+	OutputAzureBlobDataFormatRaw     OutputAzureBlobDataFormat = "raw"
+	OutputAzureBlobDataFormatParquet OutputAzureBlobDataFormat = "parquet"
+)
+
+func (e OutputAzureBlobDataFormat) ToPointer() *OutputAzureBlobDataFormat {
+	return &e
+}
+
+// OutputAzureBlobBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputAzureBlobBackpressureBehavior string
+
+const (
+	OutputAzureBlobBackpressureBehaviorBlock OutputAzureBlobBackpressureBehavior = "block"
+	OutputAzureBlobBackpressureBehaviorDrop  OutputAzureBlobBackpressureBehavior = "drop"
+)
+
+func (e OutputAzureBlobBackpressureBehavior) ToPointer() *OutputAzureBlobBackpressureBehavior {
+	return &e
+}
+
+// OutputAzureBlobDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputAzureBlobDiskSpaceProtection string
+
+const (
+	OutputAzureBlobDiskSpaceProtectionBlock OutputAzureBlobDiskSpaceProtection = "block"
+	OutputAzureBlobDiskSpaceProtectionDrop  OutputAzureBlobDiskSpaceProtection = "drop"
+)
+
+func (e OutputAzureBlobDiskSpaceProtection) ToPointer() *OutputAzureBlobDiskSpaceProtection {
+	return &e
+}
+
+type OutputAzureBlobAuthenticationMethod string
+
+const (
+	OutputAzureBlobAuthenticationMethodManual       OutputAzureBlobAuthenticationMethod = "manual"
+	OutputAzureBlobAuthenticationMethodSecret       OutputAzureBlobAuthenticationMethod = "secret"
+	OutputAzureBlobAuthenticationMethodClientSecret OutputAzureBlobAuthenticationMethod = "clientSecret"
+	OutputAzureBlobAuthenticationMethodClientCert   OutputAzureBlobAuthenticationMethod = "clientCert"
+)
+
+func (e OutputAzureBlobAuthenticationMethod) ToPointer() *OutputAzureBlobAuthenticationMethod {
+	return &e
+}
+
+type BlobAccessTier string
+
+const (
+	BlobAccessTierInferred BlobAccessTier = "Inferred"
+	BlobAccessTierHot      BlobAccessTier = "Hot"
+	BlobAccessTierCool     BlobAccessTier = "Cool"
+	BlobAccessTierCold     BlobAccessTier = "Cold"
+	BlobAccessTierArchive  BlobAccessTier = "Archive"
+)
+
+func (e BlobAccessTier) ToPointer() *BlobAccessTier {
+	return &e
+}
+
+// OutputAzureBlobCompression - Data compression format to apply to HTTP content before it is delivered
+type OutputAzureBlobCompression string
+
+const (
+	OutputAzureBlobCompressionNone OutputAzureBlobCompression = "none"
+	OutputAzureBlobCompressionGzip OutputAzureBlobCompression = "gzip"
+)
+
+func (e OutputAzureBlobCompression) ToPointer() *OutputAzureBlobCompression {
+	return &e
+}
+
+// OutputAzureBlobCompressionLevel - Compression level to apply before moving files to final destination
+type OutputAzureBlobCompressionLevel string
+
+const (
+	OutputAzureBlobCompressionLevelBestSpeed       OutputAzureBlobCompressionLevel = "best_speed"
+	OutputAzureBlobCompressionLevelNormal          OutputAzureBlobCompressionLevel = "normal"
+	OutputAzureBlobCompressionLevelBestCompression OutputAzureBlobCompressionLevel = "best_compression"
+)
+
+func (e OutputAzureBlobCompressionLevel) ToPointer() *OutputAzureBlobCompressionLevel {
+	return &e
+}
+
+// OutputAzureBlobParquetVersion - Determines which data types are supported and how they are represented
+type OutputAzureBlobParquetVersion string
+
+const (
+	OutputAzureBlobParquetVersionParquet10 OutputAzureBlobParquetVersion = "PARQUET_1_0"
+	OutputAzureBlobParquetVersionParquet24 OutputAzureBlobParquetVersion = "PARQUET_2_4"
+	OutputAzureBlobParquetVersionParquet26 OutputAzureBlobParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputAzureBlobParquetVersion) ToPointer() *OutputAzureBlobParquetVersion {
+	return &e
+}
+
+// OutputAzureBlobDataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputAzureBlobDataPageVersion string
+
+const (
+	OutputAzureBlobDataPageVersionDataPageV1 OutputAzureBlobDataPageVersion = "DATA_PAGE_V1"
+	OutputAzureBlobDataPageVersionDataPageV2 OutputAzureBlobDataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputAzureBlobDataPageVersion) ToPointer() *OutputAzureBlobDataPageVersion {
+	return &e
+}
+
+type OutputAzureBlobKeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputAzureBlobKeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureBlobKeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureBlobKeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputAzureBlobKeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputAzureBlobCertificate struct {
+	// The certificate you registered as credentials for your app in the Azure portal
+	CertificateName string `json:"certificateName"`
+}
+
+func (o *OutputAzureBlobCertificate) GetCertificateName() string {
+	if o == nil {
+		return ""
+	}
+	return o.CertificateName
+}
+
+type OutputAzureBlob struct {
+	// Unique ID for this output
+	ID   string               `json:"id"`
+	Type *OutputAzureBlobType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The Azure Blob Storage container name. Name can include only lowercase letters, numbers, and hyphens. For dynamic container names, enter a JavaScript expression within quotes or backticks, to be evaluated at initialization. The expression can evaluate to a constant value and can reference Global Variables, such as `myContainer-${C.env["CRIBL_WORKER_ID"]}`.
+	ContainerName string `json:"containerName"`
+	// Create the configured container in Azure Blob Storage if it does not already exist
+	CreateContainer *bool `default:"false" json:"createContainer"`
+	// Root directory prepended to path before uploading. Value can be a JavaScript expression enclosed in quotes or backticks, to be evaluated at initialization. The expression can evaluate to a constant value and can reference Global Variables, such as `myBlobPrefix-${C.env["CRIBL_WORKER_ID"]}`.
+	DestPath *string `json:"destPath,omitempty"`
+	// Filesystem location in which to buffer files before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Maximum number of parts to upload in parallel per file
+	MaxConcurrentFileParts *float64 `default:"1" json:"maxConcurrentFileParts"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression defining how files are partitioned and organized. Default is date-based. If blank, Stream will fall back to the event's __partition field value – if present – otherwise to each location's root directory.
+	PartitionExpr *string `default:"C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')" json:"partitionExpr"`
+	// Format of the output data
+	Format *OutputAzureBlobDataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputAzureBlobBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputAzureBlobDiskSpaceProtection  `default:"block" json:"onDiskFullBackpressure"`
+	AuthType               *OutputAzureBlobAuthenticationMethod `default:"manual" json:"authType"`
+	StorageClass           *BlobAccessTier                      `default:"Inferred" json:"storageClass"`
+	Description            *string                              `json:"description,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputAzureBlobCompression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputAzureBlobCompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputAzureBlobParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputAzureBlobDataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputAzureBlobKeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+	// Enter your Azure Storage account connection string. If left blank, Stream will fall back to env.AZURE_STORAGE_CONNECTION_STRING.
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// The name of your Azure storage account
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// The service principal's tenant ID
+	TenantID *string `json:"tenantId,omitempty"`
+	// The service principal's client ID
+	ClientID *string `json:"clientId,omitempty"`
+	// The Azure cloud to use. Defaults to Azure Public Cloud.
+	AzureCloud *string `json:"azureCloud,omitempty"`
+	// Endpoint suffix for the service URL. Takes precedence over the Azure Cloud setting. Defaults to core.windows.net.
+	EndpointSuffix *string `json:"endpointSuffix,omitempty"`
+	// Select or create a stored text secret
+	ClientTextSecret *string                     `json:"clientTextSecret,omitempty"`
+	Certificate      *OutputAzureBlobCertificate `json:"certificate,omitempty"`
+}
+
+func (o OutputAzureBlob) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputAzureBlob) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputAzureBlob) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputAzureBlob) GetType() *OutputAzureBlobType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputAzureBlob) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputAzureBlob) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputAzureBlob) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputAzureBlob) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputAzureBlob) GetContainerName() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContainerName
+}
+
+func (o *OutputAzureBlob) GetCreateContainer() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CreateContainer
+}
+
+func (o *OutputAzureBlob) GetDestPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DestPath
+}
+
+func (o *OutputAzureBlob) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputAzureBlob) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputAzureBlob) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputAzureBlob) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputAzureBlob) GetPartitionExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitionExpr
+}
+
+func (o *OutputAzureBlob) GetFormat() *OutputAzureBlobDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputAzureBlob) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputAzureBlob) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputAzureBlob) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputAzureBlob) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputAzureBlob) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputAzureBlob) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputAzureBlob) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputAzureBlob) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputAzureBlob) GetOnBackpressure() *OutputAzureBlobBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputAzureBlob) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputAzureBlob) GetOnDiskFullBackpressure() *OutputAzureBlobDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputAzureBlob) GetAuthType() *OutputAzureBlobAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputAzureBlob) GetStorageClass() *BlobAccessTier {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputAzureBlob) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputAzureBlob) GetCompress() *OutputAzureBlobCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputAzureBlob) GetCompressionLevel() *OutputAzureBlobCompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputAzureBlob) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputAzureBlob) GetParquetVersion() *OutputAzureBlobParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputAzureBlob) GetParquetDataPageVersion() *OutputAzureBlobDataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputAzureBlob) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputAzureBlob) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputAzureBlob) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputAzureBlob) GetKeyValueMetadata() []OutputAzureBlobKeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputAzureBlob) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputAzureBlob) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputAzureBlob) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputAzureBlob) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputAzureBlob) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputAzureBlob) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+func (o *OutputAzureBlob) GetConnectionString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionString
+}
+
+func (o *OutputAzureBlob) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputAzureBlob) GetStorageAccountName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StorageAccountName
+}
+
+func (o *OutputAzureBlob) GetTenantID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TenantID
+}
+
+func (o *OutputAzureBlob) GetClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *OutputAzureBlob) GetAzureCloud() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureCloud
+}
+
+func (o *OutputAzureBlob) GetEndpointSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EndpointSuffix
+}
+
+func (o *OutputAzureBlob) GetClientTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientTextSecret
+}
+
+func (o *OutputAzureBlob) GetCertificate() *OutputAzureBlobCertificate {
+	if o == nil {
+		return nil
+	}
+	return o.Certificate
+}
+
+type OutputS3Type string
+
+const (
+	OutputS3TypeS3 OutputS3Type = "s3"
+)
+
+func (e OutputS3Type) ToPointer() *OutputS3Type {
+	return &e
+}
+
+// OutputS3AuthenticationMethod - AWS authentication method. Choose Auto to use IAM roles.
+type OutputS3AuthenticationMethod string
+
+const (
+	OutputS3AuthenticationMethodAuto   OutputS3AuthenticationMethod = "auto"
+	OutputS3AuthenticationMethodManual OutputS3AuthenticationMethod = "manual"
+	OutputS3AuthenticationMethodSecret OutputS3AuthenticationMethod = "secret"
+)
+
+func (e OutputS3AuthenticationMethod) ToPointer() *OutputS3AuthenticationMethod {
+	return &e
+}
+
+// OutputS3SignatureVersion - Signature version to use for signing S3 requests
+type OutputS3SignatureVersion string
+
+const (
+	OutputS3SignatureVersionV2 OutputS3SignatureVersion = "v2"
+	OutputS3SignatureVersionV4 OutputS3SignatureVersion = "v4"
+)
+
+func (e OutputS3SignatureVersion) ToPointer() *OutputS3SignatureVersion {
+	return &e
+}
+
+// OutputS3ObjectACL - Object ACL to assign to uploaded objects
+type OutputS3ObjectACL string
+
+const (
+	OutputS3ObjectACLPrivate                OutputS3ObjectACL = "private"
+	OutputS3ObjectACLPublicRead             OutputS3ObjectACL = "public-read"
+	OutputS3ObjectACLPublicReadWrite        OutputS3ObjectACL = "public-read-write"
+	OutputS3ObjectACLAuthenticatedRead      OutputS3ObjectACL = "authenticated-read"
+	OutputS3ObjectACLAwsExecRead            OutputS3ObjectACL = "aws-exec-read"
+	OutputS3ObjectACLBucketOwnerRead        OutputS3ObjectACL = "bucket-owner-read"
+	OutputS3ObjectACLBucketOwnerFullControl OutputS3ObjectACL = "bucket-owner-full-control"
+)
+
+func (e OutputS3ObjectACL) ToPointer() *OutputS3ObjectACL {
+	return &e
+}
+
+// OutputS3StorageClass - Storage class to select for uploaded objects
+type OutputS3StorageClass string
+
+const (
+	OutputS3StorageClassStandard           OutputS3StorageClass = "STANDARD"
+	OutputS3StorageClassReducedRedundancy  OutputS3StorageClass = "REDUCED_REDUNDANCY"
+	OutputS3StorageClassStandardIa         OutputS3StorageClass = "STANDARD_IA"
+	OutputS3StorageClassOnezoneIa          OutputS3StorageClass = "ONEZONE_IA"
+	OutputS3StorageClassIntelligentTiering OutputS3StorageClass = "INTELLIGENT_TIERING"
+	OutputS3StorageClassGlacier            OutputS3StorageClass = "GLACIER"
+	OutputS3StorageClassGlacierIr          OutputS3StorageClass = "GLACIER_IR"
+	OutputS3StorageClassDeepArchive        OutputS3StorageClass = "DEEP_ARCHIVE"
+)
+
+func (e OutputS3StorageClass) ToPointer() *OutputS3StorageClass {
+	return &e
+}
+
+type OutputS3ServerSideEncryptionForUploadedObjects string
+
+const (
+	OutputS3ServerSideEncryptionForUploadedObjectsAes256 OutputS3ServerSideEncryptionForUploadedObjects = "AES256"
+	OutputS3ServerSideEncryptionForUploadedObjectsAwsKms OutputS3ServerSideEncryptionForUploadedObjects = "aws:kms"
+)
+
+func (e OutputS3ServerSideEncryptionForUploadedObjects) ToPointer() *OutputS3ServerSideEncryptionForUploadedObjects {
+	return &e
+}
+
+// OutputS3DataFormat - Format of the output data
+type OutputS3DataFormat string
+
+const (
+	OutputS3DataFormatJSON    OutputS3DataFormat = "json"
+	OutputS3DataFormatRaw     OutputS3DataFormat = "raw"
+	OutputS3DataFormatParquet OutputS3DataFormat = "parquet"
+)
+
+func (e OutputS3DataFormat) ToPointer() *OutputS3DataFormat {
+	return &e
+}
+
+// OutputS3BackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputS3BackpressureBehavior string
+
+const (
+	OutputS3BackpressureBehaviorBlock OutputS3BackpressureBehavior = "block"
+	OutputS3BackpressureBehaviorDrop  OutputS3BackpressureBehavior = "drop"
+)
+
+func (e OutputS3BackpressureBehavior) ToPointer() *OutputS3BackpressureBehavior {
+	return &e
+}
+
+// OutputS3DiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputS3DiskSpaceProtection string
+
+const (
+	OutputS3DiskSpaceProtectionBlock OutputS3DiskSpaceProtection = "block"
+	OutputS3DiskSpaceProtectionDrop  OutputS3DiskSpaceProtection = "drop"
+)
+
+func (e OutputS3DiskSpaceProtection) ToPointer() *OutputS3DiskSpaceProtection {
+	return &e
+}
+
+// OutputS3Compression - Data compression format to apply to HTTP content before it is delivered
+type OutputS3Compression string
+
+const (
+	OutputS3CompressionNone OutputS3Compression = "none"
+	OutputS3CompressionGzip OutputS3Compression = "gzip"
+)
+
+func (e OutputS3Compression) ToPointer() *OutputS3Compression {
+	return &e
+}
+
+// OutputS3CompressionLevel - Compression level to apply before moving files to final destination
+type OutputS3CompressionLevel string
+
+const (
+	OutputS3CompressionLevelBestSpeed       OutputS3CompressionLevel = "best_speed"
+	OutputS3CompressionLevelNormal          OutputS3CompressionLevel = "normal"
+	OutputS3CompressionLevelBestCompression OutputS3CompressionLevel = "best_compression"
+)
+
+func (e OutputS3CompressionLevel) ToPointer() *OutputS3CompressionLevel {
+	return &e
+}
+
+// OutputS3ParquetVersion - Determines which data types are supported and how they are represented
+type OutputS3ParquetVersion string
+
+const (
+	OutputS3ParquetVersionParquet10 OutputS3ParquetVersion = "PARQUET_1_0"
+	OutputS3ParquetVersionParquet24 OutputS3ParquetVersion = "PARQUET_2_4"
+	OutputS3ParquetVersionParquet26 OutputS3ParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputS3ParquetVersion) ToPointer() *OutputS3ParquetVersion {
+	return &e
+}
+
+// OutputS3DataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputS3DataPageVersion string
+
+const (
+	OutputS3DataPageVersionDataPageV1 OutputS3DataPageVersion = "DATA_PAGE_V1"
+	OutputS3DataPageVersionDataPageV2 OutputS3DataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputS3DataPageVersion) ToPointer() *OutputS3DataPageVersion {
+	return &e
+}
+
+type OutputS3KeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputS3KeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputS3KeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputS3KeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputS3KeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputS3 struct {
+	// Unique ID for this output
+	ID   string        `json:"id"`
+	Type *OutputS3Type `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Name of the destination S3 bucket. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at initialization time. Example referencing a Global Variable: `myBucket-${C.vars.myVar}`
+	Bucket string `json:"bucket"`
+	// Region where the S3 bucket is located
+	Region *string `json:"region,omitempty"`
+	// Secret key. This value can be a constant or a JavaScript expression. Example: `${C.env.SOME_SECRET}`)
+	AwsSecretKey *string `json:"awsSecretKey,omitempty"`
+	// AWS authentication method. Choose Auto to use IAM roles.
+	AwsAuthenticationMethod *OutputS3AuthenticationMethod `default:"auto" json:"awsAuthenticationMethod"`
+	// S3 service endpoint. If empty, defaults to the AWS Region-specific endpoint. Otherwise, it must point to S3-compatible endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+	// Signature version to use for signing S3 requests
+	SignatureVersion *OutputS3SignatureVersion `default:"v4" json:"signatureVersion"`
+	// Reuse connections between requests, which can improve performance
+	ReuseConnections *bool `default:"true" json:"reuseConnections"`
+	// Reject certificates that cannot be verified against a valid CA, such as self-signed certificates
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Use Assume Role credentials to access S3
+	EnableAssumeRole *bool `default:"false" json:"enableAssumeRole"`
+	// Amazon Resource Name (ARN) of the role to assume
+	AssumeRoleArn *string `json:"assumeRoleArn,omitempty"`
+	// External ID to use when assuming role
+	AssumeRoleExternalID *string `json:"assumeRoleExternalId,omitempty"`
+	// Duration of the assumed role's session, in seconds. Minimum is 900 (15 minutes), default is 3600 (1 hour), and maximum is 43200 (12 hours).
+	DurationSeconds *float64 `default:"3600" json:"durationSeconds"`
+	// Filesystem location in which to buffer files, before compressing and moving to final destination. Use performant and stable storage.
+	StagePath *string `default:"\\$CRIBL_HOME/state/outputs/staging" json:"stagePath"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Prefix to append to files before uploading. Must be a JavaScript expression (which can evaluate to a constant value), enclosed in quotes or backticks. Can be evaluated only at init time. Example referencing a Global Variable: `myKeyPrefix-${C.vars.myVar}`
+	DestPath *string `default:"" json:"destPath"`
+	// Object ACL to assign to uploaded objects
+	ObjectACL *OutputS3ObjectACL `default:"private" json:"objectACL"`
+	// Storage class to select for uploaded objects
+	StorageClass         *OutputS3StorageClass                           `json:"storageClass,omitempty"`
+	ServerSideEncryption *OutputS3ServerSideEncryptionForUploadedObjects `json:"serverSideEncryption,omitempty"`
+	// ID or ARN of the KMS customer-managed key to use for encryption
+	KmsKeyID *string `json:"kmsKeyId,omitempty"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression defining how files are partitioned and organized. Default is date-based. If blank, Stream will fall back to the event's __partition field value – if present – otherwise to each location's root directory.
+	PartitionExpr *string `default:"C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')" json:"partitionExpr"`
+	// Format of the output data
+	Format *OutputS3DataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputS3BackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputS3DiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of parts to upload in parallel per file. Minimum part size is 5MB.
+	MaxConcurrentFileParts *float64 `default:"4" json:"maxConcurrentFileParts"`
+	// Disable if you can access files within the bucket but not the bucket itself
+	VerifyPermissions *bool `default:"true" json:"verifyPermissions"`
+	// Maximum number of files that can be waiting for upload before backpressure is applied
+	MaxClosingFilesToBackpressure *float64 `default:"100" json:"maxClosingFilesToBackpressure"`
+	Description                   *string  `json:"description,omitempty"`
+	// This value can be a constant or a JavaScript expression (`${C.env.SOME_ACCESS_KEY}`)
+	AwsAPIKey *string `json:"awsApiKey,omitempty"`
+	// Select or create a stored secret that references your access key and secret key
+	AwsSecret *string `json:"awsSecret,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputS3Compression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputS3CompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputS3ParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputS3DataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputS3KeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputS3) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputS3) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputS3) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputS3) GetType() *OutputS3Type {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputS3) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputS3) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputS3) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputS3) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputS3) GetBucket() string {
+	if o == nil {
+		return ""
+	}
+	return o.Bucket
+}
+
+func (o *OutputS3) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *OutputS3) GetAwsSecretKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretKey
+}
+
+func (o *OutputS3) GetAwsAuthenticationMethod() *OutputS3AuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAuthenticationMethod
+}
+
+func (o *OutputS3) GetEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Endpoint
+}
+
+func (o *OutputS3) GetSignatureVersion() *OutputS3SignatureVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SignatureVersion
+}
+
+func (o *OutputS3) GetReuseConnections() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReuseConnections
+}
+
+func (o *OutputS3) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputS3) GetEnableAssumeRole() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAssumeRole
+}
+
+func (o *OutputS3) GetAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleArn
+}
+
+func (o *OutputS3) GetAssumeRoleExternalID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssumeRoleExternalID
+}
+
+func (o *OutputS3) GetDurationSeconds() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DurationSeconds
+}
+
+func (o *OutputS3) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputS3) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputS3) GetDestPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DestPath
+}
+
+func (o *OutputS3) GetObjectACL() *OutputS3ObjectACL {
+	if o == nil {
+		return nil
+	}
+	return o.ObjectACL
+}
+
+func (o *OutputS3) GetStorageClass() *OutputS3StorageClass {
+	if o == nil {
+		return nil
+	}
+	return o.StorageClass
+}
+
+func (o *OutputS3) GetServerSideEncryption() *OutputS3ServerSideEncryptionForUploadedObjects {
+	if o == nil {
+		return nil
+	}
+	return o.ServerSideEncryption
+}
+
+func (o *OutputS3) GetKmsKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KmsKeyID
+}
+
+func (o *OutputS3) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputS3) GetPartitionExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitionExpr
+}
+
+func (o *OutputS3) GetFormat() *OutputS3DataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputS3) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputS3) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputS3) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputS3) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputS3) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputS3) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputS3) GetOnBackpressure() *OutputS3BackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputS3) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputS3) GetOnDiskFullBackpressure() *OutputS3DiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputS3) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputS3) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputS3) GetMaxConcurrentFileParts() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentFileParts
+}
+
+func (o *OutputS3) GetVerifyPermissions() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyPermissions
+}
+
+func (o *OutputS3) GetMaxClosingFilesToBackpressure() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxClosingFilesToBackpressure
+}
+
+func (o *OutputS3) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputS3) GetAwsAPIKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAPIKey
+}
+
+func (o *OutputS3) GetAwsSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecret
+}
+
+func (o *OutputS3) GetCompress() *OutputS3Compression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputS3) GetCompressionLevel() *OutputS3CompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputS3) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputS3) GetParquetVersion() *OutputS3ParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputS3) GetParquetDataPageVersion() *OutputS3DataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputS3) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputS3) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputS3) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputS3) GetKeyValueMetadata() []OutputS3KeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputS3) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputS3) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputS3) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputS3) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputS3) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputS3) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputFilesystemType string
+
+const (
+	OutputFilesystemTypeFilesystem OutputFilesystemType = "filesystem"
+)
+
+func (e OutputFilesystemType) ToPointer() *OutputFilesystemType {
+	return &e
+}
+
+// OutputFilesystemDataFormat - Format of the output data
+type OutputFilesystemDataFormat string
+
+const (
+	OutputFilesystemDataFormatJSON    OutputFilesystemDataFormat = "json"
+	OutputFilesystemDataFormatRaw     OutputFilesystemDataFormat = "raw"
+	OutputFilesystemDataFormatParquet OutputFilesystemDataFormat = "parquet"
+)
+
+func (e OutputFilesystemDataFormat) ToPointer() *OutputFilesystemDataFormat {
+	return &e
+}
+
+// OutputFilesystemBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputFilesystemBackpressureBehavior string
+
+const (
+	OutputFilesystemBackpressureBehaviorBlock OutputFilesystemBackpressureBehavior = "block"
+	OutputFilesystemBackpressureBehaviorDrop  OutputFilesystemBackpressureBehavior = "drop"
+)
+
+func (e OutputFilesystemBackpressureBehavior) ToPointer() *OutputFilesystemBackpressureBehavior {
+	return &e
+}
+
+// OutputFilesystemDiskSpaceProtection - How to handle events when disk space is below the global 'Min free disk space' limit
+type OutputFilesystemDiskSpaceProtection string
+
+const (
+	OutputFilesystemDiskSpaceProtectionBlock OutputFilesystemDiskSpaceProtection = "block"
+	OutputFilesystemDiskSpaceProtectionDrop  OutputFilesystemDiskSpaceProtection = "drop"
+)
+
+func (e OutputFilesystemDiskSpaceProtection) ToPointer() *OutputFilesystemDiskSpaceProtection {
+	return &e
+}
+
+// OutputFilesystemCompression - Data compression format to apply to HTTP content before it is delivered
+type OutputFilesystemCompression string
+
+const (
+	OutputFilesystemCompressionNone OutputFilesystemCompression = "none"
+	OutputFilesystemCompressionGzip OutputFilesystemCompression = "gzip"
+)
+
+func (e OutputFilesystemCompression) ToPointer() *OutputFilesystemCompression {
+	return &e
+}
+
+// OutputFilesystemCompressionLevel - Compression level to apply before moving files to final destination
+type OutputFilesystemCompressionLevel string
+
+const (
+	OutputFilesystemCompressionLevelBestSpeed       OutputFilesystemCompressionLevel = "best_speed"
+	OutputFilesystemCompressionLevelNormal          OutputFilesystemCompressionLevel = "normal"
+	OutputFilesystemCompressionLevelBestCompression OutputFilesystemCompressionLevel = "best_compression"
+)
+
+func (e OutputFilesystemCompressionLevel) ToPointer() *OutputFilesystemCompressionLevel {
+	return &e
+}
+
+// OutputFilesystemParquetVersion - Determines which data types are supported and how they are represented
+type OutputFilesystemParquetVersion string
+
+const (
+	OutputFilesystemParquetVersionParquet10 OutputFilesystemParquetVersion = "PARQUET_1_0"
+	OutputFilesystemParquetVersionParquet24 OutputFilesystemParquetVersion = "PARQUET_2_4"
+	OutputFilesystemParquetVersionParquet26 OutputFilesystemParquetVersion = "PARQUET_2_6"
+)
+
+func (e OutputFilesystemParquetVersion) ToPointer() *OutputFilesystemParquetVersion {
+	return &e
+}
+
+// OutputFilesystemDataPageVersion - Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+type OutputFilesystemDataPageVersion string
+
+const (
+	OutputFilesystemDataPageVersionDataPageV1 OutputFilesystemDataPageVersion = "DATA_PAGE_V1"
+	OutputFilesystemDataPageVersionDataPageV2 OutputFilesystemDataPageVersion = "DATA_PAGE_V2"
+)
+
+func (e OutputFilesystemDataPageVersion) ToPointer() *OutputFilesystemDataPageVersion {
+	return &e
+}
+
+type OutputFilesystemKeyValueMetadatum struct {
+	Key   *string `default:"" json:"key"`
+	Value string  `json:"value"`
+}
+
+func (o OutputFilesystemKeyValueMetadatum) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputFilesystemKeyValueMetadatum) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputFilesystemKeyValueMetadatum) GetKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Key
+}
+
+func (o *OutputFilesystemKeyValueMetadatum) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+type OutputFilesystem struct {
+	// Unique ID for this output
+	ID   string               `json:"id"`
+	Type OutputFilesystemType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Final destination for the output files
+	DestPath string `json:"destPath"`
+	// Filesystem location in which to buffer files before compressing and moving to final destination. Use performant, stable storage.
+	StagePath *string `json:"stagePath,omitempty"`
+	// Add the Output ID value to staging location
+	AddIDToStagePath *bool `default:"true" json:"addIdToStagePath"`
+	// Remove empty staging directories after moving files
+	RemoveEmptyDirs *bool `default:"true" json:"removeEmptyDirs"`
+	// JavaScript expression defining how files are partitioned and organized. Default is date-based. If blank, Stream will fall back to the event's __partition field value – if present – otherwise to each location's root directory.
+	PartitionExpr *string `default:"C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')" json:"partitionExpr"`
+	// Format of the output data
+	Format *OutputFilesystemDataFormat `default:"json" json:"format"`
+	// JavaScript expression to define the output filename prefix (can be constant)
+	BaseFileName *string `default:"CriblOut" json:"baseFileName"`
+	// JavaScript expression to define the output filename suffix (can be constant).  The `__format` variable refers to the value of the `Data format` field (`json` or `raw`).  The `__compression` field refers to the kind of compression being used (`none` or `gzip`).
+	FileNameSuffix *string `default:".\\${C.env[\"CRIBL_WORKER_ID\"]}.\\${__format}\\${__compression === \"gzip\" ? \".gz\" : \"\"}" json:"fileNameSuffix"`
+	// Maximum uncompressed output file size. Files of this size will be closed and moved to final output location.
+	MaxFileSizeMB *float64 `default:"32" json:"maxFileSizeMB"`
+	// Maximum amount of time to write to a file. Files open for longer than this will be closed and moved to final output location.
+	MaxFileOpenTimeSec *float64 `default:"300" json:"maxFileOpenTimeSec"`
+	// Maximum amount of time to keep inactive files open. Files open for longer than this will be closed and moved to final output location.
+	MaxFileIdleTimeSec *float64 `default:"30" json:"maxFileIdleTimeSec"`
+	// Maximum number of files to keep open concurrently. When exceeded, @{product} will close the oldest open files and move them to the final output location.
+	MaxOpenFiles *float64 `default:"100" json:"maxOpenFiles"`
+	// If set, this line will be written to the beginning of each output file
+	HeaderLine *string `default:"" json:"headerLine"`
+	// Buffer size used to write to a file
+	WriteHighWaterMark *float64 `default:"64" json:"writeHighWaterMark"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputFilesystemBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// If a file fails to move to its final destination after the maximum number of retries, move it to a designated directory to prevent further errors
+	DeadletterEnabled *bool `default:"false" json:"deadletterEnabled"`
+	// How to handle events when disk space is below the global 'Min free disk space' limit
+	OnDiskFullBackpressure *OutputFilesystemDiskSpaceProtection `default:"block" json:"onDiskFullBackpressure"`
+	Description            *string                              `json:"description,omitempty"`
+	// Data compression format to apply to HTTP content before it is delivered
+	Compress *OutputFilesystemCompression `default:"gzip" json:"compress"`
+	// Compression level to apply before moving files to final destination
+	CompressionLevel *OutputFilesystemCompressionLevel `default:"best_speed" json:"compressionLevel"`
+	// Automatically calculate the schema based on the events of each Parquet file generated
+	AutomaticSchema *bool `default:"false" json:"automaticSchema"`
+	// Determines which data types are supported and how they are represented
+	ParquetVersion *OutputFilesystemParquetVersion `default:"PARQUET_2_6" json:"parquetVersion"`
+	// Serialization format of data pages. Note that some reader implementations use Data page V2's attributes to work more efficiently, while others ignore it.
+	ParquetDataPageVersion *OutputFilesystemDataPageVersion `default:"DATA_PAGE_V2" json:"parquetDataPageVersion"`
+	// The number of rows that every group will contain. The final group can contain a smaller number of rows.
+	ParquetRowGroupLength *float64 `default:"10000" json:"parquetRowGroupLength"`
+	// Target memory size for page segments, such as 1MB or 128MB. Generally, lower values improve reading speed, while higher values improve compression.
+	ParquetPageSize *string `default:"1MB" json:"parquetPageSize"`
+	// Log up to 3 rows that @{product} skips due to data mismatch
+	ShouldLogInvalidRows *bool `json:"shouldLogInvalidRows,omitempty"`
+	// The metadata of files the Destination writes will include the properties you add here as key-value pairs. Useful for tagging. Examples: "key":"OCSF Event Class", "value":"9001"
+	KeyValueMetadata []OutputFilesystemKeyValueMetadatum `json:"keyValueMetadata,omitempty"`
+	// Statistics profile an entire file in terms of minimum/maximum values within data, numbers of nulls, etc. You can use Parquet tools to view statistics.
+	EnableStatistics *bool `default:"true" json:"enableStatistics"`
+	// One page index contains statistics for one data page. Parquet readers use statistics to enable page skipping.
+	EnableWritePageIndex *bool `default:"true" json:"enableWritePageIndex"`
+	// Parquet tools can use the checksum of a Parquet page to verify data integrity
+	EnablePageChecksum *bool `default:"false" json:"enablePageChecksum"`
+	// How frequently, in seconds, to clean up empty directories
+	EmptyDirCleanupSec *float64 `default:"300" json:"emptyDirCleanupSec"`
+	// Storage location for files that fail to reach their final destination after maximum retries are exceeded
+	DeadletterPath *string `default:"\\$CRIBL_HOME/state/outputs/dead-letter" json:"deadletterPath"`
+	// The maximum number of times a file will attempt to move to its final destination before being dead-lettered
+	MaxRetryNum *float64 `default:"20" json:"maxRetryNum"`
+}
+
+func (o OutputFilesystem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputFilesystem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputFilesystem) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputFilesystem) GetType() OutputFilesystemType {
+	if o == nil {
+		return OutputFilesystemType("")
+	}
+	return o.Type
+}
+
+func (o *OutputFilesystem) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputFilesystem) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputFilesystem) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputFilesystem) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputFilesystem) GetDestPath() string {
+	if o == nil {
+		return ""
+	}
+	return o.DestPath
+}
+
+func (o *OutputFilesystem) GetStagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StagePath
+}
+
+func (o *OutputFilesystem) GetAddIDToStagePath() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AddIDToStagePath
+}
+
+func (o *OutputFilesystem) GetRemoveEmptyDirs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveEmptyDirs
+}
+
+func (o *OutputFilesystem) GetPartitionExpr() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PartitionExpr
+}
+
+func (o *OutputFilesystem) GetFormat() *OutputFilesystemDataFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputFilesystem) GetBaseFileName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BaseFileName
+}
+
+func (o *OutputFilesystem) GetFileNameSuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FileNameSuffix
+}
+
+func (o *OutputFilesystem) GetMaxFileSizeMB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileSizeMB
+}
+
+func (o *OutputFilesystem) GetMaxFileOpenTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileOpenTimeSec
+}
+
+func (o *OutputFilesystem) GetMaxFileIdleTimeSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFileIdleTimeSec
+}
+
+func (o *OutputFilesystem) GetMaxOpenFiles() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxOpenFiles
+}
+
+func (o *OutputFilesystem) GetHeaderLine() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderLine
+}
+
+func (o *OutputFilesystem) GetWriteHighWaterMark() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteHighWaterMark
+}
+
+func (o *OutputFilesystem) GetOnBackpressure() *OutputFilesystemBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputFilesystem) GetDeadletterEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterEnabled
+}
+
+func (o *OutputFilesystem) GetOnDiskFullBackpressure() *OutputFilesystemDiskSpaceProtection {
+	if o == nil {
+		return nil
+	}
+	return o.OnDiskFullBackpressure
+}
+
+func (o *OutputFilesystem) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputFilesystem) GetCompress() *OutputFilesystemCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputFilesystem) GetCompressionLevel() *OutputFilesystemCompressionLevel {
+	if o == nil {
+		return nil
+	}
+	return o.CompressionLevel
+}
+
+func (o *OutputFilesystem) GetAutomaticSchema() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AutomaticSchema
+}
+
+func (o *OutputFilesystem) GetParquetVersion() *OutputFilesystemParquetVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetVersion
+}
+
+func (o *OutputFilesystem) GetParquetDataPageVersion() *OutputFilesystemDataPageVersion {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetDataPageVersion
+}
+
+func (o *OutputFilesystem) GetParquetRowGroupLength() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetRowGroupLength
+}
+
+func (o *OutputFilesystem) GetParquetPageSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParquetPageSize
+}
+
+func (o *OutputFilesystem) GetShouldLogInvalidRows() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ShouldLogInvalidRows
+}
+
+func (o *OutputFilesystem) GetKeyValueMetadata() []OutputFilesystemKeyValueMetadatum {
+	if o == nil {
+		return nil
+	}
+	return o.KeyValueMetadata
+}
+
+func (o *OutputFilesystem) GetEnableStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableStatistics
+}
+
+func (o *OutputFilesystem) GetEnableWritePageIndex() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableWritePageIndex
+}
+
+func (o *OutputFilesystem) GetEnablePageChecksum() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnablePageChecksum
+}
+
+func (o *OutputFilesystem) GetEmptyDirCleanupSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyDirCleanupSec
+}
+
+func (o *OutputFilesystem) GetDeadletterPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeadletterPath
+}
+
+func (o *OutputFilesystem) GetMaxRetryNum() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryNum
+}
+
+type OutputSignalfxType string
+
+const (
+	OutputSignalfxTypeSignalfx OutputSignalfxType = "signalfx"
+)
+
+func (e OutputSignalfxType) ToPointer() *OutputSignalfxType {
+	return &e
+}
+
+// OutputSignalfxAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputSignalfxAuthenticationMethod string
+
+const (
+	OutputSignalfxAuthenticationMethodManual OutputSignalfxAuthenticationMethod = "manual"
+	OutputSignalfxAuthenticationMethodSecret OutputSignalfxAuthenticationMethod = "secret"
+)
+
+func (e OutputSignalfxAuthenticationMethod) ToPointer() *OutputSignalfxAuthenticationMethod {
+	return &e
+}
+
+type OutputSignalfxExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputSignalfxExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputSignalfxExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputSignalfxFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputSignalfxFailedRequestLoggingMode string
+
+const (
+	OutputSignalfxFailedRequestLoggingModePayload           OutputSignalfxFailedRequestLoggingMode = "payload"
+	OutputSignalfxFailedRequestLoggingModePayloadAndHeaders OutputSignalfxFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputSignalfxFailedRequestLoggingModeNone              OutputSignalfxFailedRequestLoggingMode = "none"
+)
+
+func (e OutputSignalfxFailedRequestLoggingMode) ToPointer() *OutputSignalfxFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputSignalfxResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSignalfxResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSignalfxResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSignalfxResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputSignalfxResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSignalfxResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSignalfxResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputSignalfxTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSignalfxTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSignalfxTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSignalfxTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputSignalfxTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSignalfxTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSignalfxTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputSignalfxBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSignalfxBackpressureBehavior string
+
+const (
+	OutputSignalfxBackpressureBehaviorBlock OutputSignalfxBackpressureBehavior = "block"
+	OutputSignalfxBackpressureBehaviorDrop  OutputSignalfxBackpressureBehavior = "drop"
+	OutputSignalfxBackpressureBehaviorQueue OutputSignalfxBackpressureBehavior = "queue"
+)
+
+func (e OutputSignalfxBackpressureBehavior) ToPointer() *OutputSignalfxBackpressureBehavior {
+	return &e
+}
+
+// OutputSignalfxCompression - Codec to use to compress the persisted data
+type OutputSignalfxCompression string
+
+const (
+	OutputSignalfxCompressionNone OutputSignalfxCompression = "none"
+	OutputSignalfxCompressionGzip OutputSignalfxCompression = "gzip"
+)
+
+func (e OutputSignalfxCompression) ToPointer() *OutputSignalfxCompression {
+	return &e
+}
+
+// OutputSignalfxQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSignalfxQueueFullBehavior string
+
+const (
+	OutputSignalfxQueueFullBehaviorBlock OutputSignalfxQueueFullBehavior = "block"
+	OutputSignalfxQueueFullBehaviorDrop  OutputSignalfxQueueFullBehavior = "drop"
+)
+
+func (e OutputSignalfxQueueFullBehavior) ToPointer() *OutputSignalfxQueueFullBehavior {
+	return &e
+}
+
+// OutputSignalfxMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSignalfxMode string
+
+const (
+	OutputSignalfxModeError        OutputSignalfxMode = "error"
+	OutputSignalfxModeBackpressure OutputSignalfxMode = "backpressure"
+	OutputSignalfxModeAlways       OutputSignalfxMode = "always"
+)
+
+func (e OutputSignalfxMode) ToPointer() *OutputSignalfxMode {
+	return &e
+}
+
+type OutputSignalfxPqControls struct {
+}
+
+type OutputSignalfx struct {
+	// Unique ID for this output
+	ID   string             `json:"id"`
+	Type OutputSignalfxType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *OutputSignalfxAuthenticationMethod `default:"manual" json:"authType"`
+	// SignalFx realm name, e.g. "us0". For a complete list of available SignalFx realm names, please check [here](https://docs.splunk.com/observability/en/get-started/service-description.html#sd-regions).
+	Realm *string `default:"us0" json:"realm"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputSignalfxExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputSignalfxFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputSignalfxResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputSignalfxTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSignalfxBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                             `json:"description,omitempty"`
+	// SignalFx API access token (see [here](https://docs.signalfx.com/en/latest/admin-guide/tokens.html#working-with-access-tokens))
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSignalfxCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSignalfxQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSignalfxMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSignalfxPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputSignalfx) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSignalfx) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSignalfx) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSignalfx) GetType() OutputSignalfxType {
+	if o == nil {
+		return OutputSignalfxType("")
+	}
+	return o.Type
+}
+
+func (o *OutputSignalfx) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSignalfx) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSignalfx) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSignalfx) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSignalfx) GetAuthType() *OutputSignalfxAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputSignalfx) GetRealm() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Realm
+}
+
+func (o *OutputSignalfx) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputSignalfx) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputSignalfx) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputSignalfx) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSignalfx) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSignalfx) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputSignalfx) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputSignalfx) GetExtraHTTPHeaders() []OutputSignalfxExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputSignalfx) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputSignalfx) GetFailedRequestLoggingMode() *OutputSignalfxFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputSignalfx) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputSignalfx) GetResponseRetrySettings() []OutputSignalfxResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputSignalfx) GetTimeoutRetrySettings() *OutputSignalfxTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputSignalfx) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputSignalfx) GetOnBackpressure() *OutputSignalfxBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSignalfx) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSignalfx) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputSignalfx) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputSignalfx) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSignalfx) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSignalfx) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSignalfx) GetPqCompress() *OutputSignalfxCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSignalfx) GetPqOnBackpressure() *OutputSignalfxQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSignalfx) GetPqMode() *OutputSignalfxMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSignalfx) GetPqControls() *OutputSignalfxPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputWavefrontType string
+
+const (
+	OutputWavefrontTypeWavefront OutputWavefrontType = "wavefront"
+)
+
+func (e OutputWavefrontType) ToPointer() *OutputWavefrontType {
+	return &e
+}
+
+// OutputWavefrontAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputWavefrontAuthenticationMethod string
+
+const (
+	OutputWavefrontAuthenticationMethodManual OutputWavefrontAuthenticationMethod = "manual"
+	OutputWavefrontAuthenticationMethodSecret OutputWavefrontAuthenticationMethod = "secret"
+)
+
+func (e OutputWavefrontAuthenticationMethod) ToPointer() *OutputWavefrontAuthenticationMethod {
+	return &e
+}
+
+type OutputWavefrontExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputWavefrontExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputWavefrontExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputWavefrontFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputWavefrontFailedRequestLoggingMode string
+
+const (
+	OutputWavefrontFailedRequestLoggingModePayload           OutputWavefrontFailedRequestLoggingMode = "payload"
+	OutputWavefrontFailedRequestLoggingModePayloadAndHeaders OutputWavefrontFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputWavefrontFailedRequestLoggingModeNone              OutputWavefrontFailedRequestLoggingMode = "none"
+)
+
+func (e OutputWavefrontFailedRequestLoggingMode) ToPointer() *OutputWavefrontFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputWavefrontResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputWavefrontResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputWavefrontResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputWavefrontResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputWavefrontResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputWavefrontResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputWavefrontResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputWavefrontTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputWavefrontTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputWavefrontTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputWavefrontTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputWavefrontTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputWavefrontTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputWavefrontTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputWavefrontBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputWavefrontBackpressureBehavior string
+
+const (
+	OutputWavefrontBackpressureBehaviorBlock OutputWavefrontBackpressureBehavior = "block"
+	OutputWavefrontBackpressureBehaviorDrop  OutputWavefrontBackpressureBehavior = "drop"
+	OutputWavefrontBackpressureBehaviorQueue OutputWavefrontBackpressureBehavior = "queue"
+)
+
+func (e OutputWavefrontBackpressureBehavior) ToPointer() *OutputWavefrontBackpressureBehavior {
+	return &e
+}
+
+// OutputWavefrontCompression - Codec to use to compress the persisted data
+type OutputWavefrontCompression string
+
+const (
+	OutputWavefrontCompressionNone OutputWavefrontCompression = "none"
+	OutputWavefrontCompressionGzip OutputWavefrontCompression = "gzip"
+)
+
+func (e OutputWavefrontCompression) ToPointer() *OutputWavefrontCompression {
+	return &e
+}
+
+// OutputWavefrontQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputWavefrontQueueFullBehavior string
+
+const (
+	OutputWavefrontQueueFullBehaviorBlock OutputWavefrontQueueFullBehavior = "block"
+	OutputWavefrontQueueFullBehaviorDrop  OutputWavefrontQueueFullBehavior = "drop"
+)
+
+func (e OutputWavefrontQueueFullBehavior) ToPointer() *OutputWavefrontQueueFullBehavior {
+	return &e
+}
+
+// OutputWavefrontMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputWavefrontMode string
+
+const (
+	OutputWavefrontModeError        OutputWavefrontMode = "error"
+	OutputWavefrontModeBackpressure OutputWavefrontMode = "backpressure"
+	OutputWavefrontModeAlways       OutputWavefrontMode = "always"
+)
+
+func (e OutputWavefrontMode) ToPointer() *OutputWavefrontMode {
+	return &e
+}
+
+type OutputWavefrontPqControls struct {
+}
+
+type OutputWavefront struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type OutputWavefrontType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *OutputWavefrontAuthenticationMethod `default:"manual" json:"authType"`
+	// WaveFront domain name, e.g. "longboard"
+	Domain *string `default:"longboard" json:"domain"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size, in KB, of the request body
+	MaxPayloadSizeKB *float64 `default:"4096" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events
+	ExtraHTTPHeaders []OutputWavefrontExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputWavefrontFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputWavefrontResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputWavefrontTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputWavefrontBackpressureBehavior `default:"block" json:"onBackpressure"`
+	Description    *string                              `json:"description,omitempty"`
+	// WaveFront API authentication token (see [here](https://docs.wavefront.com/wavefront_api.html#generating-an-api-token))
+	Token *string `json:"token,omitempty"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputWavefrontCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputWavefrontQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputWavefrontMode       `default:"error" json:"pqMode"`
+	PqControls *OutputWavefrontPqControls `json:"pqControls,omitempty"`
+}
+
+func (o OutputWavefront) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputWavefront) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputWavefront) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputWavefront) GetType() OutputWavefrontType {
+	if o == nil {
+		return OutputWavefrontType("")
+	}
+	return o.Type
+}
+
+func (o *OutputWavefront) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputWavefront) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputWavefront) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputWavefront) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputWavefront) GetAuthType() *OutputWavefrontAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputWavefront) GetDomain() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Domain
+}
+
+func (o *OutputWavefront) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputWavefront) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputWavefront) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputWavefront) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputWavefront) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputWavefront) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputWavefront) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputWavefront) GetExtraHTTPHeaders() []OutputWavefrontExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputWavefront) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputWavefront) GetFailedRequestLoggingMode() *OutputWavefrontFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputWavefront) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputWavefront) GetResponseRetrySettings() []OutputWavefrontResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputWavefront) GetTimeoutRetrySettings() *OutputWavefrontTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputWavefront) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputWavefront) GetOnBackpressure() *OutputWavefrontBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputWavefront) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputWavefront) GetToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+func (o *OutputWavefront) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+func (o *OutputWavefront) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputWavefront) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputWavefront) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputWavefront) GetPqCompress() *OutputWavefrontCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputWavefront) GetPqOnBackpressure() *OutputWavefrontQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputWavefront) GetPqMode() *OutputWavefrontMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputWavefront) GetPqControls() *OutputWavefrontPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+type OutputSplunkLbType string
+
+const (
+	OutputSplunkLbTypeSplunkLb OutputSplunkLbType = "splunk_lb"
+)
+
+func (e OutputSplunkLbType) ToPointer() *OutputSplunkLbType {
+	return &e
+}
+
+// OutputSplunkLbNestedFieldSerialization - How to serialize nested fields into index-time fields
+type OutputSplunkLbNestedFieldSerialization string
+
+const (
+	OutputSplunkLbNestedFieldSerializationJSON OutputSplunkLbNestedFieldSerialization = "json"
+	OutputSplunkLbNestedFieldSerializationNone OutputSplunkLbNestedFieldSerialization = "none"
+)
+
+func (e OutputSplunkLbNestedFieldSerialization) ToPointer() *OutputSplunkLbNestedFieldSerialization {
+	return &e
+}
+
+type OutputSplunkLbMinimumTLSVersion string
+
+const (
+	OutputSplunkLbMinimumTLSVersionTlSv1  OutputSplunkLbMinimumTLSVersion = "TLSv1"
+	OutputSplunkLbMinimumTLSVersionTlSv11 OutputSplunkLbMinimumTLSVersion = "TLSv1.1"
+	OutputSplunkLbMinimumTLSVersionTlSv12 OutputSplunkLbMinimumTLSVersion = "TLSv1.2"
+	OutputSplunkLbMinimumTLSVersionTlSv13 OutputSplunkLbMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputSplunkLbMinimumTLSVersion) ToPointer() *OutputSplunkLbMinimumTLSVersion {
+	return &e
+}
+
+type OutputSplunkLbMaximumTLSVersion string
+
+const (
+	OutputSplunkLbMaximumTLSVersionTlSv1  OutputSplunkLbMaximumTLSVersion = "TLSv1"
+	OutputSplunkLbMaximumTLSVersionTlSv11 OutputSplunkLbMaximumTLSVersion = "TLSv1.1"
+	OutputSplunkLbMaximumTLSVersionTlSv12 OutputSplunkLbMaximumTLSVersion = "TLSv1.2"
+	OutputSplunkLbMaximumTLSVersionTlSv13 OutputSplunkLbMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputSplunkLbMaximumTLSVersion) ToPointer() *OutputSplunkLbMaximumTLSVersion {
+	return &e
+}
+
+type OutputSplunkLbTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                          `json:"passphrase,omitempty"`
+	MinVersion *OutputSplunkLbMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputSplunkLbMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputSplunkLbTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetMinVersion() *OutputSplunkLbMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputSplunkLbTLSSettingsClientSide) GetMaxVersion() *OutputSplunkLbMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputSplunkLbMaxS2SVersion - The highest S2S protocol version to advertise during handshake
+type OutputSplunkLbMaxS2SVersion string
+
+const (
+	OutputSplunkLbMaxS2SVersionV3 OutputSplunkLbMaxS2SVersion = "v3"
+	OutputSplunkLbMaxS2SVersionV4 OutputSplunkLbMaxS2SVersion = "v4"
+)
+
+func (e OutputSplunkLbMaxS2SVersion) ToPointer() *OutputSplunkLbMaxS2SVersion {
+	return &e
+}
+
+// OutputSplunkLbBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSplunkLbBackpressureBehavior string
+
+const (
+	OutputSplunkLbBackpressureBehaviorBlock OutputSplunkLbBackpressureBehavior = "block"
+	OutputSplunkLbBackpressureBehaviorDrop  OutputSplunkLbBackpressureBehavior = "drop"
+	OutputSplunkLbBackpressureBehaviorQueue OutputSplunkLbBackpressureBehavior = "queue"
+)
+
+func (e OutputSplunkLbBackpressureBehavior) ToPointer() *OutputSplunkLbBackpressureBehavior {
+	return &e
+}
+
+// OutputSplunkLbAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputSplunkLbAuthenticationMethod string
+
+const (
+	OutputSplunkLbAuthenticationMethodManual OutputSplunkLbAuthenticationMethod = "manual"
+	OutputSplunkLbAuthenticationMethodSecret OutputSplunkLbAuthenticationMethod = "secret"
+)
+
+func (e OutputSplunkLbAuthenticationMethod) ToPointer() *OutputSplunkLbAuthenticationMethod {
+	return &e
+}
+
+// OutputSplunkLbCompressCompression - Controls whether the sender should send compressed data to the server. Select 'Disabled' to reject compressed connections or 'Always' to ignore server's configuration and send compressed data.
+type OutputSplunkLbCompressCompression string
+
+const (
+	OutputSplunkLbCompressCompressionDisabled OutputSplunkLbCompressCompression = "disabled"
+	OutputSplunkLbCompressCompressionAuto     OutputSplunkLbCompressCompression = "auto"
+	OutputSplunkLbCompressCompressionAlways   OutputSplunkLbCompressCompression = "always"
+)
+
+func (e OutputSplunkLbCompressCompression) ToPointer() *OutputSplunkLbCompressCompression {
+	return &e
+}
+
+// IndexerDiscoveryConfigsAuthTokenAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type IndexerDiscoveryConfigsAuthTokenAuthenticationMethod string
+
+const (
+	IndexerDiscoveryConfigsAuthTokenAuthenticationMethodManual IndexerDiscoveryConfigsAuthTokenAuthenticationMethod = "manual"
+	IndexerDiscoveryConfigsAuthTokenAuthenticationMethodSecret IndexerDiscoveryConfigsAuthTokenAuthenticationMethod = "secret"
+)
+
+func (e IndexerDiscoveryConfigsAuthTokenAuthenticationMethod) ToPointer() *IndexerDiscoveryConfigsAuthTokenAuthenticationMethod {
+	return &e
+}
+
+type CreateOutputAuthToken struct {
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *IndexerDiscoveryConfigsAuthTokenAuthenticationMethod `default:"manual" json:"authType"`
+}
+
+func (c CreateOutputAuthToken) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOutputAuthToken) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateOutputAuthToken) GetAuthType() *IndexerDiscoveryConfigsAuthTokenAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+// IndexerDiscoveryConfigsAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type IndexerDiscoveryConfigsAuthenticationMethod string
+
+const (
+	IndexerDiscoveryConfigsAuthenticationMethodManual IndexerDiscoveryConfigsAuthenticationMethod = "manual"
+	IndexerDiscoveryConfigsAuthenticationMethodSecret IndexerDiscoveryConfigsAuthenticationMethod = "secret"
+)
+
+func (e IndexerDiscoveryConfigsAuthenticationMethod) ToPointer() *IndexerDiscoveryConfigsAuthenticationMethod {
+	return &e
+}
+
+// IndexerDiscoveryConfigs - List of configurations to set up indexer discovery in Splunk Indexer clustering environment.
+type IndexerDiscoveryConfigs struct {
+	// Clustering site of the indexers from where indexers need to be discovered. In case of single site cluster, it defaults to 'default' site.
+	Site *string `default:"default" json:"site"`
+	// Full URI of Splunk cluster manager (scheme://host:port). Example: https://managerAddress:8089
+	MasterURI string `json:"masterUri"`
+	// Time interval, in seconds, between two consecutive indexer list fetches from cluster manager
+	RefreshIntervalSec *float64 `default:"300" json:"refreshIntervalSec"`
+	// During indexer discovery, reject cluster manager certificates that are not authorized by the system's CA. Disable to allow untrusted (for example, self-signed) certificates.
+	RejectUnauthorized *bool `default:"false" json:"rejectUnauthorized"`
+	// Tokens required to authenticate to cluster manager for indexer discovery
+	AuthTokens []CreateOutputAuthToken `json:"authTokens,omitempty"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType *IndexerDiscoveryConfigsAuthenticationMethod `default:"manual" json:"authType"`
+	// Shared secret to be provided by any client (in authToken header field). If empty, unauthorized access is permitted.
+	AuthToken *string `default:"" json:"authToken"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+}
+
+func (i IndexerDiscoveryConfigs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IndexerDiscoveryConfigs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *IndexerDiscoveryConfigs) GetSite() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Site
+}
+
+func (o *IndexerDiscoveryConfigs) GetMasterURI() string {
+	if o == nil {
+		return ""
+	}
+	return o.MasterURI
+}
+
+func (o *IndexerDiscoveryConfigs) GetRefreshIntervalSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RefreshIntervalSec
+}
+
+func (o *IndexerDiscoveryConfigs) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *IndexerDiscoveryConfigs) GetAuthTokens() []CreateOutputAuthToken {
+	if o == nil {
+		return nil
+	}
+	return o.AuthTokens
+}
+
+func (o *IndexerDiscoveryConfigs) GetAuthType() *IndexerDiscoveryConfigsAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *IndexerDiscoveryConfigs) GetAuthToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthToken
+}
+
+func (o *IndexerDiscoveryConfigs) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+// TLS - Whether to inherit TLS configs from group setting or disable TLS
+type TLS string
+
+const (
+	TLSInherit TLS = "inherit"
+	TLSOff     TLS = "off"
+)
+
+func (e TLS) ToPointer() *TLS {
+	return &e
+}
+
+type OutputSplunkLbHost struct {
+	// The hostname of the receiver
+	Host string `json:"host"`
+	// The port to connect to on the provided host
+	Port *float64 `default:"9997" json:"port"`
+	// Whether to inherit TLS configs from group setting or disable TLS
+	TLS *TLS `default:"inherit" json:"tls"`
+	// Servername to use if establishing a TLS connection. If not specified, defaults to connection host (if not an IP); otherwise, uses the global TLS settings.
+	Servername *string `json:"servername,omitempty"`
+	// Assign a weight (>0) to each endpoint to indicate its traffic-handling capability
+	Weight *float64 `default:"1" json:"weight"`
+}
+
+func (o OutputSplunkLbHost) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSplunkLbHost) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSplunkLbHost) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputSplunkLbHost) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OutputSplunkLbHost) GetTLS() *TLS {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputSplunkLbHost) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputSplunkLbHost) GetWeight() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Weight
+}
+
+// OutputSplunkLbPqCompressCompression - Codec to use to compress the persisted data
+type OutputSplunkLbPqCompressCompression string
+
+const (
+	OutputSplunkLbPqCompressCompressionNone OutputSplunkLbPqCompressCompression = "none"
+	OutputSplunkLbPqCompressCompressionGzip OutputSplunkLbPqCompressCompression = "gzip"
+)
+
+func (e OutputSplunkLbPqCompressCompression) ToPointer() *OutputSplunkLbPqCompressCompression {
+	return &e
+}
+
+// OutputSplunkLbQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSplunkLbQueueFullBehavior string
+
+const (
+	OutputSplunkLbQueueFullBehaviorBlock OutputSplunkLbQueueFullBehavior = "block"
+	OutputSplunkLbQueueFullBehaviorDrop  OutputSplunkLbQueueFullBehavior = "drop"
+)
+
+func (e OutputSplunkLbQueueFullBehavior) ToPointer() *OutputSplunkLbQueueFullBehavior {
+	return &e
+}
+
+// OutputSplunkLbMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSplunkLbMode string
+
+const (
+	OutputSplunkLbModeError        OutputSplunkLbMode = "error"
+	OutputSplunkLbModeBackpressure OutputSplunkLbMode = "backpressure"
+	OutputSplunkLbModeAlways       OutputSplunkLbMode = "always"
+)
+
+func (e OutputSplunkLbMode) ToPointer() *OutputSplunkLbMode {
+	return &e
+}
+
+type OutputSplunkLbPqControls struct {
+}
+
+type OutputSplunkLb struct {
+	// Unique ID for this output
+	ID   string             `json:"id"`
+	Type OutputSplunkLbType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The interval in which to re-resolve any hostnames and pick up destinations from A records
+	DNSResolvePeriodSec *float64 `default:"600" json:"dnsResolvePeriodSec"`
+	// How far back in time to keep traffic stats for load balancing purposes
+	LoadBalanceStatsPeriodSec *float64 `default:"300" json:"loadBalanceStatsPeriodSec"`
+	// Maximum number of concurrent connections (per Worker Process). A random set of IPs will be picked on every DNS resolution period. Use 0 for unlimited.
+	MaxConcurrentSenders *float64 `default:"0" json:"maxConcurrentSenders"`
+	// How to serialize nested fields into index-time fields
+	NestedFields *OutputSplunkLbNestedFieldSerialization `default:"none" json:"nestedFields"`
+	// Rate (in bytes per second) to throttle while writing to an output. Accepts values with multiple-byte units, such as KB, MB, and GB. (Example: 42 MB) Default value of 0 specifies no throttling.
+	ThrottleRatePerSec *string `default:"0" json:"throttleRatePerSec"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time (milliseconds) to wait for a write to complete before assuming connection is dead
+	WriteTimeout *float64                             `default:"60000" json:"writeTimeout"`
+	TLS          *OutputSplunkLbTLSSettingsClientSide `json:"tls,omitempty"`
+	// Output metrics in multiple-metric format in a single event. Supported in Splunk 8.0 and above.
+	EnableMultiMetrics *bool `default:"false" json:"enableMultiMetrics"`
+	// Check if indexer is shutting down and stop sending data. This helps minimize data loss during shutdown.
+	EnableACK *bool `default:"true" json:"enableACK"`
+	// Use to troubleshoot issues with sending data
+	LogFailedRequests *bool `default:"false" json:"logFailedRequests"`
+	// The highest S2S protocol version to advertise during handshake
+	MaxS2Sversion *OutputSplunkLbMaxS2SVersion `default:"v3" json:"maxS2Sversion"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSplunkLbBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Automatically discover indexers in indexer clustering environment.
+	IndexerDiscovery *bool `default:"false" json:"indexerDiscovery"`
+	// How long (in milliseconds) each LB endpoint can report blocked before the Destination reports unhealthy, blocking the sender. (Grace period for fluctuations.) Use 0 to disable; max 1 minute.
+	SenderUnhealthyTimeAllowance *float64 `default:"100" json:"senderUnhealthyTimeAllowance"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType    *OutputSplunkLbAuthenticationMethod `default:"manual" json:"authType"`
+	Description *string                             `json:"description,omitempty"`
+	// Maximum number of times healthcheck can fail before we close connection. If set to 0 (disabled), and the connection to Splunk is forcibly closed, some data loss might occur.
+	MaxFailedHealthChecks *float64 `default:"1" json:"maxFailedHealthChecks"`
+	// Controls whether the sender should send compressed data to the server. Select 'Disabled' to reject compressed connections or 'Always' to ignore server's configuration and send compressed data.
+	Compress *OutputSplunkLbCompressCompression `default:"disabled" json:"compress"`
+	// List of configurations to set up indexer discovery in Splunk Indexer clustering environment.
+	IndexerDiscoveryConfigs *IndexerDiscoveryConfigs `json:"indexerDiscoveryConfigs,omitempty"`
+	// Exclude all IPs of the current host from the list of any resolved hostnames
+	ExcludeSelf *bool `default:"false" json:"excludeSelf"`
+	// Set of Splunk indexers to load-balance data to.
+	Hosts []OutputSplunkLbHost `json:"hosts"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSplunkLbPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSplunkLbQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSplunkLbMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSplunkLbPqControls `json:"pqControls,omitempty"`
+	// Shared secret token to use when establishing a connection to a Splunk indexer.
+	AuthToken *string `default:"" json:"authToken"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+}
+
+func (o OutputSplunkLb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSplunkLb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSplunkLb) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSplunkLb) GetType() OutputSplunkLbType {
+	if o == nil {
+		return OutputSplunkLbType("")
+	}
+	return o.Type
+}
+
+func (o *OutputSplunkLb) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSplunkLb) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSplunkLb) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSplunkLb) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSplunkLb) GetDNSResolvePeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DNSResolvePeriodSec
+}
+
+func (o *OutputSplunkLb) GetLoadBalanceStatsPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.LoadBalanceStatsPeriodSec
+}
+
+func (o *OutputSplunkLb) GetMaxConcurrentSenders() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxConcurrentSenders
+}
+
+func (o *OutputSplunkLb) GetNestedFields() *OutputSplunkLbNestedFieldSerialization {
+	if o == nil {
+		return nil
+	}
+	return o.NestedFields
+}
+
+func (o *OutputSplunkLb) GetThrottleRatePerSec() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRatePerSec
+}
+
+func (o *OutputSplunkLb) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputSplunkLb) GetWriteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteTimeout
+}
+
+func (o *OutputSplunkLb) GetTLS() *OutputSplunkLbTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputSplunkLb) GetEnableMultiMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableMultiMetrics
+}
+
+func (o *OutputSplunkLb) GetEnableACK() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableACK
+}
+
+func (o *OutputSplunkLb) GetLogFailedRequests() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogFailedRequests
+}
+
+func (o *OutputSplunkLb) GetMaxS2Sversion() *OutputSplunkLbMaxS2SVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxS2Sversion
+}
+
+func (o *OutputSplunkLb) GetOnBackpressure() *OutputSplunkLbBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSplunkLb) GetIndexerDiscovery() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IndexerDiscovery
+}
+
+func (o *OutputSplunkLb) GetSenderUnhealthyTimeAllowance() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SenderUnhealthyTimeAllowance
+}
+
+func (o *OutputSplunkLb) GetAuthType() *OutputSplunkLbAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputSplunkLb) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSplunkLb) GetMaxFailedHealthChecks() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFailedHealthChecks
+}
+
+func (o *OutputSplunkLb) GetCompress() *OutputSplunkLbCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSplunkLb) GetIndexerDiscoveryConfigs() *IndexerDiscoveryConfigs {
+	if o == nil {
+		return nil
+	}
+	return o.IndexerDiscoveryConfigs
+}
+
+func (o *OutputSplunkLb) GetExcludeSelf() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeSelf
+}
+
+func (o *OutputSplunkLb) GetHosts() []OutputSplunkLbHost {
+	if o == nil {
+		return []OutputSplunkLbHost{}
+	}
+	return o.Hosts
+}
+
+func (o *OutputSplunkLb) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSplunkLb) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSplunkLb) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSplunkLb) GetPqCompress() *OutputSplunkLbPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSplunkLb) GetPqOnBackpressure() *OutputSplunkLbQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSplunkLb) GetPqMode() *OutputSplunkLbMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSplunkLb) GetPqControls() *OutputSplunkLbPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputSplunkLb) GetAuthToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthToken
+}
+
+func (o *OutputSplunkLb) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+type OutputSplunkType string
+
+const (
+	OutputSplunkTypeSplunk OutputSplunkType = "splunk"
+)
+
+func (e OutputSplunkType) ToPointer() *OutputSplunkType {
+	return &e
+}
+
+// OutputSplunkNestedFieldSerialization - How to serialize nested fields into index-time fields
+type OutputSplunkNestedFieldSerialization string
+
+const (
+	OutputSplunkNestedFieldSerializationJSON OutputSplunkNestedFieldSerialization = "json"
+	OutputSplunkNestedFieldSerializationNone OutputSplunkNestedFieldSerialization = "none"
+)
+
+func (e OutputSplunkNestedFieldSerialization) ToPointer() *OutputSplunkNestedFieldSerialization {
+	return &e
+}
+
+type OutputSplunkMinimumTLSVersion string
+
+const (
+	OutputSplunkMinimumTLSVersionTlSv1  OutputSplunkMinimumTLSVersion = "TLSv1"
+	OutputSplunkMinimumTLSVersionTlSv11 OutputSplunkMinimumTLSVersion = "TLSv1.1"
+	OutputSplunkMinimumTLSVersionTlSv12 OutputSplunkMinimumTLSVersion = "TLSv1.2"
+	OutputSplunkMinimumTLSVersionTlSv13 OutputSplunkMinimumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputSplunkMinimumTLSVersion) ToPointer() *OutputSplunkMinimumTLSVersion {
+	return &e
+}
+
+type OutputSplunkMaximumTLSVersion string
+
+const (
+	OutputSplunkMaximumTLSVersionTlSv1  OutputSplunkMaximumTLSVersion = "TLSv1"
+	OutputSplunkMaximumTLSVersionTlSv11 OutputSplunkMaximumTLSVersion = "TLSv1.1"
+	OutputSplunkMaximumTLSVersionTlSv12 OutputSplunkMaximumTLSVersion = "TLSv1.2"
+	OutputSplunkMaximumTLSVersionTlSv13 OutputSplunkMaximumTLSVersion = "TLSv1.3"
+)
+
+func (e OutputSplunkMaximumTLSVersion) ToPointer() *OutputSplunkMaximumTLSVersion {
+	return &e
+}
+
+type OutputSplunkTLSSettingsClientSide struct {
+	Disabled *bool `default:"true" json:"disabled"`
+	// Reject certificates that are not authorized by a CA in the CA certificate path, or by another
+	//                     trusted CA (such as the system's). Defaults to Enabled. Overrides the toggle from Advanced Settings, when also present.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Server name for the SNI (Server Name Indication) TLS extension. It must be a host name, and not an IP address.
+	Servername *string `json:"servername,omitempty"`
+	// The name of the predefined certificate
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Path on client in which to find CA certificates to verify the server's cert. PEM format. Can reference $ENV_VARS.
+	CaPath *string `json:"caPath,omitempty"`
+	// Path on client in which to find the private key to use. PEM format. Can reference $ENV_VARS.
+	PrivKeyPath *string `json:"privKeyPath,omitempty"`
+	// Path on client in which to find certificates to use. PEM format. Can reference $ENV_VARS.
+	CertPath *string `json:"certPath,omitempty"`
+	// Passphrase to use to decrypt private key
+	Passphrase *string                        `json:"passphrase,omitempty"`
+	MinVersion *OutputSplunkMinimumTLSVersion `json:"minVersion,omitempty"`
+	MaxVersion *OutputSplunkMaximumTLSVersion `json:"maxVersion,omitempty"`
+}
+
+func (o OutputSplunkTLSSettingsClientSide) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetDisabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Disabled
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetServername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Servername
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetCertificateName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertificateName
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetCaPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CaPath
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetPrivKeyPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivKeyPath
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetCertPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertPath
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetPassphrase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Passphrase
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetMinVersion() *OutputSplunkMinimumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MinVersion
+}
+
+func (o *OutputSplunkTLSSettingsClientSide) GetMaxVersion() *OutputSplunkMaximumTLSVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxVersion
+}
+
+// OutputSplunkMaxS2SVersion - The highest S2S protocol version to advertise during handshake
+type OutputSplunkMaxS2SVersion string
+
+const (
+	OutputSplunkMaxS2SVersionV3 OutputSplunkMaxS2SVersion = "v3"
+	OutputSplunkMaxS2SVersionV4 OutputSplunkMaxS2SVersion = "v4"
+)
+
+func (e OutputSplunkMaxS2SVersion) ToPointer() *OutputSplunkMaxS2SVersion {
+	return &e
+}
+
+// OutputSplunkBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSplunkBackpressureBehavior string
+
+const (
+	OutputSplunkBackpressureBehaviorBlock OutputSplunkBackpressureBehavior = "block"
+	OutputSplunkBackpressureBehaviorDrop  OutputSplunkBackpressureBehavior = "drop"
+	OutputSplunkBackpressureBehaviorQueue OutputSplunkBackpressureBehavior = "queue"
+)
+
+func (e OutputSplunkBackpressureBehavior) ToPointer() *OutputSplunkBackpressureBehavior {
+	return &e
+}
+
+// OutputSplunkAuthenticationMethod - Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+type OutputSplunkAuthenticationMethod string
+
+const (
+	OutputSplunkAuthenticationMethodManual OutputSplunkAuthenticationMethod = "manual"
+	OutputSplunkAuthenticationMethodSecret OutputSplunkAuthenticationMethod = "secret"
+)
+
+func (e OutputSplunkAuthenticationMethod) ToPointer() *OutputSplunkAuthenticationMethod {
+	return &e
+}
+
+// OutputSplunkCompressCompression - Controls whether the sender should send compressed data to the server. Select 'Disabled' to reject compressed connections or 'Always' to ignore server's configuration and send compressed data.
+type OutputSplunkCompressCompression string
+
+const (
+	OutputSplunkCompressCompressionDisabled OutputSplunkCompressCompression = "disabled"
+	OutputSplunkCompressCompressionAuto     OutputSplunkCompressCompression = "auto"
+	OutputSplunkCompressCompressionAlways   OutputSplunkCompressCompression = "always"
+)
+
+func (e OutputSplunkCompressCompression) ToPointer() *OutputSplunkCompressCompression {
+	return &e
+}
+
+// OutputSplunkPqCompressCompression - Codec to use to compress the persisted data
+type OutputSplunkPqCompressCompression string
+
+const (
+	OutputSplunkPqCompressCompressionNone OutputSplunkPqCompressCompression = "none"
+	OutputSplunkPqCompressCompressionGzip OutputSplunkPqCompressCompression = "gzip"
+)
+
+func (e OutputSplunkPqCompressCompression) ToPointer() *OutputSplunkPqCompressCompression {
+	return &e
+}
+
+// OutputSplunkQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSplunkQueueFullBehavior string
+
+const (
+	OutputSplunkQueueFullBehaviorBlock OutputSplunkQueueFullBehavior = "block"
+	OutputSplunkQueueFullBehaviorDrop  OutputSplunkQueueFullBehavior = "drop"
+)
+
+func (e OutputSplunkQueueFullBehavior) ToPointer() *OutputSplunkQueueFullBehavior {
+	return &e
+}
+
+// OutputSplunkMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSplunkMode string
+
+const (
+	OutputSplunkModeError        OutputSplunkMode = "error"
+	OutputSplunkModeBackpressure OutputSplunkMode = "backpressure"
+	OutputSplunkModeAlways       OutputSplunkMode = "always"
+)
+
+func (e OutputSplunkMode) ToPointer() *OutputSplunkMode {
+	return &e
+}
+
+type OutputSplunkPqControls struct {
+}
+
+type OutputSplunk struct {
+	// Unique ID for this output
+	ID   string            `json:"id"`
+	Type *OutputSplunkType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// The hostname of the receiver
+	Host string `json:"host"`
+	// The port to connect to on the provided host
+	Port *float64 `default:"9997" json:"port"`
+	// How to serialize nested fields into index-time fields
+	NestedFields *OutputSplunkNestedFieldSerialization `default:"none" json:"nestedFields"`
+	// Rate (in bytes per second) to throttle while writing to an output. Accepts values with multiple-byte units, such as KB, MB, and GB. (Example: 42 MB) Default value of 0 specifies no throttling.
+	ThrottleRatePerSec *string `default:"0" json:"throttleRatePerSec"`
+	// Amount of time (milliseconds) to wait for the connection to establish before retrying
+	ConnectionTimeout *float64 `default:"10000" json:"connectionTimeout"`
+	// Amount of time (milliseconds) to wait for a write to complete before assuming connection is dead
+	WriteTimeout *float64                           `default:"60000" json:"writeTimeout"`
+	TLS          *OutputSplunkTLSSettingsClientSide `json:"tls,omitempty"`
+	// Output metrics in multiple-metric format in a single event. Supported in Splunk 8.0 and above.
+	EnableMultiMetrics *bool `default:"false" json:"enableMultiMetrics"`
+	// Check if indexer is shutting down and stop sending data. This helps minimize data loss during shutdown.
+	EnableACK *bool `default:"true" json:"enableACK"`
+	// Use to troubleshoot issues with sending data
+	LogFailedRequests *bool `default:"false" json:"logFailedRequests"`
+	// The highest S2S protocol version to advertise during handshake
+	MaxS2Sversion *OutputSplunkMaxS2SVersion `default:"v3" json:"maxS2Sversion"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSplunkBackpressureBehavior `default:"block" json:"onBackpressure"`
+	// Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate
+	AuthType    *OutputSplunkAuthenticationMethod `default:"manual" json:"authType"`
+	Description *string                           `json:"description,omitempty"`
+	// Maximum number of times healthcheck can fail before we close connection. If set to 0 (disabled), and the connection to Splunk is forcibly closed, some data loss might occur.
+	MaxFailedHealthChecks *float64 `default:"1" json:"maxFailedHealthChecks"`
+	// Controls whether the sender should send compressed data to the server. Select 'Disabled' to reject compressed connections or 'Always' to ignore server's configuration and send compressed data.
+	Compress *OutputSplunkCompressCompression `default:"disabled" json:"compress"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSplunkPqCompressCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSplunkQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSplunkMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSplunkPqControls `json:"pqControls,omitempty"`
+	// Shared secret token to use when establishing a connection to a Splunk indexer.
+	AuthToken *string `default:"" json:"authToken"`
+	// Select or create a stored text secret
+	TextSecret *string `json:"textSecret,omitempty"`
+}
+
+func (o OutputSplunk) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSplunk) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSplunk) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSplunk) GetType() *OutputSplunkType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSplunk) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSplunk) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSplunk) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSplunk) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSplunk) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *OutputSplunk) GetPort() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OutputSplunk) GetNestedFields() *OutputSplunkNestedFieldSerialization {
+	if o == nil {
+		return nil
+	}
+	return o.NestedFields
+}
+
+func (o *OutputSplunk) GetThrottleRatePerSec() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ThrottleRatePerSec
+}
+
+func (o *OutputSplunk) GetConnectionTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionTimeout
+}
+
+func (o *OutputSplunk) GetWriteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WriteTimeout
+}
+
+func (o *OutputSplunk) GetTLS() *OutputSplunkTLSSettingsClientSide {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+func (o *OutputSplunk) GetEnableMultiMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableMultiMetrics
+}
+
+func (o *OutputSplunk) GetEnableACK() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableACK
+}
+
+func (o *OutputSplunk) GetLogFailedRequests() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogFailedRequests
+}
+
+func (o *OutputSplunk) GetMaxS2Sversion() *OutputSplunkMaxS2SVersion {
+	if o == nil {
+		return nil
+	}
+	return o.MaxS2Sversion
+}
+
+func (o *OutputSplunk) GetOnBackpressure() *OutputSplunkBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSplunk) GetAuthType() *OutputSplunkAuthenticationMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputSplunk) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSplunk) GetMaxFailedHealthChecks() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxFailedHealthChecks
+}
+
+func (o *OutputSplunk) GetCompress() *OutputSplunkCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSplunk) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSplunk) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSplunk) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSplunk) GetPqCompress() *OutputSplunkPqCompressCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSplunk) GetPqOnBackpressure() *OutputSplunkQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSplunk) GetPqMode() *OutputSplunkMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSplunk) GetPqControls() *OutputSplunkPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputSplunk) GetAuthToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthToken
+}
+
+func (o *OutputSplunk) GetTextSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TextSecret
+}
+
+type OutputSentinelType string
+
+const (
+	OutputSentinelTypeSentinel OutputSentinelType = "sentinel"
+)
+
+func (e OutputSentinelType) ToPointer() *OutputSentinelType {
+	return &e
+}
+
+type OutputSentinelExtraHTTPHeader struct {
+	Name  *string `json:"name,omitempty"`
+	Value string  `json:"value"`
+}
+
+func (o *OutputSentinelExtraHTTPHeader) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OutputSentinelExtraHTTPHeader) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// OutputSentinelFailedRequestLoggingMode - Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+type OutputSentinelFailedRequestLoggingMode string
+
+const (
+	OutputSentinelFailedRequestLoggingModePayload           OutputSentinelFailedRequestLoggingMode = "payload"
+	OutputSentinelFailedRequestLoggingModePayloadAndHeaders OutputSentinelFailedRequestLoggingMode = "payloadAndHeaders"
+	OutputSentinelFailedRequestLoggingModeNone              OutputSentinelFailedRequestLoggingMode = "none"
+)
+
+func (e OutputSentinelFailedRequestLoggingMode) ToPointer() *OutputSentinelFailedRequestLoggingMode {
+	return &e
+}
+
+type OutputSentinelResponseRetrySetting struct {
+	// The HTTP response status code that will trigger retries
+	HTTPStatus float64 `json:"httpStatus"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSentinelResponseRetrySetting) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinelResponseRetrySetting) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinelResponseRetrySetting) GetHTTPStatus() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.HTTPStatus
+}
+
+func (o *OutputSentinelResponseRetrySetting) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSentinelResponseRetrySetting) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSentinelResponseRetrySetting) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+type OutputSentinelTimeoutRetrySettings struct {
+	TimeoutRetry *bool `default:"false" json:"timeoutRetry"`
+	// How long, in milliseconds, Cribl Stream should wait before initiating backoff. Maximum interval is 600,000 ms (10 minutes).
+	InitialBackoff *float64 `default:"1000" json:"initialBackoff"`
+	// Base for exponential backoff. A value of 2 (default) means Cribl Stream will retry after 2 seconds, then 4 seconds, then 8 seconds, etc.
+	BackoffRate *float64 `default:"2" json:"backoffRate"`
+	// The maximum backoff interval, in milliseconds, Cribl Stream should apply. Default (and minimum) is 10,000 ms (10 seconds); maximum is 180,000 ms (180 seconds).
+	MaxBackoff *float64 `default:"10000" json:"maxBackoff"`
+}
+
+func (o OutputSentinelTimeoutRetrySettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinelTimeoutRetrySettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinelTimeoutRetrySettings) GetTimeoutRetry() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetry
+}
+
+func (o *OutputSentinelTimeoutRetrySettings) GetInitialBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialBackoff
+}
+
+func (o *OutputSentinelTimeoutRetrySettings) GetBackoffRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.BackoffRate
+}
+
+func (o *OutputSentinelTimeoutRetrySettings) GetMaxBackoff() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBackoff
+}
+
+// OutputSentinelBackpressureBehavior - How to handle events when all receivers are exerting backpressure
+type OutputSentinelBackpressureBehavior string
+
+const (
+	OutputSentinelBackpressureBehaviorBlock OutputSentinelBackpressureBehavior = "block"
+	OutputSentinelBackpressureBehaviorDrop  OutputSentinelBackpressureBehavior = "drop"
+	OutputSentinelBackpressureBehaviorQueue OutputSentinelBackpressureBehavior = "queue"
+)
+
+func (e OutputSentinelBackpressureBehavior) ToPointer() *OutputSentinelBackpressureBehavior {
+	return &e
+}
+
+type AuthType string
+
+const (
+	AuthTypeOauth AuthType = "oauth"
+)
+
+func (e AuthType) ToPointer() *AuthType {
+	return &e
+}
+
+// EndpointConfiguration - Enter the data collection endpoint URL or the individual ID
+type EndpointConfiguration string
+
+const (
+	EndpointConfigurationURL EndpointConfiguration = "url"
+	EndpointConfigurationID  EndpointConfiguration = "ID"
+)
+
+func (e EndpointConfiguration) ToPointer() *EndpointConfiguration {
+	return &e
+}
+
+type OutputSentinelFormat string
+
+const (
+	OutputSentinelFormatNdjson    OutputSentinelFormat = "ndjson"
+	OutputSentinelFormatJSONArray OutputSentinelFormat = "json_array"
+	OutputSentinelFormatCustom    OutputSentinelFormat = "custom"
+	OutputSentinelFormatAdvanced  OutputSentinelFormat = "advanced"
+)
+
+func (e OutputSentinelFormat) ToPointer() *OutputSentinelFormat {
+	return &e
+}
+
+// OutputSentinelCompression - Codec to use to compress the persisted data
+type OutputSentinelCompression string
+
+const (
+	OutputSentinelCompressionNone OutputSentinelCompression = "none"
+	OutputSentinelCompressionGzip OutputSentinelCompression = "gzip"
+)
+
+func (e OutputSentinelCompression) ToPointer() *OutputSentinelCompression {
+	return &e
+}
+
+// OutputSentinelQueueFullBehavior - How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+type OutputSentinelQueueFullBehavior string
+
+const (
+	OutputSentinelQueueFullBehaviorBlock OutputSentinelQueueFullBehavior = "block"
+	OutputSentinelQueueFullBehaviorDrop  OutputSentinelQueueFullBehavior = "drop"
+)
+
+func (e OutputSentinelQueueFullBehavior) ToPointer() *OutputSentinelQueueFullBehavior {
+	return &e
+}
+
+// OutputSentinelMode - In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+type OutputSentinelMode string
+
+const (
+	OutputSentinelModeError        OutputSentinelMode = "error"
+	OutputSentinelModeBackpressure OutputSentinelMode = "backpressure"
+	OutputSentinelModeAlways       OutputSentinelMode = "always"
+)
+
+func (e OutputSentinelMode) ToPointer() *OutputSentinelMode {
+	return &e
+}
+
+type OutputSentinelPqControls struct {
+}
+
+type OutputSentinel struct {
+	// Unique ID for this output
+	ID   string              `json:"id"`
+	Type *OutputSentinelType `json:"type,omitempty"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// Disable to close the connection immediately after sending the outgoing request
+	KeepAlive *bool `default:"true" json:"keepAlive"`
+	// Maximum number of ongoing requests before blocking
+	Concurrency *float64 `default:"5" json:"concurrency"`
+	// Maximum size (KB) of the request body (defaults to the API's maximum limit of 1000 KB)
+	MaxPayloadSizeKB *float64 `default:"1000" json:"maxPayloadSizeKB"`
+	// Maximum number of events to include in the request body. Default is 0 (unlimited).
+	MaxPayloadEvents *float64 `default:"0" json:"maxPayloadEvents"`
+	// Compress the payload body before sending
+	Compress *bool `default:"true" json:"compress"`
+	// Reject certificates not authorized by a CA in the CA certificate path or by another trusted CA (such as the system's).
+	//         Enabled by default. When this setting is also present in TLS Settings (Client Side),
+	//         that value will take precedence.
+	RejectUnauthorized *bool `default:"true" json:"rejectUnauthorized"`
+	// Amount of time, in seconds, to wait for a request to complete before canceling it
+	TimeoutSec *float64 `default:"30" json:"timeoutSec"`
+	// Maximum time between requests. Small values could cause the payload size to be smaller than the configured Body size limit.
+	FlushPeriodSec *float64 `default:"1" json:"flushPeriodSec"`
+	// Headers to add to all events. You can also add headers dynamically on a per-event basis in the __headers field, as explained in [Cribl Docs](https://docs.cribl.io/stream/destinations-webhook/#internal-fields).
+	ExtraHTTPHeaders []OutputSentinelExtraHTTPHeader `json:"extraHttpHeaders,omitempty"`
+	// Enable round-robin DNS lookup. When a DNS server returns multiple addresses, @{product} will cycle through them in the order returned. For optimal performance, consider enabling this setting for non-load balanced destinations.
+	UseRoundRobinDNS *bool `default:"false" json:"useRoundRobinDns"`
+	// Data to log when a request fails. All headers are redacted by default, unless listed as safe headers below.
+	FailedRequestLoggingMode *OutputSentinelFailedRequestLoggingMode `default:"none" json:"failedRequestLoggingMode"`
+	// List of headers that are safe to log in plain text
+	SafeHeaders []string `json:"safeHeaders,omitempty"`
+	// Automatically retry after unsuccessful response status codes, such as 429 (Too Many Requests) or 503 (Service Unavailable)
+	ResponseRetrySettings []OutputSentinelResponseRetrySetting `json:"responseRetrySettings,omitempty"`
+	TimeoutRetrySettings  *OutputSentinelTimeoutRetrySettings  `json:"timeoutRetrySettings,omitempty"`
+	// Honor any Retry-After header that specifies a delay (in seconds) no longer than 180 seconds after the retry request. @{product} limits the delay to 180 seconds, even if the Retry-After header specifies a longer delay. When enabled, takes precedence over user-configured retry options. When disabled, all Retry-After headers are ignored.
+	ResponseHonorRetryAfterHeader *bool `default:"false" json:"responseHonorRetryAfterHeader"`
+	// How to handle events when all receivers are exerting backpressure
+	OnBackpressure *OutputSentinelBackpressureBehavior `default:"block" json:"onBackpressure"`
+	AuthType       *AuthType                           `json:"authType,omitempty"`
+	// URL for OAuth
+	LoginURL string `json:"loginUrl"`
+	// Secret parameter value to pass in request body
+	Secret string `json:"secret"`
+	// JavaScript expression to compute the Client ID for the Azure application. Can be a constant.
+	ClientID string `json:"client_id"`
+	// Scope to pass in the OAuth request
+	Scope *string `default:"https://monitor.azure.com/.default" json:"scope"`
+	// Enter the data collection endpoint URL or the individual ID
+	EndpointURLConfiguration *EndpointConfiguration `default:"url" json:"endpointURLConfiguration"`
+	// Maximum total size of the batches waiting to be sent. If left blank, defaults to 5 times the max body size (if set). If 0, no limit is enforced.
+	TotalMemoryLimitKB *float64              `json:"totalMemoryLimitKB,omitempty"`
+	Description        *string               `json:"description,omitempty"`
+	Format             *OutputSentinelFormat `json:"format,omitempty"`
+	// Expression to evaluate on events to generate output. Example: `raw=${_raw}`. See [Cribl Docs](https://docs.cribl.io/stream/destinations-webhook#custom-format) for other examples. If empty, the full event is sent as stringified JSON.
+	CustomSourceExpression *string `default:"__httpOut" json:"customSourceExpression"`
+	// Whether to drop events when the source expression evaluates to null
+	CustomDropWhenNull *bool `default:"false" json:"customDropWhenNull"`
+	// Delimiter string to insert between individual events. Defaults to newline character.
+	CustomEventDelimiter *string `default:"\\n" json:"customEventDelimiter"`
+	// Content type to use for request. Defaults to application/x-ndjson. Any content types set in Advanced Settings > Extra HTTP headers will override this entry.
+	CustomContentType *string `default:"application/x-ndjson" json:"customContentType"`
+	// Expression specifying how to format the payload for each batch. To reference the events to send, use the `${events}` variable. Example expression: `{ "items" : [${events}] }` would send the batch inside a JSON object.
+	CustomPayloadExpression *string `default:"\\${events}" json:"customPayloadExpression"`
+	// HTTP content-type header value
+	AdvancedContentType *string `default:"application/json" json:"advancedContentType"`
+	// Custom JavaScript code to format incoming event data accessible through the __e variable. The formatted content is added to (__e['__eventOut']) if available. Otherwise, the original event is serialized as JSON. Caution: This function is evaluated in an unprotected context, allowing you to execute almost any JavaScript code.
+	FormatEventCode *string `json:"formatEventCode,omitempty"`
+	// Optional JavaScript code to format the payload sent to the Destination. The payload, containing a batch of formatted events, is accessible through the __e['payload'] variable. The formatted payload is returned in the __e['__payloadOut'] variable. Caution: This function is evaluated in an unprotected context, allowing you to execute almost any JavaScript code.
+	FormatPayloadCode *string `json:"formatPayloadCode,omitempty"`
+	// The maximum size to store in each queue file before closing and optionally compressing (KB, MB, etc.)
+	PqMaxFileSize *string `default:"1 MB" json:"pqMaxFileSize"`
+	// The maximum disk space that the queue can consume (as an average per Worker Process) before queueing stops. Enter a numeral with units of KB, MB, etc.
+	PqMaxSize *string `default:"5GB" json:"pqMaxSize"`
+	// The location for the persistent queue files. To this field's value, the system will append: /<worker-id>/<output-id>.
+	PqPath *string `default:"\\$CRIBL_HOME/state/queues" json:"pqPath"`
+	// Codec to use to compress the persisted data
+	PqCompress *OutputSentinelCompression `default:"none" json:"pqCompress"`
+	// How to handle events when the queue is exerting backpressure (full capacity or low disk). 'Block' is the same behavior as non-PQ blocking. 'Drop new data' throws away incoming data, while leaving the contents of the PQ unchanged.
+	PqOnBackpressure *OutputSentinelQueueFullBehavior `default:"block" json:"pqOnBackpressure"`
+	// In Error mode, PQ writes events to the filesystem if the Destination is unavailable. In Backpressure mode, PQ writes events to the filesystem when it detects backpressure from the Destination. In Always On mode, PQ always writes events to the filesystem.
+	PqMode     *OutputSentinelMode       `default:"error" json:"pqMode"`
+	PqControls *OutputSentinelPqControls `json:"pqControls,omitempty"`
+	// URL to send events to. Can be overwritten by an event's __url field.
+	URL *string `json:"url,omitempty"`
+	// Immutable ID for the Data Collection Rule (DCR)
+	DcrID *string `json:"dcrID,omitempty"`
+	// Data collection endpoint (DCE) URL. In the format: `https://<Endpoint-Name>-<Identifier>.<Region>.ingest.monitor.azure.com`
+	DceEndpoint *string `json:"dceEndpoint,omitempty"`
+	// The name of the stream (Sentinel table) in which to store the events
+	StreamName *string `json:"streamName,omitempty"`
+}
+
+func (o OutputSentinel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OutputSentinel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OutputSentinel) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputSentinel) GetType() *OutputSentinelType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *OutputSentinel) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputSentinel) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputSentinel) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputSentinel) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputSentinel) GetKeepAlive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeepAlive
+}
+
+func (o *OutputSentinel) GetConcurrency() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Concurrency
+}
+
+func (o *OutputSentinel) GetMaxPayloadSizeKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadSizeKB
+}
+
+func (o *OutputSentinel) GetMaxPayloadEvents() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxPayloadEvents
+}
+
+func (o *OutputSentinel) GetCompress() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Compress
+}
+
+func (o *OutputSentinel) GetRejectUnauthorized() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RejectUnauthorized
+}
+
+func (o *OutputSentinel) GetTimeoutSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutSec
+}
+
+func (o *OutputSentinel) GetFlushPeriodSec() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.FlushPeriodSec
+}
+
+func (o *OutputSentinel) GetExtraHTTPHeaders() []OutputSentinelExtraHTTPHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraHTTPHeaders
+}
+
+func (o *OutputSentinel) GetUseRoundRobinDNS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseRoundRobinDNS
+}
+
+func (o *OutputSentinel) GetFailedRequestLoggingMode() *OutputSentinelFailedRequestLoggingMode {
+	if o == nil {
+		return nil
+	}
+	return o.FailedRequestLoggingMode
+}
+
+func (o *OutputSentinel) GetSafeHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SafeHeaders
+}
+
+func (o *OutputSentinel) GetResponseRetrySettings() []OutputSentinelResponseRetrySetting {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseRetrySettings
+}
+
+func (o *OutputSentinel) GetTimeoutRetrySettings() *OutputSentinelTimeoutRetrySettings {
+	if o == nil {
+		return nil
+	}
+	return o.TimeoutRetrySettings
+}
+
+func (o *OutputSentinel) GetResponseHonorRetryAfterHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHonorRetryAfterHeader
+}
+
+func (o *OutputSentinel) GetOnBackpressure() *OutputSentinelBackpressureBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.OnBackpressure
+}
+
+func (o *OutputSentinel) GetAuthType() *AuthType {
+	if o == nil {
+		return nil
+	}
+	return o.AuthType
+}
+
+func (o *OutputSentinel) GetLoginURL() string {
+	if o == nil {
+		return ""
+	}
+	return o.LoginURL
+}
+
+func (o *OutputSentinel) GetSecret() string {
+	if o == nil {
+		return ""
+	}
+	return o.Secret
+}
+
+func (o *OutputSentinel) GetClientID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ClientID
+}
+
+func (o *OutputSentinel) GetScope() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Scope
+}
+
+func (o *OutputSentinel) GetEndpointURLConfiguration() *EndpointConfiguration {
+	if o == nil {
+		return nil
+	}
+	return o.EndpointURLConfiguration
+}
+
+func (o *OutputSentinel) GetTotalMemoryLimitKB() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalMemoryLimitKB
+}
+
+func (o *OutputSentinel) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *OutputSentinel) GetFormat() *OutputSentinelFormat {
+	if o == nil {
+		return nil
+	}
+	return o.Format
+}
+
+func (o *OutputSentinel) GetCustomSourceExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomSourceExpression
+}
+
+func (o *OutputSentinel) GetCustomDropWhenNull() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CustomDropWhenNull
+}
+
+func (o *OutputSentinel) GetCustomEventDelimiter() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomEventDelimiter
+}
+
+func (o *OutputSentinel) GetCustomContentType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomContentType
+}
+
+func (o *OutputSentinel) GetCustomPayloadExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomPayloadExpression
+}
+
+func (o *OutputSentinel) GetAdvancedContentType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AdvancedContentType
+}
+
+func (o *OutputSentinel) GetFormatEventCode() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FormatEventCode
+}
+
+func (o *OutputSentinel) GetFormatPayloadCode() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FormatPayloadCode
+}
+
+func (o *OutputSentinel) GetPqMaxFileSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxFileSize
+}
+
+func (o *OutputSentinel) GetPqMaxSize() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqMaxSize
+}
+
+func (o *OutputSentinel) GetPqPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PqPath
+}
+
+func (o *OutputSentinel) GetPqCompress() *OutputSentinelCompression {
+	if o == nil {
+		return nil
+	}
+	return o.PqCompress
+}
+
+func (o *OutputSentinel) GetPqOnBackpressure() *OutputSentinelQueueFullBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.PqOnBackpressure
+}
+
+func (o *OutputSentinel) GetPqMode() *OutputSentinelMode {
+	if o == nil {
+		return nil
+	}
+	return o.PqMode
+}
+
+func (o *OutputSentinel) GetPqControls() *OutputSentinelPqControls {
+	if o == nil {
+		return nil
+	}
+	return o.PqControls
+}
+
+func (o *OutputSentinel) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+func (o *OutputSentinel) GetDcrID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DcrID
+}
+
+func (o *OutputSentinel) GetDceEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DceEndpoint
+}
+
+func (o *OutputSentinel) GetStreamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StreamName
+}
+
+type OutputDefaultType string
+
+const (
+	OutputDefaultTypeDefault OutputDefaultType = "default"
+)
+
+func (e OutputDefaultType) ToPointer() *OutputDefaultType {
+	return &e
+}
+
+type OutputDefault struct {
+	// Unique ID for this output
+	ID   string            `json:"id"`
+	Type OutputDefaultType `json:"type"`
+	// Pipeline to process data before sending out to this output
+	Pipeline *string `json:"pipeline,omitempty"`
+	// Fields to automatically add to events, such as cribl_pipe. Supports wildcards.
+	SystemFields []string `json:"systemFields,omitempty"`
+	// Optionally, enable this config only on a specified Git branch. If empty, will be enabled everywhere.
+	Environment *string `json:"environment,omitempty"`
+	// Tags for filtering and grouping in @{product}
+	Streamtags []string `json:"streamtags,omitempty"`
+	// ID of the default output. This will be used whenever a nonexistent/deleted output is referenced.
+	DefaultID string `json:"defaultId"`
+}
+
+func (o *OutputDefault) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *OutputDefault) GetType() OutputDefaultType {
+	if o == nil {
+		return OutputDefaultType("")
+	}
+	return o.Type
+}
+
+func (o *OutputDefault) GetPipeline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pipeline
+}
+
+func (o *OutputDefault) GetSystemFields() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SystemFields
+}
+
+func (o *OutputDefault) GetEnvironment() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
+}
+
+func (o *OutputDefault) GetStreamtags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Streamtags
+}
+
+func (o *OutputDefault) GetDefaultID() string {
+	if o == nil {
+		return ""
+	}
+	return o.DefaultID
+}
+
+type CreateOutputRequestType string
+
+const (
+	CreateOutputRequestTypeOutputDefault                CreateOutputRequestType = "OutputDefault"
+	CreateOutputRequestTypeOutputWebhook                CreateOutputRequestType = "OutputWebhook"
+	CreateOutputRequestTypeOutputSentinel               CreateOutputRequestType = "OutputSentinel"
+	CreateOutputRequestTypeOutputDevnull                CreateOutputRequestType = "OutputDevnull"
+	CreateOutputRequestTypeOutputSyslog                 CreateOutputRequestType = "OutputSyslog"
+	CreateOutputRequestTypeOutputSplunk                 CreateOutputRequestType = "OutputSplunk"
+	CreateOutputRequestTypeOutputSplunkLb               CreateOutputRequestType = "OutputSplunkLb"
+	CreateOutputRequestTypeOutputSplunkHec              CreateOutputRequestType = "OutputSplunkHec"
+	CreateOutputRequestTypeOutputTcpjson                CreateOutputRequestType = "OutputTcpjson"
+	CreateOutputRequestTypeOutputWavefront              CreateOutputRequestType = "OutputWavefront"
+	CreateOutputRequestTypeOutputSignalfx               CreateOutputRequestType = "OutputSignalfx"
+	CreateOutputRequestTypeOutputFilesystem             CreateOutputRequestType = "OutputFilesystem"
+	CreateOutputRequestTypeOutputS3                     CreateOutputRequestType = "OutputS3"
+	CreateOutputRequestTypeOutputAzureBlob              CreateOutputRequestType = "OutputAzureBlob"
+	CreateOutputRequestTypeOutputAzureDataExplorer      CreateOutputRequestType = "OutputAzureDataExplorer"
+	CreateOutputRequestTypeOutputAzureLogs              CreateOutputRequestType = "OutputAzureLogs"
+	CreateOutputRequestTypeOutputKinesis                CreateOutputRequestType = "OutputKinesis"
+	CreateOutputRequestTypeOutputHoneycomb              CreateOutputRequestType = "OutputHoneycomb"
+	CreateOutputRequestTypeOutputAzureEventhub          CreateOutputRequestType = "OutputAzureEventhub"
+	CreateOutputRequestTypeOutputGoogleChronicle        CreateOutputRequestType = "OutputGoogleChronicle"
+	CreateOutputRequestTypeOutputGoogleCloudStorage     CreateOutputRequestType = "OutputGoogleCloudStorage"
+	CreateOutputRequestTypeOutputGoogleCloudLogging     CreateOutputRequestType = "OutputGoogleCloudLogging"
+	CreateOutputRequestTypeOutputGooglePubsub           CreateOutputRequestType = "OutputGooglePubsub"
+	CreateOutputRequestTypeOutputExabeam                CreateOutputRequestType = "OutputExabeam"
+	CreateOutputRequestTypeOutputKafka                  CreateOutputRequestType = "OutputKafka"
+	CreateOutputRequestTypeOutputConfluentCloud         CreateOutputRequestType = "OutputConfluentCloud"
+	CreateOutputRequestTypeOutputMsk                    CreateOutputRequestType = "OutputMsk"
+	CreateOutputRequestTypeOutputElastic                CreateOutputRequestType = "OutputElastic"
+	CreateOutputRequestTypeOutputElasticCloud           CreateOutputRequestType = "OutputElasticCloud"
+	CreateOutputRequestTypeOutputNewrelic               CreateOutputRequestType = "OutputNewrelic"
+	CreateOutputRequestTypeOutputNewrelicEvents         CreateOutputRequestType = "OutputNewrelicEvents"
+	CreateOutputRequestTypeOutputInfluxdb               CreateOutputRequestType = "OutputInfluxdb"
+	CreateOutputRequestTypeOutputCloudwatch             CreateOutputRequestType = "OutputCloudwatch"
+	CreateOutputRequestTypeOutputMinio                  CreateOutputRequestType = "OutputMinio"
+	CreateOutputRequestTypeOutputStatsd                 CreateOutputRequestType = "OutputStatsd"
+	CreateOutputRequestTypeOutputStatsdExt              CreateOutputRequestType = "OutputStatsdExt"
+	CreateOutputRequestTypeOutputGraphite               CreateOutputRequestType = "OutputGraphite"
+	CreateOutputRequestTypeOutputRouter                 CreateOutputRequestType = "OutputRouter"
+	CreateOutputRequestTypeOutputSns                    CreateOutputRequestType = "OutputSns"
+	CreateOutputRequestTypeOutputSqs                    CreateOutputRequestType = "OutputSqs"
+	CreateOutputRequestTypeOutputSnmp                   CreateOutputRequestType = "OutputSnmp"
+	CreateOutputRequestTypeOutputSumoLogic              CreateOutputRequestType = "OutputSumoLogic"
+	CreateOutputRequestTypeOutputDatadog                CreateOutputRequestType = "OutputDatadog"
+	CreateOutputRequestTypeOutputGrafanaCloudUnion      CreateOutputRequestType = "OutputGrafanaCloud_union"
+	CreateOutputRequestTypeOutputLoki                   CreateOutputRequestType = "OutputLoki"
+	CreateOutputRequestTypeOutputPrometheus             CreateOutputRequestType = "OutputPrometheus"
+	CreateOutputRequestTypeOutputRing                   CreateOutputRequestType = "OutputRing"
+	CreateOutputRequestTypeOutputOpenTelemetry          CreateOutputRequestType = "OutputOpenTelemetry"
+	CreateOutputRequestTypeOutputServiceNow             CreateOutputRequestType = "OutputServiceNow"
+	CreateOutputRequestTypeOutputDataset                CreateOutputRequestType = "OutputDataset"
+	CreateOutputRequestTypeOutputCriblTCP               CreateOutputRequestType = "OutputCriblTcp"
+	CreateOutputRequestTypeOutputCriblHTTP              CreateOutputRequestType = "OutputCriblHttp"
+	CreateOutputRequestTypeOutputHumioHec               CreateOutputRequestType = "OutputHumioHec"
+	CreateOutputRequestTypeOutputCrowdstrikeNextGenSiem CreateOutputRequestType = "OutputCrowdstrikeNextGenSiem"
+	CreateOutputRequestTypeOutputDlS3                   CreateOutputRequestType = "OutputDlS3"
+	CreateOutputRequestTypeOutputSecurityLake           CreateOutputRequestType = "OutputSecurityLake"
+	CreateOutputRequestTypeOutputCriblLake              CreateOutputRequestType = "OutputCriblLake"
+	CreateOutputRequestTypeOutputDiskSpool              CreateOutputRequestType = "OutputDiskSpool"
+	CreateOutputRequestTypeOutputClickHouse             CreateOutputRequestType = "OutputClickHouse"
+	CreateOutputRequestTypeOutputXsiam                  CreateOutputRequestType = "OutputXsiam"
+	CreateOutputRequestTypeOutputNetflow                CreateOutputRequestType = "OutputNetflow"
+	CreateOutputRequestTypeOutputDynatraceHTTP          CreateOutputRequestType = "OutputDynatraceHttp"
+	CreateOutputRequestTypeOutputDynatraceOtlp          CreateOutputRequestType = "OutputDynatraceOtlp"
+	CreateOutputRequestTypeOutputSentinelOneAiSiem      CreateOutputRequestType = "OutputSentinelOneAiSiem"
+)
+
+// CreateOutputRequest - New Destination object
+type CreateOutputRequest struct {
+	OutputDefault                *OutputDefault                      `queryParam:"inline"`
+	OutputWebhook                *components.OutputWebhook           `queryParam:"inline"`
+	OutputSentinel               *OutputSentinel                     `queryParam:"inline"`
+	OutputDevnull                *components.OutputDevnull           `queryParam:"inline"`
+	OutputSyslog                 *components.OutputSyslog            `queryParam:"inline"`
+	OutputSplunk                 *OutputSplunk                       `queryParam:"inline"`
+	OutputSplunkLb               *OutputSplunkLb                     `queryParam:"inline"`
+	OutputSplunkHec              *components.OutputSplunkHec         `queryParam:"inline"`
+	OutputTcpjson                *components.OutputTcpjson           `queryParam:"inline"`
+	OutputWavefront              *OutputWavefront                    `queryParam:"inline"`
+	OutputSignalfx               *OutputSignalfx                     `queryParam:"inline"`
+	OutputFilesystem             *OutputFilesystem                   `queryParam:"inline"`
+	OutputS3                     *OutputS3                           `queryParam:"inline"`
+	OutputAzureBlob              *OutputAzureBlob                    `queryParam:"inline"`
+	OutputAzureDataExplorer      *OutputAzureDataExplorer            `queryParam:"inline"`
+	OutputAzureLogs              *OutputAzureLogs                    `queryParam:"inline"`
+	OutputKinesis                *OutputKinesis                      `queryParam:"inline"`
+	OutputHoneycomb              *OutputHoneycomb                    `queryParam:"inline"`
+	OutputAzureEventhub          *OutputAzureEventhub                `queryParam:"inline"`
+	OutputGoogleChronicle        *OutputGoogleChronicle              `queryParam:"inline"`
+	OutputGoogleCloudStorage     *OutputGoogleCloudStorage           `queryParam:"inline"`
+	OutputGoogleCloudLogging     *OutputGoogleCloudLogging           `queryParam:"inline"`
+	OutputGooglePubsub           *OutputGooglePubsub                 `queryParam:"inline"`
+	OutputExabeam                *OutputExabeam                      `queryParam:"inline"`
+	OutputKafka                  *OutputKafka                        `queryParam:"inline"`
+	OutputConfluentCloud         *OutputConfluentCloud               `queryParam:"inline"`
+	OutputMsk                    *OutputMsk                          `queryParam:"inline"`
+	OutputElastic                *OutputElastic                      `queryParam:"inline"`
+	OutputElasticCloud           *OutputElasticCloud                 `queryParam:"inline"`
+	OutputNewrelic               *components.OutputNewrelic          `queryParam:"inline"`
+	OutputNewrelicEvents         *OutputNewrelicEvents               `queryParam:"inline"`
+	OutputInfluxdb               *OutputInfluxdb                     `queryParam:"inline"`
+	OutputCloudwatch             *OutputCloudwatch                   `queryParam:"inline"`
+	OutputMinio                  *OutputMinio                        `queryParam:"inline"`
+	OutputStatsd                 *OutputStatsd                       `queryParam:"inline"`
+	OutputStatsdExt              *OutputStatsdExt                    `queryParam:"inline"`
+	OutputGraphite               *OutputGraphite                     `queryParam:"inline"`
+	OutputRouter                 *OutputRouter                       `queryParam:"inline"`
+	OutputSns                    *OutputSns                          `queryParam:"inline"`
+	OutputSqs                    *OutputSqs                          `queryParam:"inline"`
+	OutputSnmp                   *OutputSnmp                         `queryParam:"inline"`
+	OutputSumoLogic              *OutputSumoLogic                    `queryParam:"inline"`
+	OutputDatadog                *components.OutputDatadog           `queryParam:"inline"`
+	OutputGrafanaCloudUnion      *components.OutputGrafanaCloudUnion `queryParam:"inline"`
+	OutputLoki                   *OutputLoki                         `queryParam:"inline"`
+	OutputPrometheus             *OutputPrometheus                   `queryParam:"inline"`
+	OutputRing                   *components.OutputRing              `queryParam:"inline"`
+	OutputOpenTelemetry          *OutputOpenTelemetry                `queryParam:"inline"`
+	OutputServiceNow             *OutputServiceNow                   `queryParam:"inline"`
+	OutputDataset                *components.OutputDataset           `queryParam:"inline"`
+	OutputCriblTCP               *components.OutputCriblTCP          `queryParam:"inline"`
+	OutputCriblHTTP              *components.OutputCriblHTTP         `queryParam:"inline"`
+	OutputHumioHec               *OutputHumioHec                     `queryParam:"inline"`
+	OutputCrowdstrikeNextGenSiem *OutputCrowdstrikeNextGenSiem       `queryParam:"inline"`
+	OutputDlS3                   *OutputDlS3                         `queryParam:"inline"`
+	OutputSecurityLake           *OutputSecurityLake                 `queryParam:"inline"`
+	OutputCriblLake              *components.OutputCriblLake         `queryParam:"inline"`
+	OutputDiskSpool              *components.OutputDiskSpool         `queryParam:"inline"`
+	OutputClickHouse             *OutputClickHouse                   `queryParam:"inline"`
+	OutputXsiam                  *components.OutputXsiam             `queryParam:"inline"`
+	OutputNetflow                *OutputNetflow                      `queryParam:"inline"`
+	OutputDynatraceHTTP          *OutputDynatraceHTTP                `queryParam:"inline"`
+	OutputDynatraceOtlp          *OutputDynatraceOtlp                `queryParam:"inline"`
+	OutputSentinelOneAiSiem      *OutputSentinelOneAiSiem            `queryParam:"inline"`
+
+	Type CreateOutputRequestType
+}
+
+func CreateCreateOutputRequestOutputDefault(outputDefault OutputDefault) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDefault
+
+	return CreateOutputRequest{
+		OutputDefault: &outputDefault,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputWebhook(outputWebhook components.OutputWebhook) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputWebhook
+
+	return CreateOutputRequest{
+		OutputWebhook: &outputWebhook,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSentinel(outputSentinel OutputSentinel) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSentinel
+
+	return CreateOutputRequest{
+		OutputSentinel: &outputSentinel,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDevnull(outputDevnull components.OutputDevnull) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDevnull
+
+	return CreateOutputRequest{
+		OutputDevnull: &outputDevnull,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSyslog(outputSyslog components.OutputSyslog) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSyslog
+
+	return CreateOutputRequest{
+		OutputSyslog: &outputSyslog,
+		Type:         typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSplunk(outputSplunk OutputSplunk) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSplunk
+
+	return CreateOutputRequest{
+		OutputSplunk: &outputSplunk,
+		Type:         typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSplunkLb(outputSplunkLb OutputSplunkLb) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSplunkLb
+
+	return CreateOutputRequest{
+		OutputSplunkLb: &outputSplunkLb,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSplunkHec(outputSplunkHec components.OutputSplunkHec) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSplunkHec
+
+	return CreateOutputRequest{
+		OutputSplunkHec: &outputSplunkHec,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputTcpjson(outputTcpjson components.OutputTcpjson) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputTcpjson
+
+	return CreateOutputRequest{
+		OutputTcpjson: &outputTcpjson,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputWavefront(outputWavefront OutputWavefront) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputWavefront
+
+	return CreateOutputRequest{
+		OutputWavefront: &outputWavefront,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSignalfx(outputSignalfx OutputSignalfx) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSignalfx
+
+	return CreateOutputRequest{
+		OutputSignalfx: &outputSignalfx,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputFilesystem(outputFilesystem OutputFilesystem) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputFilesystem
+
+	return CreateOutputRequest{
+		OutputFilesystem: &outputFilesystem,
+		Type:             typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputS3(outputS3 OutputS3) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputS3
+
+	return CreateOutputRequest{
+		OutputS3: &outputS3,
+		Type:     typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputAzureBlob(outputAzureBlob OutputAzureBlob) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputAzureBlob
+
+	return CreateOutputRequest{
+		OutputAzureBlob: &outputAzureBlob,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputAzureDataExplorer(outputAzureDataExplorer OutputAzureDataExplorer) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputAzureDataExplorer
+
+	return CreateOutputRequest{
+		OutputAzureDataExplorer: &outputAzureDataExplorer,
+		Type:                    typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputAzureLogs(outputAzureLogs OutputAzureLogs) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputAzureLogs
+
+	return CreateOutputRequest{
+		OutputAzureLogs: &outputAzureLogs,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputKinesis(outputKinesis OutputKinesis) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputKinesis
+
+	return CreateOutputRequest{
+		OutputKinesis: &outputKinesis,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputHoneycomb(outputHoneycomb OutputHoneycomb) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputHoneycomb
+
+	return CreateOutputRequest{
+		OutputHoneycomb: &outputHoneycomb,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputAzureEventhub(outputAzureEventhub OutputAzureEventhub) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputAzureEventhub
+
+	return CreateOutputRequest{
+		OutputAzureEventhub: &outputAzureEventhub,
+		Type:                typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGoogleChronicle(outputGoogleChronicle OutputGoogleChronicle) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGoogleChronicle
+
+	return CreateOutputRequest{
+		OutputGoogleChronicle: &outputGoogleChronicle,
+		Type:                  typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGoogleCloudStorage(outputGoogleCloudStorage OutputGoogleCloudStorage) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGoogleCloudStorage
+
+	return CreateOutputRequest{
+		OutputGoogleCloudStorage: &outputGoogleCloudStorage,
+		Type:                     typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGoogleCloudLogging(outputGoogleCloudLogging OutputGoogleCloudLogging) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGoogleCloudLogging
+
+	return CreateOutputRequest{
+		OutputGoogleCloudLogging: &outputGoogleCloudLogging,
+		Type:                     typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGooglePubsub(outputGooglePubsub OutputGooglePubsub) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGooglePubsub
+
+	return CreateOutputRequest{
+		OutputGooglePubsub: &outputGooglePubsub,
+		Type:               typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputExabeam(outputExabeam OutputExabeam) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputExabeam
+
+	return CreateOutputRequest{
+		OutputExabeam: &outputExabeam,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputKafka(outputKafka OutputKafka) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputKafka
+
+	return CreateOutputRequest{
+		OutputKafka: &outputKafka,
+		Type:        typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputConfluentCloud(outputConfluentCloud OutputConfluentCloud) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputConfluentCloud
+
+	return CreateOutputRequest{
+		OutputConfluentCloud: &outputConfluentCloud,
+		Type:                 typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputMsk(outputMsk OutputMsk) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputMsk
+
+	return CreateOutputRequest{
+		OutputMsk: &outputMsk,
+		Type:      typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputElastic(outputElastic OutputElastic) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputElastic
+
+	return CreateOutputRequest{
+		OutputElastic: &outputElastic,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputElasticCloud(outputElasticCloud OutputElasticCloud) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputElasticCloud
+
+	return CreateOutputRequest{
+		OutputElasticCloud: &outputElasticCloud,
+		Type:               typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputNewrelic(outputNewrelic components.OutputNewrelic) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputNewrelic
+
+	return CreateOutputRequest{
+		OutputNewrelic: &outputNewrelic,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputNewrelicEvents(outputNewrelicEvents OutputNewrelicEvents) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputNewrelicEvents
+
+	return CreateOutputRequest{
+		OutputNewrelicEvents: &outputNewrelicEvents,
+		Type:                 typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputInfluxdb(outputInfluxdb OutputInfluxdb) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputInfluxdb
+
+	return CreateOutputRequest{
+		OutputInfluxdb: &outputInfluxdb,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputCloudwatch(outputCloudwatch OutputCloudwatch) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputCloudwatch
+
+	return CreateOutputRequest{
+		OutputCloudwatch: &outputCloudwatch,
+		Type:             typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputMinio(outputMinio OutputMinio) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputMinio
+
+	return CreateOutputRequest{
+		OutputMinio: &outputMinio,
+		Type:        typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputStatsd(outputStatsd OutputStatsd) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputStatsd
+
+	return CreateOutputRequest{
+		OutputStatsd: &outputStatsd,
+		Type:         typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputStatsdExt(outputStatsdExt OutputStatsdExt) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputStatsdExt
+
+	return CreateOutputRequest{
+		OutputStatsdExt: &outputStatsdExt,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGraphite(outputGraphite OutputGraphite) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGraphite
+
+	return CreateOutputRequest{
+		OutputGraphite: &outputGraphite,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputRouter(outputRouter OutputRouter) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputRouter
+
+	return CreateOutputRequest{
+		OutputRouter: &outputRouter,
+		Type:         typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSns(outputSns OutputSns) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSns
+
+	return CreateOutputRequest{
+		OutputSns: &outputSns,
+		Type:      typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSqs(outputSqs OutputSqs) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSqs
+
+	return CreateOutputRequest{
+		OutputSqs: &outputSqs,
+		Type:      typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSnmp(outputSnmp OutputSnmp) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSnmp
+
+	return CreateOutputRequest{
+		OutputSnmp: &outputSnmp,
+		Type:       typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSumoLogic(outputSumoLogic OutputSumoLogic) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSumoLogic
+
+	return CreateOutputRequest{
+		OutputSumoLogic: &outputSumoLogic,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDatadog(outputDatadog components.OutputDatadog) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDatadog
+
+	return CreateOutputRequest{
+		OutputDatadog: &outputDatadog,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputGrafanaCloudUnion(outputGrafanaCloudUnion components.OutputGrafanaCloudUnion) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputGrafanaCloudUnion
+
+	return CreateOutputRequest{
+		OutputGrafanaCloudUnion: &outputGrafanaCloudUnion,
+		Type:                    typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputLoki(outputLoki OutputLoki) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputLoki
+
+	return CreateOutputRequest{
+		OutputLoki: &outputLoki,
+		Type:       typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputPrometheus(outputPrometheus OutputPrometheus) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputPrometheus
+
+	return CreateOutputRequest{
+		OutputPrometheus: &outputPrometheus,
+		Type:             typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputRing(outputRing components.OutputRing) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputRing
+
+	return CreateOutputRequest{
+		OutputRing: &outputRing,
+		Type:       typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputOpenTelemetry(outputOpenTelemetry OutputOpenTelemetry) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputOpenTelemetry
+
+	return CreateOutputRequest{
+		OutputOpenTelemetry: &outputOpenTelemetry,
+		Type:                typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputServiceNow(outputServiceNow OutputServiceNow) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputServiceNow
+
+	return CreateOutputRequest{
+		OutputServiceNow: &outputServiceNow,
+		Type:             typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDataset(outputDataset components.OutputDataset) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDataset
+
+	return CreateOutputRequest{
+		OutputDataset: &outputDataset,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputCriblTCP(outputCriblTCP components.OutputCriblTCP) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputCriblTCP
+
+	return CreateOutputRequest{
+		OutputCriblTCP: &outputCriblTCP,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputCriblHTTP(outputCriblHTTP components.OutputCriblHTTP) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputCriblHTTP
+
+	return CreateOutputRequest{
+		OutputCriblHTTP: &outputCriblHTTP,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputHumioHec(outputHumioHec OutputHumioHec) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputHumioHec
+
+	return CreateOutputRequest{
+		OutputHumioHec: &outputHumioHec,
+		Type:           typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputCrowdstrikeNextGenSiem(outputCrowdstrikeNextGenSiem OutputCrowdstrikeNextGenSiem) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputCrowdstrikeNextGenSiem
+
+	return CreateOutputRequest{
+		OutputCrowdstrikeNextGenSiem: &outputCrowdstrikeNextGenSiem,
+		Type:                         typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDlS3(outputDlS3 OutputDlS3) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDlS3
+
+	return CreateOutputRequest{
+		OutputDlS3: &outputDlS3,
+		Type:       typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSecurityLake(outputSecurityLake OutputSecurityLake) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSecurityLake
+
+	return CreateOutputRequest{
+		OutputSecurityLake: &outputSecurityLake,
+		Type:               typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputCriblLake(outputCriblLake components.OutputCriblLake) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputCriblLake
+
+	return CreateOutputRequest{
+		OutputCriblLake: &outputCriblLake,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDiskSpool(outputDiskSpool components.OutputDiskSpool) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDiskSpool
+
+	return CreateOutputRequest{
+		OutputDiskSpool: &outputDiskSpool,
+		Type:            typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputClickHouse(outputClickHouse OutputClickHouse) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputClickHouse
+
+	return CreateOutputRequest{
+		OutputClickHouse: &outputClickHouse,
+		Type:             typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputXsiam(outputXsiam components.OutputXsiam) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputXsiam
+
+	return CreateOutputRequest{
+		OutputXsiam: &outputXsiam,
+		Type:        typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputNetflow(outputNetflow OutputNetflow) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputNetflow
+
+	return CreateOutputRequest{
+		OutputNetflow: &outputNetflow,
+		Type:          typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDynatraceHTTP(outputDynatraceHTTP OutputDynatraceHTTP) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDynatraceHTTP
+
+	return CreateOutputRequest{
+		OutputDynatraceHTTP: &outputDynatraceHTTP,
+		Type:                typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputDynatraceOtlp(outputDynatraceOtlp OutputDynatraceOtlp) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputDynatraceOtlp
+
+	return CreateOutputRequest{
+		OutputDynatraceOtlp: &outputDynatraceOtlp,
+		Type:                typ,
+	}
+}
+
+func CreateCreateOutputRequestOutputSentinelOneAiSiem(outputSentinelOneAiSiem OutputSentinelOneAiSiem) CreateOutputRequest {
+	typ := CreateOutputRequestTypeOutputSentinelOneAiSiem
+
+	return CreateOutputRequest{
+		OutputSentinelOneAiSiem: &outputSentinelOneAiSiem,
+		Type:                    typ,
+	}
+}
+
+func (u *CreateOutputRequest) UnmarshalJSON(data []byte) error {
+
+	var outputDevnull components.OutputDevnull = components.OutputDevnull{}
+	if err := utils.UnmarshalJSON(data, &outputDevnull, "", true, true); err == nil {
+		u.OutputDevnull = &outputDevnull
+		u.Type = CreateOutputRequestTypeOutputDevnull
+		return nil
+	}
+
+	var outputDefault OutputDefault = OutputDefault{}
+	if err := utils.UnmarshalJSON(data, &outputDefault, "", true, true); err == nil {
+		u.OutputDefault = &outputDefault
+		u.Type = CreateOutputRequestTypeOutputDefault
+		return nil
+	}
+
+	var outputRouter OutputRouter = OutputRouter{}
+	if err := utils.UnmarshalJSON(data, &outputRouter, "", true, true); err == nil {
+		u.OutputRouter = &outputRouter
+		u.Type = CreateOutputRequestTypeOutputRouter
+		return nil
+	}
+
+	var outputSnmp OutputSnmp = OutputSnmp{}
+	if err := utils.UnmarshalJSON(data, &outputSnmp, "", true, true); err == nil {
+		u.OutputSnmp = &outputSnmp
+		u.Type = CreateOutputRequestTypeOutputSnmp
+		return nil
+	}
+
+	var outputNetflow OutputNetflow = OutputNetflow{}
+	if err := utils.UnmarshalJSON(data, &outputNetflow, "", true, true); err == nil {
+		u.OutputNetflow = &outputNetflow
+		u.Type = CreateOutputRequestTypeOutputNetflow
+		return nil
+	}
+
+	var outputDiskSpool components.OutputDiskSpool = components.OutputDiskSpool{}
+	if err := utils.UnmarshalJSON(data, &outputDiskSpool, "", true, true); err == nil {
+		u.OutputDiskSpool = &outputDiskSpool
+		u.Type = CreateOutputRequestTypeOutputDiskSpool
+		return nil
+	}
+
+	var outputRing components.OutputRing = components.OutputRing{}
+	if err := utils.UnmarshalJSON(data, &outputRing, "", true, true); err == nil {
+		u.OutputRing = &outputRing
+		u.Type = CreateOutputRequestTypeOutputRing
+		return nil
+	}
+
+	var outputGraphite OutputGraphite = OutputGraphite{}
+	if err := utils.UnmarshalJSON(data, &outputGraphite, "", true, true); err == nil {
+		u.OutputGraphite = &outputGraphite
+		u.Type = CreateOutputRequestTypeOutputGraphite
+		return nil
+	}
+
+	var outputStatsd OutputStatsd = OutputStatsd{}
+	if err := utils.UnmarshalJSON(data, &outputStatsd, "", true, true); err == nil {
+		u.OutputStatsd = &outputStatsd
+		u.Type = CreateOutputRequestTypeOutputStatsd
+		return nil
+	}
+
+	var outputStatsdExt OutputStatsdExt = OutputStatsdExt{}
+	if err := utils.UnmarshalJSON(data, &outputStatsdExt, "", true, true); err == nil {
+		u.OutputStatsdExt = &outputStatsdExt
+		u.Type = CreateOutputRequestTypeOutputStatsdExt
+		return nil
+	}
+
+	var outputGooglePubsub OutputGooglePubsub = OutputGooglePubsub{}
+	if err := utils.UnmarshalJSON(data, &outputGooglePubsub, "", true, true); err == nil {
+		u.OutputGooglePubsub = &outputGooglePubsub
+		u.Type = CreateOutputRequestTypeOutputGooglePubsub
+		return nil
+	}
+
+	var outputCriblTCP components.OutputCriblTCP = components.OutputCriblTCP{}
+	if err := utils.UnmarshalJSON(data, &outputCriblTCP, "", true, true); err == nil {
+		u.OutputCriblTCP = &outputCriblTCP
+		u.Type = CreateOutputRequestTypeOutputCriblTCP
+		return nil
+	}
+
+	var outputSplunk OutputSplunk = OutputSplunk{}
+	if err := utils.UnmarshalJSON(data, &outputSplunk, "", true, true); err == nil {
+		u.OutputSplunk = &outputSplunk
+		u.Type = CreateOutputRequestTypeOutputSplunk
+		return nil
+	}
+
+	var outputSns OutputSns = OutputSns{}
+	if err := utils.UnmarshalJSON(data, &outputSns, "", true, true); err == nil {
+		u.OutputSns = &outputSns
+		u.Type = CreateOutputRequestTypeOutputSns
+		return nil
+	}
+
+	var outputCloudwatch OutputCloudwatch = OutputCloudwatch{}
+	if err := utils.UnmarshalJSON(data, &outputCloudwatch, "", true, true); err == nil {
+		u.OutputCloudwatch = &outputCloudwatch
+		u.Type = CreateOutputRequestTypeOutputCloudwatch
+		return nil
+	}
+
+	var outputSyslog components.OutputSyslog = components.OutputSyslog{}
+	if err := utils.UnmarshalJSON(data, &outputSyslog, "", true, true); err == nil {
+		u.OutputSyslog = &outputSyslog
+		u.Type = CreateOutputRequestTypeOutputSyslog
+		return nil
+	}
+
+	var outputAzureEventhub OutputAzureEventhub = OutputAzureEventhub{}
+	if err := utils.UnmarshalJSON(data, &outputAzureEventhub, "", true, true); err == nil {
+		u.OutputAzureEventhub = &outputAzureEventhub
+		u.Type = CreateOutputRequestTypeOutputAzureEventhub
+		return nil
+	}
+
+	var outputWavefront OutputWavefront = OutputWavefront{}
+	if err := utils.UnmarshalJSON(data, &outputWavefront, "", true, true); err == nil {
+		u.OutputWavefront = &outputWavefront
+		u.Type = CreateOutputRequestTypeOutputWavefront
+		return nil
+	}
+
+	var outputSignalfx OutputSignalfx = OutputSignalfx{}
+	if err := utils.UnmarshalJSON(data, &outputSignalfx, "", true, true); err == nil {
+		u.OutputSignalfx = &outputSignalfx
+		u.Type = CreateOutputRequestTypeOutputSignalfx
+		return nil
+	}
+
+	var outputHoneycomb OutputHoneycomb = OutputHoneycomb{}
+	if err := utils.UnmarshalJSON(data, &outputHoneycomb, "", true, true); err == nil {
+		u.OutputHoneycomb = &outputHoneycomb
+		u.Type = CreateOutputRequestTypeOutputHoneycomb
+		return nil
+	}
+
+	var outputTcpjson components.OutputTcpjson = components.OutputTcpjson{}
+	if err := utils.UnmarshalJSON(data, &outputTcpjson, "", true, true); err == nil {
+		u.OutputTcpjson = &outputTcpjson
+		u.Type = CreateOutputRequestTypeOutputTcpjson
+		return nil
+	}
+
+	var outputSumoLogic OutputSumoLogic = OutputSumoLogic{}
+	if err := utils.UnmarshalJSON(data, &outputSumoLogic, "", true, true); err == nil {
+		u.OutputSumoLogic = &outputSumoLogic
+		u.Type = CreateOutputRequestTypeOutputSumoLogic
+		return nil
+	}
+
+	var outputHumioHec OutputHumioHec = OutputHumioHec{}
+	if err := utils.UnmarshalJSON(data, &outputHumioHec, "", true, true); err == nil {
+		u.OutputHumioHec = &outputHumioHec
+		u.Type = CreateOutputRequestTypeOutputHumioHec
+		return nil
+	}
+
+	var outputElasticCloud OutputElasticCloud = OutputElasticCloud{}
+	if err := utils.UnmarshalJSON(data, &outputElasticCloud, "", true, true); err == nil {
+		u.OutputElasticCloud = &outputElasticCloud
+		u.Type = CreateOutputRequestTypeOutputElasticCloud
+		return nil
+	}
+
+	var outputCrowdstrikeNextGenSiem OutputCrowdstrikeNextGenSiem = OutputCrowdstrikeNextGenSiem{}
+	if err := utils.UnmarshalJSON(data, &outputCrowdstrikeNextGenSiem, "", true, true); err == nil {
+		u.OutputCrowdstrikeNextGenSiem = &outputCrowdstrikeNextGenSiem
+		u.Type = CreateOutputRequestTypeOutputCrowdstrikeNextGenSiem
+		return nil
+	}
+
+	var outputKinesis OutputKinesis = OutputKinesis{}
+	if err := utils.UnmarshalJSON(data, &outputKinesis, "", true, true); err == nil {
+		u.OutputKinesis = &outputKinesis
+		u.Type = CreateOutputRequestTypeOutputKinesis
+		return nil
+	}
+
+	var outputConfluentCloud OutputConfluentCloud = OutputConfluentCloud{}
+	if err := utils.UnmarshalJSON(data, &outputConfluentCloud, "", true, true); err == nil {
+		u.OutputConfluentCloud = &outputConfluentCloud
+		u.Type = CreateOutputRequestTypeOutputConfluentCloud
+		return nil
+	}
+
+	var outputKafka OutputKafka = OutputKafka{}
+	if err := utils.UnmarshalJSON(data, &outputKafka, "", true, true); err == nil {
+		u.OutputKafka = &outputKafka
+		u.Type = CreateOutputRequestTypeOutputKafka
+		return nil
+	}
+
+	var outputExabeam OutputExabeam = OutputExabeam{}
+	if err := utils.UnmarshalJSON(data, &outputExabeam, "", true, true); err == nil {
+		u.OutputExabeam = &outputExabeam
+		u.Type = CreateOutputRequestTypeOutputExabeam
+		return nil
+	}
+
+	var outputNewrelicEvents OutputNewrelicEvents = OutputNewrelicEvents{}
+	if err := utils.UnmarshalJSON(data, &outputNewrelicEvents, "", true, true); err == nil {
+		u.OutputNewrelicEvents = &outputNewrelicEvents
+		u.Type = CreateOutputRequestTypeOutputNewrelicEvents
+		return nil
+	}
+
+	var outputAzureLogs OutputAzureLogs = OutputAzureLogs{}
+	if err := utils.UnmarshalJSON(data, &outputAzureLogs, "", true, true); err == nil {
+		u.OutputAzureLogs = &outputAzureLogs
+		u.Type = CreateOutputRequestTypeOutputAzureLogs
+		return nil
+	}
+
+	var outputSplunkLb OutputSplunkLb = OutputSplunkLb{}
+	if err := utils.UnmarshalJSON(data, &outputSplunkLb, "", true, true); err == nil {
+		u.OutputSplunkLb = &outputSplunkLb
+		u.Type = CreateOutputRequestTypeOutputSplunkLb
+		return nil
+	}
+
+	var outputSqs OutputSqs = OutputSqs{}
+	if err := utils.UnmarshalJSON(data, &outputSqs, "", true, true); err == nil {
+		u.OutputSqs = &outputSqs
+		u.Type = CreateOutputRequestTypeOutputSqs
+		return nil
+	}
+
+	var outputNewrelic components.OutputNewrelic = components.OutputNewrelic{}
+	if err := utils.UnmarshalJSON(data, &outputNewrelic, "", true, true); err == nil {
+		u.OutputNewrelic = &outputNewrelic
+		u.Type = CreateOutputRequestTypeOutputNewrelic
+		return nil
+	}
+
+	var outputCriblHTTP components.OutputCriblHTTP = components.OutputCriblHTTP{}
+	if err := utils.UnmarshalJSON(data, &outputCriblHTTP, "", true, true); err == nil {
+		u.OutputCriblHTTP = &outputCriblHTTP
+		u.Type = CreateOutputRequestTypeOutputCriblHTTP
+		return nil
+	}
+
+	var outputXsiam components.OutputXsiam = components.OutputXsiam{}
+	if err := utils.UnmarshalJSON(data, &outputXsiam, "", true, true); err == nil {
+		u.OutputXsiam = &outputXsiam
+		u.Type = CreateOutputRequestTypeOutputXsiam
+		return nil
+	}
+
+	var outputFilesystem OutputFilesystem = OutputFilesystem{}
+	if err := utils.UnmarshalJSON(data, &outputFilesystem, "", true, true); err == nil {
+		u.OutputFilesystem = &outputFilesystem
+		u.Type = CreateOutputRequestTypeOutputFilesystem
+		return nil
+	}
+
+	var outputDataset components.OutputDataset = components.OutputDataset{}
+	if err := utils.UnmarshalJSON(data, &outputDataset, "", true, true); err == nil {
+		u.OutputDataset = &outputDataset
+		u.Type = CreateOutputRequestTypeOutputDataset
+		return nil
+	}
+
+	var outputLoki OutputLoki = OutputLoki{}
+	if err := utils.UnmarshalJSON(data, &outputLoki, "", true, true); err == nil {
+		u.OutputLoki = &outputLoki
+		u.Type = CreateOutputRequestTypeOutputLoki
+		return nil
+	}
+
+	var outputSplunkHec components.OutputSplunkHec = components.OutputSplunkHec{}
+	if err := utils.UnmarshalJSON(data, &outputSplunkHec, "", true, true); err == nil {
+		u.OutputSplunkHec = &outputSplunkHec
+		u.Type = CreateOutputRequestTypeOutputSplunkHec
+		return nil
+	}
+
+	var outputDynatraceHTTP OutputDynatraceHTTP = OutputDynatraceHTTP{}
+	if err := utils.UnmarshalJSON(data, &outputDynatraceHTTP, "", true, true); err == nil {
+		u.OutputDynatraceHTTP = &outputDynatraceHTTP
+		u.Type = CreateOutputRequestTypeOutputDynatraceHTTP
+		return nil
+	}
+
+	var outputServiceNow OutputServiceNow = OutputServiceNow{}
+	if err := utils.UnmarshalJSON(data, &outputServiceNow, "", true, true); err == nil {
+		u.OutputServiceNow = &outputServiceNow
+		u.Type = CreateOutputRequestTypeOutputServiceNow
+		return nil
+	}
+
+	var outputDynatraceOtlp OutputDynatraceOtlp = OutputDynatraceOtlp{}
+	if err := utils.UnmarshalJSON(data, &outputDynatraceOtlp, "", true, true); err == nil {
+		u.OutputDynatraceOtlp = &outputDynatraceOtlp
+		u.Type = CreateOutputRequestTypeOutputDynatraceOtlp
+		return nil
+	}
+
+	var outputElastic OutputElastic = OutputElastic{}
+	if err := utils.UnmarshalJSON(data, &outputElastic, "", true, true); err == nil {
+		u.OutputElastic = &outputElastic
+		u.Type = CreateOutputRequestTypeOutputElastic
+		return nil
+	}
+
+	var outputGoogleChronicle OutputGoogleChronicle = OutputGoogleChronicle{}
+	if err := utils.UnmarshalJSON(data, &outputGoogleChronicle, "", true, true); err == nil {
+		u.OutputGoogleChronicle = &outputGoogleChronicle
+		u.Type = CreateOutputRequestTypeOutputGoogleChronicle
+		return nil
+	}
+
+	var outputCriblLake components.OutputCriblLake = components.OutputCriblLake{}
+	if err := utils.UnmarshalJSON(data, &outputCriblLake, "", true, true); err == nil {
+		u.OutputCriblLake = &outputCriblLake
+		u.Type = CreateOutputRequestTypeOutputCriblLake
+		return nil
+	}
+
+	var outputDatadog components.OutputDatadog = components.OutputDatadog{}
+	if err := utils.UnmarshalJSON(data, &outputDatadog, "", true, true); err == nil {
+		u.OutputDatadog = &outputDatadog
+		u.Type = CreateOutputRequestTypeOutputDatadog
+		return nil
+	}
+
+	var outputPrometheus OutputPrometheus = OutputPrometheus{}
+	if err := utils.UnmarshalJSON(data, &outputPrometheus, "", true, true); err == nil {
+		u.OutputPrometheus = &outputPrometheus
+		u.Type = CreateOutputRequestTypeOutputPrometheus
+		return nil
+	}
+
+	var outputMsk OutputMsk = OutputMsk{}
+	if err := utils.UnmarshalJSON(data, &outputMsk, "", true, true); err == nil {
+		u.OutputMsk = &outputMsk
+		u.Type = CreateOutputRequestTypeOutputMsk
+		return nil
+	}
+
+	var outputSentinelOneAiSiem OutputSentinelOneAiSiem = OutputSentinelOneAiSiem{}
+	if err := utils.UnmarshalJSON(data, &outputSentinelOneAiSiem, "", true, true); err == nil {
+		u.OutputSentinelOneAiSiem = &outputSentinelOneAiSiem
+		u.Type = CreateOutputRequestTypeOutputSentinelOneAiSiem
+		return nil
+	}
+
+	var outputSentinel OutputSentinel = OutputSentinel{}
+	if err := utils.UnmarshalJSON(data, &outputSentinel, "", true, true); err == nil {
+		u.OutputSentinel = &outputSentinel
+		u.Type = CreateOutputRequestTypeOutputSentinel
+		return nil
+	}
+
+	var outputInfluxdb OutputInfluxdb = OutputInfluxdb{}
+	if err := utils.UnmarshalJSON(data, &outputInfluxdb, "", true, true); err == nil {
+		u.OutputInfluxdb = &outputInfluxdb
+		u.Type = CreateOutputRequestTypeOutputInfluxdb
+		return nil
+	}
+
+	var outputGoogleCloudStorage OutputGoogleCloudStorage = OutputGoogleCloudStorage{}
+	if err := utils.UnmarshalJSON(data, &outputGoogleCloudStorage, "", true, true); err == nil {
+		u.OutputGoogleCloudStorage = &outputGoogleCloudStorage
+		u.Type = CreateOutputRequestTypeOutputGoogleCloudStorage
+		return nil
+	}
+
+	var outputAzureBlob OutputAzureBlob = OutputAzureBlob{}
+	if err := utils.UnmarshalJSON(data, &outputAzureBlob, "", true, true); err == nil {
+		u.OutputAzureBlob = &outputAzureBlob
+		u.Type = CreateOutputRequestTypeOutputAzureBlob
+		return nil
+	}
+
+	var outputOpenTelemetry OutputOpenTelemetry = OutputOpenTelemetry{}
+	if err := utils.UnmarshalJSON(data, &outputOpenTelemetry, "", true, true); err == nil {
+		u.OutputOpenTelemetry = &outputOpenTelemetry
+		u.Type = CreateOutputRequestTypeOutputOpenTelemetry
+		return nil
+	}
+
+	var outputMinio OutputMinio = OutputMinio{}
+	if err := utils.UnmarshalJSON(data, &outputMinio, "", true, true); err == nil {
+		u.OutputMinio = &outputMinio
+		u.Type = CreateOutputRequestTypeOutputMinio
+		return nil
+	}
+
+	var outputClickHouse OutputClickHouse = OutputClickHouse{}
+	if err := utils.UnmarshalJSON(data, &outputClickHouse, "", true, true); err == nil {
+		u.OutputClickHouse = &outputClickHouse
+		u.Type = CreateOutputRequestTypeOutputClickHouse
+		return nil
+	}
+
+	var outputSecurityLake OutputSecurityLake = OutputSecurityLake{}
+	if err := utils.UnmarshalJSON(data, &outputSecurityLake, "", true, true); err == nil {
+		u.OutputSecurityLake = &outputSecurityLake
+		u.Type = CreateOutputRequestTypeOutputSecurityLake
+		return nil
+	}
+
+	var outputDlS3 OutputDlS3 = OutputDlS3{}
+	if err := utils.UnmarshalJSON(data, &outputDlS3, "", true, true); err == nil {
+		u.OutputDlS3 = &outputDlS3
+		u.Type = CreateOutputRequestTypeOutputDlS3
+		return nil
+	}
+
+	var outputS3 OutputS3 = OutputS3{}
+	if err := utils.UnmarshalJSON(data, &outputS3, "", true, true); err == nil {
+		u.OutputS3 = &outputS3
+		u.Type = CreateOutputRequestTypeOutputS3
+		return nil
+	}
+
+	var outputAzureDataExplorer OutputAzureDataExplorer = OutputAzureDataExplorer{}
+	if err := utils.UnmarshalJSON(data, &outputAzureDataExplorer, "", true, true); err == nil {
+		u.OutputAzureDataExplorer = &outputAzureDataExplorer
+		u.Type = CreateOutputRequestTypeOutputAzureDataExplorer
+		return nil
+	}
+
+	var outputWebhook components.OutputWebhook = components.OutputWebhook{}
+	if err := utils.UnmarshalJSON(data, &outputWebhook, "", true, true); err == nil {
+		u.OutputWebhook = &outputWebhook
+		u.Type = CreateOutputRequestTypeOutputWebhook
+		return nil
+	}
+
+	var outputGoogleCloudLogging OutputGoogleCloudLogging = OutputGoogleCloudLogging{}
+	if err := utils.UnmarshalJSON(data, &outputGoogleCloudLogging, "", true, true); err == nil {
+		u.OutputGoogleCloudLogging = &outputGoogleCloudLogging
+		u.Type = CreateOutputRequestTypeOutputGoogleCloudLogging
+		return nil
+	}
+
+	var outputGrafanaCloudUnion components.OutputGrafanaCloudUnion = components.OutputGrafanaCloudUnion{}
+	if err := utils.UnmarshalJSON(data, &outputGrafanaCloudUnion, "", true, true); err == nil {
+		u.OutputGrafanaCloudUnion = &outputGrafanaCloudUnion
+		u.Type = CreateOutputRequestTypeOutputGrafanaCloudUnion
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateOutputRequest", string(data))
+}
+
+func (u CreateOutputRequest) MarshalJSON() ([]byte, error) {
+	if u.OutputDefault != nil {
+		return utils.MarshalJSON(u.OutputDefault, "", true)
+	}
+
+	if u.OutputWebhook != nil {
+		return utils.MarshalJSON(u.OutputWebhook, "", true)
+	}
+
+	if u.OutputSentinel != nil {
+		return utils.MarshalJSON(u.OutputSentinel, "", true)
+	}
+
+	if u.OutputDevnull != nil {
+		return utils.MarshalJSON(u.OutputDevnull, "", true)
+	}
+
+	if u.OutputSyslog != nil {
+		return utils.MarshalJSON(u.OutputSyslog, "", true)
+	}
+
+	if u.OutputSplunk != nil {
+		return utils.MarshalJSON(u.OutputSplunk, "", true)
+	}
+
+	if u.OutputSplunkLb != nil {
+		return utils.MarshalJSON(u.OutputSplunkLb, "", true)
+	}
+
+	if u.OutputSplunkHec != nil {
+		return utils.MarshalJSON(u.OutputSplunkHec, "", true)
+	}
+
+	if u.OutputTcpjson != nil {
+		return utils.MarshalJSON(u.OutputTcpjson, "", true)
+	}
+
+	if u.OutputWavefront != nil {
+		return utils.MarshalJSON(u.OutputWavefront, "", true)
+	}
+
+	if u.OutputSignalfx != nil {
+		return utils.MarshalJSON(u.OutputSignalfx, "", true)
+	}
+
+	if u.OutputFilesystem != nil {
+		return utils.MarshalJSON(u.OutputFilesystem, "", true)
+	}
+
+	if u.OutputS3 != nil {
+		return utils.MarshalJSON(u.OutputS3, "", true)
+	}
+
+	if u.OutputAzureBlob != nil {
+		return utils.MarshalJSON(u.OutputAzureBlob, "", true)
+	}
+
+	if u.OutputAzureDataExplorer != nil {
+		return utils.MarshalJSON(u.OutputAzureDataExplorer, "", true)
+	}
+
+	if u.OutputAzureLogs != nil {
+		return utils.MarshalJSON(u.OutputAzureLogs, "", true)
+	}
+
+	if u.OutputKinesis != nil {
+		return utils.MarshalJSON(u.OutputKinesis, "", true)
+	}
+
+	if u.OutputHoneycomb != nil {
+		return utils.MarshalJSON(u.OutputHoneycomb, "", true)
+	}
+
+	if u.OutputAzureEventhub != nil {
+		return utils.MarshalJSON(u.OutputAzureEventhub, "", true)
+	}
+
+	if u.OutputGoogleChronicle != nil {
+		return utils.MarshalJSON(u.OutputGoogleChronicle, "", true)
+	}
+
+	if u.OutputGoogleCloudStorage != nil {
+		return utils.MarshalJSON(u.OutputGoogleCloudStorage, "", true)
+	}
+
+	if u.OutputGoogleCloudLogging != nil {
+		return utils.MarshalJSON(u.OutputGoogleCloudLogging, "", true)
+	}
+
+	if u.OutputGooglePubsub != nil {
+		return utils.MarshalJSON(u.OutputGooglePubsub, "", true)
+	}
+
+	if u.OutputExabeam != nil {
+		return utils.MarshalJSON(u.OutputExabeam, "", true)
+	}
+
+	if u.OutputKafka != nil {
+		return utils.MarshalJSON(u.OutputKafka, "", true)
+	}
+
+	if u.OutputConfluentCloud != nil {
+		return utils.MarshalJSON(u.OutputConfluentCloud, "", true)
+	}
+
+	if u.OutputMsk != nil {
+		return utils.MarshalJSON(u.OutputMsk, "", true)
+	}
+
+	if u.OutputElastic != nil {
+		return utils.MarshalJSON(u.OutputElastic, "", true)
+	}
+
+	if u.OutputElasticCloud != nil {
+		return utils.MarshalJSON(u.OutputElasticCloud, "", true)
+	}
+
+	if u.OutputNewrelic != nil {
+		return utils.MarshalJSON(u.OutputNewrelic, "", true)
+	}
+
+	if u.OutputNewrelicEvents != nil {
+		return utils.MarshalJSON(u.OutputNewrelicEvents, "", true)
+	}
+
+	if u.OutputInfluxdb != nil {
+		return utils.MarshalJSON(u.OutputInfluxdb, "", true)
+	}
+
+	if u.OutputCloudwatch != nil {
+		return utils.MarshalJSON(u.OutputCloudwatch, "", true)
+	}
+
+	if u.OutputMinio != nil {
+		return utils.MarshalJSON(u.OutputMinio, "", true)
+	}
+
+	if u.OutputStatsd != nil {
+		return utils.MarshalJSON(u.OutputStatsd, "", true)
+	}
+
+	if u.OutputStatsdExt != nil {
+		return utils.MarshalJSON(u.OutputStatsdExt, "", true)
+	}
+
+	if u.OutputGraphite != nil {
+		return utils.MarshalJSON(u.OutputGraphite, "", true)
+	}
+
+	if u.OutputRouter != nil {
+		return utils.MarshalJSON(u.OutputRouter, "", true)
+	}
+
+	if u.OutputSns != nil {
+		return utils.MarshalJSON(u.OutputSns, "", true)
+	}
+
+	if u.OutputSqs != nil {
+		return utils.MarshalJSON(u.OutputSqs, "", true)
+	}
+
+	if u.OutputSnmp != nil {
+		return utils.MarshalJSON(u.OutputSnmp, "", true)
+	}
+
+	if u.OutputSumoLogic != nil {
+		return utils.MarshalJSON(u.OutputSumoLogic, "", true)
+	}
+
+	if u.OutputDatadog != nil {
+		return utils.MarshalJSON(u.OutputDatadog, "", true)
+	}
+
+	if u.OutputGrafanaCloudUnion != nil {
+		return utils.MarshalJSON(u.OutputGrafanaCloudUnion, "", true)
+	}
+
+	if u.OutputLoki != nil {
+		return utils.MarshalJSON(u.OutputLoki, "", true)
+	}
+
+	if u.OutputPrometheus != nil {
+		return utils.MarshalJSON(u.OutputPrometheus, "", true)
+	}
+
+	if u.OutputRing != nil {
+		return utils.MarshalJSON(u.OutputRing, "", true)
+	}
+
+	if u.OutputOpenTelemetry != nil {
+		return utils.MarshalJSON(u.OutputOpenTelemetry, "", true)
+	}
+
+	if u.OutputServiceNow != nil {
+		return utils.MarshalJSON(u.OutputServiceNow, "", true)
+	}
+
+	if u.OutputDataset != nil {
+		return utils.MarshalJSON(u.OutputDataset, "", true)
+	}
+
+	if u.OutputCriblTCP != nil {
+		return utils.MarshalJSON(u.OutputCriblTCP, "", true)
+	}
+
+	if u.OutputCriblHTTP != nil {
+		return utils.MarshalJSON(u.OutputCriblHTTP, "", true)
+	}
+
+	if u.OutputHumioHec != nil {
+		return utils.MarshalJSON(u.OutputHumioHec, "", true)
+	}
+
+	if u.OutputCrowdstrikeNextGenSiem != nil {
+		return utils.MarshalJSON(u.OutputCrowdstrikeNextGenSiem, "", true)
+	}
+
+	if u.OutputDlS3 != nil {
+		return utils.MarshalJSON(u.OutputDlS3, "", true)
+	}
+
+	if u.OutputSecurityLake != nil {
+		return utils.MarshalJSON(u.OutputSecurityLake, "", true)
+	}
+
+	if u.OutputCriblLake != nil {
+		return utils.MarshalJSON(u.OutputCriblLake, "", true)
+	}
+
+	if u.OutputDiskSpool != nil {
+		return utils.MarshalJSON(u.OutputDiskSpool, "", true)
+	}
+
+	if u.OutputClickHouse != nil {
+		return utils.MarshalJSON(u.OutputClickHouse, "", true)
+	}
+
+	if u.OutputXsiam != nil {
+		return utils.MarshalJSON(u.OutputXsiam, "", true)
+	}
+
+	if u.OutputNetflow != nil {
+		return utils.MarshalJSON(u.OutputNetflow, "", true)
+	}
+
+	if u.OutputDynatraceHTTP != nil {
+		return utils.MarshalJSON(u.OutputDynatraceHTTP, "", true)
+	}
+
+	if u.OutputDynatraceOtlp != nil {
+		return utils.MarshalJSON(u.OutputDynatraceOtlp, "", true)
+	}
+
+	if u.OutputSentinelOneAiSiem != nil {
+		return utils.MarshalJSON(u.OutputSentinelOneAiSiem, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type CreateOutputRequest: all fields are null")
+}
+
+// CreateOutputResponseBody - a list of Destination objects
 type CreateOutputResponseBody struct {
 	// number of items present in the items array
 	Count *int64              `json:"count,omitempty"`
@@ -29,7 +29520,7 @@ func (o *CreateOutputResponseBody) GetItems() []components.Output {
 
 type CreateOutputResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
-	// a list of Output objects
+	// a list of Destination objects
 	Object *CreateOutputResponseBody
 }
 

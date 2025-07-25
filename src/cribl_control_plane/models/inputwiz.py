@@ -190,7 +190,6 @@ class InputWizAuthenticationMethod(str, Enum, metaclass=utils.OpenEnumMeta):
 
 
 class InputWizTypedDict(TypedDict):
-    type: InputWizType
     auth_url: str
     r"""The authentication URL to generate an OAuth token"""
     client_id: str
@@ -198,6 +197,7 @@ class InputWizTypedDict(TypedDict):
     content_config: List[InputWizContentConfigTypedDict]
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputWizType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -239,8 +239,6 @@ class InputWizTypedDict(TypedDict):
 
 
 class InputWiz(BaseModel):
-    type: Annotated[InputWizType, PlainValidator(validate_open_enum(False))]
-
     auth_url: Annotated[str, pydantic.Field(alias="authUrl")]
     r"""The authentication URL to generate an OAuth token"""
 
@@ -253,6 +251,10 @@ class InputWiz(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputWizType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

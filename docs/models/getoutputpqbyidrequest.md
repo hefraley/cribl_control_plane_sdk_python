@@ -5,4 +5,4 @@
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `id`               | *str*              | :heavy_check_mark: | Output Id          |
+| `id`               | *str*              | :heavy_check_mark: | Destination Id     |

@@ -21,7 +21,7 @@ class GetOutputByIDRequest(BaseModel):
 
 
 class GetOutputByIDResponseTypedDict(TypedDict):
-    r"""a list of Output objects"""
+    r"""a list of Destination objects"""
 
     count: NotRequired[int]
     r"""number of items present in the items array"""
@@ -29,7 +29,7 @@ class GetOutputByIDResponseTypedDict(TypedDict):
 
 
 class GetOutputByIDResponse(BaseModel):
-    r"""a list of Output objects"""
+    r"""a list of Destination objects"""
 
     count: Optional[int] = None
     r"""number of items present in the items array"""

@@ -226,13 +226,13 @@ class InputOffice365ServiceAuthenticationMethod(
 
 
 class InputOffice365ServiceTypedDict(TypedDict):
-    type: InputOffice365ServiceType
     tenant_id: str
     r"""Office 365 Azure Tenant ID"""
     app_id: str
     r"""Office 365 Azure Application ID"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputOffice365ServiceType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -276,10 +276,6 @@ class InputOffice365ServiceTypedDict(TypedDict):
 
 
 class InputOffice365Service(BaseModel):
-    type: Annotated[
-        InputOffice365ServiceType, PlainValidator(validate_open_enum(False))
-    ]
-
     tenant_id: Annotated[str, pydantic.Field(alias="tenantId")]
     r"""Office 365 Azure Tenant ID"""
 
@@ -288,6 +284,10 @@ class InputOffice365Service(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputOffice365ServiceType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

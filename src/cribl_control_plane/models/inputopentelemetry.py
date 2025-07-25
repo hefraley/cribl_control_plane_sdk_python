@@ -242,9 +242,9 @@ class InputOpenTelemetryOauthHeader(BaseModel):
 
 
 class InputOpenTelemetryTypedDict(TypedDict):
-    type: InputOpenTelemetryType
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputOpenTelemetryType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -327,10 +327,12 @@ class InputOpenTelemetryTypedDict(TypedDict):
 
 
 class InputOpenTelemetry(BaseModel):
-    type: Annotated[InputOpenTelemetryType, PlainValidator(validate_open_enum(False))]
-
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputOpenTelemetryType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

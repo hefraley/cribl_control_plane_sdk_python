@@ -398,9 +398,9 @@ func (o *InputSplunkHecMetadatum) GetValue() string {
 
 type InputSplunkHec struct {
 	// Unique ID for this input
-	ID       *string            `json:"id,omitempty"`
-	Type     InputSplunkHecType `json:"type"`
-	Disabled *bool              `default:"false" json:"disabled"`
+	ID       *string             `json:"id,omitempty"`
+	Type     *InputSplunkHecType `json:"type,omitempty"`
+	Disabled *bool               `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -487,9 +487,9 @@ func (o *InputSplunkHec) GetID() *string {
 	return o.ID
 }
 
-func (o *InputSplunkHec) GetType() InputSplunkHecType {
+func (o *InputSplunkHec) GetType() *InputSplunkHecType {
 	if o == nil {
-		return InputSplunkHecType("")
+		return nil
 	}
 	return o.Type
 }

@@ -418,9 +418,9 @@ func (o *InputElasticProxyMode) GetAuthType() *InputElasticAuthenticationMethod 
 
 type InputElastic struct {
 	// Unique ID for this input
-	ID       *string          `json:"id,omitempty"`
-	Type     InputElasticType `json:"type"`
-	Disabled *bool            `default:"false" json:"disabled"`
+	ID       *string           `json:"id,omitempty"`
+	Type     *InputElasticType `json:"type,omitempty"`
+	Disabled *bool             `default:"false" json:"disabled"`
 	// Pipeline to process data from this Source before sending it through the Routes
 	Pipeline *string `json:"pipeline,omitempty"`
 	// Select whether to send data to Routes, or directly to Destinations.
@@ -500,9 +500,9 @@ func (o *InputElastic) GetID() *string {
 	return o.ID
 }
 
-func (o *InputElastic) GetType() InputElasticType {
+func (o *InputElastic) GetType() *InputElasticType {
 	if o == nil {
-		return InputElasticType("")
+		return nil
 	}
 	return o.Type
 }

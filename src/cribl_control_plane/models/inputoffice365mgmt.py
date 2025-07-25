@@ -223,13 +223,13 @@ class InputOffice365MgmtAuthenticationMethod(str, Enum, metaclass=utils.OpenEnum
 
 
 class InputOffice365MgmtTypedDict(TypedDict):
-    type: InputOffice365MgmtType
     tenant_id: str
     r"""Office 365 Azure Tenant ID"""
     app_id: str
     r"""Office 365 Azure Application ID"""
     id: NotRequired[str]
     r"""Unique ID for this input"""
+    type: NotRequired[InputOffice365MgmtType]
     disabled: NotRequired[bool]
     pipeline: NotRequired[str]
     r"""Pipeline to process data from this Source before sending it through the Routes"""
@@ -277,8 +277,6 @@ class InputOffice365MgmtTypedDict(TypedDict):
 
 
 class InputOffice365Mgmt(BaseModel):
-    type: Annotated[InputOffice365MgmtType, PlainValidator(validate_open_enum(False))]
-
     tenant_id: Annotated[str, pydantic.Field(alias="tenantId")]
     r"""Office 365 Azure Tenant ID"""
 
@@ -287,6 +285,10 @@ class InputOffice365Mgmt(BaseModel):
 
     id: Optional[str] = None
     r"""Unique ID for this input"""
+
+    type: Annotated[
+        Optional[InputOffice365MgmtType], PlainValidator(validate_open_enum(False))
+    ] = None
 
     disabled: Optional[bool] = False
 

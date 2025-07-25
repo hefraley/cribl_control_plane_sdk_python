@@ -185,21 +185,21 @@ with CriblControlPlane(
 * [login](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/authsdk/README.md#login) - Log in and obtain Auth token
 
 
+### [destinations](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md)
+
+* [list_destination](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#list_destination) - Get a list of Destination objects
+* [create_destination](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#create_destination) - Create Destination
+* [get_destination_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#get_destination_by_id) - Get Destination by ID
+* [update_destination_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#update_destination_by_id) - Update Destination
+* [delete_destination_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#delete_destination_by_id) - Delete Destination
+* [delete_destination_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#delete_destination_pq_by_id) - Clears destination persistent queue
+* [get_destination_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#get_destination_pq_by_id) - Retrieves status of latest clear PQ job for a destination
+* [get_destination_samples_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#get_destination_samples_by_id) - Retrieve samples data for the specified destination. Used to get sample data for the test action.
+* [create_destination_test_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/destinations/README.md#create_destination_test_by_id) - Send sample data to a destination to validate configuration or test connectivity
+
 ### [health](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/health/README.md)
 
 * [get_health_info](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/health/README.md#get_health_info) - Provides health info for REST server
-
-### [outputs](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md)
-
-* [list_output](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#list_output) - Get a list of Output objects
-* [create_output](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#create_output) - Create Output
-* [get_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_by_id) - Get Output by ID
-* [update_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#update_output_by_id) - Update Output
-* [delete_output_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#delete_output_by_id) - Delete Output
-* [delete_output_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#delete_output_pq_by_id) - Clears destination persistent queue
-* [get_output_pq_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_pq_by_id) - Retrieves status of latest clear PQ job for an output
-* [get_output_samples_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#get_output_samples_by_id) - Retrieve samples data for the specified output. Used to get sample data for the test action.
-* [create_output_test_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/outputs/README.md#create_output_test_by_id) - Send sample data to an output to validate configuration or test connectivity
 
 ### [pipelines](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/pipelines/README.md)
 

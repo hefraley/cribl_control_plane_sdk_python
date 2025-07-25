@@ -10,8 +10,6 @@ from typing import Any, List, Mapping, Optional, Union, cast
 
 
 class Sources(BaseSDK):
-    r"""Actions related to Sources"""
-
     def list_source(
         self,
         *,
@@ -175,7 +173,7 @@ class Sources(BaseSDK):
     def create_source(
         self,
         *,
-        request: Union[models.Input, models.InputTypedDict],
+        request: Union[models.CreateInputRequest, models.CreateInputRequestTypedDict],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -202,8 +200,8 @@ class Sources(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         if not isinstance(request, BaseModel):
-            request = utils.unmarshal(request, models.Input)
-        request = cast(models.Input, request)
+            request = utils.unmarshal(request, models.CreateInputRequest)
+        request = cast(models.CreateInputRequest, request)
 
         req = self._build_request(
             method="POST",
@@ -219,7 +217,7 @@ class Sources(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request, False, False, "json", models.Input
+                request, False, False, "json", models.CreateInputRequest
             ),
             timeout_ms=timeout_ms,
         )
@@ -265,7 +263,7 @@ class Sources(BaseSDK):
     async def create_source_async(
         self,
         *,
-        request: Union[models.Input, models.InputTypedDict],
+        request: Union[models.CreateInputRequest, models.CreateInputRequestTypedDict],
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -292,8 +290,8 @@ class Sources(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         if not isinstance(request, BaseModel):
-            request = utils.unmarshal(request, models.Input)
-        request = cast(models.Input, request)
+            request = utils.unmarshal(request, models.CreateInputRequest)
+        request = cast(models.CreateInputRequest, request)
 
         req = self._build_request_async(
             method="POST",
@@ -309,7 +307,7 @@ class Sources(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request, False, False, "json", models.Input
+                request, False, False, "json", models.CreateInputRequest
             ),
             timeout_ms=timeout_ms,
         )

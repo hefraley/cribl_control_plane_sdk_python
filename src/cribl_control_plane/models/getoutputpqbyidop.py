@@ -9,14 +9,14 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 class GetOutputPqByIDRequestTypedDict(TypedDict):
     id: str
-    r"""Output Id"""
+    r"""Destination Id"""
 
 
 class GetOutputPqByIDRequest(BaseModel):
     id: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""Output Id"""
+    r"""Destination Id"""
 
 
 class GetOutputPqByIDResponseTypedDict(TypedDict):
