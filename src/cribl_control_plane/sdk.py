@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from cribl_control_plane.pipelines import Pipelines
     from cribl_control_plane.routes_sdk import RoutesSDK
     from cribl_control_plane.sources import Sources
+    from cribl_control_plane.versioning import Versioning
 
 
 class CriblControlPlane(BaseSDK):
@@ -35,6 +36,8 @@ class CriblControlPlane(BaseSDK):
     r"""Actions related to authentication. Do not use the /auth endpoints in Cribl.Cloud deployments. Instead, follow the instructions at https://docs.cribl.io/stream/api-tutorials/#criblcloud to authenticate for Cribl.Cloud."""
     health: "Health"
     r"""Actions related to REST server health"""
+    versioning: "Versioning"
+    r"""Actions related to Versioning"""
     _sub_sdk_map = {
         "sources": ("cribl_control_plane.sources", "Sources"),
         "destinations": ("cribl_control_plane.destinations", "Destinations"),
@@ -42,6 +45,7 @@ class CriblControlPlane(BaseSDK):
         "routes": ("cribl_control_plane.routes_sdk", "RoutesSDK"),
         "auth": ("cribl_control_plane.auth_sdk", "AuthSDK"),
         "health": ("cribl_control_plane.health", "Health"),
+        "versioning": ("cribl_control_plane.versioning", "Versioning"),
     }
 
     def __init__(

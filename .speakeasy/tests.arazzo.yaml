@@ -516,3 +516,181 @@ workflows:
             type: simple
     x-speakeasy-test-group: pipelines
     x-speakeasy-test-rebuild: true
+  - workflowId: getVersionBranch
+    steps:
+      - stepId: test
+        operationId: getVersionBranch
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: createVersionCommit
+    steps:
+      - stepId: test
+        operationId: createVersionCommit
+        requestBody:
+          contentType: application/json
+          payload:
+            message: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionCount
+    steps:
+      - stepId: test
+        operationId: getVersionCount
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionCurrentBranch
+    steps:
+      - stepId: test
+        operationId: getVersionCurrentBranch
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionDiff
+    steps:
+      - stepId: test
+        operationId: getVersionDiff
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionFiles
+    steps:
+      - stepId: test
+        operationId: getVersionFiles
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionInfo
+    steps:
+      - stepId: test
+        operationId: getVersionInfo
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: createVersionPush
+    steps:
+      - stepId: test
+        operationId: createVersionPush
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: createVersionRevert
+    steps:
+      - stepId: test
+        operationId: createVersionRevert
+        requestBody:
+          contentType: application/json
+          payload:
+            commit: <value>
+            message: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionShow
+    steps:
+      - stepId: test
+        operationId: getVersionShow
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: getVersionStatus
+    steps:
+      - stepId: test
+        operationId: getVersionStatus
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: createVersionSync
+    steps:
+      - stepId: test
+        operationId: createVersionSync
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true
+  - workflowId: createVersionUndo
+    steps:
+      - stepId: test
+        operationId: createVersionUndo
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: versioning
+    x-speakeasy-test-rebuild: true

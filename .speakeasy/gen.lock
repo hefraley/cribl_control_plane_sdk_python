@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 10287265072d5e27edc6dfb848ef7731
-  docVersion: 4.14.0-alpha.1753474119310-0fc52c1b
+  docChecksum: 9ac8e735983aa95b771a1dae9b965405
+  docVersion: 4.14.0-alpha.1753735749224-0a5d0b46
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.17
-  configChecksum: 847922bcc7c6e48e33c994be310d1865
+  releaseVersion: 0.0.18
+  configChecksum: 8e53792d2398f8d6d929ee124463fd04
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -54,6 +54,7 @@ generatedFiles:
   - docs/models/additionalproperty.md
   - docs/models/aisiemendpointpath.md
   - docs/models/allow.md
+  - docs/models/audit.md
   - docs/models/authauthenticationmethodelastic.md
   - docs/models/authelastic.md
   - docs/models/authelasticcloud.md
@@ -95,6 +96,7 @@ generatedFiles:
   - docs/models/authenticationtypeprometheus.md
   - docs/models/authenticationtypeprometheusrw.md
   - docs/models/authenticationtypesplunksearch.md
+  - docs/models/author.md
   - docs/models/authtoken.md
   - docs/models/authtokenauthenticationmethodsplunklb.md
   - docs/models/authtokenmetadatumsplunkhec.md
@@ -781,6 +783,13 @@ generatedFiles:
   - docs/models/createpipelineresponse.md
   - docs/models/createroutesappendbyidrequest.md
   - docs/models/createroutesappendbyidresponse.md
+  - docs/models/createversioncommitresponse.md
+  - docs/models/createversionpushresponse.md
+  - docs/models/createversionrevertrequest.md
+  - docs/models/createversionrevertresponse.md
+  - docs/models/createversionsyncresponse.md
+  - docs/models/createversionundorequest.md
+  - docs/models/createversionundoresponse.md
   - docs/models/criblevent.md
   - docs/models/customlabel.md
   - docs/models/datadogsite.md
@@ -875,6 +884,7 @@ generatedFiles:
   - docs/models/failedrequestloggingmodesumologic.md
   - docs/models/failedrequestloggingmodewavefront.md
   - docs/models/fieldname.md
+  - docs/models/file.md
   - docs/models/firewall.md
   - docs/models/flushperiodsec.md
   - docs/models/flushperiodsectypegooglepubsub.md
@@ -894,6 +904,29 @@ generatedFiles:
   - docs/models/getpipelinebyidresponse.md
   - docs/models/getroutesbyidrequest.md
   - docs/models/getroutesbyidresponse.md
+  - docs/models/getversionbranchresponse.md
+  - docs/models/getversioncountrequest.md
+  - docs/models/getversioncountresponse.md
+  - docs/models/getversioncurrentbranchresponse.md
+  - docs/models/getversiondiffrequest.md
+  - docs/models/getversiondiffresponse.md
+  - docs/models/getversionfilesrequest.md
+  - docs/models/getversionfilesresponse.md
+  - docs/models/getversioninforesponse.md
+  - docs/models/getversionshowrequest.md
+  - docs/models/getversionshowresponse.md
+  - docs/models/getversionstatusrequest.md
+  - docs/models/getversionstatusresponse.md
+  - docs/models/gitcommitparams.md
+  - docs/models/gitcommitsummary.md
+  - docs/models/gitcommitsummaryfiles.md
+  - docs/models/gitfile.md
+  - docs/models/gitfilesresponse.md
+  - docs/models/gitinfo.md
+  - docs/models/gitrevertparams.md
+  - docs/models/gitrevertresult.md
+  - docs/models/gitrevertresultfiles.md
+  - docs/models/gitstatusresult.md
   - docs/models/googleauthenticationmethodgooglecloudlogging.md
   - docs/models/healthstatus.md
   - docs/models/hostinfo.md
@@ -2761,6 +2794,8 @@ generatedFiles:
   - docs/models/recordtypeprometheus.md
   - docs/models/regionnewrelicevents.md
   - docs/models/regionsentineloneaisiem.md
+  - docs/models/remote.md
+  - docs/models/renamed.md
   - docs/models/reportlevel.md
   - docs/models/reportmethod.md
   - docs/models/requestformatcrowdstrikenextgensiem.md
@@ -2844,6 +2879,7 @@ generatedFiles:
   - docs/models/subscriptionplanoffice365mgmt.md
   - docs/models/subscriptionplanoffice365msgtrace.md
   - docs/models/subscriptionplanoffice365service.md
+  - docs/models/summary.md
   - docs/models/tagafterprocessingcrowdstrike.md
   - docs/models/tagafterprocessings3inventory.md
   - docs/models/tagafterprocessingsecuritylake.md
@@ -2924,6 +2960,7 @@ generatedFiles:
   - docs/sdks/pipelines/README.md
   - docs/sdks/routessdk/README.md
   - docs/sdks/sources/README.md
+  - docs/sdks/versioning/README.md
   - poetry.toml
   - py.typed
   - pylintrc
@@ -2956,6 +2993,11 @@ generatedFiles:
   - src/cribl_control_plane/models/createoutputtestbyidop.py
   - src/cribl_control_plane/models/createpipelineop.py
   - src/cribl_control_plane/models/createroutesappendbyidop.py
+  - src/cribl_control_plane/models/createversioncommitop.py
+  - src/cribl_control_plane/models/createversionpushop.py
+  - src/cribl_control_plane/models/createversionrevertop.py
+  - src/cribl_control_plane/models/createversionsyncop.py
+  - src/cribl_control_plane/models/createversionundoop.py
   - src/cribl_control_plane/models/criblevent.py
   - src/cribl_control_plane/models/deleteinputbyidop.py
   - src/cribl_control_plane/models/deleteoutputbyidop.py
@@ -2967,6 +3009,22 @@ generatedFiles:
   - src/cribl_control_plane/models/getoutputsamplesbyidop.py
   - src/cribl_control_plane/models/getpipelinebyidop.py
   - src/cribl_control_plane/models/getroutesbyidop.py
+  - src/cribl_control_plane/models/getversionbranchop.py
+  - src/cribl_control_plane/models/getversioncountop.py
+  - src/cribl_control_plane/models/getversioncurrentbranchop.py
+  - src/cribl_control_plane/models/getversiondiffop.py
+  - src/cribl_control_plane/models/getversionfilesop.py
+  - src/cribl_control_plane/models/getversioninfoop.py
+  - src/cribl_control_plane/models/getversionshowop.py
+  - src/cribl_control_plane/models/getversionstatusop.py
+  - src/cribl_control_plane/models/gitcommitparams.py
+  - src/cribl_control_plane/models/gitcommitsummary.py
+  - src/cribl_control_plane/models/gitfile.py
+  - src/cribl_control_plane/models/gitfilesresponse.py
+  - src/cribl_control_plane/models/gitinfo.py
+  - src/cribl_control_plane/models/gitrevertparams.py
+  - src/cribl_control_plane/models/gitrevertresult.py
+  - src/cribl_control_plane/models/gitstatusresult.py
   - src/cribl_control_plane/models/healthstatus.py
   - src/cribl_control_plane/models/input.py
   - src/cribl_control_plane/models/inputappscope.py
@@ -3140,6 +3198,7 @@ generatedFiles:
   - src/cribl_control_plane/utils/unmarshal_json_response.py
   - src/cribl_control_plane/utils/url.py
   - src/cribl_control_plane/utils/values.py
+  - src/cribl_control_plane/versioning.py
   - tests/__init__.py
   - tests/mockserver/.gitignore
   - tests/mockserver/Dockerfile
@@ -3170,6 +3229,14 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathgetsystemoutputsid.go
   - tests/mockserver/internal/handler/pathgetsystemoutputsidpq.go
   - tests/mockserver/internal/handler/pathgetsystemoutputsidsamples.go
+  - tests/mockserver/internal/handler/pathgetversionbranch.go
+  - tests/mockserver/internal/handler/pathgetversioncount.go
+  - tests/mockserver/internal/handler/pathgetversioncurrentbranch.go
+  - tests/mockserver/internal/handler/pathgetversiondiff.go
+  - tests/mockserver/internal/handler/pathgetversionfiles.go
+  - tests/mockserver/internal/handler/pathgetversioninfo.go
+  - tests/mockserver/internal/handler/pathgetversionshow.go
+  - tests/mockserver/internal/handler/pathgetversionstatus.go
   - tests/mockserver/internal/handler/pathpatchpipelinesid.go
   - tests/mockserver/internal/handler/pathpatchroutesid.go
   - tests/mockserver/internal/handler/pathpatchsysteminputsid.go
@@ -3182,6 +3249,11 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathpostsysteminputsidhectoken.go
   - tests/mockserver/internal/handler/pathpostsystemoutputs.go
   - tests/mockserver/internal/handler/pathpostsystemoutputsidtest.go
+  - tests/mockserver/internal/handler/pathpostversioncommit.go
+  - tests/mockserver/internal/handler/pathpostversionpush.go
+  - tests/mockserver/internal/handler/pathpostversionrevert.go
+  - tests/mockserver/internal/handler/pathpostversionsync.go
+  - tests/mockserver/internal/handler/pathpostversionundo.go
   - tests/mockserver/internal/handler/values/files.go
   - tests/mockserver/internal/logging/doc.go
   - tests/mockserver/internal/logging/formats.go
@@ -3194,6 +3266,14 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/components/addhectokenrequest.go
   - tests/mockserver/internal/sdk/models/components/authtoken.go
   - tests/mockserver/internal/sdk/models/components/criblevent.go
+  - tests/mockserver/internal/sdk/models/components/gitcommitparams.go
+  - tests/mockserver/internal/sdk/models/components/gitcommitsummary.go
+  - tests/mockserver/internal/sdk/models/components/gitfile.go
+  - tests/mockserver/internal/sdk/models/components/gitfilesresponse.go
+  - tests/mockserver/internal/sdk/models/components/gitinfo.go
+  - tests/mockserver/internal/sdk/models/components/gitrevertparams.go
+  - tests/mockserver/internal/sdk/models/components/gitrevertresult.go
+  - tests/mockserver/internal/sdk/models/components/gitstatusresult.go
   - tests/mockserver/internal/sdk/models/components/healthstatus.go
   - tests/mockserver/internal/sdk/models/components/httpmetadata.go
   - tests/mockserver/internal/sdk/models/components/input.go
@@ -3340,6 +3420,11 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/createoutputtestbyid.go
   - tests/mockserver/internal/sdk/models/operations/createpipeline.go
   - tests/mockserver/internal/sdk/models/operations/createroutesappendbyid.go
+  - tests/mockserver/internal/sdk/models/operations/createversioncommit.go
+  - tests/mockserver/internal/sdk/models/operations/createversionpush.go
+  - tests/mockserver/internal/sdk/models/operations/createversionrevert.go
+  - tests/mockserver/internal/sdk/models/operations/createversionsync.go
+  - tests/mockserver/internal/sdk/models/operations/createversionundo.go
   - tests/mockserver/internal/sdk/models/operations/deleteinputbyid.go
   - tests/mockserver/internal/sdk/models/operations/deleteoutputbyid.go
   - tests/mockserver/internal/sdk/models/operations/deleteoutputpqbyid.go
@@ -3351,6 +3436,14 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/getoutputsamplesbyid.go
   - tests/mockserver/internal/sdk/models/operations/getpipelinebyid.go
   - tests/mockserver/internal/sdk/models/operations/getroutesbyid.go
+  - tests/mockserver/internal/sdk/models/operations/getversionbranch.go
+  - tests/mockserver/internal/sdk/models/operations/getversioncount.go
+  - tests/mockserver/internal/sdk/models/operations/getversioncurrentbranch.go
+  - tests/mockserver/internal/sdk/models/operations/getversiondiff.go
+  - tests/mockserver/internal/sdk/models/operations/getversionfiles.go
+  - tests/mockserver/internal/sdk/models/operations/getversioninfo.go
+  - tests/mockserver/internal/sdk/models/operations/getversionshow.go
+  - tests/mockserver/internal/sdk/models/operations/getversionstatus.go
   - tests/mockserver/internal/sdk/models/operations/listinput.go
   - tests/mockserver/internal/sdk/models/operations/listoutput.go
   - tests/mockserver/internal/sdk/models/operations/listpipeline.go
@@ -3389,6 +3482,7 @@ generatedFiles:
   - tests/test_pipelines.py
   - tests/test_routes_sdk.py
   - tests/test_sources.py
+  - tests/test_versioning.py
 examples:
   getHealthInfo:
     speakeasy-default-get-health-info:
@@ -3656,6 +3750,101 @@ examples:
           application/json: {}
         "500":
           application/json: {}
+  getVersionBranch:
+    speakeasy-default-get-version-branch:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createVersionCommit:
+    speakeasy-default-create-version-commit:
+      requestBody:
+        application/json: {"message": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionCount:
+    speakeasy-default-get-version-count:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionCurrentBranch:
+    speakeasy-default-get-version-current-branch:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionDiff:
+    speakeasy-default-get-version-diff:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionFiles:
+    speakeasy-default-get-version-files:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionInfo:
+    speakeasy-default-get-version-info:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createVersionPush:
+    speakeasy-default-create-version-push:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createVersionRevert:
+    speakeasy-default-create-version-revert:
+      requestBody:
+        application/json: {"commit": "<value>", "message": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionShow:
+    speakeasy-default-get-version-show:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getVersionStatus:
+    speakeasy-default-get-version-status:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createVersionSync:
+    speakeasy-default-create-version-sync:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createVersionUndo:
+    speakeasy-default-create-version-undo:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
 examplesVersion: 1.0.2
 generatedTests:
   getHealthInfo: "2025-07-02T19:12:56+02:00"
@@ -3685,3 +3874,16 @@ generatedTests:
   getPipelineById: "2025-07-24T16:31:46Z"
   updatePipelineById: "2025-07-24T16:31:46Z"
   deletePipelineById: "2025-07-24T16:31:46Z"
+  getVersionBranch: "2025-07-29T02:32:36Z"
+  createVersionCommit: "2025-07-29T02:32:36Z"
+  getVersionCount: "2025-07-29T02:32:36Z"
+  getVersionCurrentBranch: "2025-07-29T02:32:36Z"
+  getVersionDiff: "2025-07-29T02:32:36Z"
+  getVersionFiles: "2025-07-29T02:32:36Z"
+  getVersionInfo: "2025-07-29T02:32:36Z"
+  createVersionPush: "2025-07-29T02:32:36Z"
+  createVersionRevert: "2025-07-29T02:32:36Z"
+  getVersionShow: "2025-07-29T02:32:36Z"
+  getVersionStatus: "2025-07-29T02:32:36Z"
+  createVersionSync: "2025-07-29T02:32:36Z"
+  createVersionUndo: "2025-07-29T02:32:36Z"
