@@ -226,6 +226,22 @@ with CriblControlPlane(
 * [create_source_hec_token_by_id](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/sources/README.md#create_source_hec_token_by_id) - Add token and optional metadata to an existing HEC Source
 * [update_source_hec_token_by_id_and_token](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/sources/README.md#update_source_hec_token_by_id_and_token) - Update token metadata on existing HEC Source
 
+### [versioning](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md)
+
+* [get_version_branch](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_branch) - get the list of branches
+* [create_version_commit](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#create_version_commit) - create a new commit containing the current configs the given log message describing the changes.
+* [get_version_count](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_count) - get the count of files of changed
+* [get_version_current_branch](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_current_branch) - returns git branch that the config is checked out to, if any
+* [get_version_diff](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_diff) - get the textual diff for given commit
+* [get_version_files](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_files) - get the files changed
+* [get_version_info](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_info) - Get info about versioning availability
+* [create_version_push](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#create_version_push) - push the current configs to the remote repository.
+* [create_version_revert](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#create_version_revert) - revert a commit
+* [get_version_show](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_show) - get the log message and textual diff for given commit
+* [get_version_status](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#get_version_status) - get the the working tree status
+* [create_version_sync](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#create_version_sync) - syncs with remote repo via POST requests
+* [create_version_undo](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/docs/sdks/versioning/README.md#create_version_undo) - undo the last commit
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -343,7 +359,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 27 methods.*
+* [`HealthStatusError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 40 methods.*
 * [`ResponseValidationError`](https://github.com/criblio/cribl_control_plane_sdk_python/blob/master/./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
