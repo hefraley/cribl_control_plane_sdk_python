@@ -108,7 +108,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.list_source()
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
 
     # Handle response
     print(res)
@@ -132,7 +132,7 @@ async def main():
         ),
     ) as ccp_client:
 
-        res = await ccp_client.sources.list_source_async()
+        res = await ccp_client.lake.create_cribl_lake_dataset_by_lake_id_async(lake_id="<id>", id="<id>")
 
         # Handle response
         print(res)
@@ -166,7 +166,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.list_source()
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
 
     # Handle response
     print(res)
@@ -197,9 +197,33 @@ with CriblControlPlane(
 * [get_destination_samples_by_id](docs/sdks/destinations/README.md#get_destination_samples_by_id) - Retrieve samples data for the specified destination. Used to get sample data for the test action.
 * [create_destination_test_by_id](docs/sdks/destinations/README.md#create_destination_test_by_id) - Send sample data to a destination to validate configuration or test connectivity
 
+### [distributed](docs/sdks/distributed/README.md)
+
+* [get_summary](docs/sdks/distributed/README.md#get_summary) - Get summary of Distributed deployment
+
+### [groups](docs/sdks/groupssdk/README.md)
+
+* [get_groups_config_version_by_id](docs/sdks/groupssdk/README.md#get_groups_config_version_by_id) - Get effective bundle version for given Group
+* [create_products_groups_by_product](docs/sdks/groupssdk/README.md#create_products_groups_by_product) - Create a Fleet or Worker Group
+* [get_products_groups_by_product](docs/sdks/groupssdk/README.md#get_products_groups_by_product) - Get a list of ConfigGroup objects
+* [update_groups_deploy_by_id](docs/sdks/groupssdk/README.md#update_groups_deploy_by_id) - Deploy commits for a Fleet or Worker Group
+* [get_groups_by_id](docs/sdks/groupssdk/README.md#get_groups_by_id) - Get a specific ConfigGroup object
+* [get_groups_acl_by_id](docs/sdks/groupssdk/README.md#get_groups_acl_by_id) - ACL of members with permissions for resources in this Group
+
 ### [health](docs/sdks/health/README.md)
 
 * [get_health_info](docs/sdks/health/README.md#get_health_info) - Provides health info for REST server
+
+### [lake](docs/sdks/lake/README.md)
+
+* [create_cribl_lake_dataset_by_lake_id](docs/sdks/lake/README.md#create_cribl_lake_dataset_by_lake_id) - Create a Dataset in the specified Lake
+* [get_cribl_lake_dataset_by_lake_id](docs/sdks/lake/README.md#get_cribl_lake_dataset_by_lake_id) - Get the list of Dataset contained in the specified Lake
+
+### [packs](docs/sdks/packs/README.md)
+
+* [create_packs](docs/sdks/packs/README.md#create_packs) - Install Pack
+* [get_packs](docs/sdks/packs/README.md#get_packs) - Get info on packs
+* [update_packs](docs/sdks/packs/README.md#update_packs) - Upload Pack
 
 ### [pipelines](docs/sdks/pipelines/README.md)
 
@@ -226,6 +250,10 @@ with CriblControlPlane(
 * [create_source_hec_token_by_id](docs/sdks/sources/README.md#create_source_hec_token_by_id) - Add token and optional metadata to an existing HEC Source
 * [update_source_hec_token_by_id_and_token](docs/sdks/sources/README.md#update_source_hec_token_by_id_and_token) - Update token metadata on existing HEC Source
 
+### [teams](docs/sdks/teams/README.md)
+
+* [get_products_groups_acl_teams_by_product_and_id](docs/sdks/teams/README.md#get_products_groups_acl_teams_by_product_and_id) - ACL of team with permissions for resources in this Group
+
 ### [versioning](docs/sdks/versioning/README.md)
 
 * [get_version_branch](docs/sdks/versioning/README.md#get_version_branch) - get the list of branches
@@ -241,6 +269,12 @@ with CriblControlPlane(
 * [get_version_status](docs/sdks/versioning/README.md#get_version_status) - get the the working tree status
 * [create_version_sync](docs/sdks/versioning/README.md#create_version_sync) - syncs with remote repo via POST requests
 * [create_version_undo](docs/sdks/versioning/README.md#create_version_undo) - undo the last commit
+
+### [workers](docs/sdks/workerssdk/README.md)
+
+* [get_summary_workers](docs/sdks/workerssdk/README.md#get_summary_workers) - get worker and edge nodes count
+* [get_workers](docs/sdks/workerssdk/README.md#get_workers) - get worker and edge nodes
+* [update_workers_restart](docs/sdks/workerssdk/README.md#update_workers_restart) - restarts worker nodes
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -264,7 +298,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.list_source(,
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -287,7 +321,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.list_source()
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
 
     # Handle response
     print(res)
@@ -324,7 +358,7 @@ with CriblControlPlane(
     res = None
     try:
 
-        res = ccp_client.sources.list_source()
+        res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
 
         # Handle response
         print(res)
@@ -359,7 +393,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 40 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 56 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

@@ -41,7 +41,7 @@ func testGetHealthInfoGetHealthInfo0(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	var respBody *components.HealthStatus = &components.HealthStatus{
-		Status:    components.StatusHealthy,
+		Status:    components.HealthStatusStatusHealthy,
 		StartTime: 8399.98,
 	}
 	respBodyBytes, err := utils.MarshalJSON(respBody, "", true)

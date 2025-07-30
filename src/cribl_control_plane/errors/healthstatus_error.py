@@ -11,7 +11,7 @@ from typing_extensions import Annotated
 
 
 class HealthStatusErrorData(BaseModel):
-    status: models_healthstatus.Status
+    status: models_healthstatus.HealthStatusStatus
 
     start_time: Annotated[float, pydantic.Field(alias="startTime")]
 

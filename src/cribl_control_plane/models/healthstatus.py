@@ -13,20 +13,20 @@ class Role(str, Enum):
     STANDBY = "standby"
 
 
-class Status(str, Enum):
+class HealthStatusStatus(str, Enum):
     HEALTHY = "healthy"
     SHUTTING_DOWN = "shutting down"
     STANDBY = "standby"
 
 
 class HealthStatusTypedDict(TypedDict):
-    status: Status
+    status: HealthStatusStatus
     start_time: float
     role: NotRequired[Role]
 
 
 class HealthStatus(BaseModel):
-    status: Status
+    status: HealthStatusStatus
 
     start_time: Annotated[float, pydantic.Field(alias="startTime")]
 
