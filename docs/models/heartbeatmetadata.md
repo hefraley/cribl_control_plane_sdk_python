@@ -1,0 +1,11 @@
+# HeartbeatMetadata
+
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `aws`                                                                            | [Optional[models.HeartbeatMetadataAws]](../models/heartbeatmetadataaws.md)       | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `host_os`                                                                        | [Optional[models.HeartbeatMetadataHostOs]](../models/heartbeatmetadatahostos.md) | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `kube`                                                                           | [Optional[models.HeartbeatMetadataKube]](../models/heartbeatmetadatakube.md)     | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `os`                                                                             | [Optional[models.HeartbeatMetadataOs]](../models/heartbeatmetadataos.md)         | :heavy_minus_sign:                                                               | N/A                                                                              |

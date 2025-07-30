@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 9ac8e735983aa95b771a1dae9b965405
-  docVersion: 4.14.0-alpha.1753735749224-0a5d0b46
+  docChecksum: 87a23a1f4a28e80108f276c7d8843532
+  docVersion: 4.14.0-alpha.1753854543129-e0f06d67
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.18
-  configChecksum: 8e53792d2398f8d6d929ee124463fd04
+  releaseVersion: 0.0.19
+  configChecksum: 7d32a1b3df767082d7a13f7b3ac40dd7
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -30,6 +30,7 @@ features:
     methodArguments: 1.0.2
     mockServer: 0.1.1
     nameOverrides: 3.0.1
+    nullables: 1.0.1
     oauth2ClientCredentials: 1.2.1
     responseFormat: 1.0.1
     retries: 3.0.2
@@ -54,6 +55,7 @@ generatedFiles:
   - docs/models/additionalproperty.md
   - docs/models/aisiemendpointpath.md
   - docs/models/allow.md
+  - docs/models/appmode.md
   - docs/models/audit.md
   - docs/models/authauthenticationmethodelastic.md
   - docs/models/authelastic.md
@@ -159,15 +161,19 @@ generatedFiles:
   - docs/models/backpressurebehaviorsumologic.md
   - docs/models/backpressurebehaviorwavefront.md
   - docs/models/blobaccesstier.md
+  - docs/models/cacheconnection.md
+  - docs/models/cacheconnectionbackfillstatus.md
   - docs/models/certificateazuredataexplorer.md
   - docs/models/certoptions.md
   - docs/models/checkpointingcrowdstrike.md
   - docs/models/checkpointings3.md
   - docs/models/checkpointings3inventory.md
   - docs/models/checkpointingsecuritylake.md
+  - docs/models/cloudprovider.md
   - docs/models/collectors.md
   - docs/models/columnmapping.md
   - docs/models/comment.md
+  - docs/models/commit.md
   - docs/models/compresscompression131.md
   - docs/models/compresscompressionazuredataexplorer.md
   - docs/models/compresscompressionsplunklb.md
@@ -230,6 +236,12 @@ generatedFiles:
   - docs/models/compressionwiz.md
   - docs/models/compressionzscalerhec.md
   - docs/models/conf.md
+  - docs/models/config.md
+  - docs/models/configgroup.md
+  - docs/models/configgroupcloud.md
+  - docs/models/configgrouplookups.md
+  - docs/models/configgrouplookupslookup.md
+  - docs/models/configgrouptype.md
   - docs/models/connectionazureblob.md
   - docs/models/connectionconfluentcloud.md
   - docs/models/connectioncriblhttp.md
@@ -278,6 +290,8 @@ generatedFiles:
   - docs/models/contentconfigoffice365mgmt.md
   - docs/models/contentconfigoffice365service.md
   - docs/models/contentconfigwiz.md
+  - docs/models/createcribllakedatasetbylakeidrequest.md
+  - docs/models/createcribllakedatasetbylakeidresponse.md
   - docs/models/createinputapiversion.md
   - docs/models/createinputauthconfluentcloud.md
   - docs/models/createinputauthenticationconfluentcloud.md
@@ -780,7 +794,11 @@ generatedFiles:
   - docs/models/createoutputtypewavefront.md
   - docs/models/createoutputurl.md
   - docs/models/createoutputwriteaction.md
+  - docs/models/createpacksresponse.md
   - docs/models/createpipelineresponse.md
+  - docs/models/createproductsgroupsbyproductproduct.md
+  - docs/models/createproductsgroupsbyproductrequest.md
+  - docs/models/createproductsgroupsbyproductresponse.md
   - docs/models/createroutesappendbyidrequest.md
   - docs/models/createroutesappendbyidresponse.md
   - docs/models/createversioncommitresponse.md
@@ -791,6 +809,8 @@ generatedFiles:
   - docs/models/createversionundorequest.md
   - docs/models/createversionundoresponse.md
   - docs/models/criblevent.md
+  - docs/models/cribllakedataset.md
+  - docs/models/cribllakedatasetformat.md
   - docs/models/customlabel.md
   - docs/models/datadogsite.md
   - docs/models/dataformatazureblob.md
@@ -806,6 +826,8 @@ generatedFiles:
   - docs/models/datapageversiongooglecloudstorage.md
   - docs/models/datapageversions3.md
   - docs/models/datapageversionsecuritylake.md
+  - docs/models/datasetmetadata.md
+  - docs/models/datasetmetadataruninfo.md
   - docs/models/datasetsite.md
   - docs/models/deleteinputbyidrequest.md
   - docs/models/deleteinputbyidresponse.md
@@ -815,6 +837,9 @@ generatedFiles:
   - docs/models/deleteoutputpqbyidresponse.md
   - docs/models/deletepipelinebyidrequest.md
   - docs/models/deletepipelinebyidresponse.md
+  - docs/models/deployrequest.md
+  - docs/models/deployrequestlookups.md
+  - docs/models/deployrequestlookupslookup.md
   - docs/models/destinationprotocolgraphite.md
   - docs/models/destinationprotocolstatsd.md
   - docs/models/destinationprotocolstatsdext.md
@@ -829,6 +854,9 @@ generatedFiles:
   - docs/models/diskspaceprotectiongooglecloudstorage.md
   - docs/models/diskspaceprotections3.md
   - docs/models/diskspaceprotectionsecuritylake.md
+  - docs/models/distributedsummary.md
+  - docs/models/distributedsummarygroups.md
+  - docs/models/distributedsummaryworkers.md
   - docs/models/dns.md
   - docs/models/elasticversion.md
   - docs/models/endpoint.md
@@ -892,6 +920,15 @@ generatedFiles:
   - docs/models/formatdynatracehttp.md
   - docs/models/formatsentinel.md
   - docs/models/functionspecificconfigs.md
+  - docs/models/getcribllakedatasetbylakeidrequest.md
+  - docs/models/getcribllakedatasetbylakeidresponse.md
+  - docs/models/getgroupsaclbyidrequest.md
+  - docs/models/getgroupsaclbyidresponse.md
+  - docs/models/getgroupsaclbyidtype.md
+  - docs/models/getgroupsbyidrequest.md
+  - docs/models/getgroupsbyidresponse.md
+  - docs/models/getgroupsconfigversionbyidrequest.md
+  - docs/models/getgroupsconfigversionbyidresponse.md
   - docs/models/getinputbyidrequest.md
   - docs/models/getinputbyidresponse.md
   - docs/models/getoutputbyidrequest.md
@@ -900,10 +937,24 @@ generatedFiles:
   - docs/models/getoutputpqbyidresponse.md
   - docs/models/getoutputsamplesbyidrequest.md
   - docs/models/getoutputsamplesbyidresponse.md
+  - docs/models/getpacksrequest.md
+  - docs/models/getpacksresponse.md
   - docs/models/getpipelinebyidrequest.md
   - docs/models/getpipelinebyidresponse.md
+  - docs/models/getproductsgroupsaclteamsbyproductandidproduct.md
+  - docs/models/getproductsgroupsaclteamsbyproductandidrequest.md
+  - docs/models/getproductsgroupsaclteamsbyproductandidresponse.md
+  - docs/models/getproductsgroupsaclteamsbyproductandidtype.md
+  - docs/models/getproductsgroupsbyproductproduct.md
+  - docs/models/getproductsgroupsbyproductrequest.md
+  - docs/models/getproductsgroupsbyproductresponse.md
   - docs/models/getroutesbyidrequest.md
   - docs/models/getroutesbyidresponse.md
+  - docs/models/getsummarymode.md
+  - docs/models/getsummaryrequest.md
+  - docs/models/getsummaryresponse.md
+  - docs/models/getsummaryworkersrequest.md
+  - docs/models/getsummaryworkersresponse.md
   - docs/models/getversionbranchresponse.md
   - docs/models/getversioncountrequest.md
   - docs/models/getversioncountresponse.md
@@ -917,6 +968,9 @@ generatedFiles:
   - docs/models/getversionshowresponse.md
   - docs/models/getversionstatusrequest.md
   - docs/models/getversionstatusresponse.md
+  - docs/models/getworkersrequest.md
+  - docs/models/getworkersresponse.md
+  - docs/models/git.md
   - docs/models/gitcommitparams.md
   - docs/models/gitcommitsummary.md
   - docs/models/gitcommitsummaryfiles.md
@@ -928,7 +982,17 @@ generatedFiles:
   - docs/models/gitrevertresultfiles.md
   - docs/models/gitstatusresult.md
   - docs/models/googleauthenticationmethodgooglecloudlogging.md
+  - docs/models/hbcriblinfo.md
+  - docs/models/hbleaderinfo.md
   - docs/models/healthstatus.md
+  - docs/models/healthstatusstatus.md
+  - docs/models/heartbeatmetadata.md
+  - docs/models/heartbeatmetadataaws.md
+  - docs/models/heartbeatmetadatahostos.md
+  - docs/models/heartbeatmetadatakube.md
+  - docs/models/heartbeatmetadataos.md
+  - docs/models/heartbeatmetadataowner.md
+  - docs/models/heartbeatmetadatatags.md
   - docs/models/hostinfo.md
   - docs/models/hostnetflow.md
   - docs/models/hostsfile.md
@@ -1643,6 +1707,9 @@ generatedFiles:
   - docs/models/keyvaluemetadatumgooglecloudstorage.md
   - docs/models/keyvaluemetadatums3.md
   - docs/models/keyvaluemetadatumsecuritylake.md
+  - docs/models/lakedatasetsearchconfig.md
+  - docs/models/lakehouseconnectiontype.md
+  - docs/models/lastmetrics.md
   - docs/models/listeningports.md
   - docs/models/listinputresponse.md
   - docs/models/listoutputresponse.md
@@ -1661,7 +1728,11 @@ generatedFiles:
   - docs/models/lokiauthoauthheader2.md
   - docs/models/lokiauthoauthparam1.md
   - docs/models/lokiauthoauthparam2.md
+  - docs/models/lookupversions.md
   - docs/models/mappingtype.md
+  - docs/models/masterworkerentry.md
+  - docs/models/masterworkerentrytype.md
+  - docs/models/masterworkerentryworkers.md
   - docs/models/maximumtlsversion131.md
   - docs/models/maximumtlsversionclickhouse.md
   - docs/models/maximumtlsversioncriblhttp.md
@@ -1806,6 +1877,19 @@ generatedFiles:
   - docs/models/mtlssettings.md
   - docs/models/nestedfieldserializationsplunk.md
   - docs/models/nestedfieldserializationsplunklb.md
+  - docs/models/nodeactiveupgradestatus.md
+  - docs/models/nodefailedupgradestatus.md
+  - docs/models/nodeprovidedinfo.md
+  - docs/models/nodeprovidedinfoaws.md
+  - docs/models/nodeprovidedinfohostos.md
+  - docs/models/nodeprovidedinfokube.md
+  - docs/models/nodeprovidedinfoos1.md
+  - docs/models/nodeprovidedinfoos2.md
+  - docs/models/nodeprovidedinfoowner.md
+  - docs/models/nodeprovidedinfotags.md
+  - docs/models/nodeskippedupgradestatus.md
+  - docs/models/nodeupgradestate.md
+  - docs/models/nodeupgradestatus.md
   - docs/models/oauthheaderclickhouse.md
   - docs/models/oauthheaderinfluxdb.md
   - docs/models/oauthheaderloki.md
@@ -1823,6 +1907,7 @@ generatedFiles:
   - docs/models/objectaclgooglecloudstorage.md
   - docs/models/objectacls3.md
   - docs/models/objectaclsecuritylake.md
+  - docs/models/os.md
   - docs/models/otlpversionhttp.md
   - docs/models/output.md
   - docs/models/outputazureblob.md
@@ -2629,6 +2714,12 @@ generatedFiles:
   - docs/models/outputxsiamtimeoutretrysettings.md
   - docs/models/outputxsiamtype.md
   - docs/models/outputxsiamurl.md
+  - docs/models/packinfo.md
+  - docs/models/packinfotags.md
+  - docs/models/packinstallinfo.md
+  - docs/models/packinstallinfotags.md
+  - docs/models/packrequestbody.md
+  - docs/models/packrequestbodytags.md
   - docs/models/parquetversionazureblob.md
   - docs/models/parquetversiondls3.md
   - docs/models/parquetversionfilesystem.md
@@ -2785,6 +2876,7 @@ generatedFiles:
   - docs/models/queuefullbehaviorstatsdext.md
   - docs/models/queuefullbehaviorsumologic.md
   - docs/models/queuefullbehaviorwavefront.md
+  - docs/models/rbacresource.md
   - docs/models/readmode.md
   - docs/models/recorddataformatazureeventhub.md
   - docs/models/recorddataformatconfluentcloud.md
@@ -2800,6 +2892,7 @@ generatedFiles:
   - docs/models/reportmethod.md
   - docs/models/requestformatcrowdstrikenextgensiem.md
   - docs/models/requestformathumiohec.md
+  - docs/models/resourcepolicy.md
   - docs/models/resourcetypelabel.md
   - docs/models/responseretrysetting131.md
   - docs/models/responseretrysettingazuredataexplorer.md
@@ -2823,6 +2916,8 @@ generatedFiles:
   - docs/models/responseretrysettingsignalfx.md
   - docs/models/responseretrysettingsumologic.md
   - docs/models/responseretrysettingwavefront.md
+  - docs/models/restartresponse.md
+  - docs/models/restartresponsestatus.md
   - docs/models/retryrulesoffice365mgmt.md
   - docs/models/retryrulesoffice365msgtrace.md
   - docs/models/retryrulesoffice365service.md
@@ -2844,6 +2939,7 @@ generatedFiles:
   - docs/models/sample.md
   - docs/models/saslmechanismazureeventhub.md
   - docs/models/saslmechanismeventhub.md
+  - docs/models/scanmode.md
   - docs/models/scheduletype.md
   - docs/models/schemeclientoauth.md
   - docs/models/scrapeprotocolprotocoledgeprometheus.md
@@ -2868,7 +2964,6 @@ generatedFiles:
   - docs/models/signatureversions3inventory.md
   - docs/models/signatureversionsns.md
   - docs/models/snmpv3authentication.md
-  - docs/models/status.md
   - docs/models/storageclassdls3.md
   - docs/models/storageclassexabeam.md
   - docs/models/storageclassgooglecloudstorage.md
@@ -2885,6 +2980,7 @@ generatedFiles:
   - docs/models/tagafterprocessingsecuritylake.md
   - docs/models/target.md
   - docs/models/targetprotocoledgeprometheus.md
+  - docs/models/teamaccesscontrollist.md
   - docs/models/telemetrytype.md
   - docs/models/timeoutretrysettings131.md
   - docs/models/timeoutretrysettingsazuredataexplorer.md
@@ -2937,6 +3033,8 @@ generatedFiles:
   - docs/models/tlssettingsserversidezscalerhec.md
   - docs/models/type131.md
   - docs/models/typehttpdynatraceotlp.md
+  - docs/models/updategroupsdeploybyidrequest.md
+  - docs/models/updategroupsdeploybyidresponse.md
   - docs/models/updatehectokenrequest.md
   - docs/models/updatehectokenrequestmetadatum.md
   - docs/models/updateinputbyidrequest.md
@@ -2945,10 +3043,14 @@ generatedFiles:
   - docs/models/updateinputhectokenbyidandtokenresponse.md
   - docs/models/updateoutputbyidrequest.md
   - docs/models/updateoutputbyidresponse.md
+  - docs/models/updatepacksrequest.md
+  - docs/models/updatepacksresponse.md
   - docs/models/updatepipelinebyidrequest.md
   - docs/models/updatepipelinebyidresponse.md
   - docs/models/updateroutesbyidrequest.md
   - docs/models/updateroutesbyidresponse.md
+  - docs/models/updateworkersrestartresponse.md
+  - docs/models/useraccesscontrollist.md
   - docs/models/usersandgroups.md
   - docs/models/utils/retryconfig.md
   - docs/models/v3user.md
@@ -2956,11 +3058,17 @@ generatedFiles:
   - docs/sdks/authsdk/README.md
   - docs/sdks/criblcontrolplane/README.md
   - docs/sdks/destinations/README.md
+  - docs/sdks/distributed/README.md
+  - docs/sdks/groupssdk/README.md
   - docs/sdks/health/README.md
+  - docs/sdks/lake/README.md
+  - docs/sdks/packs/README.md
   - docs/sdks/pipelines/README.md
   - docs/sdks/routessdk/README.md
   - docs/sdks/sources/README.md
+  - docs/sdks/teams/README.md
   - docs/sdks/versioning/README.md
+  - docs/sdks/workerssdk/README.md
   - poetry.toml
   - py.typed
   - pylintrc
@@ -2975,6 +3083,7 @@ generatedFiles:
   - src/cribl_control_plane/auth_sdk.py
   - src/cribl_control_plane/basesdk.py
   - src/cribl_control_plane/destinations.py
+  - src/cribl_control_plane/distributed.py
   - src/cribl_control_plane/errors/__init__.py
   - src/cribl_control_plane/errors/apierror.py
   - src/cribl_control_plane/errors/criblcontrolplaneerror.py
@@ -2982,16 +3091,29 @@ generatedFiles:
   - src/cribl_control_plane/errors/healthstatus_error.py
   - src/cribl_control_plane/errors/no_response_error.py
   - src/cribl_control_plane/errors/responsevalidationerror.py
+  - src/cribl_control_plane/groups_sdk.py
   - src/cribl_control_plane/health.py
   - src/cribl_control_plane/httpclient.py
+  - src/cribl_control_plane/lake.py
   - src/cribl_control_plane/models/__init__.py
   - src/cribl_control_plane/models/addhectokenrequest.py
+  - src/cribl_control_plane/models/appmode.py
   - src/cribl_control_plane/models/authtoken.py
+  - src/cribl_control_plane/models/cacheconnection.py
+  - src/cribl_control_plane/models/cacheconnectionbackfillstatus.py
+  - src/cribl_control_plane/models/cloudprovider.py
+  - src/cribl_control_plane/models/commit.py
+  - src/cribl_control_plane/models/configgroup.py
+  - src/cribl_control_plane/models/configgroupcloud.py
+  - src/cribl_control_plane/models/configgrouplookups.py
+  - src/cribl_control_plane/models/createcribllakedatasetbylakeidop.py
   - src/cribl_control_plane/models/createinputhectokenbyidop.py
   - src/cribl_control_plane/models/createinputop.py
   - src/cribl_control_plane/models/createoutputop.py
   - src/cribl_control_plane/models/createoutputtestbyidop.py
+  - src/cribl_control_plane/models/createpacksop.py
   - src/cribl_control_plane/models/createpipelineop.py
+  - src/cribl_control_plane/models/createproductsgroupsbyproductop.py
   - src/cribl_control_plane/models/createroutesappendbyidop.py
   - src/cribl_control_plane/models/createversioncommitop.py
   - src/cribl_control_plane/models/createversionpushop.py
@@ -2999,16 +3121,31 @@ generatedFiles:
   - src/cribl_control_plane/models/createversionsyncop.py
   - src/cribl_control_plane/models/createversionundoop.py
   - src/cribl_control_plane/models/criblevent.py
+  - src/cribl_control_plane/models/cribllakedataset.py
+  - src/cribl_control_plane/models/datasetmetadata.py
+  - src/cribl_control_plane/models/datasetmetadataruninfo.py
   - src/cribl_control_plane/models/deleteinputbyidop.py
   - src/cribl_control_plane/models/deleteoutputbyidop.py
   - src/cribl_control_plane/models/deleteoutputpqbyidop.py
   - src/cribl_control_plane/models/deletepipelinebyidop.py
+  - src/cribl_control_plane/models/deployrequest.py
+  - src/cribl_control_plane/models/deployrequestlookups.py
+  - src/cribl_control_plane/models/distributedsummary.py
+  - src/cribl_control_plane/models/getcribllakedatasetbylakeidop.py
+  - src/cribl_control_plane/models/getgroupsaclbyidop.py
+  - src/cribl_control_plane/models/getgroupsbyidop.py
+  - src/cribl_control_plane/models/getgroupsconfigversionbyidop.py
   - src/cribl_control_plane/models/getinputbyidop.py
   - src/cribl_control_plane/models/getoutputbyidop.py
   - src/cribl_control_plane/models/getoutputpqbyidop.py
   - src/cribl_control_plane/models/getoutputsamplesbyidop.py
+  - src/cribl_control_plane/models/getpacksop.py
   - src/cribl_control_plane/models/getpipelinebyidop.py
+  - src/cribl_control_plane/models/getproductsgroupsaclteamsbyproductandidop.py
+  - src/cribl_control_plane/models/getproductsgroupsbyproductop.py
   - src/cribl_control_plane/models/getroutesbyidop.py
+  - src/cribl_control_plane/models/getsummaryop.py
+  - src/cribl_control_plane/models/getsummaryworkersop.py
   - src/cribl_control_plane/models/getversionbranchop.py
   - src/cribl_control_plane/models/getversioncountop.py
   - src/cribl_control_plane/models/getversioncurrentbranchop.py
@@ -3017,6 +3154,7 @@ generatedFiles:
   - src/cribl_control_plane/models/getversioninfoop.py
   - src/cribl_control_plane/models/getversionshowop.py
   - src/cribl_control_plane/models/getversionstatusop.py
+  - src/cribl_control_plane/models/getworkersop.py
   - src/cribl_control_plane/models/gitcommitparams.py
   - src/cribl_control_plane/models/gitcommitsummary.py
   - src/cribl_control_plane/models/gitfile.py
@@ -3025,7 +3163,10 @@ generatedFiles:
   - src/cribl_control_plane/models/gitrevertparams.py
   - src/cribl_control_plane/models/gitrevertresult.py
   - src/cribl_control_plane/models/gitstatusresult.py
+  - src/cribl_control_plane/models/hbcriblinfo.py
+  - src/cribl_control_plane/models/hbleaderinfo.py
   - src/cribl_control_plane/models/healthstatus.py
+  - src/cribl_control_plane/models/heartbeatmetadata.py
   - src/cribl_control_plane/models/input.py
   - src/cribl_control_plane/models/inputappscope.py
   - src/cribl_control_plane/models/inputazureblob.py
@@ -3085,11 +3226,21 @@ generatedFiles:
   - src/cribl_control_plane/models/inputwineventlogs.py
   - src/cribl_control_plane/models/inputwiz.py
   - src/cribl_control_plane/models/inputzscalerhec.py
+  - src/cribl_control_plane/models/lakedatasetsearchconfig.py
+  - src/cribl_control_plane/models/lakehouseconnectiontype.py
   - src/cribl_control_plane/models/listinputop.py
   - src/cribl_control_plane/models/listoutputop.py
   - src/cribl_control_plane/models/listpipelineop.py
   - src/cribl_control_plane/models/listroutesop.py
   - src/cribl_control_plane/models/logininfo.py
+  - src/cribl_control_plane/models/lookupversions.py
+  - src/cribl_control_plane/models/masterworkerentry.py
+  - src/cribl_control_plane/models/nodeactiveupgradestatus.py
+  - src/cribl_control_plane/models/nodefailedupgradestatus.py
+  - src/cribl_control_plane/models/nodeprovidedinfo.py
+  - src/cribl_control_plane/models/nodeskippedupgradestatus.py
+  - src/cribl_control_plane/models/nodeupgradestate.py
+  - src/cribl_control_plane/models/nodeupgradestatus.py
   - src/cribl_control_plane/models/output.py
   - src/cribl_control_plane/models/outputazureblob.py
   - src/cribl_control_plane/models/outputazuredataexplorer.py
@@ -3158,8 +3309,14 @@ generatedFiles:
   - src/cribl_control_plane/models/outputwavefront.py
   - src/cribl_control_plane/models/outputwebhook.py
   - src/cribl_control_plane/models/outputxsiam.py
+  - src/cribl_control_plane/models/packinfo.py
+  - src/cribl_control_plane/models/packinstallinfo.py
+  - src/cribl_control_plane/models/packrequestbody.py
   - src/cribl_control_plane/models/pipeline.py
   - src/cribl_control_plane/models/pipelinefunctionconf.py
+  - src/cribl_control_plane/models/rbacresource.py
+  - src/cribl_control_plane/models/resourcepolicy.py
+  - src/cribl_control_plane/models/restartresponse.py
   - src/cribl_control_plane/models/routecloneconf.py
   - src/cribl_control_plane/models/routeconf.py
   - src/cribl_control_plane/models/routes.py
@@ -3167,18 +3324,25 @@ generatedFiles:
   - src/cribl_control_plane/models/routesroute_input.py
   - src/cribl_control_plane/models/schemeclientoauth.py
   - src/cribl_control_plane/models/security.py
+  - src/cribl_control_plane/models/teamaccesscontrollist.py
+  - src/cribl_control_plane/models/updategroupsdeploybyidop.py
   - src/cribl_control_plane/models/updatehectokenrequest.py
   - src/cribl_control_plane/models/updateinputbyidop.py
   - src/cribl_control_plane/models/updateinputhectokenbyidandtokenop.py
   - src/cribl_control_plane/models/updateoutputbyidop.py
+  - src/cribl_control_plane/models/updatepacksop.py
   - src/cribl_control_plane/models/updatepipelinebyidop.py
   - src/cribl_control_plane/models/updateroutesbyidop.py
+  - src/cribl_control_plane/models/updateworkersrestartop.py
+  - src/cribl_control_plane/models/useraccesscontrollist.py
+  - src/cribl_control_plane/packs.py
   - src/cribl_control_plane/pipelines.py
   - src/cribl_control_plane/py.typed
   - src/cribl_control_plane/routes_sdk.py
   - src/cribl_control_plane/sdk.py
   - src/cribl_control_plane/sdkconfiguration.py
   - src/cribl_control_plane/sources.py
+  - src/cribl_control_plane/teams.py
   - src/cribl_control_plane/types/__init__.py
   - src/cribl_control_plane/types/basemodel.py
   - src/cribl_control_plane/utils/__init__.py
@@ -3199,6 +3363,7 @@ generatedFiles:
   - src/cribl_control_plane/utils/url.py
   - src/cribl_control_plane/utils/values.py
   - src/cribl_control_plane/versioning.py
+  - src/cribl_control_plane/workers_sdk.py
   - tests/__init__.py
   - tests/mockserver/.gitignore
   - tests/mockserver/Dockerfile
@@ -3219,8 +3384,18 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathdeletesystemoutputsid.go
   - tests/mockserver/internal/handler/pathdeletesystemoutputsidpq.go
   - tests/mockserver/internal/handler/pathgethealth.go
+  - tests/mockserver/internal/handler/pathgetmastergroupsid.go
+  - tests/mockserver/internal/handler/pathgetmastergroupsidacl.go
+  - tests/mockserver/internal/handler/pathgetmastergroupsidconfigversion.go
+  - tests/mockserver/internal/handler/pathgetmastersummary.go
+  - tests/mockserver/internal/handler/pathgetmastersummaryworkers.go
+  - tests/mockserver/internal/handler/pathgetmasterworkers.go
+  - tests/mockserver/internal/handler/pathgetpacks.go
   - tests/mockserver/internal/handler/pathgetpipelines.go
   - tests/mockserver/internal/handler/pathgetpipelinesid.go
+  - tests/mockserver/internal/handler/pathgetproductslakelakeslakeiddatasets.go
+  - tests/mockserver/internal/handler/pathgetproductsproductgroups.go
+  - tests/mockserver/internal/handler/pathgetproductsproductgroupsidaclteams.go
   - tests/mockserver/internal/handler/pathgetroutes.go
   - tests/mockserver/internal/handler/pathgetroutesid.go
   - tests/mockserver/internal/handler/pathgetsysteminputs.go
@@ -3237,13 +3412,18 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathgetversioninfo.go
   - tests/mockserver/internal/handler/pathgetversionshow.go
   - tests/mockserver/internal/handler/pathgetversionstatus.go
+  - tests/mockserver/internal/handler/pathpatchmastergroupsiddeploy.go
+  - tests/mockserver/internal/handler/pathpatchmasterworkersrestart.go
   - tests/mockserver/internal/handler/pathpatchpipelinesid.go
   - tests/mockserver/internal/handler/pathpatchroutesid.go
   - tests/mockserver/internal/handler/pathpatchsysteminputsid.go
   - tests/mockserver/internal/handler/pathpatchsysteminputsidhectokentoken.go
   - tests/mockserver/internal/handler/pathpatchsystemoutputsid.go
   - tests/mockserver/internal/handler/pathpostauthlogin.go
+  - tests/mockserver/internal/handler/pathpostpacks.go
   - tests/mockserver/internal/handler/pathpostpipelines.go
+  - tests/mockserver/internal/handler/pathpostproductslakelakeslakeiddatasets.go
+  - tests/mockserver/internal/handler/pathpostproductsproductgroups.go
   - tests/mockserver/internal/handler/pathpostroutesidappend.go
   - tests/mockserver/internal/handler/pathpostsysteminputs.go
   - tests/mockserver/internal/handler/pathpostsysteminputsidhectoken.go
@@ -3254,6 +3434,7 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathpostversionrevert.go
   - tests/mockserver/internal/handler/pathpostversionsync.go
   - tests/mockserver/internal/handler/pathpostversionundo.go
+  - tests/mockserver/internal/handler/pathputpacks.go
   - tests/mockserver/internal/handler/values/files.go
   - tests/mockserver/internal/logging/doc.go
   - tests/mockserver/internal/logging/formats.go
@@ -3264,8 +3445,22 @@ generatedFiles:
   - tests/mockserver/internal/logging/oas_operation.go
   - tests/mockserver/internal/logging/oas_operation_call.go
   - tests/mockserver/internal/sdk/models/components/addhectokenrequest.go
+  - tests/mockserver/internal/sdk/models/components/appmode.go
   - tests/mockserver/internal/sdk/models/components/authtoken.go
+  - tests/mockserver/internal/sdk/models/components/cacheconnection.go
+  - tests/mockserver/internal/sdk/models/components/cacheconnectionbackfillstatus.go
+  - tests/mockserver/internal/sdk/models/components/cloudprovider.go
+  - tests/mockserver/internal/sdk/models/components/commit.go
+  - tests/mockserver/internal/sdk/models/components/configgroup.go
+  - tests/mockserver/internal/sdk/models/components/configgroupcloud.go
+  - tests/mockserver/internal/sdk/models/components/configgrouplookups.go
   - tests/mockserver/internal/sdk/models/components/criblevent.go
+  - tests/mockserver/internal/sdk/models/components/cribllakedataset.go
+  - tests/mockserver/internal/sdk/models/components/datasetmetadata.go
+  - tests/mockserver/internal/sdk/models/components/datasetmetadataruninfo.go
+  - tests/mockserver/internal/sdk/models/components/deployrequest.go
+  - tests/mockserver/internal/sdk/models/components/deployrequestlookups.go
+  - tests/mockserver/internal/sdk/models/components/distributedsummary.go
   - tests/mockserver/internal/sdk/models/components/gitcommitparams.go
   - tests/mockserver/internal/sdk/models/components/gitcommitsummary.go
   - tests/mockserver/internal/sdk/models/components/gitfile.go
@@ -3274,7 +3469,10 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/components/gitrevertparams.go
   - tests/mockserver/internal/sdk/models/components/gitrevertresult.go
   - tests/mockserver/internal/sdk/models/components/gitstatusresult.go
+  - tests/mockserver/internal/sdk/models/components/hbcriblinfo.go
+  - tests/mockserver/internal/sdk/models/components/hbleaderinfo.go
   - tests/mockserver/internal/sdk/models/components/healthstatus.go
+  - tests/mockserver/internal/sdk/models/components/heartbeatmetadata.go
   - tests/mockserver/internal/sdk/models/components/httpmetadata.go
   - tests/mockserver/internal/sdk/models/components/input.go
   - tests/mockserver/internal/sdk/models/components/inputappscope.go
@@ -3335,7 +3533,17 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/components/inputwineventlogs.go
   - tests/mockserver/internal/sdk/models/components/inputwiz.go
   - tests/mockserver/internal/sdk/models/components/inputzscalerhec.go
+  - tests/mockserver/internal/sdk/models/components/lakedatasetsearchconfig.go
+  - tests/mockserver/internal/sdk/models/components/lakehouseconnectiontype.go
   - tests/mockserver/internal/sdk/models/components/logininfo.go
+  - tests/mockserver/internal/sdk/models/components/lookupversions.go
+  - tests/mockserver/internal/sdk/models/components/masterworkerentry.go
+  - tests/mockserver/internal/sdk/models/components/nodeactiveupgradestatus.go
+  - tests/mockserver/internal/sdk/models/components/nodefailedupgradestatus.go
+  - tests/mockserver/internal/sdk/models/components/nodeprovidedinfo.go
+  - tests/mockserver/internal/sdk/models/components/nodeskippedupgradestatus.go
+  - tests/mockserver/internal/sdk/models/components/nodeupgradestate.go
+  - tests/mockserver/internal/sdk/models/components/nodeupgradestatus.go
   - tests/mockserver/internal/sdk/models/components/output.go
   - tests/mockserver/internal/sdk/models/components/outputazureblob.go
   - tests/mockserver/internal/sdk/models/components/outputazuredataexplorer.go
@@ -3404,8 +3612,14 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/components/outputwavefront.go
   - tests/mockserver/internal/sdk/models/components/outputwebhook.go
   - tests/mockserver/internal/sdk/models/components/outputxsiam.go
+  - tests/mockserver/internal/sdk/models/components/packinfo.go
+  - tests/mockserver/internal/sdk/models/components/packinstallinfo.go
+  - tests/mockserver/internal/sdk/models/components/packrequestbody.go
   - tests/mockserver/internal/sdk/models/components/pipeline.go
   - tests/mockserver/internal/sdk/models/components/pipelinefunctionconf.go
+  - tests/mockserver/internal/sdk/models/components/rbacresource.go
+  - tests/mockserver/internal/sdk/models/components/resourcepolicy.go
+  - tests/mockserver/internal/sdk/models/components/restartresponse.go
   - tests/mockserver/internal/sdk/models/components/routecloneconf.go
   - tests/mockserver/internal/sdk/models/components/routeconf.go
   - tests/mockserver/internal/sdk/models/components/routes.go
@@ -3413,12 +3627,17 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/components/routesrouteinput.go
   - tests/mockserver/internal/sdk/models/components/schemeclientoauth.go
   - tests/mockserver/internal/sdk/models/components/security.go
+  - tests/mockserver/internal/sdk/models/components/teamaccesscontrollist.go
   - tests/mockserver/internal/sdk/models/components/updatehectokenrequest.go
+  - tests/mockserver/internal/sdk/models/components/useraccesscontrollist.go
+  - tests/mockserver/internal/sdk/models/operations/createcribllakedatasetbylakeid.go
   - tests/mockserver/internal/sdk/models/operations/createinput.go
   - tests/mockserver/internal/sdk/models/operations/createinputhectokenbyid.go
   - tests/mockserver/internal/sdk/models/operations/createoutput.go
   - tests/mockserver/internal/sdk/models/operations/createoutputtestbyid.go
+  - tests/mockserver/internal/sdk/models/operations/createpacks.go
   - tests/mockserver/internal/sdk/models/operations/createpipeline.go
+  - tests/mockserver/internal/sdk/models/operations/createproductsgroupsbyproduct.go
   - tests/mockserver/internal/sdk/models/operations/createroutesappendbyid.go
   - tests/mockserver/internal/sdk/models/operations/createversioncommit.go
   - tests/mockserver/internal/sdk/models/operations/createversionpush.go
@@ -3429,13 +3648,22 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/deleteoutputbyid.go
   - tests/mockserver/internal/sdk/models/operations/deleteoutputpqbyid.go
   - tests/mockserver/internal/sdk/models/operations/deletepipelinebyid.go
+  - tests/mockserver/internal/sdk/models/operations/getcribllakedatasetbylakeid.go
+  - tests/mockserver/internal/sdk/models/operations/getgroupsaclbyid.go
+  - tests/mockserver/internal/sdk/models/operations/getgroupsbyid.go
+  - tests/mockserver/internal/sdk/models/operations/getgroupsconfigversionbyid.go
   - tests/mockserver/internal/sdk/models/operations/gethealthinfo.go
   - tests/mockserver/internal/sdk/models/operations/getinputbyid.go
   - tests/mockserver/internal/sdk/models/operations/getoutputbyid.go
   - tests/mockserver/internal/sdk/models/operations/getoutputpqbyid.go
   - tests/mockserver/internal/sdk/models/operations/getoutputsamplesbyid.go
+  - tests/mockserver/internal/sdk/models/operations/getpacks.go
   - tests/mockserver/internal/sdk/models/operations/getpipelinebyid.go
+  - tests/mockserver/internal/sdk/models/operations/getproductsgroupsaclteamsbyproductandid.go
+  - tests/mockserver/internal/sdk/models/operations/getproductsgroupsbyproduct.go
   - tests/mockserver/internal/sdk/models/operations/getroutesbyid.go
+  - tests/mockserver/internal/sdk/models/operations/getsummary.go
+  - tests/mockserver/internal/sdk/models/operations/getsummaryworkers.go
   - tests/mockserver/internal/sdk/models/operations/getversionbranch.go
   - tests/mockserver/internal/sdk/models/operations/getversioncount.go
   - tests/mockserver/internal/sdk/models/operations/getversioncurrentbranch.go
@@ -3444,16 +3672,20 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/getversioninfo.go
   - tests/mockserver/internal/sdk/models/operations/getversionshow.go
   - tests/mockserver/internal/sdk/models/operations/getversionstatus.go
+  - tests/mockserver/internal/sdk/models/operations/getworkers.go
   - tests/mockserver/internal/sdk/models/operations/listinput.go
   - tests/mockserver/internal/sdk/models/operations/listoutput.go
   - tests/mockserver/internal/sdk/models/operations/listpipeline.go
   - tests/mockserver/internal/sdk/models/operations/listroutes.go
   - tests/mockserver/internal/sdk/models/operations/login.go
+  - tests/mockserver/internal/sdk/models/operations/updategroupsdeploybyid.go
   - tests/mockserver/internal/sdk/models/operations/updateinputbyid.go
   - tests/mockserver/internal/sdk/models/operations/updateinputhectokenbyidandtoken.go
   - tests/mockserver/internal/sdk/models/operations/updateoutputbyid.go
+  - tests/mockserver/internal/sdk/models/operations/updatepacks.go
   - tests/mockserver/internal/sdk/models/operations/updatepipelinebyid.go
   - tests/mockserver/internal/sdk/models/operations/updateroutesbyid.go
+  - tests/mockserver/internal/sdk/models/operations/updateworkersrestart.go
   - tests/mockserver/internal/sdk/models/sdkerrors/error.go
   - tests/mockserver/internal/sdk/models/sdkerrors/healthstatuserror.go
   - tests/mockserver/internal/sdk/types/bigint.go
@@ -3477,12 +3709,18 @@ generatedFiles:
   - tests/mockserver/main.go
   - tests/test_client.py
   - tests/test_destinations.py
+  - tests/test_distributed.py
+  - tests/test_groups_sdk.py
   - tests/test_health.py
+  - tests/test_lake.py
   - tests/test_login.py
+  - tests/test_packs.py
   - tests/test_pipelines.py
   - tests/test_routes_sdk.py
   - tests/test_sources.py
+  - tests/test_teams.py
   - tests/test_versioning.py
+  - tests/test_workers_sdk.py
 examples:
   getHealthInfo:
     speakeasy-default-get-health-info:
@@ -3845,6 +4083,154 @@ examples:
           application/json: {}
         "500":
           application/json: {}
+  createCriblLakeDatasetByLakeId:
+    speakeasy-default-create-cribl-lake-dataset-by-lake-id:
+      parameters:
+        path:
+          lakeId: "<id>"
+      requestBody:
+        application/json: {"id": "<id>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getCriblLakeDatasetByLakeId:
+    speakeasy-default-get-cribl-lake-dataset-by-lake-id:
+      parameters:
+        path:
+          lakeId: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getSummaryWorkers:
+    speakeasy-default-get-summary-workers:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getWorkers:
+    speakeasy-default-get-workers:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  updateWorkersRestart:
+    speakeasy-default-update-workers-restart:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getSummary:
+    speakeasy-default-get-summary:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createPacks:
+    speakeasy-default-create-packs:
+      requestBody:
+        application/json: {"id": "<id>", "source": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getPacks:
+    speakeasy-default-get-packs:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  updatePacks:
+    speakeasy-default-update-packs:
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getGroupsConfigVersionById:
+    speakeasy-default-get-groups-config-version-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  createProductsGroupsByProduct:
+    speakeasy-default-create-products-groups-by-product:
+      parameters:
+        path:
+          product: "stream"
+      requestBody:
+        application/json: {"configVersion": "<value>", "id": "<id>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getProductsGroupsByProduct:
+    speakeasy-default-get-products-groups-by-product:
+      parameters:
+        path:
+          product: "stream"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  updateGroupsDeployById:
+    speakeasy-default-update-groups-deploy-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      requestBody:
+        application/json: {"version": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getGroupsById:
+    speakeasy-default-get-groups-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getGroupsAclById:
+    speakeasy-default-get-groups-acl-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getProductsGroupsAclTeamsByProductAndId:
+    speakeasy-default-get-products-groups-acl-teams-by-product-and-id:
+      parameters:
+        path:
+          product: "stream"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
 examplesVersion: 1.0.2
 generatedTests:
   getHealthInfo: "2025-07-02T19:12:56+02:00"
@@ -3887,3 +4273,19 @@ generatedTests:
   getVersionStatus: "2025-07-29T02:32:36Z"
   createVersionSync: "2025-07-29T02:32:36Z"
   createVersionUndo: "2025-07-29T02:32:36Z"
+  createCriblLakeDatasetByLakeId: "2025-07-30T06:51:35Z"
+  getCriblLakeDatasetByLakeId: "2025-07-30T06:51:35Z"
+  getSummaryWorkers: "2025-07-30T06:51:35Z"
+  getWorkers: "2025-07-30T06:51:35Z"
+  updateWorkersRestart: "2025-07-30T06:51:35Z"
+  getSummary: "2025-07-30T06:51:35Z"
+  createPacks: "2025-07-30T06:51:35Z"
+  getPacks: "2025-07-30T06:51:35Z"
+  updatePacks: "2025-07-30T06:51:35Z"
+  getGroupsConfigVersionById: "2025-07-30T06:51:35Z"
+  createProductsGroupsByProduct: "2025-07-30T06:51:35Z"
+  getProductsGroupsByProduct: "2025-07-30T06:51:35Z"
+  updateGroupsDeployById: "2025-07-30T06:51:35Z"
+  getGroupsById: "2025-07-30T06:51:35Z"
+  getGroupsAclById: "2025-07-30T06:51:35Z"
+  getProductsGroupsAclTeamsByProductAndId: "2025-07-30T06:51:35Z"

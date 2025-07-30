@@ -16,4 +16,4 @@ def test_health_get_health_info():
 
         res = ccp_client.health.get_health_info()
         assert res is not None
-        assert res.status == models.Status.HEALTHY
+        assert res.status == models.HealthStatusStatus.HEALTHY

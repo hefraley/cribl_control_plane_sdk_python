@@ -33,18 +33,18 @@ func (e *Role) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Status string
+type HealthStatusStatus string
 
 const (
-	StatusHealthy      Status = "healthy"
-	StatusShuttingDown Status = "shutting down"
-	StatusStandby      Status = "standby"
+	HealthStatusStatusHealthy      HealthStatusStatus = "healthy"
+	HealthStatusStatusShuttingDown HealthStatusStatus = "shutting down"
+	HealthStatusStatusStandby      HealthStatusStatus = "standby"
 )
 
-func (e Status) ToPointer() *Status {
+func (e HealthStatusStatus) ToPointer() *HealthStatusStatus {
 	return &e
 }
-func (e *Status) UnmarshalJSON(data []byte) error {
+func (e *HealthStatusStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -55,17 +55,17 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 	case "shutting down":
 		fallthrough
 	case "standby":
-		*e = Status(v)
+		*e = HealthStatusStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Status: %v", v)
+		return fmt.Errorf("invalid value for HealthStatusStatus: %v", v)
 	}
 }
 
 type HealthStatus struct {
-	Role      *Role   `json:"role,omitempty"`
-	Status    Status  `json:"status"`
-	StartTime float64 `json:"startTime"`
+	Role      *Role              `json:"role,omitempty"`
+	Status    HealthStatusStatus `json:"status"`
+	StartTime float64            `json:"startTime"`
 }
 
 func (o *HealthStatus) GetRole() *Role {
@@ -75,9 +75,9 @@ func (o *HealthStatus) GetRole() *Role {
 	return o.Role
 }
 
-func (o *HealthStatus) GetStatus() Status {
+func (o *HealthStatus) GetStatus() HealthStatusStatus {
 	if o == nil {
-		return Status("")
+		return HealthStatusStatus("")
 	}
 	return o.Status
 }

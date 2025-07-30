@@ -694,3 +694,268 @@ workflows:
             type: simple
     x-speakeasy-test-group: versioning
     x-speakeasy-test-rebuild: true
+  - workflowId: createCriblLakeDatasetByLakeId
+    steps:
+      - stepId: test
+        operationId: createCriblLakeDatasetByLakeId
+        parameters:
+          - name: lakeId
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            id: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: lake
+    x-speakeasy-test-rebuild: true
+  - workflowId: getCriblLakeDatasetByLakeId
+    steps:
+      - stepId: test
+        operationId: getCriblLakeDatasetByLakeId
+        parameters:
+          - name: lakeId
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: lake
+    x-speakeasy-test-rebuild: true
+  - workflowId: getSummaryWorkers
+    steps:
+      - stepId: test
+        operationId: getSummaryWorkers
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: workers_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getWorkers
+    steps:
+      - stepId: test
+        operationId: getWorkers
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: workers_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateWorkersRestart
+    steps:
+      - stepId: test
+        operationId: updateWorkersRestart
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: workers_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getSummary
+    steps:
+      - stepId: test
+        operationId: getSummary
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: distributed
+    x-speakeasy-test-rebuild: true
+  - workflowId: createPacks
+    steps:
+      - stepId: test
+        operationId: createPacks
+        requestBody:
+          contentType: application/json
+          payload:
+            id: <id>
+            source: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: packs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getPacks
+    steps:
+      - stepId: test
+        operationId: getPacks
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: packs
+    x-speakeasy-test-rebuild: true
+  - workflowId: updatePacks
+    steps:
+      - stepId: test
+        operationId: updatePacks
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: packs
+    x-speakeasy-test-rebuild: true
+  - workflowId: getGroupsConfigVersionById
+    steps:
+      - stepId: test
+        operationId: getGroupsConfigVersionById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: createProductsGroupsByProduct
+    steps:
+      - stepId: test
+        operationId: createProductsGroupsByProduct
+        parameters:
+          - name: product
+            in: path
+            value: stream
+        requestBody:
+          contentType: application/json
+          payload:
+            configVersion: <value>
+            id: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getProductsGroupsByProduct
+    steps:
+      - stepId: test
+        operationId: getProductsGroupsByProduct
+        parameters:
+          - name: product
+            in: path
+            value: stream
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateGroupsDeployById
+    steps:
+      - stepId: test
+        operationId: updateGroupsDeployById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        requestBody:
+          contentType: application/json
+          payload:
+            version: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getGroupsById
+    steps:
+      - stepId: test
+        operationId: getGroupsById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getGroupsAclById
+    steps:
+      - stepId: test
+        operationId: getGroupsAclById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: groups_SDK
+    x-speakeasy-test-rebuild: true
+  - workflowId: getProductsGroupsAclTeamsByProductAndId
+    steps:
+      - stepId: test
+        operationId: getProductsGroupsAclTeamsByProductAndId
+        parameters:
+          - name: product
+            in: path
+            value: stream
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: teams
+    x-speakeasy-test-rebuild: true

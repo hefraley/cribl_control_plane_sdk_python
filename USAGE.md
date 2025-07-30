@@ -12,7 +12,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.list_source()
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
 
     # Handle response
     print(res)
@@ -36,7 +36,7 @@ async def main():
         ),
     ) as ccp_client:
 
-        res = await ccp_client.sources.list_source_async()
+        res = await ccp_client.lake.create_cribl_lake_dataset_by_lake_id_async(lake_id="<id>", id="<id>")
 
         # Handle response
         print(res)
