@@ -54,3 +54,37 @@ def test_packs_update_packs():
         res = ccp_client.packs.update_packs()
         assert res is not None
         assert res == models.UpdatePacksResponse()
+
+
+def test_packs_delete_packs_by_id():
+    test_http_client = create_test_http_client("deletePacksById")
+
+    with CriblControlPlane(
+        server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
+        client=test_http_client,
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
+        ),
+    ) as ccp_client:
+        assert ccp_client is not None
+
+        res = ccp_client.packs.delete_packs_by_id(id="<id>")
+        assert res is not None
+        assert res == models.DeletePacksByIDResponse()
+
+
+def test_packs_update_packs_by_id():
+    test_http_client = create_test_http_client("updatePacksById")
+
+    with CriblControlPlane(
+        server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
+        client=test_http_client,
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
+        ),
+    ) as ccp_client:
+        assert ccp_client is not None
+
+        res = ccp_client.packs.update_packs_by_id(id="<id>")
+        assert res is not None
+        assert res == models.UpdatePacksByIDResponse()

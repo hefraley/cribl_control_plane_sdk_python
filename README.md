@@ -218,12 +218,17 @@ with CriblControlPlane(
 
 * [create_cribl_lake_dataset_by_lake_id](docs/sdks/lake/README.md#create_cribl_lake_dataset_by_lake_id) - Create a Dataset in the specified Lake
 * [get_cribl_lake_dataset_by_lake_id](docs/sdks/lake/README.md#get_cribl_lake_dataset_by_lake_id) - Get the list of Dataset contained in the specified Lake
+* [delete_cribl_lake_dataset_by_lake_id_and_id](docs/sdks/lake/README.md#delete_cribl_lake_dataset_by_lake_id_and_id) - Delete a Dataset in the specified Lake
+* [get_cribl_lake_dataset_by_lake_id_and_id](docs/sdks/lake/README.md#get_cribl_lake_dataset_by_lake_id_and_id) - Get a Dataset in the specified Lake
+* [update_cribl_lake_dataset_by_lake_id_and_id](docs/sdks/lake/README.md#update_cribl_lake_dataset_by_lake_id_and_id) - Update a Dataset in the specified Lake
 
 ### [packs](docs/sdks/packs/README.md)
 
 * [create_packs](docs/sdks/packs/README.md#create_packs) - Install Pack
 * [get_packs](docs/sdks/packs/README.md#get_packs) - Get info on packs
 * [update_packs](docs/sdks/packs/README.md#update_packs) - Upload Pack
+* [delete_packs_by_id](docs/sdks/packs/README.md#delete_packs_by_id) - Uninstall Pack from the system
+* [update_packs_by_id](docs/sdks/packs/README.md#update_packs_by_id) - Upgrade Pack
 
 ### [pipelines](docs/sdks/pipelines/README.md)
 
@@ -393,7 +398,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 56 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 61 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

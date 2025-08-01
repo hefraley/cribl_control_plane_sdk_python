@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: cfa345be-20bc-4980-a260-c3fa74040ac2
 management:
-  docChecksum: 87a23a1f4a28e80108f276c7d8843532
-  docVersion: 4.14.0-alpha.1753854543129-e0f06d67
+  docChecksum: 54dacb22afa6b64fbd3c5dde04e94480
+  docVersion: 4.14.0-alpha.1753968519625-08e89eb4
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.19
-  configChecksum: 7d32a1b3df767082d7a13f7b3ac40dd7
+  releaseVersion: 0.0.20
+  configChecksum: b6699998d221591d3d0ee14200f25824
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -829,12 +829,16 @@ generatedFiles:
   - docs/models/datasetmetadata.md
   - docs/models/datasetmetadataruninfo.md
   - docs/models/datasetsite.md
+  - docs/models/deletecribllakedatasetbylakeidandidrequest.md
+  - docs/models/deletecribllakedatasetbylakeidandidresponse.md
   - docs/models/deleteinputbyidrequest.md
   - docs/models/deleteinputbyidresponse.md
   - docs/models/deleteoutputbyidrequest.md
   - docs/models/deleteoutputbyidresponse.md
   - docs/models/deleteoutputpqbyidrequest.md
   - docs/models/deleteoutputpqbyidresponse.md
+  - docs/models/deletepacksbyidrequest.md
+  - docs/models/deletepacksbyidresponse.md
   - docs/models/deletepipelinebyidrequest.md
   - docs/models/deletepipelinebyidresponse.md
   - docs/models/deployrequest.md
@@ -920,6 +924,8 @@ generatedFiles:
   - docs/models/formatdynatracehttp.md
   - docs/models/formatsentinel.md
   - docs/models/functionspecificconfigs.md
+  - docs/models/getcribllakedatasetbylakeidandidrequest.md
+  - docs/models/getcribllakedatasetbylakeidandidresponse.md
   - docs/models/getcribllakedatasetbylakeidrequest.md
   - docs/models/getcribllakedatasetbylakeidresponse.md
   - docs/models/getgroupsaclbyidrequest.md
@@ -3033,6 +3039,8 @@ generatedFiles:
   - docs/models/tlssettingsserversidezscalerhec.md
   - docs/models/type131.md
   - docs/models/typehttpdynatraceotlp.md
+  - docs/models/updatecribllakedatasetbylakeidandidrequest.md
+  - docs/models/updatecribllakedatasetbylakeidandidresponse.md
   - docs/models/updategroupsdeploybyidrequest.md
   - docs/models/updategroupsdeploybyidresponse.md
   - docs/models/updatehectokenrequest.md
@@ -3043,6 +3051,8 @@ generatedFiles:
   - docs/models/updateinputhectokenbyidandtokenresponse.md
   - docs/models/updateoutputbyidrequest.md
   - docs/models/updateoutputbyidresponse.md
+  - docs/models/updatepacksbyidrequest.md
+  - docs/models/updatepacksbyidresponse.md
   - docs/models/updatepacksrequest.md
   - docs/models/updatepacksresponse.md
   - docs/models/updatepipelinebyidrequest.md
@@ -3124,13 +3134,16 @@ generatedFiles:
   - src/cribl_control_plane/models/cribllakedataset.py
   - src/cribl_control_plane/models/datasetmetadata.py
   - src/cribl_control_plane/models/datasetmetadataruninfo.py
+  - src/cribl_control_plane/models/deletecribllakedatasetbylakeidandidop.py
   - src/cribl_control_plane/models/deleteinputbyidop.py
   - src/cribl_control_plane/models/deleteoutputbyidop.py
   - src/cribl_control_plane/models/deleteoutputpqbyidop.py
+  - src/cribl_control_plane/models/deletepacksbyidop.py
   - src/cribl_control_plane/models/deletepipelinebyidop.py
   - src/cribl_control_plane/models/deployrequest.py
   - src/cribl_control_plane/models/deployrequestlookups.py
   - src/cribl_control_plane/models/distributedsummary.py
+  - src/cribl_control_plane/models/getcribllakedatasetbylakeidandidop.py
   - src/cribl_control_plane/models/getcribllakedatasetbylakeidop.py
   - src/cribl_control_plane/models/getgroupsaclbyidop.py
   - src/cribl_control_plane/models/getgroupsbyidop.py
@@ -3325,11 +3338,13 @@ generatedFiles:
   - src/cribl_control_plane/models/schemeclientoauth.py
   - src/cribl_control_plane/models/security.py
   - src/cribl_control_plane/models/teamaccesscontrollist.py
+  - src/cribl_control_plane/models/updatecribllakedatasetbylakeidandidop.py
   - src/cribl_control_plane/models/updategroupsdeploybyidop.py
   - src/cribl_control_plane/models/updatehectokenrequest.py
   - src/cribl_control_plane/models/updateinputbyidop.py
   - src/cribl_control_plane/models/updateinputhectokenbyidandtokenop.py
   - src/cribl_control_plane/models/updateoutputbyidop.py
+  - src/cribl_control_plane/models/updatepacksbyidop.py
   - src/cribl_control_plane/models/updatepacksop.py
   - src/cribl_control_plane/models/updatepipelinebyidop.py
   - src/cribl_control_plane/models/updateroutesbyidop.py
@@ -3379,7 +3394,9 @@ generatedFiles:
   - tests/mockserver/internal/handler/doc.go
   - tests/mockserver/internal/handler/generated_handler.go
   - tests/mockserver/internal/handler/generated_handlers.go
+  - tests/mockserver/internal/handler/pathdeletepacksid.go
   - tests/mockserver/internal/handler/pathdeletepipelinesid.go
+  - tests/mockserver/internal/handler/pathdeleteproductslakelakeslakeiddatasetsid.go
   - tests/mockserver/internal/handler/pathdeletesysteminputsid.go
   - tests/mockserver/internal/handler/pathdeletesystemoutputsid.go
   - tests/mockserver/internal/handler/pathdeletesystemoutputsidpq.go
@@ -3394,6 +3411,7 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathgetpipelines.go
   - tests/mockserver/internal/handler/pathgetpipelinesid.go
   - tests/mockserver/internal/handler/pathgetproductslakelakeslakeiddatasets.go
+  - tests/mockserver/internal/handler/pathgetproductslakelakeslakeiddatasetsid.go
   - tests/mockserver/internal/handler/pathgetproductsproductgroups.go
   - tests/mockserver/internal/handler/pathgetproductsproductgroupsidaclteams.go
   - tests/mockserver/internal/handler/pathgetroutes.go
@@ -3414,7 +3432,9 @@ generatedFiles:
   - tests/mockserver/internal/handler/pathgetversionstatus.go
   - tests/mockserver/internal/handler/pathpatchmastergroupsiddeploy.go
   - tests/mockserver/internal/handler/pathpatchmasterworkersrestart.go
+  - tests/mockserver/internal/handler/pathpatchpacksid.go
   - tests/mockserver/internal/handler/pathpatchpipelinesid.go
+  - tests/mockserver/internal/handler/pathpatchproductslakelakeslakeiddatasetsid.go
   - tests/mockserver/internal/handler/pathpatchroutesid.go
   - tests/mockserver/internal/handler/pathpatchsysteminputsid.go
   - tests/mockserver/internal/handler/pathpatchsysteminputsidhectokentoken.go
@@ -3644,11 +3664,14 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/createversionrevert.go
   - tests/mockserver/internal/sdk/models/operations/createversionsync.go
   - tests/mockserver/internal/sdk/models/operations/createversionundo.go
+  - tests/mockserver/internal/sdk/models/operations/deletecribllakedatasetbylakeidandid.go
   - tests/mockserver/internal/sdk/models/operations/deleteinputbyid.go
   - tests/mockserver/internal/sdk/models/operations/deleteoutputbyid.go
   - tests/mockserver/internal/sdk/models/operations/deleteoutputpqbyid.go
+  - tests/mockserver/internal/sdk/models/operations/deletepacksbyid.go
   - tests/mockserver/internal/sdk/models/operations/deletepipelinebyid.go
   - tests/mockserver/internal/sdk/models/operations/getcribllakedatasetbylakeid.go
+  - tests/mockserver/internal/sdk/models/operations/getcribllakedatasetbylakeidandid.go
   - tests/mockserver/internal/sdk/models/operations/getgroupsaclbyid.go
   - tests/mockserver/internal/sdk/models/operations/getgroupsbyid.go
   - tests/mockserver/internal/sdk/models/operations/getgroupsconfigversionbyid.go
@@ -3678,11 +3701,13 @@ generatedFiles:
   - tests/mockserver/internal/sdk/models/operations/listpipeline.go
   - tests/mockserver/internal/sdk/models/operations/listroutes.go
   - tests/mockserver/internal/sdk/models/operations/login.go
+  - tests/mockserver/internal/sdk/models/operations/updatecribllakedatasetbylakeidandid.go
   - tests/mockserver/internal/sdk/models/operations/updategroupsdeploybyid.go
   - tests/mockserver/internal/sdk/models/operations/updateinputbyid.go
   - tests/mockserver/internal/sdk/models/operations/updateinputhectokenbyidandtoken.go
   - tests/mockserver/internal/sdk/models/operations/updateoutputbyid.go
   - tests/mockserver/internal/sdk/models/operations/updatepacks.go
+  - tests/mockserver/internal/sdk/models/operations/updatepacksbyid.go
   - tests/mockserver/internal/sdk/models/operations/updatepipelinebyid.go
   - tests/mockserver/internal/sdk/models/operations/updateroutesbyid.go
   - tests/mockserver/internal/sdk/models/operations/updateworkersrestart.go
@@ -4231,6 +4256,61 @@ examples:
           application/json: {}
         "500":
           application/json: {}
+  deleteCriblLakeDatasetByLakeIdAndId:
+    speakeasy-default-delete-cribl-lake-dataset-by-lake-id-and-id:
+      parameters:
+        path:
+          lakeId: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  getCriblLakeDatasetByLakeIdAndId:
+    speakeasy-default-get-cribl-lake-dataset-by-lake-id-and-id:
+      parameters:
+        path:
+          lakeId: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  updateCriblLakeDatasetByLakeIdAndId:
+    speakeasy-default-update-cribl-lake-dataset-by-lake-id-and-id:
+      parameters:
+        path:
+          lakeId: "<id>"
+          id: "<value>"
+      requestBody:
+        application/json: {"id": "<id>"}
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  deletePacksById:
+    speakeasy-default-delete-packs-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  updatePacksById:
+    speakeasy-default-update-packs-by-id:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
 examplesVersion: 1.0.2
 generatedTests:
   getHealthInfo: "2025-07-02T19:12:56+02:00"
@@ -4289,3 +4369,8 @@ generatedTests:
   getGroupsById: "2025-07-30T06:51:35Z"
   getGroupsAclById: "2025-07-30T06:51:35Z"
   getProductsGroupsAclTeamsByProductAndId: "2025-07-30T06:51:35Z"
+  deleteCriblLakeDatasetByLakeIdAndId: "2025-08-01T02:34:48Z"
+  getCriblLakeDatasetByLakeIdAndId: "2025-08-01T02:34:48Z"
+  updateCriblLakeDatasetByLakeIdAndId: "2025-08-01T02:34:48Z"
+  deletePacksById: "2025-08-01T02:34:48Z"
+  updatePacksById: "2025-08-01T02:34:48Z"
