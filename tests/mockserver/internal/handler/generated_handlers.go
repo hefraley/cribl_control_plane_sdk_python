@@ -12,7 +12,9 @@ import (
 // GeneratedHandlers returns all generated handlers.
 func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *tracking.RequestTracker) []*GeneratedHandler {
 	return []*GeneratedHandler{
+		NewGeneratedHandler(ctx, http.MethodDelete, "/packs/{id}", pathDeletePacksID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodDelete, "/pipelines/{id}", pathDeletePipelinesID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodDelete, "/products/lake/lakes/{lakeId}/datasets/{id}", pathDeleteProductsLakeLakesLakeIDDatasetsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodDelete, "/system/inputs/{id}", pathDeleteSystemInputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodDelete, "/system/outputs/{id}", pathDeleteSystemOutputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodDelete, "/system/outputs/{id}/pq", pathDeleteSystemOutputsIDPq(dir, rt)),
@@ -27,6 +29,7 @@ func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *
 		NewGeneratedHandler(ctx, http.MethodGet, "/pipelines", pathGetPipelines(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/pipelines/{id}", pathGetPipelinesID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/products/lake/lakes/{lakeId}/datasets", pathGetProductsLakeLakesLakeIDDatasets(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/products/lake/lakes/{lakeId}/datasets/{id}", pathGetProductsLakeLakesLakeIDDatasetsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/products/{product}/groups", pathGetProductsProductGroups(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/products/{product}/groups/{id}/acl/teams", pathGetProductsProductGroupsIDACLTeams(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/routes", pathGetRoutes(dir, rt)),
@@ -47,7 +50,9 @@ func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *
 		NewGeneratedHandler(ctx, http.MethodGet, "/version/status", pathGetVersionStatus(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/master/groups/{id}/deploy", pathPatchMasterGroupsIDDeploy(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/master/workers/restart", pathPatchMasterWorkersRestart(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPatch, "/packs/{id}", pathPatchPacksID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/pipelines/{id}", pathPatchPipelinesID(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPatch, "/products/lake/lakes/{lakeId}/datasets/{id}", pathPatchProductsLakeLakesLakeIDDatasetsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/routes/{id}", pathPatchRoutesID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}", pathPatchSystemInputsID(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/system/inputs/{id}/hectoken/{token}", pathPatchSystemInputsIDHectokenToken(dir, rt)),

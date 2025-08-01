@@ -1851,6 +1851,12 @@ if TYPE_CHECKING:
         DatasetMetadataRunInfo,
         DatasetMetadataRunInfoTypedDict,
     )
+    from .deletecribllakedatasetbylakeidandidop import (
+        DeleteCriblLakeDatasetByLakeIDAndIDRequest,
+        DeleteCriblLakeDatasetByLakeIDAndIDRequestTypedDict,
+        DeleteCriblLakeDatasetByLakeIDAndIDResponse,
+        DeleteCriblLakeDatasetByLakeIDAndIDResponseTypedDict,
+    )
     from .deleteinputbyidop import (
         DeleteInputByIDRequest,
         DeleteInputByIDRequestTypedDict,
@@ -1868,6 +1874,12 @@ if TYPE_CHECKING:
         DeleteOutputPqByIDRequestTypedDict,
         DeleteOutputPqByIDResponse,
         DeleteOutputPqByIDResponseTypedDict,
+    )
+    from .deletepacksbyidop import (
+        DeletePacksByIDRequest,
+        DeletePacksByIDRequestTypedDict,
+        DeletePacksByIDResponse,
+        DeletePacksByIDResponseTypedDict,
     )
     from .deletepipelinebyidop import (
         DeletePipelineByIDRequest,
@@ -1889,6 +1901,12 @@ if TYPE_CHECKING:
         DistributedSummaryTypedDict,
         DistributedSummaryWorkers,
         DistributedSummaryWorkersTypedDict,
+    )
+    from .getcribllakedatasetbylakeidandidop import (
+        GetCriblLakeDatasetByLakeIDAndIDRequest,
+        GetCriblLakeDatasetByLakeIDAndIDRequestTypedDict,
+        GetCriblLakeDatasetByLakeIDAndIDResponse,
+        GetCriblLakeDatasetByLakeIDAndIDResponseTypedDict,
     )
     from .getcribllakedatasetbylakeidop import (
         GetCriblLakeDatasetByLakeIDRequest,
@@ -4687,6 +4705,12 @@ if TYPE_CHECKING:
         TeamAccessControlList,
         TeamAccessControlListTypedDict,
     )
+    from .updatecribllakedatasetbylakeidandidop import (
+        UpdateCriblLakeDatasetByLakeIDAndIDRequest,
+        UpdateCriblLakeDatasetByLakeIDAndIDRequestTypedDict,
+        UpdateCriblLakeDatasetByLakeIDAndIDResponse,
+        UpdateCriblLakeDatasetByLakeIDAndIDResponseTypedDict,
+    )
     from .updategroupsdeploybyidop import (
         UpdateGroupsDeployByIDRequest,
         UpdateGroupsDeployByIDRequestTypedDict,
@@ -4716,6 +4740,12 @@ if TYPE_CHECKING:
         UpdateOutputByIDRequestTypedDict,
         UpdateOutputByIDResponse,
         UpdateOutputByIDResponseTypedDict,
+    )
+    from .updatepacksbyidop import (
+        UpdatePacksByIDRequest,
+        UpdatePacksByIDRequestTypedDict,
+        UpdatePacksByIDResponse,
+        UpdatePacksByIDResponseTypedDict,
     )
     from .updatepacksop import (
         UpdatePacksRequest,
@@ -5843,6 +5873,10 @@ __all__ = [
     "DatasetMetadataRunInfo",
     "DatasetMetadataRunInfoTypedDict",
     "DatasetMetadataTypedDict",
+    "DeleteCriblLakeDatasetByLakeIDAndIDRequest",
+    "DeleteCriblLakeDatasetByLakeIDAndIDRequestTypedDict",
+    "DeleteCriblLakeDatasetByLakeIDAndIDResponse",
+    "DeleteCriblLakeDatasetByLakeIDAndIDResponseTypedDict",
     "DeleteInputByIDRequest",
     "DeleteInputByIDRequestTypedDict",
     "DeleteInputByIDResponse",
@@ -5855,6 +5889,10 @@ __all__ = [
     "DeleteOutputPqByIDRequestTypedDict",
     "DeleteOutputPqByIDResponse",
     "DeleteOutputPqByIDResponseTypedDict",
+    "DeletePacksByIDRequest",
+    "DeletePacksByIDRequestTypedDict",
+    "DeletePacksByIDResponse",
+    "DeletePacksByIDResponseTypedDict",
     "DeletePipelineByIDRequest",
     "DeletePipelineByIDRequestTypedDict",
     "DeletePipelineByIDResponse",
@@ -5978,6 +6016,10 @@ __all__ = [
     "FormatSentinel",
     "FunctionSpecificConfigs",
     "FunctionSpecificConfigsTypedDict",
+    "GetCriblLakeDatasetByLakeIDAndIDRequest",
+    "GetCriblLakeDatasetByLakeIDAndIDRequestTypedDict",
+    "GetCriblLakeDatasetByLakeIDAndIDResponse",
+    "GetCriblLakeDatasetByLakeIDAndIDResponseTypedDict",
     "GetCriblLakeDatasetByLakeIDRequest",
     "GetCriblLakeDatasetByLakeIDRequestTypedDict",
     "GetCriblLakeDatasetByLakeIDResponse",
@@ -9095,6 +9137,10 @@ __all__ = [
     "TimestampPrecision",
     "Type131",
     "TypeHTTPDynatraceOtlp",
+    "UpdateCriblLakeDatasetByLakeIDAndIDRequest",
+    "UpdateCriblLakeDatasetByLakeIDAndIDRequestTypedDict",
+    "UpdateCriblLakeDatasetByLakeIDAndIDResponse",
+    "UpdateCriblLakeDatasetByLakeIDAndIDResponseTypedDict",
     "UpdateGroupsDeployByIDRequest",
     "UpdateGroupsDeployByIDRequestTypedDict",
     "UpdateGroupsDeployByIDResponse",
@@ -9115,6 +9161,10 @@ __all__ = [
     "UpdateOutputByIDRequestTypedDict",
     "UpdateOutputByIDResponse",
     "UpdateOutputByIDResponseTypedDict",
+    "UpdatePacksByIDRequest",
+    "UpdatePacksByIDRequestTypedDict",
+    "UpdatePacksByIDResponse",
+    "UpdatePacksByIDResponseTypedDict",
     "UpdatePacksRequest",
     "UpdatePacksRequestTypedDict",
     "UpdatePacksResponse",
@@ -10958,6 +11008,10 @@ _dynamic_imports: dict[str, str] = {
     "ScanMode": ".datasetmetadata",
     "DatasetMetadataRunInfo": ".datasetmetadataruninfo",
     "DatasetMetadataRunInfoTypedDict": ".datasetmetadataruninfo",
+    "DeleteCriblLakeDatasetByLakeIDAndIDRequest": ".deletecribllakedatasetbylakeidandidop",
+    "DeleteCriblLakeDatasetByLakeIDAndIDRequestTypedDict": ".deletecribllakedatasetbylakeidandidop",
+    "DeleteCriblLakeDatasetByLakeIDAndIDResponse": ".deletecribllakedatasetbylakeidandidop",
+    "DeleteCriblLakeDatasetByLakeIDAndIDResponseTypedDict": ".deletecribllakedatasetbylakeidandidop",
     "DeleteInputByIDRequest": ".deleteinputbyidop",
     "DeleteInputByIDRequestTypedDict": ".deleteinputbyidop",
     "DeleteInputByIDResponse": ".deleteinputbyidop",
@@ -10970,6 +11024,10 @@ _dynamic_imports: dict[str, str] = {
     "DeleteOutputPqByIDRequestTypedDict": ".deleteoutputpqbyidop",
     "DeleteOutputPqByIDResponse": ".deleteoutputpqbyidop",
     "DeleteOutputPqByIDResponseTypedDict": ".deleteoutputpqbyidop",
+    "DeletePacksByIDRequest": ".deletepacksbyidop",
+    "DeletePacksByIDRequestTypedDict": ".deletepacksbyidop",
+    "DeletePacksByIDResponse": ".deletepacksbyidop",
+    "DeletePacksByIDResponseTypedDict": ".deletepacksbyidop",
     "DeletePipelineByIDRequest": ".deletepipelinebyidop",
     "DeletePipelineByIDRequestTypedDict": ".deletepipelinebyidop",
     "DeletePipelineByIDResponse": ".deletepipelinebyidop",
@@ -10986,6 +11044,10 @@ _dynamic_imports: dict[str, str] = {
     "DistributedSummaryTypedDict": ".distributedsummary",
     "DistributedSummaryWorkers": ".distributedsummary",
     "DistributedSummaryWorkersTypedDict": ".distributedsummary",
+    "GetCriblLakeDatasetByLakeIDAndIDRequest": ".getcribllakedatasetbylakeidandidop",
+    "GetCriblLakeDatasetByLakeIDAndIDRequestTypedDict": ".getcribllakedatasetbylakeidandidop",
+    "GetCriblLakeDatasetByLakeIDAndIDResponse": ".getcribllakedatasetbylakeidandidop",
+    "GetCriblLakeDatasetByLakeIDAndIDResponseTypedDict": ".getcribllakedatasetbylakeidandidop",
     "GetCriblLakeDatasetByLakeIDRequest": ".getcribllakedatasetbylakeidop",
     "GetCriblLakeDatasetByLakeIDRequestTypedDict": ".getcribllakedatasetbylakeidop",
     "GetCriblLakeDatasetByLakeIDResponse": ".getcribllakedatasetbylakeidop",
@@ -13494,6 +13556,10 @@ _dynamic_imports: dict[str, str] = {
     "SecurityTypedDict": ".security",
     "TeamAccessControlList": ".teamaccesscontrollist",
     "TeamAccessControlListTypedDict": ".teamaccesscontrollist",
+    "UpdateCriblLakeDatasetByLakeIDAndIDRequest": ".updatecribllakedatasetbylakeidandidop",
+    "UpdateCriblLakeDatasetByLakeIDAndIDRequestTypedDict": ".updatecribllakedatasetbylakeidandidop",
+    "UpdateCriblLakeDatasetByLakeIDAndIDResponse": ".updatecribllakedatasetbylakeidandidop",
+    "UpdateCriblLakeDatasetByLakeIDAndIDResponseTypedDict": ".updatecribllakedatasetbylakeidandidop",
     "UpdateGroupsDeployByIDRequest": ".updategroupsdeploybyidop",
     "UpdateGroupsDeployByIDRequestTypedDict": ".updategroupsdeploybyidop",
     "UpdateGroupsDeployByIDResponse": ".updategroupsdeploybyidop",
@@ -13514,6 +13580,10 @@ _dynamic_imports: dict[str, str] = {
     "UpdateOutputByIDRequestTypedDict": ".updateoutputbyidop",
     "UpdateOutputByIDResponse": ".updateoutputbyidop",
     "UpdateOutputByIDResponseTypedDict": ".updateoutputbyidop",
+    "UpdatePacksByIDRequest": ".updatepacksbyidop",
+    "UpdatePacksByIDRequestTypedDict": ".updatepacksbyidop",
+    "UpdatePacksByIDResponse": ".updatepacksbyidop",
+    "UpdatePacksByIDResponseTypedDict": ".updatepacksbyidop",
     "UpdatePacksRequest": ".updatepacksop",
     "UpdatePacksRequestTypedDict": ".updatepacksop",
     "UpdatePacksResponse": ".updatepacksop",

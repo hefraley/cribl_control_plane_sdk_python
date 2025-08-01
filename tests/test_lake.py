@@ -2,6 +2,7 @@
 
 from cribl_control_plane import CriblControlPlane, models
 import os
+import pytest
 from tests.test_client import create_test_http_client
 
 
@@ -39,3 +40,48 @@ def test_lake_get_cribl_lake_dataset_by_lake_id():
         res = ccp_client.lake.get_cribl_lake_dataset_by_lake_id(lake_id="<id>")
         assert res is not None
         assert res == models.GetCriblLakeDatasetByLakeIDResponse()
+
+
+def test_lake_delete_cribl_lake_dataset_by_lake_id_and_id():
+    test_http_client = create_test_http_client("deleteCriblLakeDatasetByLakeIdAndId")
+
+    with CriblControlPlane(
+        server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
+        client=test_http_client,
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
+        ),
+    ) as ccp_client:
+        assert ccp_client is not None
+
+        res = ccp_client.lake.delete_cribl_lake_dataset_by_lake_id_and_id(
+            lake_id="<id>", id="<id>"
+        )
+        assert res is not None
+        assert res == models.DeleteCriblLakeDatasetByLakeIDAndIDResponse()
+
+
+def test_lake_get_cribl_lake_dataset_by_lake_id_and_id():
+    test_http_client = create_test_http_client("getCriblLakeDatasetByLakeIdAndId")
+
+    with CriblControlPlane(
+        server_url=os.getenv("TEST_SERVER_URL", "http://localhost:18080"),
+        client=test_http_client,
+        security=models.Security(
+            bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", "value"),
+        ),
+    ) as ccp_client:
+        assert ccp_client is not None
+
+        res = ccp_client.lake.get_cribl_lake_dataset_by_lake_id_and_id(
+            lake_id="<id>", id="<id>"
+        )
+        assert res is not None
+        assert res == models.GetCriblLakeDatasetByLakeIDAndIDResponse()
+
+
+@pytest.mark.skip(
+    reason="incomplete test found please make sure to address the following errors: [`workflow step updateCriblLakeDatasetByLakeIdAndId.test referencing operation updateCriblLakeDatasetByLakeIdAndId missing required path parameter id_param`]"
+)
+def test_lake_update_cribl_lake_dataset_by_lake_id_and_id():
+    pass

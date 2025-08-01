@@ -959,3 +959,101 @@ workflows:
             type: simple
     x-speakeasy-test-group: teams
     x-speakeasy-test-rebuild: true
+  - workflowId: deleteCriblLakeDatasetByLakeIdAndId
+    steps:
+      - stepId: test
+        operationId: deleteCriblLakeDatasetByLakeIdAndId
+        parameters:
+          - name: lakeId
+            in: path
+            value: <id>
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: lake
+    x-speakeasy-test-rebuild: true
+  - workflowId: getCriblLakeDatasetByLakeIdAndId
+    steps:
+      - stepId: test
+        operationId: getCriblLakeDatasetByLakeIdAndId
+        parameters:
+          - name: lakeId
+            in: path
+            value: <id>
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: lake
+    x-speakeasy-test-rebuild: true
+  - workflowId: updateCriblLakeDatasetByLakeIdAndId
+    steps:
+      - stepId: test
+        operationId: updateCriblLakeDatasetByLakeIdAndId
+        parameters:
+          - name: lakeId
+            in: path
+            value: <id>
+          - name: id
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            id: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: lake
+    x-speakeasy-test-rebuild: true
+  - workflowId: deletePacksById
+    steps:
+      - stepId: test
+        operationId: deletePacksById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: packs
+    x-speakeasy-test-rebuild: true
+  - workflowId: updatePacksById
+    steps:
+      - stepId: test
+        operationId: updatePacksById
+        parameters:
+          - name: id
+            in: path
+            value: <id>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {}
+            type: simple
+    x-speakeasy-test-group: packs
+    x-speakeasy-test-rebuild: true
