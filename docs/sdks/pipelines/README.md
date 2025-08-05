@@ -73,7 +73,30 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.pipelines.create_pipeline(id="<id>", conf={})
+    res = ccp_client.pipelines.create_pipeline(id="<id>", conf={
+        "async_func_timeout": 905091,
+        "description": "next tightly positively",
+        "streamtags": [
+            "<value 1>",
+        ],
+        "functions": [
+            {
+                "id": "<id>",
+                "description": "academics woot finally woot queasy bah",
+                "disabled": False,
+                "final": False,
+                "conf": {},
+                "group_id": "<id>",
+            },
+        ],
+        "groups": {
+            "key": {
+                "name": "<value>",
+                "description": "yuck terribly ostrich enhance sentimental strictly whereas before reboot sleet",
+                "disabled": True,
+            },
+        },
+    })
 
     # Handle response
     print(res)
@@ -160,7 +183,30 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.pipelines.update_pipeline_by_id(id_param="<value>", id="<id>", conf={})
+    res = ccp_client.pipelines.update_pipeline_by_id(id_param="<value>", id="<id>", conf={
+        "async_func_timeout": 430119,
+        "description": "reflecting for productive extroverted instead upwardly",
+        "streamtags": [
+            "<value 1>",
+        ],
+        "functions": [
+            {
+                "id": "<id>",
+                "description": "mozzarella boohoo possession as grok",
+                "disabled": False,
+                "final": False,
+                "conf": {},
+                "group_id": "<id>",
+            },
+        ],
+        "groups": {
+            "key": {
+                "name": "<value>",
+                "description": "definitive ew but busily freely scaly indeed",
+                "disabled": True,
+            },
+        },
+    })
 
     # Handle response
     print(res)

@@ -81,7 +81,9 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.create_version_commit(message="<value>")
+    res = ccp_client.versioning.create_version_commit(message="<value>", effective=False, files=[
+        "<value 1>",
+    ], group="<value>")
 
     # Handle response
     print(res)
@@ -127,7 +129,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.get_version_count()
+    res = ccp_client.versioning.get_version_count(group="<value>", id="<id>")
 
     # Handle response
     print(res)
@@ -213,7 +215,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.get_version_diff()
+    res = ccp_client.versioning.get_version_diff(commit="<value>", group="<value>", filename="example.file", diff_line_limit=6362)
 
     # Handle response
     print(res)
@@ -259,7 +261,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.get_version_files()
+    res = ccp_client.versioning.get_version_files(group="<value>", id="<id>")
 
     # Handle response
     print(res)
@@ -387,7 +389,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.create_version_revert(commit="<value>", message="<value>")
+    res = ccp_client.versioning.create_version_revert(commit="<value>", message="<value>", group="<value>", force=False)
 
     # Handle response
     print(res)
@@ -433,7 +435,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.get_version_show()
+    res = ccp_client.versioning.get_version_show(commit="<value>", group="<value>", filename="example.file", diff_line_limit=7771.94)
 
     # Handle response
     print(res)
@@ -479,7 +481,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.get_version_status()
+    res = ccp_client.versioning.get_version_status(group="<value>")
 
     # Handle response
     print(res)
@@ -564,7 +566,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.versioning.create_version_undo()
+    res = ccp_client.versioning.create_version_undo(group="<value>")
 
     # Handle response
     print(res)

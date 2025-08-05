@@ -77,6 +77,16 @@ with CriblControlPlane(
 
     res = ccp_client.destinations.create_destination(request={
         "id": "<id>",
+        "type": models.CreateOutputTypeElasticCloud.ELASTIC_CLOUD,
+        "pipeline": "<value>",
+        "system_fields": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "environment": "<value>",
+        "streamtags": [
+            "<value 1>",
+        ],
         "url": "https://probable-rationale.com/",
         "index": "<value>",
         "concurrency": 5,
@@ -86,16 +96,53 @@ with CriblControlPlane(
         "reject_unauthorized": True,
         "timeout_sec": 30,
         "flush_period_sec": 1,
+        "extra_http_headers": [
+            {
+                "name": "<value>",
+                "value": "<value>",
+            },
+        ],
         "failed_request_logging_mode": models.FailedRequestLoggingModeElasticCloud.NONE,
+        "safe_headers": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "extra_params": [
+            {
+                "name": "<value>",
+                "value": "<value>",
+            },
+        ],
+        "auth": {
+            "disabled": False,
+            "auth_type": models.AuthenticationMethodElasticCloud.MANUAL,
+        },
+        "elastic_pipeline": "<value>",
         "include_doc_id": True,
+        "response_retry_settings": [
+            {
+                "http_status": 7295.73,
+                "initial_backoff": 1000,
+                "backoff_rate": 2,
+                "max_backoff": 10000,
+            },
+        ],
+        "timeout_retry_settings": {
+            "timeout_retry": False,
+            "initial_backoff": 1000,
+            "backoff_rate": 2,
+            "max_backoff": 10000,
+        },
         "response_honor_retry_after_header": False,
         "on_backpressure": models.BackpressureBehaviorElasticCloud.BLOCK,
+        "description": "hourly about into",
         "pq_max_file_size": "1 MB",
         "pq_max_size": "5GB",
         "pq_path": "$CRIBL_HOME/state/queues",
         "pq_compress": models.CompressionElasticCloud.NONE,
         "pq_on_backpressure": models.QueueFullBehaviorElasticCloud.BLOCK,
         "pq_mode": models.ModeElasticCloud.ERROR,
+        "pq_controls": {},
     })
 
     # Handle response
@@ -183,7 +230,17 @@ with CriblControlPlane(
 ) as ccp_client:
 
     res = ccp_client.destinations.update_destination_by_id(id="<id>", output={
+        "id": "<id>",
         "type": models.OutputSignalfxType.SIGNALFX,
+        "pipeline": "<value>",
+        "system_fields": [
+            "<value 1>",
+        ],
+        "environment": "<value>",
+        "streamtags": [
+            "<value 1>",
+            "<value 2>",
+        ],
         "auth_type": models.OutputSignalfxAuthenticationMethod.MANUAL,
         "realm": "us0",
         "concurrency": 5,
@@ -193,16 +250,43 @@ with CriblControlPlane(
         "reject_unauthorized": True,
         "timeout_sec": 30,
         "flush_period_sec": 1,
+        "extra_http_headers": [
+            {
+                "name": "<value>",
+                "value": "<value>",
+            },
+        ],
         "use_round_robin_dns": False,
         "failed_request_logging_mode": models.OutputSignalfxFailedRequestLoggingMode.NONE,
+        "safe_headers": [
+            "<value 1>",
+        ],
+        "response_retry_settings": [
+            {
+                "http_status": 2924.72,
+                "initial_backoff": 1000,
+                "backoff_rate": 2,
+                "max_backoff": 10000,
+            },
+        ],
+        "timeout_retry_settings": {
+            "timeout_retry": False,
+            "initial_backoff": 1000,
+            "backoff_rate": 2,
+            "max_backoff": 10000,
+        },
         "response_honor_retry_after_header": False,
         "on_backpressure": models.OutputSignalfxBackpressureBehavior.BLOCK,
+        "description": "phooey positively a consequently meh until",
+        "token": "<value>",
+        "text_secret": "<value>",
         "pq_max_file_size": "1 MB",
         "pq_max_size": "5GB",
         "pq_path": "$CRIBL_HOME/state/queues",
         "pq_compress": models.OutputSignalfxCompression.NONE,
         "pq_on_backpressure": models.OutputSignalfxQueueFullBehavior.BLOCK,
         "pq_mode": models.OutputSignalfxMode.ERROR,
+        "pq_controls": {},
     })
 
     # Handle response

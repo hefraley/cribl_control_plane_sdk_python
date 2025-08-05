@@ -31,7 +31,19 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.packs.create_packs(id="<id>", source="<value>")
+    res = ccp_client.packs.create_packs(id="<id>", source="<value>", allow_custom_functions=False, author="<value>", description="premeditation coincide although", display_name="Myah14", exports=[
+        "<value 1>",
+    ], force=False, inputs=4076.64, min_log_stream_version="<value>", outputs=2759.4, spec="<value>", tags={
+        "data_type": [],
+        "domain": [],
+        "streamtags": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "technology": [
+            "<value 1>",
+        ],
+    }, version="<value>")
 
     # Handle response
     print(res)
@@ -87,7 +99,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.packs.get_packs()
+    res = ccp_client.packs.get_packs(with_="<value>")
 
     # Handle response
     print(res)
@@ -130,7 +142,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.packs.update_packs()
+    res = ccp_client.packs.update_packs(filename="example.file")
 
     # Handle response
     print(res)
@@ -216,7 +228,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.packs.update_packs_by_id(id="<id>")
+    res = ccp_client.packs.update_packs_by_id(id="<id>", source="<value>", minor="<value>", spec="<value>")
 
     # Handle response
     print(res)

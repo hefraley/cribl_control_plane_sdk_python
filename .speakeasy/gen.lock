@@ -5,8 +5,8 @@ management:
   docVersion: 4.14.0-alpha.1754075358312-9b381cdf
   speakeasyVersion: 1.585.0
   generationVersion: 2.660.0
-  releaseVersion: 0.0.21
-  configChecksum: c876d8541be5d11f0524123b44d66cbf
+  releaseVersion: 0.0.22
+  configChecksum: e27e5c697fbbc53128234b83103f6898
   repoURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   installationURL: https://github.com/criblio/cribl_control_plane_sdk_python.git
   published: true
@@ -28,14 +28,12 @@ features:
     groups: 3.0.0
     inputOutputModels: 3.0.0
     methodArguments: 1.0.2
-    mockServer: 0.1.1
     nameOverrides: 3.0.1
     nullables: 1.0.1
     oauth2ClientCredentials: 1.2.1
     responseFormat: 1.0.1
     retries: 3.0.2
     sdkHooks: 1.1.0
-    tests: 1.19.1
     unions: 3.0.4
 generatedFiles:
   - .devcontainer/README.md
@@ -3385,385 +3383,14 @@ generatedFiles:
   - src/cribl_control_plane/utils/values.py
   - src/cribl_control_plane/versioning.py
   - src/cribl_control_plane/workers_sdk.py
-  - tests/__init__.py
-  - tests/mockserver/.gitignore
-  - tests/mockserver/Dockerfile
-  - tests/mockserver/Makefile
-  - tests/mockserver/README.md
-  - tests/mockserver/go.mod
-  - tests/mockserver/go.sum
-  - tests/mockserver/internal/handler/assert/contenttype.go
-  - tests/mockserver/internal/handler/assert/header.go
-  - tests/mockserver/internal/handler/assert/parameter.go
-  - tests/mockserver/internal/handler/assert/pointer.go
-  - tests/mockserver/internal/handler/assert/security.go
-  - tests/mockserver/internal/handler/doc.go
-  - tests/mockserver/internal/handler/generated_handler.go
-  - tests/mockserver/internal/handler/generated_handlers.go
-  - tests/mockserver/internal/handler/pathdeletemastergroupsid.go
-  - tests/mockserver/internal/handler/pathdeletepacksid.go
-  - tests/mockserver/internal/handler/pathdeletepipelinesid.go
-  - tests/mockserver/internal/handler/pathdeleteproductslakelakeslakeiddatasetsid.go
-  - tests/mockserver/internal/handler/pathdeletesysteminputsid.go
-  - tests/mockserver/internal/handler/pathdeletesystemoutputsid.go
-  - tests/mockserver/internal/handler/pathdeletesystemoutputsidpq.go
-  - tests/mockserver/internal/handler/pathgethealth.go
-  - tests/mockserver/internal/handler/pathgetmastergroupsid.go
-  - tests/mockserver/internal/handler/pathgetmastergroupsidacl.go
-  - tests/mockserver/internal/handler/pathgetmastergroupsidconfigversion.go
-  - tests/mockserver/internal/handler/pathgetmastersummary.go
-  - tests/mockserver/internal/handler/pathgetmastersummaryworkers.go
-  - tests/mockserver/internal/handler/pathgetmasterworkers.go
-  - tests/mockserver/internal/handler/pathgetpacks.go
-  - tests/mockserver/internal/handler/pathgetpipelines.go
-  - tests/mockserver/internal/handler/pathgetpipelinesid.go
-  - tests/mockserver/internal/handler/pathgetproductslakelakeslakeiddatasets.go
-  - tests/mockserver/internal/handler/pathgetproductslakelakeslakeiddatasetsid.go
-  - tests/mockserver/internal/handler/pathgetproductsproductgroups.go
-  - tests/mockserver/internal/handler/pathgetproductsproductgroupsidaclteams.go
-  - tests/mockserver/internal/handler/pathgetroutes.go
-  - tests/mockserver/internal/handler/pathgetroutesid.go
-  - tests/mockserver/internal/handler/pathgetsysteminputs.go
-  - tests/mockserver/internal/handler/pathgetsysteminputsid.go
-  - tests/mockserver/internal/handler/pathgetsystemoutputs.go
-  - tests/mockserver/internal/handler/pathgetsystemoutputsid.go
-  - tests/mockserver/internal/handler/pathgetsystemoutputsidpq.go
-  - tests/mockserver/internal/handler/pathgetsystemoutputsidsamples.go
-  - tests/mockserver/internal/handler/pathgetversionbranch.go
-  - tests/mockserver/internal/handler/pathgetversioncount.go
-  - tests/mockserver/internal/handler/pathgetversioncurrentbranch.go
-  - tests/mockserver/internal/handler/pathgetversiondiff.go
-  - tests/mockserver/internal/handler/pathgetversionfiles.go
-  - tests/mockserver/internal/handler/pathgetversioninfo.go
-  - tests/mockserver/internal/handler/pathgetversionshow.go
-  - tests/mockserver/internal/handler/pathgetversionstatus.go
-  - tests/mockserver/internal/handler/pathpatchmastergroupsid.go
-  - tests/mockserver/internal/handler/pathpatchmastergroupsiddeploy.go
-  - tests/mockserver/internal/handler/pathpatchmasterworkersrestart.go
-  - tests/mockserver/internal/handler/pathpatchpacksid.go
-  - tests/mockserver/internal/handler/pathpatchpipelinesid.go
-  - tests/mockserver/internal/handler/pathpatchproductslakelakeslakeiddatasetsid.go
-  - tests/mockserver/internal/handler/pathpatchroutesid.go
-  - tests/mockserver/internal/handler/pathpatchsysteminputsid.go
-  - tests/mockserver/internal/handler/pathpatchsysteminputsidhectokentoken.go
-  - tests/mockserver/internal/handler/pathpatchsystemoutputsid.go
-  - tests/mockserver/internal/handler/pathpostauthlogin.go
-  - tests/mockserver/internal/handler/pathpostpacks.go
-  - tests/mockserver/internal/handler/pathpostpipelines.go
-  - tests/mockserver/internal/handler/pathpostproductslakelakeslakeiddatasets.go
-  - tests/mockserver/internal/handler/pathpostproductsproductgroups.go
-  - tests/mockserver/internal/handler/pathpostroutesidappend.go
-  - tests/mockserver/internal/handler/pathpostsysteminputs.go
-  - tests/mockserver/internal/handler/pathpostsysteminputsidhectoken.go
-  - tests/mockserver/internal/handler/pathpostsystemoutputs.go
-  - tests/mockserver/internal/handler/pathpostsystemoutputsidtest.go
-  - tests/mockserver/internal/handler/pathpostversioncommit.go
-  - tests/mockserver/internal/handler/pathpostversionpush.go
-  - tests/mockserver/internal/handler/pathpostversionrevert.go
-  - tests/mockserver/internal/handler/pathpostversionsync.go
-  - tests/mockserver/internal/handler/pathpostversionundo.go
-  - tests/mockserver/internal/handler/pathputpacks.go
-  - tests/mockserver/internal/handler/values/files.go
-  - tests/mockserver/internal/logging/doc.go
-  - tests/mockserver/internal/logging/formats.go
-  - tests/mockserver/internal/logging/http_file.go
-  - tests/mockserver/internal/logging/http_logger.go
-  - tests/mockserver/internal/logging/levels.go
-  - tests/mockserver/internal/logging/logger.go
-  - tests/mockserver/internal/logging/oas_operation.go
-  - tests/mockserver/internal/logging/oas_operation_call.go
-  - tests/mockserver/internal/sdk/models/components/addhectokenrequest.go
-  - tests/mockserver/internal/sdk/models/components/appmode.go
-  - tests/mockserver/internal/sdk/models/components/authtoken.go
-  - tests/mockserver/internal/sdk/models/components/cacheconnection.go
-  - tests/mockserver/internal/sdk/models/components/cacheconnectionbackfillstatus.go
-  - tests/mockserver/internal/sdk/models/components/cloudprovider.go
-  - tests/mockserver/internal/sdk/models/components/commit.go
-  - tests/mockserver/internal/sdk/models/components/configgroup.go
-  - tests/mockserver/internal/sdk/models/components/configgroupcloud.go
-  - tests/mockserver/internal/sdk/models/components/configgrouplookups.go
-  - tests/mockserver/internal/sdk/models/components/criblevent.go
-  - tests/mockserver/internal/sdk/models/components/cribllakedataset.go
-  - tests/mockserver/internal/sdk/models/components/datasetmetadata.go
-  - tests/mockserver/internal/sdk/models/components/datasetmetadataruninfo.go
-  - tests/mockserver/internal/sdk/models/components/deployrequest.go
-  - tests/mockserver/internal/sdk/models/components/deployrequestlookups.go
-  - tests/mockserver/internal/sdk/models/components/distributedsummary.go
-  - tests/mockserver/internal/sdk/models/components/gitcommitparams.go
-  - tests/mockserver/internal/sdk/models/components/gitcommitsummary.go
-  - tests/mockserver/internal/sdk/models/components/gitfile.go
-  - tests/mockserver/internal/sdk/models/components/gitfilesresponse.go
-  - tests/mockserver/internal/sdk/models/components/gitinfo.go
-  - tests/mockserver/internal/sdk/models/components/gitrevertparams.go
-  - tests/mockserver/internal/sdk/models/components/gitrevertresult.go
-  - tests/mockserver/internal/sdk/models/components/gitstatusresult.go
-  - tests/mockserver/internal/sdk/models/components/hbcriblinfo.go
-  - tests/mockserver/internal/sdk/models/components/hbleaderinfo.go
-  - tests/mockserver/internal/sdk/models/components/healthstatus.go
-  - tests/mockserver/internal/sdk/models/components/heartbeatmetadata.go
-  - tests/mockserver/internal/sdk/models/components/httpmetadata.go
-  - tests/mockserver/internal/sdk/models/components/input.go
-  - tests/mockserver/internal/sdk/models/components/inputappscope.go
-  - tests/mockserver/internal/sdk/models/components/inputazureblob.go
-  - tests/mockserver/internal/sdk/models/components/inputcollection.go
-  - tests/mockserver/internal/sdk/models/components/inputconfluentcloud.go
-  - tests/mockserver/internal/sdk/models/components/inputcribl.go
-  - tests/mockserver/internal/sdk/models/components/inputcriblhttp.go
-  - tests/mockserver/internal/sdk/models/components/inputcribllakehttp.go
-  - tests/mockserver/internal/sdk/models/components/inputcriblmetrics.go
-  - tests/mockserver/internal/sdk/models/components/inputcribltcp.go
-  - tests/mockserver/internal/sdk/models/components/inputcrowdstrike.go
-  - tests/mockserver/internal/sdk/models/components/inputdatadogagent.go
-  - tests/mockserver/internal/sdk/models/components/inputdatagen.go
-  - tests/mockserver/internal/sdk/models/components/inputedgeprometheus.go
-  - tests/mockserver/internal/sdk/models/components/inputelastic.go
-  - tests/mockserver/internal/sdk/models/components/inputeventhub.go
-  - tests/mockserver/internal/sdk/models/components/inputexec.go
-  - tests/mockserver/internal/sdk/models/components/inputfile.go
-  - tests/mockserver/internal/sdk/models/components/inputfirehose.go
-  - tests/mockserver/internal/sdk/models/components/inputgooglepubsub.go
-  - tests/mockserver/internal/sdk/models/components/inputgrafana.go
-  - tests/mockserver/internal/sdk/models/components/inputhttp.go
-  - tests/mockserver/internal/sdk/models/components/inputhttpraw.go
-  - tests/mockserver/internal/sdk/models/components/inputjournalfiles.go
-  - tests/mockserver/internal/sdk/models/components/inputkafka.go
-  - tests/mockserver/internal/sdk/models/components/inputkinesis.go
-  - tests/mockserver/internal/sdk/models/components/inputkubeevents.go
-  - tests/mockserver/internal/sdk/models/components/inputkubelogs.go
-  - tests/mockserver/internal/sdk/models/components/inputkubemetrics.go
-  - tests/mockserver/internal/sdk/models/components/inputloki.go
-  - tests/mockserver/internal/sdk/models/components/inputmetrics.go
-  - tests/mockserver/internal/sdk/models/components/inputmodeldriventelemetry.go
-  - tests/mockserver/internal/sdk/models/components/inputmsk.go
-  - tests/mockserver/internal/sdk/models/components/inputnetflow.go
-  - tests/mockserver/internal/sdk/models/components/inputoffice365mgmt.go
-  - tests/mockserver/internal/sdk/models/components/inputoffice365msgtrace.go
-  - tests/mockserver/internal/sdk/models/components/inputoffice365service.go
-  - tests/mockserver/internal/sdk/models/components/inputopentelemetry.go
-  - tests/mockserver/internal/sdk/models/components/inputprometheus.go
-  - tests/mockserver/internal/sdk/models/components/inputprometheusrw.go
-  - tests/mockserver/internal/sdk/models/components/inputrawudp.go
-  - tests/mockserver/internal/sdk/models/components/inputs3.go
-  - tests/mockserver/internal/sdk/models/components/inputs3inventory.go
-  - tests/mockserver/internal/sdk/models/components/inputsecuritylake.go
-  - tests/mockserver/internal/sdk/models/components/inputsnmp.go
-  - tests/mockserver/internal/sdk/models/components/inputsplunk.go
-  - tests/mockserver/internal/sdk/models/components/inputsplunkhec.go
-  - tests/mockserver/internal/sdk/models/components/inputsplunksearch.go
-  - tests/mockserver/internal/sdk/models/components/inputsqs.go
-  - tests/mockserver/internal/sdk/models/components/inputsyslog.go
-  - tests/mockserver/internal/sdk/models/components/inputsystemmetrics.go
-  - tests/mockserver/internal/sdk/models/components/inputsystemstate.go
-  - tests/mockserver/internal/sdk/models/components/inputtcp.go
-  - tests/mockserver/internal/sdk/models/components/inputtcpjson.go
-  - tests/mockserver/internal/sdk/models/components/inputwef.go
-  - tests/mockserver/internal/sdk/models/components/inputwindowsmetrics.go
-  - tests/mockserver/internal/sdk/models/components/inputwineventlogs.go
-  - tests/mockserver/internal/sdk/models/components/inputwiz.go
-  - tests/mockserver/internal/sdk/models/components/inputzscalerhec.go
-  - tests/mockserver/internal/sdk/models/components/lakedatasetsearchconfig.go
-  - tests/mockserver/internal/sdk/models/components/lakehouseconnectiontype.go
-  - tests/mockserver/internal/sdk/models/components/logininfo.go
-  - tests/mockserver/internal/sdk/models/components/lookupversions.go
-  - tests/mockserver/internal/sdk/models/components/masterworkerentry.go
-  - tests/mockserver/internal/sdk/models/components/nodeactiveupgradestatus.go
-  - tests/mockserver/internal/sdk/models/components/nodefailedupgradestatus.go
-  - tests/mockserver/internal/sdk/models/components/nodeprovidedinfo.go
-  - tests/mockserver/internal/sdk/models/components/nodeskippedupgradestatus.go
-  - tests/mockserver/internal/sdk/models/components/nodeupgradestate.go
-  - tests/mockserver/internal/sdk/models/components/nodeupgradestatus.go
-  - tests/mockserver/internal/sdk/models/components/output.go
-  - tests/mockserver/internal/sdk/models/components/outputazureblob.go
-  - tests/mockserver/internal/sdk/models/components/outputazuredataexplorer.go
-  - tests/mockserver/internal/sdk/models/components/outputazureeventhub.go
-  - tests/mockserver/internal/sdk/models/components/outputazurelogs.go
-  - tests/mockserver/internal/sdk/models/components/outputclickhouse.go
-  - tests/mockserver/internal/sdk/models/components/outputcloudwatch.go
-  - tests/mockserver/internal/sdk/models/components/outputconfluentcloud.go
-  - tests/mockserver/internal/sdk/models/components/outputcriblhttp.go
-  - tests/mockserver/internal/sdk/models/components/outputcribllake.go
-  - tests/mockserver/internal/sdk/models/components/outputcribltcp.go
-  - tests/mockserver/internal/sdk/models/components/outputcrowdstrikenextgensiem.go
-  - tests/mockserver/internal/sdk/models/components/outputdatadog.go
-  - tests/mockserver/internal/sdk/models/components/outputdataset.go
-  - tests/mockserver/internal/sdk/models/components/outputdefault.go
-  - tests/mockserver/internal/sdk/models/components/outputdevnull.go
-  - tests/mockserver/internal/sdk/models/components/outputdiskspool.go
-  - tests/mockserver/internal/sdk/models/components/outputdls3.go
-  - tests/mockserver/internal/sdk/models/components/outputdynatracehttp.go
-  - tests/mockserver/internal/sdk/models/components/outputdynatraceotlp.go
-  - tests/mockserver/internal/sdk/models/components/outputelastic.go
-  - tests/mockserver/internal/sdk/models/components/outputelasticcloud.go
-  - tests/mockserver/internal/sdk/models/components/outputexabeam.go
-  - tests/mockserver/internal/sdk/models/components/outputfilesystem.go
-  - tests/mockserver/internal/sdk/models/components/outputgooglechronicle.go
-  - tests/mockserver/internal/sdk/models/components/outputgooglecloudlogging.go
-  - tests/mockserver/internal/sdk/models/components/outputgooglecloudstorage.go
-  - tests/mockserver/internal/sdk/models/components/outputgooglepubsub.go
-  - tests/mockserver/internal/sdk/models/components/outputgrafanacloud.go
-  - tests/mockserver/internal/sdk/models/components/outputgraphite.go
-  - tests/mockserver/internal/sdk/models/components/outputhoneycomb.go
-  - tests/mockserver/internal/sdk/models/components/outputhumiohec.go
-  - tests/mockserver/internal/sdk/models/components/outputinfluxdb.go
-  - tests/mockserver/internal/sdk/models/components/outputkafka.go
-  - tests/mockserver/internal/sdk/models/components/outputkinesis.go
-  - tests/mockserver/internal/sdk/models/components/outputloki.go
-  - tests/mockserver/internal/sdk/models/components/outputminio.go
-  - tests/mockserver/internal/sdk/models/components/outputmsk.go
-  - tests/mockserver/internal/sdk/models/components/outputnetflow.go
-  - tests/mockserver/internal/sdk/models/components/outputnewrelic.go
-  - tests/mockserver/internal/sdk/models/components/outputnewrelicevents.go
-  - tests/mockserver/internal/sdk/models/components/outputopentelemetry.go
-  - tests/mockserver/internal/sdk/models/components/outputprometheus.go
-  - tests/mockserver/internal/sdk/models/components/outputring.go
-  - tests/mockserver/internal/sdk/models/components/outputrouter.go
-  - tests/mockserver/internal/sdk/models/components/outputs3.go
-  - tests/mockserver/internal/sdk/models/components/outputsamplesresponse.go
-  - tests/mockserver/internal/sdk/models/components/outputsecuritylake.go
-  - tests/mockserver/internal/sdk/models/components/outputsentinel.go
-  - tests/mockserver/internal/sdk/models/components/outputsentineloneaisiem.go
-  - tests/mockserver/internal/sdk/models/components/outputservicenow.go
-  - tests/mockserver/internal/sdk/models/components/outputsignalfx.go
-  - tests/mockserver/internal/sdk/models/components/outputsnmp.go
-  - tests/mockserver/internal/sdk/models/components/outputsns.go
-  - tests/mockserver/internal/sdk/models/components/outputsplunk.go
-  - tests/mockserver/internal/sdk/models/components/outputsplunkhec.go
-  - tests/mockserver/internal/sdk/models/components/outputsplunklb.go
-  - tests/mockserver/internal/sdk/models/components/outputsqs.go
-  - tests/mockserver/internal/sdk/models/components/outputstatsd.go
-  - tests/mockserver/internal/sdk/models/components/outputstatsdext.go
-  - tests/mockserver/internal/sdk/models/components/outputsumologic.go
-  - tests/mockserver/internal/sdk/models/components/outputsyslog.go
-  - tests/mockserver/internal/sdk/models/components/outputtcpjson.go
-  - tests/mockserver/internal/sdk/models/components/outputtestrequest.go
-  - tests/mockserver/internal/sdk/models/components/outputtestresponse.go
-  - tests/mockserver/internal/sdk/models/components/outputwavefront.go
-  - tests/mockserver/internal/sdk/models/components/outputwebhook.go
-  - tests/mockserver/internal/sdk/models/components/outputxsiam.go
-  - tests/mockserver/internal/sdk/models/components/packinfo.go
-  - tests/mockserver/internal/sdk/models/components/packinstallinfo.go
-  - tests/mockserver/internal/sdk/models/components/packrequestbody.go
-  - tests/mockserver/internal/sdk/models/components/pipeline.go
-  - tests/mockserver/internal/sdk/models/components/pipelinefunctionconf.go
-  - tests/mockserver/internal/sdk/models/components/rbacresource.go
-  - tests/mockserver/internal/sdk/models/components/resourcepolicy.go
-  - tests/mockserver/internal/sdk/models/components/restartresponse.go
-  - tests/mockserver/internal/sdk/models/components/routecloneconf.go
-  - tests/mockserver/internal/sdk/models/components/routeconf.go
-  - tests/mockserver/internal/sdk/models/components/routes.go
-  - tests/mockserver/internal/sdk/models/components/routesroute.go
-  - tests/mockserver/internal/sdk/models/components/routesrouteinput.go
-  - tests/mockserver/internal/sdk/models/components/schemeclientoauth.go
-  - tests/mockserver/internal/sdk/models/components/security.go
-  - tests/mockserver/internal/sdk/models/components/teamaccesscontrollist.go
-  - tests/mockserver/internal/sdk/models/components/updatehectokenrequest.go
-  - tests/mockserver/internal/sdk/models/components/useraccesscontrollist.go
-  - tests/mockserver/internal/sdk/models/operations/createcribllakedatasetbylakeid.go
-  - tests/mockserver/internal/sdk/models/operations/createinput.go
-  - tests/mockserver/internal/sdk/models/operations/createinputhectokenbyid.go
-  - tests/mockserver/internal/sdk/models/operations/createoutput.go
-  - tests/mockserver/internal/sdk/models/operations/createoutputtestbyid.go
-  - tests/mockserver/internal/sdk/models/operations/createpacks.go
-  - tests/mockserver/internal/sdk/models/operations/createpipeline.go
-  - tests/mockserver/internal/sdk/models/operations/createproductsgroupsbyproduct.go
-  - tests/mockserver/internal/sdk/models/operations/createroutesappendbyid.go
-  - tests/mockserver/internal/sdk/models/operations/createversioncommit.go
-  - tests/mockserver/internal/sdk/models/operations/createversionpush.go
-  - tests/mockserver/internal/sdk/models/operations/createversionrevert.go
-  - tests/mockserver/internal/sdk/models/operations/createversionsync.go
-  - tests/mockserver/internal/sdk/models/operations/createversionundo.go
-  - tests/mockserver/internal/sdk/models/operations/deletecribllakedatasetbylakeidandid.go
-  - tests/mockserver/internal/sdk/models/operations/deletegroupsbyid.go
-  - tests/mockserver/internal/sdk/models/operations/deleteinputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/deleteoutputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/deleteoutputpqbyid.go
-  - tests/mockserver/internal/sdk/models/operations/deletepacksbyid.go
-  - tests/mockserver/internal/sdk/models/operations/deletepipelinebyid.go
-  - tests/mockserver/internal/sdk/models/operations/getcribllakedatasetbylakeid.go
-  - tests/mockserver/internal/sdk/models/operations/getcribllakedatasetbylakeidandid.go
-  - tests/mockserver/internal/sdk/models/operations/getgroupsaclbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getgroupsbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getgroupsconfigversionbyid.go
-  - tests/mockserver/internal/sdk/models/operations/gethealthinfo.go
-  - tests/mockserver/internal/sdk/models/operations/getinputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getoutputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getoutputpqbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getoutputsamplesbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getpacks.go
-  - tests/mockserver/internal/sdk/models/operations/getpipelinebyid.go
-  - tests/mockserver/internal/sdk/models/operations/getproductsgroupsaclteamsbyproductandid.go
-  - tests/mockserver/internal/sdk/models/operations/getproductsgroupsbyproduct.go
-  - tests/mockserver/internal/sdk/models/operations/getroutesbyid.go
-  - tests/mockserver/internal/sdk/models/operations/getsummary.go
-  - tests/mockserver/internal/sdk/models/operations/getsummaryworkers.go
-  - tests/mockserver/internal/sdk/models/operations/getversionbranch.go
-  - tests/mockserver/internal/sdk/models/operations/getversioncount.go
-  - tests/mockserver/internal/sdk/models/operations/getversioncurrentbranch.go
-  - tests/mockserver/internal/sdk/models/operations/getversiondiff.go
-  - tests/mockserver/internal/sdk/models/operations/getversionfiles.go
-  - tests/mockserver/internal/sdk/models/operations/getversioninfo.go
-  - tests/mockserver/internal/sdk/models/operations/getversionshow.go
-  - tests/mockserver/internal/sdk/models/operations/getversionstatus.go
-  - tests/mockserver/internal/sdk/models/operations/getworkers.go
-  - tests/mockserver/internal/sdk/models/operations/listinput.go
-  - tests/mockserver/internal/sdk/models/operations/listoutput.go
-  - tests/mockserver/internal/sdk/models/operations/listpipeline.go
-  - tests/mockserver/internal/sdk/models/operations/listroutes.go
-  - tests/mockserver/internal/sdk/models/operations/login.go
-  - tests/mockserver/internal/sdk/models/operations/updatecribllakedatasetbylakeidandid.go
-  - tests/mockserver/internal/sdk/models/operations/updategroupsbyid.go
-  - tests/mockserver/internal/sdk/models/operations/updategroupsdeploybyid.go
-  - tests/mockserver/internal/sdk/models/operations/updateinputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/updateinputhectokenbyidandtoken.go
-  - tests/mockserver/internal/sdk/models/operations/updateoutputbyid.go
-  - tests/mockserver/internal/sdk/models/operations/updatepacks.go
-  - tests/mockserver/internal/sdk/models/operations/updatepacksbyid.go
-  - tests/mockserver/internal/sdk/models/operations/updatepipelinebyid.go
-  - tests/mockserver/internal/sdk/models/operations/updateroutesbyid.go
-  - tests/mockserver/internal/sdk/models/operations/updateworkersrestart.go
-  - tests/mockserver/internal/sdk/models/sdkerrors/error.go
-  - tests/mockserver/internal/sdk/models/sdkerrors/healthstatuserror.go
-  - tests/mockserver/internal/sdk/types/bigint.go
-  - tests/mockserver/internal/sdk/types/date.go
-  - tests/mockserver/internal/sdk/types/datetime.go
-  - tests/mockserver/internal/sdk/types/decimal.go
-  - tests/mockserver/internal/sdk/types/jsonl/jsonl.go
-  - tests/mockserver/internal/sdk/types/pointers.go
-  - tests/mockserver/internal/sdk/utils/json.go
-  - tests/mockserver/internal/sdk/utils/reflect.go
-  - tests/mockserver/internal/sdk/utils/sort.go
-  - tests/mockserver/internal/server/doc.go
-  - tests/mockserver/internal/server/generated_handlers.go
-  - tests/mockserver/internal/server/internal_handlers.go
-  - tests/mockserver/internal/server/server.go
-  - tests/mockserver/internal/server/server_option.go
-  - tests/mockserver/internal/server/templates/log/index.html.tmpl
-  - tests/mockserver/internal/server/templates/log/operation.html.tmpl
-  - tests/mockserver/internal/server/templates/log/style.css.tmpl
-  - tests/mockserver/internal/tracking/requesttracker.go
-  - tests/mockserver/main.go
-  - tests/test_client.py
-  - tests/test_destinations.py
-  - tests/test_distributed.py
-  - tests/test_groups_sdk.py
-  - tests/test_health.py
-  - tests/test_lake.py
-  - tests/test_login.py
-  - tests/test_packs.py
-  - tests/test_pipelines.py
-  - tests/test_routes_sdk.py
-  - tests/test_sources.py
-  - tests/test_teams.py
-  - tests/test_versioning.py
-  - tests/test_workers_sdk.py
 examples:
   getHealthInfo:
     speakeasy-default-get-health-info:
       responses:
         "200":
-          application/json: {"status": "standby", "startTime": 8399.98}
+          application/json: {"role": "standby", "status": "standby", "startTime": 8399.98}
         "420":
-          application/json: {"status": "healthy", "startTime": 893.91}
+          application/json: {"role": "standby", "status": "healthy", "startTime": 893.91}
   login:
     speakeasy-default-login:
       requestBody:
@@ -3775,18 +3402,18 @@ examples:
     speakeasy-default-list-input:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 279473, "items": [{"id": "<id>", "type": "exec", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "command": "<value>", "retries": 10, "scheduleType": "interval", "breakerRulesets": ["<value 1>", "<value 2>", "<value 3>"], "staleChannelFlushMs": 10000, "metadata": [{"name": "<value>", "value": "<value>"}], "description": "er er limp fill ack", "interval": 60, "cronSchedule": "* * * * *"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createInput:
     speakeasy-default-create-input:
       requestBody:
-        application/json: {"id": "<id>", "disabled": false, "sendToRoutes": true, "pqEnabled": false, "host": "0.0.0.0", "port": 301.76, "ipWhitelistRegex": "/.*/", "maxActiveCxn": 1000, "socketIdleTimeout": 0, "socketEndingMaxWait": 30, "socketMaxLifespan": 0, "enableProxyHeader": false, "staleChannelFlushMs": 10000, "enableHeader": false, "authType": "manual"}
+        application/json: {"id": "<id>", "type": "tcp", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "host": "0.0.0.0", "port": 301.76, "tls": {"disabled": true, "certificateName": "<value>", "privKeyPath": "<value>", "passphrase": "<value>", "certPath": "<value>", "caPath": "<value>", "requestCert": false, "rejectUnauthorized": "<value>", "commonNameRegex": "<value>", "minVersion": "TLSv1", "maxVersion": "TLSv1.1"}, "ipWhitelistRegex": "/.*/", "maxActiveCxn": 1000, "socketIdleTimeout": 0, "socketEndingMaxWait": 30, "socketMaxLifespan": 0, "enableProxyHeader": false, "metadata": [{"name": "<value>", "value": "<value>"}], "breakerRulesets": ["<value 1>"], "staleChannelFlushMs": 10000, "enableHeader": false, "preprocess": {"disabled": true, "command": "<value>", "args": ["<value 1>", "<value 2>", "<value 3>"]}, "description": "classic pish supposing misguided carefully fen", "authType": "manual"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 422422, "items": [{"id": "<id>", "type": "kube_metrics", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "interval": 15, "rules": [{"filter": "<value>", "description": "now forenenst circumference as up volunteer"}], "metadata": [{"name": "<value>", "value": "<value>"}], "persistence": {"enable": false, "timeWindow": "10m", "maxDataSize": "1GB", "maxDataTime": "24h", "compress": "gzip", "destPath": "$CRIBL_HOME/state/kube_metrics"}, "description": "hmph blank unless huzzah however"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getInputById:
     speakeasy-default-get-input-by-id:
       parameters:
@@ -3794,21 +3421,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 893499, "items": [{"id": "<id>", "type": "cribl_http", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "host": "0.0.0.0", "port": 407.44, "authTokens": ["<value 1>", "<value 2>"], "tls": {"disabled": true, "certificateName": "<value>", "privKeyPath": "<value>", "passphrase": "<value>", "certPath": "<value>", "caPath": "<value>", "requestCert": false, "rejectUnauthorized": "<value>", "commonNameRegex": "<value>", "minVersion": "TLSv1", "maxVersion": "TLSv1.2"}, "maxActiveReq": 256, "maxRequestsPerSocket": 0, "enableProxyHeader": false, "captureHeaders": false, "activityLogSampleRate": 100, "requestTimeout": 0, "socketTimeout": 0, "keepAliveTimeout": 5, "enableHealthCheck": false, "ipAllowlistRegex": "/.*/", "ipDenylistRegex": "/^$/", "metadata": [{"name": "<value>", "value": "<value>"}], "description": "promptly confound shinny hygienic ack consequently which besides mould spectate"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateInputById:
     speakeasy-default-update-input-by-id:
       parameters:
         path:
           id: "<id>"
       requestBody:
-        application/json: {"id": "<id>", "type": "kube_events", "disabled": false, "sendToRoutes": true, "pqEnabled": false}
+        application/json: {"id": "<id>", "type": "kube_events", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "rules": [{"filter": "<value>", "description": "invite meh corny incidentally down"}], "metadata": [{"name": "<value>", "value": "<value>"}], "description": "gown deployment portray gah mindless carp stabilise"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 454374, "items": [{"id": "<id>", "type": "syslog", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "host": "0.0.0.0", "udpPort": 4567.57, "tcpPort": 671.14, "maxBufferSize": 1000, "ipWhitelistRegex": "/.*/", "timestampTimezone": "local", "singleMsgUdpPackets": false, "enableProxyHeader": false, "keepFieldsList": ["<value 1>"], "octetCounting": false, "inferFraming": true, "strictlyInferOctetCounting": true, "allowNonStandardAppName": false, "maxActiveCxn": 1000, "socketIdleTimeout": 0, "socketEndingMaxWait": 30, "socketMaxLifespan": 0, "tls": {"disabled": true, "certificateName": "<value>", "privKeyPath": "<value>", "passphrase": "<value>", "certPath": "<value>", "caPath": "<value>", "requestCert": false, "rejectUnauthorized": "<value>", "commonNameRegex": "<value>", "minVersion": "TLSv1.2", "maxVersion": "TLSv1"}, "metadata": [{"name": "<value>", "value": "<value>"}], "udpSocketRxBufSize": 5485.92, "enableLoadBalancing": false, "description": "once curly finally mentor stormy usually understated", "enableEnhancedProxyHeaderParsing": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deleteInputById:
     speakeasy-default-delete-input-by-id:
       parameters:
@@ -3816,21 +3443,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 789302, "items": [{"id": "<id>", "type": "wef", "disabled": false, "pipeline": "<value>", "sendToRoutes": true, "environment": "<value>", "pqEnabled": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "connections": [{"pipeline": "<value>", "output": "<value>"}], "pq": {"mode": "always", "maxBufferSize": 1000, "commitFrequency": 42, "maxFileSize": "1 MB", "maxSize": "5GB", "path": "$CRIBL_HOME/state/queues", "compress": "none"}, "host": "0.0.0.0", "port": 5986, "authMethod": "clientCert", "tls": {"disabled": false, "rejectUnauthorized": true, "requestCert": true, "certificateName": "<value>", "privKeyPath": "<value>", "passphrase": "<value>", "certPath": "<value>", "caPath": "<value>", "commonNameRegex": "/.*/", "minVersion": "TLSv1.3", "maxVersion": "TLSv1.1", "ocspCheck": false, "keytab": "<value>", "principal": "<value>", "ocspCheckFailClose": false}, "maxActiveReq": 256, "maxRequestsPerSocket": 0, "enableProxyHeader": false, "captureHeaders": false, "keepAliveTimeout": 90, "enableHealthCheck": false, "ipAllowlistRegex": "/.*/", "ipDenylistRegex": "/^$/", "socketTimeout": 0, "caFingerprint": "<value>", "keytab": "<value>", "principal": "<value>", "allowMachineIdMismatch": false, "subscriptions": [], "metadata": [{"name": "<value>", "value": "<value>"}], "description": "apropos rear jittery pitiful", "logFingerprintMismatch": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createInputHecTokenById:
     speakeasy-default-create-input-hec-token-by-id:
       parameters:
         path:
           id: "<id>"
       requestBody:
-        application/json: {"token": "<value>"}
+        application/json: {"description": "bah ick stingy", "enabled": false, "metadata": [{"name": "<value>", "value": "<value>"}], "token": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 827610, "items": [{}, {"key": "<value>", "key1": "<value>", "key2": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateInputHecTokenByIdAndToken:
     speakeasy-default-update-input-hec-token-by-id-and-token:
       parameters:
@@ -3838,28 +3465,28 @@ examples:
           id: "<id>"
           token: "<value>"
       requestBody:
-        application/json: {}
+        application/json: {"description": "by bleakly fortunately phew barring", "enabled": false, "metadata": [{"name": "<value>", "value": "<value>"}]}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 116091, "items": [{"key": "<value>", "key1": "<value>", "key2": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   listOutput:
     speakeasy-default-list-output:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 167668, "items": [{"id": "<id>", "type": "statsd", "pipeline": "<value>", "systemFields": ["<value 1>", "<value 2>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>"], "protocol": "udp", "host": "ill-baritone.net", "port": 8125, "mtu": 512, "flushPeriodSec": 1, "dnsResolvePeriodSec": 0, "description": "till advocate impish exotic", "throttleRatePerSec": "0", "connectionTimeout": 10000, "writeTimeout": 60000, "onBackpressure": "block", "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error", "pqControls": {}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createOutput:
     speakeasy-default-create-output:
       requestBody:
-        application/json: {"id": "<id>", "url": "https://probable-rationale.com/", "index": "<value>", "concurrency": 5, "maxPayloadSizeKB": 4096, "maxPayloadEvents": 0, "compress": true, "rejectUnauthorized": true, "timeoutSec": 30, "flushPeriodSec": 1, "failedRequestLoggingMode": "none", "includeDocId": true, "responseHonorRetryAfterHeader": false, "onBackpressure": "block", "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error"}
+        application/json: {"id": "<id>", "type": "elastic_cloud", "pipeline": "<value>", "systemFields": ["<value 1>", "<value 2>"], "environment": "<value>", "streamtags": ["<value 1>"], "url": "https://probable-rationale.com/", "index": "<value>", "concurrency": 5, "maxPayloadSizeKB": 4096, "maxPayloadEvents": 0, "compress": true, "rejectUnauthorized": true, "timeoutSec": 30, "flushPeriodSec": 1, "extraHttpHeaders": [{"name": "<value>", "value": "<value>"}], "failedRequestLoggingMode": "none", "safeHeaders": ["<value 1>", "<value 2>"], "extraParams": [{"name": "<value>", "value": "<value>"}], "auth": {"disabled": false, "authType": "manual"}, "elasticPipeline": "<value>", "includeDocId": true, "responseRetrySettings": [{"httpStatus": 7295.73, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}], "timeoutRetrySettings": {"timeoutRetry": false, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}, "responseHonorRetryAfterHeader": false, "onBackpressure": "block", "description": "hourly about into", "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error", "pqControls": {}}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 111721, "items": [{"id": "<id>", "type": "google_cloud_storage", "pipeline": "<value>", "systemFields": ["<value 1>", "<value 2>", "<value 3>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>"], "bucket": "<value>", "region": "<value>", "endpoint": "https://storage.googleapis.com", "signatureVersion": "v4", "awsAuthenticationMethod": "manual", "stagePath": "$CRIBL_HOME/state/outputs/staging", "destPath": "", "verifyPermissions": true, "objectACL": "private", "storageClass": "COLDLINE", "reuseConnections": true, "rejectUnauthorized": true, "addIdToStagePath": true, "removeEmptyDirs": true, "partitionExpr": "C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')", "format": "json", "baseFileName": "`CriblOut`", "fileNameSuffix": "`.${C.env[\"CRIBL_WORKER_ID\"]}.${__format}${__compression === \"gzip\" ? \".gz\" : \"\"}`", "maxFileSizeMB": 32, "maxFileOpenTimeSec": 300, "maxFileIdleTimeSec": 30, "maxOpenFiles": 100, "headerLine": "", "writeHighWaterMark": 64, "onBackpressure": "block", "deadletterEnabled": false, "onDiskFullBackpressure": "block", "description": "declaration on that onto flickering equally defensive worth miserably", "compress": "gzip", "compressionLevel": "best_speed", "automaticSchema": false, "parquetVersion": "PARQUET_2_6", "parquetDataPageVersion": "DATA_PAGE_V2", "parquetRowGroupLength": 10000, "parquetPageSize": "1MB", "shouldLogInvalidRows": false, "keyValueMetadata": [{"key": "", "value": "<value>"}], "enableStatistics": true, "enableWritePageIndex": true, "enablePageChecksum": false, "emptyDirCleanupSec": 300, "deadletterPath": "$CRIBL_HOME/state/outputs/dead-letter", "maxRetryNum": 20, "awsApiKey": "<value>", "awsSecretKey": "<value>", "awsSecret": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getOutputById:
     speakeasy-default-get-output-by-id:
       parameters:
@@ -3867,21 +3494,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 651644, "items": [{"id": "<id>", "type": "google_cloud_storage", "pipeline": "<value>", "systemFields": ["<value 1>", "<value 2>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "bucket": "<value>", "region": "<value>", "endpoint": "https://storage.googleapis.com", "signatureVersion": "v4", "awsAuthenticationMethod": "manual", "stagePath": "$CRIBL_HOME/state/outputs/staging", "destPath": "", "verifyPermissions": true, "objectACL": "private", "storageClass": "NEARLINE", "reuseConnections": true, "rejectUnauthorized": true, "addIdToStagePath": true, "removeEmptyDirs": true, "partitionExpr": "C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')", "format": "json", "baseFileName": "`CriblOut`", "fileNameSuffix": "`.${C.env[\"CRIBL_WORKER_ID\"]}.${__format}${__compression === \"gzip\" ? \".gz\" : \"\"}`", "maxFileSizeMB": 32, "maxFileOpenTimeSec": 300, "maxFileIdleTimeSec": 30, "maxOpenFiles": 100, "headerLine": "", "writeHighWaterMark": 64, "onBackpressure": "block", "deadletterEnabled": false, "onDiskFullBackpressure": "block", "description": "to pish oof boohoo", "compress": "gzip", "compressionLevel": "best_speed", "automaticSchema": false, "parquetVersion": "PARQUET_2_6", "parquetDataPageVersion": "DATA_PAGE_V2", "parquetRowGroupLength": 10000, "parquetPageSize": "1MB", "shouldLogInvalidRows": false, "keyValueMetadata": [{"key": "", "value": "<value>"}], "enableStatistics": true, "enableWritePageIndex": true, "enablePageChecksum": false, "emptyDirCleanupSec": 300, "deadletterPath": "$CRIBL_HOME/state/outputs/dead-letter", "maxRetryNum": 20, "awsApiKey": "<value>", "awsSecretKey": "<value>", "awsSecret": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateOutputById:
     speakeasy-default-update-output-by-id:
       parameters:
         path:
           id: "<id>"
       requestBody:
-        application/json: {"type": "signalfx", "authType": "manual", "realm": "us0", "concurrency": 5, "maxPayloadSizeKB": 4096, "maxPayloadEvents": 0, "compress": true, "rejectUnauthorized": true, "timeoutSec": 30, "flushPeriodSec": 1, "useRoundRobinDns": false, "failedRequestLoggingMode": "none", "responseHonorRetryAfterHeader": false, "onBackpressure": "block", "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error"}
+        application/json: {"id": "<id>", "type": "signalfx", "pipeline": "<value>", "systemFields": ["<value 1>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>"], "authType": "manual", "realm": "us0", "concurrency": 5, "maxPayloadSizeKB": 4096, "maxPayloadEvents": 0, "compress": true, "rejectUnauthorized": true, "timeoutSec": 30, "flushPeriodSec": 1, "extraHttpHeaders": [{"name": "<value>", "value": "<value>"}], "useRoundRobinDns": false, "failedRequestLoggingMode": "none", "safeHeaders": ["<value 1>"], "responseRetrySettings": [{"httpStatus": 2924.72, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}], "timeoutRetrySettings": {"timeoutRetry": false, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}, "responseHonorRetryAfterHeader": false, "onBackpressure": "block", "description": "phooey positively a consequently meh until", "token": "<value>", "textSecret": "<value>", "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error", "pqControls": {}}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 194446, "items": [{"id": "<id>", "type": "grafana_cloud", "pipeline": "<value>", "systemFields": ["<value 1>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "lokiUrl": "https://funny-premise.biz/", "prometheusUrl": "https://shady-zebra.com/", "message": "<value>", "messageFormat": "protobuf", "labels": [{"name": "", "value": "<value>"}], "metricRenameExpr": "name.replace(/[^a-zA-Z0-9_]/g, '_')", "prometheusAuth": {"authType": "basic", "token": "<value>", "textSecret": "<value>", "username": "Lora_Gottlieb24", "password": "r_ivPa2hrC6f_iq", "credentialsSecret": "<value>"}, "lokiAuth": {"authType": "basic", "token": "<value>", "textSecret": "<value>", "username": "Elinor.Spencer73", "password": "eJz4Ts89q_oZrsD", "credentialsSecret": "<value>"}, "concurrency": 1, "maxPayloadSizeKB": 4096, "maxPayloadEvents": 0, "rejectUnauthorized": true, "timeoutSec": 30, "flushPeriodSec": 15, "extraHttpHeaders": [{"name": "<value>", "value": "<value>"}], "useRoundRobinDns": false, "failedRequestLoggingMode": "none", "safeHeaders": ["<value 1>", "<value 2>", "<value 3>"], "responseRetrySettings": [{"httpStatus": 6882.35, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}], "timeoutRetrySettings": {"timeoutRetry": false, "initialBackoff": 1000, "backoffRate": 2, "maxBackoff": 10000}, "responseHonorRetryAfterHeader": false, "onBackpressure": "block", "description": "lady concerning supposing drat um", "compress": true, "pqMaxFileSize": "1 MB", "pqMaxSize": "5GB", "pqPath": "$CRIBL_HOME/state/queues", "pqCompress": "none", "pqOnBackpressure": "block", "pqMode": "error", "pqControls": {}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deleteOutputById:
     speakeasy-default-delete-output-by-id:
       parameters:
@@ -3889,9 +3516,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 920100, "items": [{"id": "<id>", "type": "google_cloud_storage", "pipeline": "<value>", "systemFields": ["<value 1>"], "environment": "<value>", "streamtags": ["<value 1>", "<value 2>"], "bucket": "<value>", "region": "<value>", "endpoint": "https://storage.googleapis.com", "signatureVersion": "v4", "awsAuthenticationMethod": "manual", "stagePath": "$CRIBL_HOME/state/outputs/staging", "destPath": "", "verifyPermissions": true, "objectACL": "private", "storageClass": "ARCHIVE", "reuseConnections": true, "rejectUnauthorized": true, "addIdToStagePath": true, "removeEmptyDirs": true, "partitionExpr": "C.Time.strftime(_time ? _time : Date.now()/1000, '%Y/%m/%d')", "format": "json", "baseFileName": "`CriblOut`", "fileNameSuffix": "`.${C.env[\"CRIBL_WORKER_ID\"]}.${__format}${__compression === \"gzip\" ? \".gz\" : \"\"}`", "maxFileSizeMB": 32, "maxFileOpenTimeSec": 300, "maxFileIdleTimeSec": 30, "maxOpenFiles": 100, "headerLine": "", "writeHighWaterMark": 64, "onBackpressure": "block", "deadletterEnabled": false, "onDiskFullBackpressure": "block", "description": "casement encode hmph owlishly", "compress": "gzip", "compressionLevel": "best_speed", "automaticSchema": false, "parquetVersion": "PARQUET_2_6", "parquetDataPageVersion": "DATA_PAGE_V2", "parquetRowGroupLength": 10000, "parquetPageSize": "1MB", "shouldLogInvalidRows": true, "keyValueMetadata": [{"key": "", "value": "<value>"}], "enableStatistics": true, "enableWritePageIndex": true, "enablePageChecksum": false, "emptyDirCleanupSec": 300, "deadletterPath": "$CRIBL_HOME/state/outputs/dead-letter", "maxRetryNum": 20, "awsApiKey": "<value>", "awsSecretKey": "<value>", "awsSecret": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deleteOutputPqById:
     speakeasy-default-delete-output-pq-by-id:
       parameters:
@@ -3899,9 +3526,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 37997, "items": [{"key": "<value>"}, {"key": "<value>", "key1": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getOutputPqById:
     speakeasy-default-get-output-pq-by-id:
       parameters:
@@ -3909,9 +3536,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 375693, "items": [{"key": "<value>", "key1": "<value>", "key2": "<value>"}, {}, {"key": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getOutputSamplesById:
     speakeasy-default-get-output-samples-by-id:
       parameters:
@@ -3919,9 +3546,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 748803, "items": [{"events": [{"key": "<value>"}, {"key": "<value>", "key1": "<value>", "key2": "<value>"}, {"key": "<value>"}]}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createOutputTestById:
     speakeasy-default-create-output-test-by-id:
       parameters:
@@ -3931,16 +3558,16 @@ examples:
         application/json: {"events": [{"_raw": "<value>"}]}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 673584, "items": [{"details": {"key": "<value>"}, "error": "<value>", "outputId": "<id>", "success": true, "successDetail": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   listRoutes:
     speakeasy-default-list-routes:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 397064, "items": [{"id": "<id>", "routes": [], "groups": {"key": {"name": "<value>", "description": "proceed provided off nor why pasta wry youthfully amongst which", "disabled": true}}, "comments": [{"comment": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals"}]}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getRoutesById:
     speakeasy-default-get-routes-by-id:
       parameters:
@@ -3948,21 +3575,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 628587, "items": [{"id": "<id>", "routes": [], "groups": {"key": {"name": "<value>", "description": "an ack mostly disclosure", "disabled": false}}, "comments": [{"comment": "Boston's most advanced compression wear technology increases muscle oxygenation, stabilizes active muscles"}]}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateRoutesById:
     speakeasy-default-update-routes-by-id:
       parameters:
         path:
           id: "<value>"
       requestBody:
-        application/json: {"routes": []}
+        application/json: {"id": "<id>", "routes": [], "groups": {"key": {"name": "<value>", "description": "where internationalize yesterday woefully tank underneath", "disabled": true}}, "comments": [{"comment": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart"}]}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 932642, "items": [{"id": "<id>", "routes": [], "groups": {"key": {"name": "<value>", "description": "where internationalize yesterday woefully tank underneath", "disabled": true}}, "comments": [{"comment": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart"}]}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createRoutesAppendById:
     speakeasy-default-create-routes-append-by-id:
       parameters:
@@ -3972,25 +3599,25 @@ examples:
         application/json: []
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 359371, "items": [{}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   listPipeline:
     speakeasy-default-list-pipeline:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 575048, "items": [{"id": "<id>", "conf": {"asyncFuncTimeout": 138375, "output": "default", "description": "perfectly gosh whup whoa boohoo twin as", "streamtags": ["<value 1>", "<value 2>"], "functions": [{"filter": "true", "id": "<id>", "description": "aha regarding before scaly expense that", "disabled": true, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "phew rigidly when", "disabled": false}}}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createPipeline:
     speakeasy-default-create-pipeline:
       requestBody:
-        application/json: {"id": "<id>", "conf": {"output": "default"}}
+        application/json: {"id": "<id>", "conf": {"asyncFuncTimeout": 905091, "output": "default", "description": "next tightly positively", "streamtags": ["<value 1>"], "functions": [{"filter": "true", "id": "<id>", "description": "academics woot finally woot queasy bah", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "yuck terribly ostrich enhance sentimental strictly whereas before reboot sleet", "disabled": true}}}}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 670554, "items": [{"id": "<id>", "conf": {"asyncFuncTimeout": 905091, "output": "default", "description": "next tightly positively", "streamtags": ["<value 1>"], "functions": [{"filter": "true", "id": "<id>", "description": "academics woot finally woot queasy bah", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "yuck terribly ostrich enhance sentimental strictly whereas before reboot sleet", "disabled": true}}}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getPipelineById:
     speakeasy-default-get-pipeline-by-id:
       parameters:
@@ -3998,21 +3625,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 558482, "items": [{"id": "<id>", "conf": {"asyncFuncTimeout": 375182, "output": "default", "description": "except within well-documented finding which deeply", "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "functions": [{"filter": "true", "id": "<id>", "description": "among sell um", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "know now hairy about than", "disabled": false}}}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updatePipelineById:
     speakeasy-default-update-pipeline-by-id:
       parameters:
         path:
           id: "<value>"
       requestBody:
-        application/json: {"id": "<id>", "conf": {"output": "default"}}
+        application/json: {"id": "<id>", "conf": {"asyncFuncTimeout": 430119, "output": "default", "description": "reflecting for productive extroverted instead upwardly", "streamtags": ["<value 1>"], "functions": [{"filter": "true", "id": "<id>", "description": "mozzarella boohoo possession as grok", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "definitive ew but busily freely scaly indeed", "disabled": true}}}}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 939042, "items": [{"id": "<id>", "conf": {"asyncFuncTimeout": 430119, "output": "default", "description": "reflecting for productive extroverted instead upwardly", "streamtags": ["<value 1>"], "functions": [{"filter": "true", "id": "<id>", "description": "mozzarella boohoo possession as grok", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "definitive ew but busily freely scaly indeed", "disabled": true}}}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deletePipelineById:
     speakeasy-default-delete-pipeline-by-id:
       parameters:
@@ -4020,116 +3647,145 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 62963, "items": [{"id": "<id>", "conf": {"asyncFuncTimeout": 117, "output": "default", "description": "resort phew silent whenever gust", "streamtags": ["<value 1>"], "functions": [{"filter": "true", "id": "<id>", "description": "metal fibre oof feminize how", "disabled": false, "final": false, "conf": {}, "groupId": "<id>"}], "groups": {"key": {"name": "<value>", "description": "until obsess unto kielbasa", "disabled": true}}}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionBranch:
     speakeasy-default-get-version-branch:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 752953, "items": [{"key": "<value>", "key1": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createVersionCommit:
     speakeasy-default-create-version-commit:
       requestBody:
-        application/json: {"message": "<value>"}
+        application/json: {"effective": false, "files": ["<value 1>"], "group": "<value>", "message": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 374317, "items": [{"author": {"email": "Calista86@gmail.com", "name": "<value>"}, "branch": "<value>", "commit": "<value>", "files": {"created": ["<value 1>", "<value 2>"], "deleted": ["<value 1>", "<value 2>", "<value 3>"], "modified": ["<value 1>", "<value 2>"], "renamed": ["<value 1>", "<value 2>"]}, "summary": {"changes": 4465.33, "deletions": 0.91, "insertions": 1352.98}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionCount:
     speakeasy-default-get-version-count:
+      parameters:
+        query:
+          group: "<value>"
+          ID: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 856007, "items": [{"key": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionCurrentBranch:
     speakeasy-default-get-version-current-branch:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 561043, "items": [{"key": "<value>", "key1": "<value>"}, {"key": "<value>"}, {"key": "<value>", "key1": "<value>", "key2": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionDiff:
     speakeasy-default-get-version-diff:
+      parameters:
+        query:
+          commit: "<value>"
+          group: "<value>"
+          filename: "example.file"
+          diffLineLimit: 6362
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 236125, "items": [{"key": "<value>"}, {"key": "<value>", "key1": "<value>"}, {}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionFiles:
     speakeasy-default-get-version-files:
+      parameters:
+        query:
+          group: "<value>"
+          ID: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 710228, "items": [{"commitMessage": {"key": "<value>"}, "count": 81.98, "items": []}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionInfo:
     speakeasy-default-get-version-info:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 716855, "items": [{"remote": true, "versioning": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createVersionPush:
     speakeasy-default-create-version-push:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 108085, "items": [{"key": "<value>"}, {}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createVersionRevert:
     speakeasy-default-create-version-revert:
+      parameters:
+        query:
+          group: "<value>"
       requestBody:
-        application/json: {"commit": "<value>", "message": "<value>"}
+        application/json: {"commit": "<value>", "force": false, "message": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 397635, "items": [{"audit": {"files": {"created": ["<value 1>", "<value 2>", "<value 3>"], "deleted": ["<value 1>"], "modified": ["<value 1>"], "renamed": ["<value 1>", "<value 2>"]}, "group": "<value>", "id": "<id>"}, "reverted": true}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionShow:
     speakeasy-default-get-version-show:
+      parameters:
+        query:
+          commit: "<value>"
+          group: "<value>"
+          filename: "example.file"
+          diffLineLimit: 7771.94
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 969040, "items": [{"key": "<value>", "key1": "<value>", "key2": "<value>"}, {}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getVersionStatus:
     speakeasy-default-get-version-status:
+      parameters:
+        query:
+          group: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 616511, "items": [{"ahead": 3019.14, "behind": 4465.56, "conflicted": ["<value 1>", "<value 2>"], "created": ["<value 1>", "<value 2>"], "current": "<value>", "deleted": ["<value 1>"], "files": [], "modified": ["<value 1>", "<value 2>", "<value 3>"], "not_added": [], "renamed": [{"from": "<value>", "to": "<value>"}], "staged": ["<value 1>", "<value 2>", "<value 3>"], "tracking": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createVersionSync:
     speakeasy-default-create-version-sync:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 90716, "items": [{"key": "<value>", "key1": "<value>"}, {"key": "<value>", "key1": "<value>", "key2": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createVersionUndo:
     speakeasy-default-create-version-undo:
+      parameters:
+        query:
+          group: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 219852, "items": ["<value 1>", "<value 2>"]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createCriblLakeDatasetByLakeId:
     speakeasy-default-create-cribl-lake-dataset-by-lake-id:
       parameters:
         path:
           lakeId: "<id>"
       requestBody:
-        application/json: {"id": "<id>"}
+        application/json: {"acceleratedFields": ["<value 1>", "<value 2>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>"], "backfillStatus": "pending", "cacheRef": "<value>", "createdAt": 7795.06, "lakehouseConnectionType": "cache", "migrationQueryId": "<id>", "retentionInDays": 1466.58}, "deletionStartedAt": 8310.58, "description": "pleased toothbrush long brush smooth swiftly rightfully phooey chapel", "format": "ddss", "httpDAUsed": true, "id": "<id>", "retentionPeriodInDays": 456.37, "searchConfig": {"datatypes": ["<value 1>"], "metadata": {"earliest": "<value>", "enableAcceleration": true, "fieldList": ["<value 1>", "<value 2>"], "latestRunInfo": {"earliestScannedTime": 4334.7, "finishedAt": 6811.22, "latestScannedTime": 5303.3, "objectCount": 9489.04}, "scanMode": "detailed"}}, "storageLocationId": "<id>", "viewName": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 428443, "items": [{"acceleratedFields": ["<value 1>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>"], "backfillStatus": "pending", "cacheRef": "<value>", "createdAt": 7795.06, "lakehouseConnectionType": "cache", "migrationQueryId": "<id>", "retentionInDays": 1466.58}, "deletionStartedAt": 6211.27, "description": "ick napkin lamp save yearly though barring", "format": "ddss", "httpDAUsed": false, "id": "<id>", "retentionPeriodInDays": 4605.98, "searchConfig": {"datatypes": ["<value 1>"], "metadata": {"earliest": "<value>", "enableAcceleration": true, "fieldList": ["<value 1>", "<value 2>"], "latestRunInfo": {"earliestScannedTime": 4334.7, "finishedAt": 6811.22, "latestScannedTime": 5303.3, "objectCount": 9489.04}, "scanMode": "detailed"}}, "storageLocationId": "<id>", "viewName": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getCriblLakeDatasetByLakeId:
     speakeasy-default-get-cribl-lake-dataset-by-lake-id:
       parameters:
@@ -4137,60 +3793,80 @@ examples:
           lakeId: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 3101, "items": [{"acceleratedFields": ["<value 1>", "<value 2>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>"], "backfillStatus": "finished", "cacheRef": "<value>", "createdAt": 6343.67, "lakehouseConnectionType": "cache", "migrationQueryId": "<id>", "retentionInDays": 6213}, "deletionStartedAt": 581.96, "description": "remarkable meh whoever ha crossly", "format": "json", "httpDAUsed": true, "id": "<id>", "retentionPeriodInDays": 2829.32, "searchConfig": {"datatypes": ["<value 1>"], "metadata": {"earliest": "<value>", "enableAcceleration": true, "fieldList": ["<value 1>", "<value 2>"], "latestRunInfo": {"earliestScannedTime": 4800.7, "finishedAt": 8646.6, "latestScannedTime": 5697.01, "objectCount": 4527.63}, "scanMode": "quick"}}, "storageLocationId": "<id>", "viewName": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getSummaryWorkers:
     speakeasy-default-get-summary-workers:
+      parameters:
+        query:
+          filterExp: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 401126, "items": [1291.74, 7812.7]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getWorkers:
     speakeasy-default-get-workers:
+      parameters:
+        query:
+          filterExp: "<value>"
+          sort: "<value>"
+          sortExp: "<value>"
+          limit: 402753
+          offset: 848752
+          filter: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 388772, "items": [{"deployable": true, "disconnected": true, "firstMsgTime": 5556.4, "group": "<value>", "id": "<id>", "info": {"architecture": "<value>", "aws": {"enabled": false, "region": "<value>", "tags": {}, "type": "<value>", "zone": "<value>"}, "conn_ip": "<value>", "cpus": 5841.82, "cribl": {"config": {"featuresRev": "<value>", "hbPeriodSeconds": 3635.4, "logStreamEnv": "<value>", "policyRev": "<value>", "version": "<value>"}, "deploymentId": "<id>", "distMode": "single", "edgeNodes": 7424.46, "group": "<value>", "guid": "<id>", "installType": "<value>", "lookupVersions": {}, "master": {"host": "crafty-requirement.biz", "port": 4586.68, "servername": "<value>", "tls": true}, "pid": 7553.65, "startTime": 1443.43, "tags": ["<value 1>", "<value 2>"], "version": "<value>"}, "freeDiskSpace": 6770.82, "hostOs": {"addresses": ["<value 1>", "<value 2>", "<value 3>"], "enabled": false, "id": "<id>", "version": "<value>"}, "hostname": "wordy-vibraphone.biz", "isSaasWorker": true, "kube": {"enabled": false, "namespace": "<value>", "node": "<value>", "owner": {"kind": "<value>", "name": "<value>"}, "pod": "<value>", "source": "<value>"}, "localTime": 6602.88, "metadata": {"aws": {"enabled": false, "region": "<value>", "tags": {}, "type": "<value>", "zone": "<value>"}, "hostOs": {"addresses": ["<value 1>"], "enabled": false, "id": "<id>", "version": "<value>"}, "kube": {"enabled": true, "namespace": "<value>", "node": "<value>", "owner": {"kind": "<value>", "name": "<value>"}, "pod": "<value>", "source": "<value>"}, "os": {"addresses": ["<value 1>", "<value 2>", "<value 3>"], "enabled": false, "id": "<id>", "version": "<value>"}}, "node": "<value>", "os": {"addresses": ["<value 1>", "<value 2>", "<value 3>"], "enabled": false, "id": "<id>", "version": "<value>"}, "platform": "<value>", "release": "<value>", "totalDiskSpace": 4189.94, "totalmem": 5989.26}, "lastMetrics": {}, "lastMsgTime": 1603.19, "metadata": {"aws": {"enabled": false, "region": "<value>", "tags": {}, "type": "<value>", "zone": "<value>"}, "hostOs": {"addresses": ["<value 1>"], "enabled": false, "id": "<id>", "version": "<value>"}, "kube": {"enabled": true, "namespace": "<value>", "node": "<value>", "owner": {"kind": "<value>", "name": "<value>"}, "pod": "<value>", "source": "<value>"}, "os": {"addresses": ["<value 1>", "<value 2>", "<value 3>"], "enabled": false, "id": "<id>", "version": "<value>"}}, "nodeUpgradeStatus": {"active": 0, "failed": 1, "skipped": 1, "state": 0, "timestamp": 6840.86}, "status": "<value>", "type": "resp", "workerProcesses": 8195.32, "workers": {"count": 3234.04}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateWorkersRestart:
     speakeasy-default-update-workers-restart:
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 469043, "items": [{"id": "<id>", "message": "<value>", "status": "Error"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getSummary:
     speakeasy-default-get-summary:
+      parameters:
+        query:
+          mode: "worker"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 364904, "items": [{"groups": {"count": 8128.38, "destinations": 4945.73, "pipelines": 6352.87, "routes": 7792.08, "sources": 6593.6}, "workers": {"alive": 2322.36, "confVersions": 8794.87, "count": 2533.57, "disconnectedCount": 4548.69, "groups": 9336.99, "softwareVersions": 2351.1, "unhealthy": 8264.2}}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createPacks:
     speakeasy-default-create-packs:
       requestBody:
-        application/json: {"id": "<id>", "source": "<value>"}
+        application/json: {"allowCustomFunctions": false, "author": "<value>", "description": "premeditation coincide although", "displayName": "Myah14", "exports": ["<value 1>"], "force": false, "id": "<id>", "inputs": 4076.64, "minLogStreamVersion": "<value>", "outputs": 2759.4, "source": "<value>", "spec": "<value>", "tags": {"dataType": [], "domain": [], "streamtags": ["<value 1>", "<value 2>"], "technology": ["<value 1>"]}, "version": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 182030, "items": [{"author": "<value>", "description": "card fen soon inquisitively anti oddly winged", "displayName": "Leila.Nikolaus29", "exports": ["<value 1>", "<value 2>", "<value 3>"], "id": "<id>", "inputs": 5672.33, "isDisabled": false, "minLogStreamVersion": "<value>", "outputs": 8346.66, "settings": {"key": "<value>"}, "source": "<value>", "spec": "<value>", "tags": {"dataType": ["decimal"], "domain": ["lawful-flu.net", "royal-litter.org", "submissive-pantyhose.org"], "streamtags": [], "technology": []}, "version": "<value>", "warnings": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getPacks:
     speakeasy-default-get-packs:
+      parameters:
+        query:
+          with: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 77148, "items": [{"author": "<value>", "description": "dearly astride that augment interchange", "displayName": "Diego.Heller64", "exports": ["<value 1>"], "id": "<id>", "inputs": 6114.86, "isDisabled": true, "minLogStreamVersion": "<value>", "outputs": 5459.84, "settings": {"key": "<value>", "key1": "<value>"}, "source": "<value>", "spec": "<value>", "tags": {"dataType": ["timestamp", "double", "varchar"], "domain": [], "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "technology": ["<value 1>", "<value 2>", "<value 3>"]}, "version": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updatePacks:
     speakeasy-default-update-packs:
+      parameters:
+        query:
+          filename: "example.file"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 779474, "items": [{}, {"key": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getGroupsConfigVersionById:
     speakeasy-default-get-groups-config-version-by-id:
       parameters:
@@ -4198,74 +3874,82 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 936160, "items": ["<value 1>"]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   createProductsGroupsByProduct:
     speakeasy-default-create-products-groups-by-product:
       parameters:
         path:
           product: "stream"
       requestBody:
-        application/json: {"configVersion": "<value>", "id": "<id>"}
+        application/json: {"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 1848.32, "description": "director um why forgery apud once er though off", "estimatedIngestRate": 6663.53, "git": {"commit": "<value>", "localChanges": 2079.21, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-08-24", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 5487.26, "inherits": "<value>", "isFleet": false, "isSearch": false, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": true, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 851.73, "workerRemoteAccess": false}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 339650, "items": [{"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 5282.89, "description": "seriously mountain gadzooks illiterate from better whose", "estimatedIngestRate": 8520.18, "git": {"commit": "<value>", "localChanges": 2079.21, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-08-24", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 4907.06, "inherits": "<value>", "isFleet": false, "isSearch": true, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": false, "streamtags": ["<value 1>", "<value 2>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 2620.95, "workerRemoteAccess": true}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getProductsGroupsByProduct:
     speakeasy-default-get-products-groups-by-product:
       parameters:
         path:
           product: "stream"
+        query:
+          fields: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 139413, "items": [{"cloud": {"provider": null, "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 2422.36, "description": "finally huff within whereas per indeed among sarong almighty swordfish", "estimatedIngestRate": 9946.32, "git": {"commit": "<value>", "localChanges": 7149.9, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-09-01", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 3041.33, "inherits": "<value>", "isFleet": true, "isSearch": false, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": false, "streamtags": ["<value 1>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 7295.87, "workerRemoteAccess": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateGroupsDeployById:
     speakeasy-default-update-groups-deploy-by-id:
       parameters:
         path:
           id: "<id>"
       requestBody:
-        application/json: {"version": "<value>"}
+        application/json: {"lookups": [{"context": "<value>", "lookups": [{"file": "<value>", "version": "<value>"}]}], "version": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 675901, "items": [{"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 3478.73, "description": "unscramble below metabolise unconscious alienated at ugh forenenst gosh even", "estimatedIngestRate": 2484.75, "git": {"commit": "<value>", "localChanges": 819.2, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-08-21", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 2615.26, "inherits": "<value>", "isFleet": true, "isSearch": false, "lookupDeployments": [{"context": "<value>", "lookups": []}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": false, "streamtags": ["<value 1>", "<value 2>", "<value 3>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 6222.63, "workerRemoteAccess": true}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getGroupsById:
     speakeasy-default-get-groups-by-id:
       parameters:
         path:
           id: "<id>"
+        query:
+          fields: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 983944, "items": [{"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 5773.46, "description": "bah vision transparency", "estimatedIngestRate": 7728.21, "git": {"commit": "<value>", "localChanges": 8473.28, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-01-11", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 4739.28, "inherits": "<value>", "isFleet": true, "isSearch": true, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": false, "provisioned": true, "streamtags": ["<value 1>", "<value 2>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 1817.13, "workerRemoteAccess": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getGroupsAclById:
     speakeasy-default-get-groups-acl-by-id:
       parameters:
         path:
           id: "<id>"
+        query:
+          type: "insights"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 833704, "items": [{"perms": [], "user": "Randall_Walter25"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getProductsGroupsAclTeamsByProductAndId:
     speakeasy-default-get-products-groups-acl-teams-by-product-and-id:
       parameters:
         path:
           product: "stream"
           id: "<id>"
+        query:
+          type: "datasets"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 751174, "items": [{"perms": [{"gid": "<id>", "id": "<id>", "policy": "<value>", "type": "dashboards"}], "team": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deleteCriblLakeDatasetByLakeIdAndId:
     speakeasy-default-delete-cribl-lake-dataset-by-lake-id-and-id:
       parameters:
@@ -4274,9 +3958,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 954603, "items": [{"acceleratedFields": ["<value 1>", "<value 2>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>", "<value 3>"], "backfillStatus": "finished", "cacheRef": "<value>", "createdAt": 4670.23, "lakehouseConnectionType": "zeroPoint", "migrationQueryId": "<id>", "retentionInDays": 4383.9}, "deletionStartedAt": 8741.5, "description": "twine unabashedly within hm whoever duh swift which likewise", "format": "parquet", "httpDAUsed": false, "id": "<id>", "retentionPeriodInDays": 9101.58, "searchConfig": {"datatypes": ["<value 1>", "<value 2>", "<value 3>"], "metadata": {"earliest": "<value>", "enableAcceleration": true, "fieldList": [], "latestRunInfo": {"earliestScannedTime": 5372.22, "finishedAt": 2530.33, "latestScannedTime": 3122.34, "objectCount": 5459.74}, "scanMode": "quick"}}, "storageLocationId": "<id>", "viewName": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   getCriblLakeDatasetByLakeIdAndId:
     speakeasy-default-get-cribl-lake-dataset-by-lake-id-and-id:
       parameters:
@@ -4285,9 +3969,9 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 488520, "items": [{"acceleratedFields": ["<value 1>", "<value 2>", "<value 3>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>"], "backfillStatus": "started", "cacheRef": "<value>", "createdAt": 4162.03, "lakehouseConnectionType": "cache", "migrationQueryId": "<id>", "retentionInDays": 3505.26}, "deletionStartedAt": 9483.64, "description": "towards as separate yum approximate than napkin over but tame", "format": "json", "httpDAUsed": true, "id": "<id>", "retentionPeriodInDays": 4689.34, "searchConfig": {"datatypes": ["<value 1>"], "metadata": {"earliest": "<value>", "enableAcceleration": false, "fieldList": [], "latestRunInfo": {"earliestScannedTime": 6809.96, "finishedAt": 8790.42, "latestScannedTime": 5054.03, "objectCount": 6377.75}, "scanMode": "quick"}}, "storageLocationId": "<id>", "viewName": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateCriblLakeDatasetByLakeIdAndId:
     speakeasy-default-update-cribl-lake-dataset-by-lake-id-and-id:
       parameters:
@@ -4295,12 +3979,12 @@ examples:
           lakeId: "<id>"
           id: "<value>"
       requestBody:
-        application/json: {"id": "<id>"}
+        application/json: {"acceleratedFields": ["<value 1>", "<value 2>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>", "<value 3>"], "backfillStatus": "incomplete", "cacheRef": "<value>", "createdAt": 267.92, "lakehouseConnectionType": "zeroPoint", "migrationQueryId": "<id>", "retentionInDays": 3769.62}, "deletionStartedAt": 836.59, "description": "highlight phew ponder but winding", "format": "json", "httpDAUsed": true, "id": "<id>", "retentionPeriodInDays": 602.09, "searchConfig": {"datatypes": ["<value 1>", "<value 2>"], "metadata": {"earliest": "<value>", "enableAcceleration": false, "fieldList": ["<value 1>"], "latestRunInfo": {"earliestScannedTime": 7659.78, "finishedAt": 6404.38, "latestScannedTime": 4426.77, "objectCount": 8849.28}, "scanMode": "detailed"}}, "storageLocationId": "<id>", "viewName": "<value>"}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 592322, "items": [{"acceleratedFields": ["<value 1>"], "bucketName": "<value>", "cacheConnection": {"acceleratedFields": ["<value 1>", "<value 2>", "<value 3>"], "backfillStatus": "incomplete", "cacheRef": "<value>", "createdAt": 267.92, "lakehouseConnectionType": "zeroPoint", "migrationQueryId": "<id>", "retentionInDays": 3769.62}, "deletionStartedAt": 9654.8, "description": "murky out cone hm sophisticated whoa frightfully unimpressively since", "format": "ddss", "httpDAUsed": false, "id": "<id>", "retentionPeriodInDays": 6639.66, "searchConfig": {"datatypes": ["<value 1>", "<value 2>"], "metadata": {"earliest": "<value>", "enableAcceleration": false, "fieldList": ["<value 1>"], "latestRunInfo": {"earliestScannedTime": 7659.78, "finishedAt": 6404.38, "latestScannedTime": 4426.77, "objectCount": 8849.28}, "scanMode": "detailed"}}, "storageLocationId": "<id>", "viewName": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deletePacksById:
     speakeasy-default-delete-packs-by-id:
       parameters:
@@ -4308,19 +3992,23 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 248535, "items": [{"author": "<value>", "description": "pace forsaken why mom fooey", "displayName": "Joelle.Murray", "exports": ["<value 1>"], "id": "<id>", "inputs": 1143.81, "isDisabled": true, "minLogStreamVersion": "<value>", "outputs": 7704.62, "settings": {"key": "<value>", "key1": "<value>"}, "source": "<value>", "spec": "<value>", "tags": {"dataType": [], "domain": ["soggy-coliseum.com", "nice-footrest.biz", "well-to-do-massage.org"], "streamtags": ["<value 1>"], "technology": ["<value 1>"]}, "version": "<value>", "warnings": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updatePacksById:
     speakeasy-default-update-packs-by-id:
       parameters:
         path:
           id: "<id>"
+        query:
+          source: "<value>"
+          minor: "<value>"
+          spec: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 338042, "items": [{"author": "<value>", "description": "squirm mentor amid reluctantly case valiantly clonk satirise", "displayName": "Osbaldo_Murphy", "exports": ["<value 1>", "<value 2>"], "id": "<id>", "inputs": 4495.78, "isDisabled": true, "minLogStreamVersion": "<value>", "outputs": 4165.86, "settings": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "source": "<value>", "spec": "<value>", "tags": {"dataType": ["float"], "domain": ["able-strait.info", "whimsical-marimba.info", "chilly-instance.com"], "streamtags": ["<value 1>", "<value 2>"], "technology": ["<value 1>"]}, "version": "<value>"}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   deleteGroupsById:
     speakeasy-default-delete-groups-by-id:
       parameters:
@@ -4328,21 +4016,21 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 357616, "items": [{"cloud": {"provider": null, "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 480.6, "description": "minion lost questionable purple zowie meh acquire bah", "estimatedIngestRate": 2472.44, "git": {"commit": "<value>", "localChanges": 4115.49, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-10-11", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 5290.66, "inherits": "<value>", "isFleet": false, "isSearch": true, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": true, "streamtags": ["<value 1>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 6094.96, "workerRemoteAccess": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
   updateGroupsById:
     speakeasy-default-update-groups-by-id:
       parameters:
         path:
           id: "<value>"
       requestBody:
-        application/json: {"configVersion": "<value>", "id": "<id>"}
+        application/json: {"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 19.89, "description": "jaywalk wrathful truly indeed definitive reflecting almost massive", "estimatedIngestRate": 7133.74, "git": {"commit": "<value>", "localChanges": 370.43, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-08-29", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 7081.95, "inherits": "<value>", "isFleet": true, "isSearch": true, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": true, "streamtags": ["<value 1>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 9020.63, "workerRemoteAccess": true}
       responses:
         "200":
-          application/json: {}
+          application/json: {"count": 899492, "items": [{"cloud": {"provider": "aws", "region": "<value>"}, "configVersion": "<value>", "deployingWorkerCount": 5369.68, "description": "zowie hastily guzzle grimy mask engage", "estimatedIngestRate": 5316.34, "git": {"commit": "<value>", "localChanges": 370.43, "log": [{"author_email": "<value>", "author_name": "<value>", "date": "2024-08-29", "hash": "<value>", "message": "<value>", "short": "<value>"}]}, "id": "<id>", "incompatibleWorkerCount": 4056.89, "inherits": "<value>", "isFleet": false, "isSearch": true, "lookupDeployments": [{"context": "<value>", "lookups": [{"deployedVersion": "<value>", "file": "<value>", "version": "<value>"}]}], "maxWorkerAge": "<value>", "name": "<value>", "onPrem": true, "provisioned": false, "streamtags": ["<value 1>"], "tags": "<value>", "type": "lake_access", "upgradeVersion": "<value>", "workerCount": 5413.87, "workerRemoteAccess": false}]}
         "500":
-          application/json: {}
+          application/json: {"message": "<value>"}
 examplesVersion: 1.0.2
 generatedTests:
   getHealthInfo: "2025-07-02T19:12:56+02:00"

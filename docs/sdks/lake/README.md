@@ -31,7 +31,40 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>")
+    res = ccp_client.lake.create_cribl_lake_dataset_by_lake_id(lake_id="<id>", id="<id>", accelerated_fields=[
+        "<value 1>",
+        "<value 2>",
+    ], bucket_name="<value>", cache_connection={
+        "accelerated_fields": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "backfill_status": models.CacheConnectionBackfillStatus.PENDING,
+        "cache_ref": "<value>",
+        "created_at": 7795.06,
+        "lakehouse_connection_type": models.LakehouseConnectionType.CACHE,
+        "migration_query_id": "<id>",
+        "retention_in_days": 1466.58,
+    }, deletion_started_at=8310.58, description="pleased toothbrush long brush smooth swiftly rightfully phooey chapel", format_=models.CriblLakeDatasetFormat.DDSS, http_da_used=True, retention_period_in_days=456.37, search_config={
+        "datatypes": [
+            "<value 1>",
+        ],
+        "metadata": {
+            "earliest": "<value>",
+            "enable_acceleration": True,
+            "field_list": [
+                "<value 1>",
+                "<value 2>",
+            ],
+            "latest_run_info": {
+                "earliest_scanned_time": 4334.7,
+                "finished_at": 6811.22,
+                "latest_scanned_time": 5303.3,
+                "object_count": 9489.04,
+            },
+            "scan_mode": models.ScanMode.DETAILED,
+        },
+    }, storage_location_id="<id>", view_name="<value>")
 
     # Handle response
     print(res)
@@ -217,7 +250,41 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.lake.update_cribl_lake_dataset_by_lake_id_and_id(lake_id="<id>", id_param="<value>", id="<id>")
+    res = ccp_client.lake.update_cribl_lake_dataset_by_lake_id_and_id(lake_id="<id>", id_param="<value>", id="<id>", accelerated_fields=[
+        "<value 1>",
+        "<value 2>",
+    ], bucket_name="<value>", cache_connection={
+        "accelerated_fields": [
+            "<value 1>",
+            "<value 2>",
+            "<value 3>",
+        ],
+        "backfill_status": models.CacheConnectionBackfillStatus.INCOMPLETE,
+        "cache_ref": "<value>",
+        "created_at": 267.92,
+        "lakehouse_connection_type": models.LakehouseConnectionType.ZERO_POINT,
+        "migration_query_id": "<id>",
+        "retention_in_days": 3769.62,
+    }, deletion_started_at=836.59, description="highlight phew ponder but winding", format_=models.CriblLakeDatasetFormat.JSON, http_da_used=True, retention_period_in_days=602.09, search_config={
+        "datatypes": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "metadata": {
+            "earliest": "<value>",
+            "enable_acceleration": False,
+            "field_list": [
+                "<value 1>",
+            ],
+            "latest_run_info": {
+                "earliest_scanned_time": 7659.78,
+                "finished_at": 6404.38,
+                "latest_scanned_time": 4426.77,
+                "object_count": 8849.28,
+            },
+            "scan_mode": models.ScanMode.DETAILED,
+        },
+    }, storage_location_id="<id>", view_name="<value>")
 
     # Handle response
     print(res)
