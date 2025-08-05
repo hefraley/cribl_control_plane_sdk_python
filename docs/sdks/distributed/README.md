@@ -27,7 +27,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.distributed.get_summary()
+    res = ccp_client.distributed.get_summary(mode=models.GetSummaryMode.WORKER)
 
     # Handle response
     print(res)

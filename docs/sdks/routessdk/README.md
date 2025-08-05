@@ -115,7 +115,17 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.routes.update_routes_by_id(id_param="<value>", routes=[])
+    res = ccp_client.routes.update_routes_by_id(id_param="<value>", routes=[], id="<id>", groups={
+        "key": {
+            "name": "<value>",
+            "description": "where internationalize yesterday woefully tank underneath",
+            "disabled": True,
+        },
+    }, comments=[
+        models.Comment(
+            comment="New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+        ),
+    ])
 
     # Handle response
     print(res)

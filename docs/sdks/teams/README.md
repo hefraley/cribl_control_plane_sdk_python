@@ -27,7 +27,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.teams.get_products_groups_acl_teams_by_product_and_id(product=models.GetProductsGroupsACLTeamsByProductAndIDProduct.STREAM, id="<id>")
+    res = ccp_client.teams.get_products_groups_acl_teams_by_product_and_id(product=models.GetProductsGroupsACLTeamsByProductAndIDProduct.STREAM, id="<id>", type_=models.GetProductsGroupsACLTeamsByProductAndIDType.DATASETS)
 
     # Handle response
     print(res)

@@ -77,7 +77,38 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.create_products_groups_by_product(product=models.CreateProductsGroupsByProductProduct.STREAM, config_version="<value>", id="<id>")
+    res = ccp_client.groups.create_products_groups_by_product(product=models.CreateProductsGroupsByProductProduct.STREAM, config_version="<value>", id="<id>", cloud={
+        "provider": models.CloudProvider.AWS,
+        "region": "<value>",
+    }, deploying_worker_count=1848.32, description="director um why forgery apud once er though off", estimated_ingest_rate=6663.53, git={
+        "commit": "<value>",
+        "local_changes": 2079.21,
+        "log": [
+            {
+                "author_email": "<value>",
+                "author_name": "<value>",
+                "date_": "2024-08-24",
+                "hash": "<value>",
+                "message": "<value>",
+                "short": "<value>",
+            },
+        ],
+    }, incompatible_worker_count=5487.26, inherits="<value>", is_fleet=False, is_search=False, lookup_deployments=[
+        {
+            "context": "<value>",
+            "lookups": [
+                {
+                    "deployed_version": "<value>",
+                    "file": "<value>",
+                    "version": "<value>",
+                },
+            ],
+        },
+    ], max_worker_age="<value>", name="<value>", on_prem=True, provisioned=True, streamtags=[
+        "<value 1>",
+        "<value 2>",
+        "<value 3>",
+    ], tags="<value>", type_=models.ConfigGroupType.LAKE_ACCESS, upgrade_version="<value>", worker_count=851.73, worker_remote_access=False)
 
     # Handle response
     print(res)
@@ -142,7 +173,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.get_products_groups_by_product(product=models.GetProductsGroupsByProductProduct.STREAM)
+    res = ccp_client.groups.get_products_groups_by_product(product=models.GetProductsGroupsByProductProduct.STREAM, fields="<value>")
 
     # Handle response
     print(res)
@@ -229,7 +260,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.get_groups_by_id(id="<id>")
+    res = ccp_client.groups.get_groups_by_id(id="<id>", fields="<value>")
 
     # Handle response
     print(res)
@@ -273,7 +304,36 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.update_groups_by_id(id_param="<value>", config_version="<value>", id="<id>")
+    res = ccp_client.groups.update_groups_by_id(id_param="<value>", config_version="<value>", id="<id>", cloud={
+        "provider": models.CloudProvider.AWS,
+        "region": "<value>",
+    }, deploying_worker_count=19.89, description="jaywalk wrathful truly indeed definitive reflecting almost massive", estimated_ingest_rate=7133.74, git={
+        "commit": "<value>",
+        "local_changes": 370.43,
+        "log": [
+            {
+                "author_email": "<value>",
+                "author_name": "<value>",
+                "date_": "2024-08-29",
+                "hash": "<value>",
+                "message": "<value>",
+                "short": "<value>",
+            },
+        ],
+    }, incompatible_worker_count=7081.95, inherits="<value>", is_fleet=True, is_search=True, lookup_deployments=[
+        {
+            "context": "<value>",
+            "lookups": [
+                {
+                    "deployed_version": "<value>",
+                    "file": "<value>",
+                    "version": "<value>",
+                },
+            ],
+        },
+    ], max_worker_age="<value>", name="<value>", on_prem=True, provisioned=True, streamtags=[
+        "<value 1>",
+    ], tags="<value>", type_=models.ConfigGroupType.LAKE_ACCESS, upgrade_version="<value>", worker_count=9020.63, worker_remote_access=True)
 
     # Handle response
     print(res)
@@ -338,7 +398,17 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.update_groups_deploy_by_id(id="<id>", version="<value>")
+    res = ccp_client.groups.update_groups_deploy_by_id(id="<id>", version="<value>", lookups=[
+        {
+            "context": "<value>",
+            "lookups": [
+                {
+                    "file": "<value>",
+                    "version": "<value>",
+                },
+            ],
+        },
+    ])
 
     # Handle response
     print(res)
@@ -383,7 +453,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.groups.get_groups_acl_by_id(id="<id>")
+    res = ccp_client.groups.get_groups_acl_by_id(id="<id>", type_=models.GetGroupsACLByIDType.INSIGHTS)
 
     # Handle response
     print(res)

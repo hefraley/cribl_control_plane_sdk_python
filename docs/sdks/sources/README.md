@@ -75,19 +75,74 @@ with CriblControlPlane(
 
     res = ccp_client.sources.create_source(request={
         "id": "<id>",
+        "type": models.CreateInputTypeTCP.TCP,
         "disabled": False,
+        "pipeline": "<value>",
         "send_to_routes": True,
+        "environment": "<value>",
         "pq_enabled": False,
+        "streamtags": [
+            "<value 1>",
+            "<value 2>",
+            "<value 3>",
+        ],
+        "connections": [
+            {
+                "pipeline": "<value>",
+                "output": "<value>",
+            },
+        ],
+        "pq": {
+            "mode": models.ModeTCP.ALWAYS,
+            "max_buffer_size": 1000,
+            "commit_frequency": 42,
+            "max_file_size": "1 MB",
+            "max_size": "5GB",
+            "path": "$CRIBL_HOME/state/queues",
+            "compress": models.CompressionTCP.NONE,
+        },
         "host": "0.0.0.0",
         "port": 301.76,
+        "tls": {
+            "disabled": True,
+            "certificate_name": "<value>",
+            "priv_key_path": "<value>",
+            "passphrase": "<value>",
+            "cert_path": "<value>",
+            "ca_path": "<value>",
+            "request_cert": False,
+            "reject_unauthorized": "<value>",
+            "common_name_regex": "<value>",
+            "min_version": models.MinimumTLSVersionTCP.TL_SV1,
+            "max_version": models.MaximumTLSVersionTCP.TL_SV1_1,
+        },
         "ip_whitelist_regex": "/.*/",
         "max_active_cxn": 1000,
         "socket_idle_timeout": 0,
         "socket_ending_max_wait": 30,
         "socket_max_lifespan": 0,
         "enable_proxy_header": False,
+        "metadata": [
+            {
+                "name": "<value>",
+                "value": "<value>",
+            },
+        ],
+        "breaker_rulesets": [
+            "<value 1>",
+        ],
         "stale_channel_flush_ms": 10000,
         "enable_header": False,
+        "preprocess": {
+            "disabled": True,
+            "command": "<value>",
+            "args": [
+                "<value 1>",
+                "<value 2>",
+                "<value 3>",
+            ],
+        },
+        "description": "classic pish supposing misguided carefully fen",
         "auth_type": models.AuthenticationMethodTCP.MANUAL,
     })
 
@@ -179,8 +234,42 @@ with CriblControlPlane(
         "id": "<id>",
         "type": models.InputKubeEventsType.KUBE_EVENTS,
         "disabled": False,
+        "pipeline": "<value>",
         "send_to_routes": True,
+        "environment": "<value>",
         "pq_enabled": False,
+        "streamtags": [
+            "<value 1>",
+            "<value 2>",
+        ],
+        "connections": [
+            {
+                "pipeline": "<value>",
+                "output": "<value>",
+            },
+        ],
+        "pq": {
+            "mode": models.InputKubeEventsMode.ALWAYS,
+            "max_buffer_size": 1000,
+            "commit_frequency": 42,
+            "max_file_size": "1 MB",
+            "max_size": "5GB",
+            "path": "$CRIBL_HOME/state/queues",
+            "compress": models.InputKubeEventsCompression.NONE,
+        },
+        "rules": [
+            {
+                "filter_": "<value>",
+                "description": "invite meh corny incidentally down",
+            },
+        ],
+        "metadata": [
+            {
+                "name": "<value>",
+                "value": "<value>",
+            },
+        ],
+        "description": "gown deployment portray gah mindless carp stabilise",
     })
 
     # Handle response
@@ -268,7 +357,12 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.create_source_hec_token_by_id(id="<id>", token="<value>")
+    res = ccp_client.sources.create_source_hec_token_by_id(id="<id>", token="<value>", description="bah ick stingy", enabled=False, metadata=[
+        {
+            "name": "<value>",
+            "value": "<value>",
+        },
+    ])
 
     # Handle response
     print(res)
@@ -315,7 +409,12 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.sources.update_source_hec_token_by_id_and_token(id="<id>", token="<value>")
+    res = ccp_client.sources.update_source_hec_token_by_id_and_token(id="<id>", token="<value>", description="by bleakly fortunately phew barring", enabled=False, metadata=[
+        {
+            "name": "<value>",
+            "value": "<value>",
+        },
+    ])
 
     # Handle response
     print(res)

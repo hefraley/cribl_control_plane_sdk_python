@@ -29,7 +29,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.workers.get_summary_workers()
+    res = ccp_client.workers.get_summary_workers(filter_exp="<value>")
 
     # Handle response
     print(res)
@@ -72,7 +72,7 @@ with CriblControlPlane(
     ),
 ) as ccp_client:
 
-    res = ccp_client.workers.get_workers()
+    res = ccp_client.workers.get_workers(filter_exp="<value>", sort="<value>", sort_exp="<value>", limit=402753, offset=848752, filter_="<value>")
 
     # Handle response
     print(res)
