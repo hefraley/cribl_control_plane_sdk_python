@@ -350,9 +350,7 @@ class RoutesSDK(BaseSDK):
         self,
         *,
         id_param: str,
-        routes: Union[
-            List[models.RoutesRouteInput], List[models.RoutesRouteInputTypedDict]
-        ],
+        routes: Union[List[models.RoutesRoute], List[models.RoutesRouteTypedDict]],
         id: Optional[str] = None,
         groups: Optional[
             Union[
@@ -393,9 +391,9 @@ class RoutesSDK(BaseSDK):
 
         request = models.UpdateRoutesByIDRequest(
             id_param=id_param,
-            routes=models.RoutesInput(
+            routes=models.Routes(
                 id=id,
-                routes=utils.get_pydantic_model(routes, List[models.RoutesRouteInput]),
+                routes=utils.get_pydantic_model(routes, List[models.RoutesRoute]),
                 groups=utils.get_pydantic_model(
                     groups, Optional[Dict[str, models.RoutesGroups]]
                 ),
@@ -419,7 +417,7 @@ class RoutesSDK(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.routes, False, False, "json", models.RoutesInput
+                request.routes, False, False, "json", models.Routes
             ),
             timeout_ms=timeout_ms,
         )
@@ -466,9 +464,7 @@ class RoutesSDK(BaseSDK):
         self,
         *,
         id_param: str,
-        routes: Union[
-            List[models.RoutesRouteInput], List[models.RoutesRouteInputTypedDict]
-        ],
+        routes: Union[List[models.RoutesRoute], List[models.RoutesRouteTypedDict]],
         id: Optional[str] = None,
         groups: Optional[
             Union[
@@ -509,9 +505,9 @@ class RoutesSDK(BaseSDK):
 
         request = models.UpdateRoutesByIDRequest(
             id_param=id_param,
-            routes=models.RoutesInput(
+            routes=models.Routes(
                 id=id,
-                routes=utils.get_pydantic_model(routes, List[models.RoutesRouteInput]),
+                routes=utils.get_pydantic_model(routes, List[models.RoutesRoute]),
                 groups=utils.get_pydantic_model(
                     groups, Optional[Dict[str, models.RoutesGroups]]
                 ),
@@ -535,7 +531,7 @@ class RoutesSDK(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.routes, False, False, "json", models.RoutesInput
+                request.routes, False, False, "json", models.Routes
             ),
             timeout_ms=timeout_ms,
         )

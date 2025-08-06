@@ -20,21 +20,21 @@ class OutputGooglePubsubGoogleAuthenticationMethod(str, Enum):
     SECRET = "secret"
 
 
-class OutputGooglePubsubFlushPeriodSecType(str, Enum):
+class FlushPeriodSecType(str, Enum):
     NUMBER = "number"
 
 
 class FlushPeriodSecTypedDict(TypedDict):
     r"""Maximum time to wait before sending a batch (when batch size limit is not reached)."""
 
-    type: NotRequired[OutputGooglePubsubFlushPeriodSecType]
+    type: NotRequired[FlushPeriodSecType]
     default: NotRequired[float]
 
 
 class FlushPeriodSec(BaseModel):
     r"""Maximum time to wait before sending a batch (when batch size limit is not reached)."""
 
-    type: Optional[OutputGooglePubsubFlushPeriodSecType] = None
+    type: Optional[FlushPeriodSecType] = None
 
     default: Optional[float] = None
 

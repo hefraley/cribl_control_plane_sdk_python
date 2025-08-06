@@ -63,10 +63,10 @@ value: models.InputElastic = /* values here */
 value: models.InputConfluentCloud = /* values here */
 ```
 
-### `models.InputGrafanaUnion`
+### `models.InputGrafana`
 
 ```python
-value: models.InputGrafanaUnion = /* values here */
+value: models.InputGrafana = /* values here */
 ```
 
 ### `models.InputLoki`
@@ -279,10 +279,10 @@ value: models.InputModelDrivenTelemetry = /* values here */
 value: models.InputSqs = /* values here */
 ```
 
-### `models.InputSyslogUnion`
+### `models.InputSyslog`
 
 ```python
-value: models.InputSyslogUnion = /* values here */
+value: models.InputSyslog = /* values here */
 ```
 
 ### `models.InputFile`

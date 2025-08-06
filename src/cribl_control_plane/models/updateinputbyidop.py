@@ -12,7 +12,7 @@ class UpdateInputByIDRequestTypedDict(TypedDict):
     id: str
     r"""Unique ID to PATCH"""
     input: InputTypedDict
-    r"""Source object to be updated"""
+    r"""Input object"""
 
 
 class UpdateInputByIDRequest(BaseModel):
@@ -24,7 +24,7 @@ class UpdateInputByIDRequest(BaseModel):
     input: Annotated[
         Input, FieldMetadata(request=RequestMetadata(media_type="application/json"))
     ]
-    r"""Source object to be updated"""
+    r"""Input object"""
 
 
 class UpdateInputByIDResponseTypedDict(TypedDict):

@@ -20,7 +20,7 @@ from .inputexec import InputExec, InputExecTypedDict
 from .inputfile import InputFile, InputFileTypedDict
 from .inputfirehose import InputFirehose, InputFirehoseTypedDict
 from .inputgooglepubsub import InputGooglePubsub, InputGooglePubsubTypedDict
-from .inputgrafana_union import InputGrafanaUnion, InputGrafanaUnionTypedDict
+from .inputgrafana import InputGrafana, InputGrafanaTypedDict
 from .inputhttp import InputHTTP, InputHTTPTypedDict
 from .inputhttpraw import InputHTTPRaw, InputHTTPRawTypedDict
 from .inputjournalfiles import InputJournalFiles, InputJournalFilesTypedDict
@@ -55,7 +55,7 @@ from .inputsplunk import InputSplunk, InputSplunkTypedDict
 from .inputsplunkhec import InputSplunkHec, InputSplunkHecTypedDict
 from .inputsplunksearch import InputSplunkSearch, InputSplunkSearchTypedDict
 from .inputsqs import InputSqs, InputSqsTypedDict
-from .inputsyslog_union import InputSyslogUnion, InputSyslogUnionTypedDict
+from .inputsyslog import InputSyslog, InputSyslogTypedDict
 from .inputsystemmetrics import InputSystemMetrics, InputSystemMetricsTypedDict
 from .inputsystemstate import InputSystemState, InputSystemStateTypedDict
 from .inputtcp import InputTCP, InputTCPTypedDict
@@ -128,8 +128,8 @@ InputTypedDict = TypeAliasType(
         InputS3InventoryTypedDict,
         InputMskTypedDict,
         InputSplunkSearchTypedDict,
-        InputSyslogUnionTypedDict,
-        InputGrafanaUnionTypedDict,
+        InputSyslogTypedDict,
+        InputGrafanaTypedDict,
     ],
 )
 
@@ -193,7 +193,7 @@ Input = TypeAliasType(
         InputS3Inventory,
         InputMsk,
         InputSplunkSearch,
-        InputSyslogUnion,
-        InputGrafanaUnion,
+        InputSyslog,
+        InputGrafana,
     ],
 )

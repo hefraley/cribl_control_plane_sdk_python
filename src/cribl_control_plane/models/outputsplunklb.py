@@ -124,7 +124,7 @@ class OutputSplunkLbCompressCompression(str, Enum):
     ALWAYS = "always"
 
 
-class OutputSplunkLbAuthTokenAuthenticationMethod(str, Enum):
+class IndexerDiscoveryConfigsAuthTokenAuthenticationMethod(str, Enum):
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
 
     MANUAL = "manual"
@@ -132,19 +132,19 @@ class OutputSplunkLbAuthTokenAuthenticationMethod(str, Enum):
 
 
 class OutputSplunkLbAuthTokenTypedDict(TypedDict):
-    auth_type: NotRequired[OutputSplunkLbAuthTokenAuthenticationMethod]
+    auth_type: NotRequired[IndexerDiscoveryConfigsAuthTokenAuthenticationMethod]
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
 
 
 class OutputSplunkLbAuthToken(BaseModel):
     auth_type: Annotated[
-        Optional[OutputSplunkLbAuthTokenAuthenticationMethod],
+        Optional[IndexerDiscoveryConfigsAuthTokenAuthenticationMethod],
         pydantic.Field(alias="authType"),
-    ] = OutputSplunkLbAuthTokenAuthenticationMethod.MANUAL
+    ] = IndexerDiscoveryConfigsAuthTokenAuthenticationMethod.MANUAL
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
 
 
-class OutputSplunkLbIndexerDiscoveryConfigsAuthenticationMethod(str, Enum):
+class IndexerDiscoveryConfigsAuthenticationMethod(str, Enum):
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
 
     MANUAL = "manual"
@@ -164,7 +164,7 @@ class IndexerDiscoveryConfigsTypedDict(TypedDict):
     r"""During indexer discovery, reject cluster manager certificates that are not authorized by the system's CA. Disable to allow untrusted (for example, self-signed) certificates."""
     auth_tokens: NotRequired[List[OutputSplunkLbAuthTokenTypedDict]]
     r"""Tokens required to authenticate to cluster manager for indexer discovery"""
-    auth_type: NotRequired[OutputSplunkLbIndexerDiscoveryConfigsAuthenticationMethod]
+    auth_type: NotRequired[IndexerDiscoveryConfigsAuthenticationMethod]
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
     auth_token: NotRequired[str]
     r"""Shared secret to be provided by any client (in authToken header field). If empty, unauthorized access is permitted."""
@@ -197,9 +197,9 @@ class IndexerDiscoveryConfigs(BaseModel):
     r"""Tokens required to authenticate to cluster manager for indexer discovery"""
 
     auth_type: Annotated[
-        Optional[OutputSplunkLbIndexerDiscoveryConfigsAuthenticationMethod],
+        Optional[IndexerDiscoveryConfigsAuthenticationMethod],
         pydantic.Field(alias="authType"),
-    ] = OutputSplunkLbIndexerDiscoveryConfigsAuthenticationMethod.MANUAL
+    ] = IndexerDiscoveryConfigsAuthenticationMethod.MANUAL
     r"""Select Manual to enter an auth token directly, or select Secret to use a text secret to authenticate"""
 
     auth_token: Annotated[Optional[str], pydantic.Field(alias="authToken")] = ""
