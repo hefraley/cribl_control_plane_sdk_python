@@ -9,7 +9,6 @@ Actions related to Packs
 
 * [create_packs](#create_packs) - Install Pack
 * [get_packs](#get_packs) - Get info on packs
-* [update_packs](#update_packs) - Upload Pack
 * [delete_packs_by_id](#delete_packs_by_id) - Uninstall Pack from the system
 * [update_packs_by_id](#update_packs_by_id) - Upgrade Pack
 
@@ -116,49 +115,6 @@ with CriblControlPlane(
 ### Response
 
 **[models.GetPacksResponse](../../models/getpacksresponse.md)**
-
-### Errors
-
-| Error Type       | Status Code      | Content Type     |
-| ---------------- | ---------------- | ---------------- |
-| errors.Error     | 500              | application/json |
-| errors.APIError  | 4XX, 5XX         | \*/\*            |
-
-## update_packs
-
-Upload Pack
-
-### Example Usage
-
-```python
-from cribl_control_plane import CriblControlPlane, models
-import os
-
-
-with CriblControlPlane(
-    server_url="https://api.example.com",
-    security=models.Security(
-        bearer_auth=os.getenv("CRIBLCONTROLPLANE_BEARER_AUTH", ""),
-    ),
-) as ccp_client:
-
-    res = ccp_client.packs.update_packs(filename="example.file")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `filename`                                                          | *Optional[str]*                                                     | :heavy_minus_sign:                                                  | the file to upload                                                  |
-| `retries`                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)    | :heavy_minus_sign:                                                  | Configuration to override the default retry behavior of the client. |
-
-### Response
-
-**[models.UpdatePacksResponse](../../models/updatepacksresponse.md)**
 
 ### Errors
 

@@ -327,7 +327,6 @@ with CriblControlPlane(
 
 * [create_packs](docs/sdks/packs/README.md#create_packs) - Install Pack
 * [get_packs](docs/sdks/packs/README.md#get_packs) - Get info on packs
-* [update_packs](docs/sdks/packs/README.md#update_packs) - Upload Pack
 * [delete_packs_by_id](docs/sdks/packs/README.md#delete_packs_by_id) - Uninstall Pack from the system
 * [update_packs_by_id](docs/sdks/packs/README.md#update_packs_by_id) - Upgrade Pack
 
@@ -598,7 +597,7 @@ with CriblControlPlane(
 
 
 **Inherit from [`CriblControlPlaneError`](./src/cribl_control_plane/errors/criblcontrolplaneerror.py)**:
-* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 63 methods.*
+* [`HealthStatusError`](./src/cribl_control_plane/errors/healthstatuserror.py): Healthy status. Status code `420`. Applicable to 1 of 62 methods.*
 * [`ResponseValidationError`](./src/cribl_control_plane/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

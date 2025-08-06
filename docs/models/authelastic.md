@@ -1,9 +1,0 @@
-# AuthElastic
-
-
-## Fields
-
-| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `disabled`                                                                                       | *Optional[bool]*                                                                                 | :heavy_minus_sign:                                                                               | N/A                                                                                              |
-| `auth_type`                                                                                      | [Optional[models.AuthAuthenticationMethodElastic]](../models/authauthenticationmethodelastic.md) | :heavy_minus_sign:                                                                               | Enter credentials directly, or select a stored secret                                            |

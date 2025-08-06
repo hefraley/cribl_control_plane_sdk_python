@@ -200,13 +200,13 @@ class QueryBuilderMode(str, Enum):
     XML = "xml"
 
 
-class InputWefSubscriptionMetadatumTypedDict(TypedDict):
+class SubscriptionMetadatumTypedDict(TypedDict):
     name: str
     value: str
     r"""JavaScript expression to compute field's value, enclosed in quotes or backticks. (Can evaluate to a constant.)"""
 
 
-class InputWefSubscriptionMetadatum(BaseModel):
+class SubscriptionMetadatum(BaseModel):
     name: str
 
     value: str
@@ -234,7 +234,7 @@ class SubscriptionTypedDict(TypedDict):
     locale: NotRequired[str]
     r"""The RFC-3066 locale the Windows clients should use when sending events. Defaults to \"en-US\"."""
     query_selector: NotRequired[QueryBuilderMode]
-    metadata: NotRequired[List[InputWefSubscriptionMetadatumTypedDict]]
+    metadata: NotRequired[List[SubscriptionMetadatumTypedDict]]
     r"""Fields to add to events ingested under this subscription"""
 
 
@@ -280,7 +280,7 @@ class Subscription(BaseModel):
         Optional[QueryBuilderMode], pydantic.Field(alias="querySelector")
     ] = QueryBuilderMode.SIMPLE
 
-    metadata: Optional[List[InputWefSubscriptionMetadatum]] = None
+    metadata: Optional[List[SubscriptionMetadatum]] = None
     r"""Fields to add to events ingested under this subscription"""
 
 
