@@ -1,4 +1,4 @@
-name: publish-prerelease
+name: Publish Prerelease
 permissions:
   checks: write
   contents: write
@@ -6,17 +6,21 @@ permissions:
   statuses: write
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to publish from'
-        required: true
-        default: 'dev-remote'
+  workflow_dispatch: {}
 
 jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure workflow is run from dev-remote branch
+        run: |
+          if [[ "${GITHUB_REF_NAME}" != "dev-remote" ]]; then
+            echo "This workflow can only be run from the dev-remote branch."
+            exit 1
+          fi
+
   publish:
-    # only run if the dispatch ref matches the selected branch
-    if: ${{ github.ref == format('refs/heads/{0}', github.event.inputs.branch) }}
+    needs: check-branch
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@b729bcda8a0650e7faf3da46ae199cb3668f45ba
     with:
       target: cribl-control-plane
