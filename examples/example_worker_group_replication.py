@@ -82,7 +82,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
         )
 
         if not source_response.items or len(source_response.items) == 0:
-            raise Exception(f"Worker group '{source_id}' not found")
+            raise Exception(f"Worker Group '{source_id}' not found")
 
         source = source_response.items[0]
 
