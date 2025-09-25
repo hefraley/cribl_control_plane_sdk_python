@@ -45,7 +45,7 @@ async def main() -> None:
             # Replicate the first worker group
             replicate_worker_group(cribl_client, first_worker_group.id)
         else:
-            print('No worker groups found. Please create at least one worker group first.')
+            print('No Worker Group found. Create at least one Worker Group before trying again.')
             exit(1)
 
     except Exception as error:
