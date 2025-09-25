@@ -117,7 +117,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
             print(f"✅ Worker group replicated: {created.id}")
             return created
         else:
-            raise Exception('Failed to create replica')
+            raise Exception('Failed to create replica Worker Group')
 
     except Exception as error:
         message = str(error)
