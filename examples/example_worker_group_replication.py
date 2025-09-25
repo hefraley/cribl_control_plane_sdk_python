@@ -85,7 +85,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
 
         source = source_response.items[0]
 
-        # Generate unique identifiers for the replica
+        # Generate a unique ID and name for the replica Worker Group
         replica_id = f"{source_id}-replica"
         replica_name = f"{source.name}-replica" if source.name else f"{source_id}-replica"
 
