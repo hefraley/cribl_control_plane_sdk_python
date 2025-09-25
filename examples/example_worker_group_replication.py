@@ -2,25 +2,24 @@
 Cribl Worker Group Replication Example
 
 This example demonstrates how to programmatically replicate an existing 
-worker group configuration using the Control Plane SDK.
+Worker Group configuration using the Control Plane SDK.
 
 This example performs the following operations:
 
-1. Selects the first worker group as a source for replication.
-2. Retrieves the complete configuration of the source worker group.
-3. Creates a new worker group with the same configuration but a unique identity.
-
-The replicated worker group includes:
-- All configuration settings from the source
-- A new unique ID
-- Updated name and description to identify it as a replica
+1. Retrieves a list of all Worker Groups in Cribl Stream.
+2. Selects the first Worker Group in the list as the source Worker Group 
+to replicate.
+3. Retrieves the complete configuration of the source Worker Group.
+4. Creates a new Worker Group that uses the same configuration as the source 
+Worker Group. The replica Worker Group has a unique ID and a name and 
+description that identify it as a replica.
 
 Data flow: Source Worker Group → Configuration Extraction → New Worker Group Creation
 
 Prerequisites:
-- An .env file configured with your credentials
-- At least one existing worker group in the Stream product
-- API token with worker group creation permissions
+- An .env file configured with your authentication credentials.
+- At least one existing Worker Group in Cribl Stream.
+- API Bearer token with Permissions that include creating Worker Groups.
 """
 
 import asyncio
