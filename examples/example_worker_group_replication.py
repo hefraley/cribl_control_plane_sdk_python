@@ -56,23 +56,22 @@ async def main() -> None:
 
 def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optional[ConfigGroup]:
     """
-    Replicates a worker group with a new unique identity
-    
-    This function handles the complete replication process including:
-    - Retrieving source configuration
-    - Generating unique identifiers
-    - Filtering out read-only fields
-    - Creating the replica with proper metadata
-    
+    Replicates a Worker Group with a unique ID:
+
+    - Retrieve the source Worker Group configuration
+    - Generate a unique ID and name to use for the replica Worker Group
+    - Filter out read-only fields from the source Worker Group configuration
+    - Create the replica Worker Group with proper metadata
+
     Args:
         client: Cribl client instance
-        source_id: ID of the worker group to replicate
-        
+        source_id: ID of the Worker Group to replicate
+
     Returns:
-        The created replica ConfigGroup or None if creation failed
-        
+        The created replica ConfigGroup or None if creation fails
+
     Raises:
-        Exception: If the source worker group is not found or creation fails
+        Exception: If the source Worker Group is not found or creation fails
     """
     try:
         # Retrieve the source worker group configuration
