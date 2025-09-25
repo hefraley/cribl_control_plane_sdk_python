@@ -40,7 +40,7 @@ async def main() -> None:
         
         if worker_groups.items and len(worker_groups.items) > 0:
             first_worker_group = worker_groups.items[0]
-            print(f"Replicating worker group: {first_worker_group.id}")
+            print(f"Replicating Worker Group: {first_worker_group.id}")
             
             # Replicate the first listed Worker Group
             replicate_worker_group(cribl_client, first_worker_group.id)
