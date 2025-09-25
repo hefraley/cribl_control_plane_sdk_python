@@ -31,7 +31,7 @@ from auth import create_cribl_client
 
 
 async def main() -> None:
-    """Main function that demonstrates worker group replication"""
+    """Main function that demonstrates Worker Group replication"""
     try:
         # Initialize Cribl client
         cribl_client = await create_cribl_client()
