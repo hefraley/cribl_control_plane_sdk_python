@@ -90,8 +90,8 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
         replica_id = f"{source_id}-replica"
         replica_name = f"{source.name}-replica" if source.name else f"{source_id}-replica"
 
-        # Create the replica worker group by copying configuration from source
-        # Filtering out read-only fields (config_version, lookup_deployments, worker_count, etc.)
+        # Create the replica Worker Group by copying the configuration of the source Worker Group
+        # Filter out read-only fields like config_version, lookup_deployments, and worker_count
         result = client.groups.create(
             product=ProductsCore.STREAM,
             id=replica_id,
