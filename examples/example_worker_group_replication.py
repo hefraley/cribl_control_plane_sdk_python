@@ -12,7 +12,7 @@ This example performs the following operations:
 
 The replicated worker group includes:
 - All configuration settings from the source
-- A unique ID with timestamp to avoid conflicts
+- A new unique ID
 - Updated name and description to identify it as a replica
 
 Data flow: Source Worker Group → Configuration Extraction → New Worker Group Creation
