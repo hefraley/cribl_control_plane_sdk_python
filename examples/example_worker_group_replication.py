@@ -74,7 +74,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
         Exception: If the source Worker Group is not found or creation fails
     """
     try:
-        # Retrieve the source worker group configuration
+        # Retrieve the source Worker Group configuration
         source_response = client.groups.get(
             id=source_id,
             product=ProductsCore.STREAM
