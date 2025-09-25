@@ -121,7 +121,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
 
     except Exception as error:
         message = str(error)
-        print(f"Failed to replicate worker group: {message}")
+        print(f"Failed to replicate Worker Group: {message}")
         raise error
 
 
