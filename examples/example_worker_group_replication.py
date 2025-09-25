@@ -114,7 +114,7 @@ def replicate_worker_group(client: CriblControlPlane, source_id: str) -> Optiona
         
         if result.items and len(result.items) > 0:
             created = result.items[0]
-            print(f"✅ Worker group replicated: {created.id}")
+            print(f"✅ Worker Group replicated: {created.id}")
             return created
         else:
             raise Exception('Failed to create replica Worker Group')
