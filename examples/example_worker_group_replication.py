@@ -35,7 +35,7 @@ async def main() -> None:
         # Initialize Cribl client
         cribl_client = await create_cribl_client()
 
-        # Get the first available worker group
+        # Get the first listed Worker Group
         worker_groups = cribl_client.groups.list(product=ProductsCore.STREAM)
         
         if worker_groups.items and len(worker_groups.items) > 0:
