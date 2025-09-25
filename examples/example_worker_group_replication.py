@@ -42,7 +42,7 @@ async def main() -> None:
             first_worker_group = worker_groups.items[0]
             print(f"Replicating worker group: {first_worker_group.id}")
             
-            # Replicate the first worker group
+            # Replicate the first listed Worker Group
             replicate_worker_group(cribl_client, first_worker_group.id)
         else:
             print('No Worker Group found. Create at least one Worker Group before trying again.')
