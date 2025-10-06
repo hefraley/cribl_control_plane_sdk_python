@@ -4,7 +4,7 @@ The Cribl Python SDK for the control plane provides operational control over Cri
 
 In addition to the usage examples in this repository, the Cribl documentation includes [code examples for common use cases](http://docs.cribl.io/cribl-as-code/code-examples/).
 
-Complementary API reference documentation is available at [https://docs.cribl.io/api-reference/](http://docs.cribl.io/cribl-as-code/api-reference/). Product documentation is available at https://docs.cribl.io.
+Complementary API reference documentation is available at http://docs.cribl.io/cribl-as-code/api-reference/. Product documentation is available at https://docs.cribl.io.
 
 > [!IMPORTANT]
 > **Preview Feature**
